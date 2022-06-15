@@ -14,7 +14,12 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public ArrayList<User> getUsers() {
+    public User getProfile(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
+    public ArrayList<User> getRankingAll() {
         return (ArrayList<User>) userRepository.findAll();
     }
 }

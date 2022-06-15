@@ -5,7 +5,7 @@ import com.gianca1994.aoweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import com.gianca1994.aoweb.jwt.JwtTokenUtil;
 import java.util.ArrayList;
 
 @RestController
@@ -16,9 +16,27 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping()
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+
+    private String getTokenUser(String token) {
+        String jwtToken = token.substring(7);
+        return jwtTokenUtil.getUsernameFromToken(jwtToken);
+    }
+
+    @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<User> getUsers() {
-        return userService.getUsers();
+    public User getProfile(@RequestHeader(value = "Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return userService.getProfile(getTokenUser(token));
+        }
+        return null;
+    }
+
+    @GetMapping("/ranking")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public ArrayList<User> getRankingAll() {
+        return userService.getRankingAll();
     }
 }
