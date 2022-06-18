@@ -1,11 +1,9 @@
 package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.PvPSystem;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +20,6 @@ public class UserController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    private final PvPSystem pvpSystem = new PvPSystem();
-
 
     private String getTokenUser(String token) {
         String jwtToken = token.substring(7);

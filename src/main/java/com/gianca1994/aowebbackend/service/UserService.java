@@ -11,6 +11,7 @@ import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class UserService {
     @Autowired
     NpcRepository npcRepository;
 
+    @Value("${SERVER_EXPERIENCE_RATE}")
+    private int EXPERIENCE_MULTIPLIER_PATTERN;
+
+    @Value("${SERVER_GOLD_RATE}")
+    private int GOLD_MULTIPLIER_PATTERN;
 
     public User getProfile(String username) {
         return userRepository.findByUsername(username);
@@ -77,7 +83,6 @@ public class UserService {
                 }
             }
 
-
             ObjectNode round = new ObjectMapper().createObjectNode();
             round.put("round", roundCounter);
             round.put("attackerLife", attacker.getHp());
@@ -96,7 +101,7 @@ public class UserService {
     }
 
     public ArrayList<ObjectNode> pvpUserVsNPC(String usernameAttacker, long npcId) {
-                User attacker = userRepository.findByUsername(usernameAttacker);
+        User attacker = userRepository.findByUsername(usernameAttacker);
         Npc npc = npcRepository.findById(npcId).get();
 
         if (attacker.getHp() < attacker.getMaxHp() * 0.25) {
@@ -116,14 +121,34 @@ public class UserService {
                 npc.setHp(npc.getHp() - attackerDmg);
                 if (npc.getHp() <= 0) {
                     npc.setHp(0);
-                    attacker.setExperience((long) (attacker.getExperience() + (Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp())) + npc.getGiveMinExp()));
-                    attacker.setGold((long) (attacker.getGold() + (Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()));
+                    attacker.setExperience((long) (attacker.getExperience() + ((Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp())) + npc.getGiveMinExp()) * EXPERIENCE_MULTIPLIER_PATTERN));
+                    attacker.setGold((long) (attacker.getGold() + ((Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()) * GOLD_MULTIPLIER_PATTERN));
 
                     if (attacker.getExperienceToNextLevel() <= attacker.getExperience()) {
                         attacker.setLevel((short) (attacker.getLevel() + 1));
-                        attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 2.5));
-                    }
 
+                        if (attacker.getLevel() <= 10) {
+                            attacker.setExperienceToNextLevel((attacker.getExperienceToNextLevel() * 2));
+                        } else if (attacker.getLevel() <= 20) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.5));
+                        } else if (attacker.getLevel() <= 30) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.25));
+                        } else if (attacker.getLevel() <= 40) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.15));
+                        } else if (attacker.getLevel() <= 50) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.1));
+                        } else if (attacker.getLevel() <= 60) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.05));
+                        } else if (attacker.getLevel() <= 70) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.025));
+                        } else if (attacker.getLevel() <= 80) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.025));
+                        } else if (attacker.getLevel() <= 90) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.01));
+                        } else if (attacker.getLevel() <= 100) {
+                            attacker.setExperienceToNextLevel((long) (attacker.getExperienceToNextLevel() * 1.01));
+                        }
+                    }
                     stopPvP = true;
                 } else {
                     attacker.setHp(attacker.getHp() - npcDmg);
