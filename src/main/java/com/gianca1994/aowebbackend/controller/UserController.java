@@ -46,7 +46,7 @@ public class UserController {
         return userService.getRankingAll();
     }
 
-    @GetMapping("/attack/{usernameDefender}")
+    @PostMapping("/attack-user/{usernameDefender}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @PathVariable String usernameDefender) {
         if (token != null && token.startsWith("Bearer ")) {
@@ -54,4 +54,14 @@ public class UserController {
         }
         return null;
     }
+
+    @PostMapping("/attack-npc/{npcId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @PathVariable long npcId) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return userService.pvpUserVsNPC(getTokenUser(token), npcId);
+        }
+        return null;
+    }
+
 }
