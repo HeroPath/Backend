@@ -3,10 +3,10 @@ package com.gianca1994.aowebbackend.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
 import com.gianca1994.aowebbackend.combatSystem.PvpUserVsUser;
+import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
@@ -55,8 +55,38 @@ public class UserService {
         return users;
     }
 
-    public User setFreeSkillPoints(String username){
+    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO){
         User user = userRepository.findByUsername(username);
+
+        if(user == null) return null;
+        if (user.getFreeSkillPoints() <= 0) return null;
+
+        switch (freeSkillPointDTO.getSkillPointName()){
+            case "strength":
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
+                user.setStrength(user.getStrength() + 1);
+                break;
+            case "dexterity":
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
+                user.setDexterity(user.getDexterity() + 1);
+                break;
+            case "intelligence":
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
+                user.setIntelligence(user.getIntelligence() + 1);
+                break;
+            case "vitality":
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
+                user.setVitality(user.getVitality() + 1);
+                break;
+            case "luck":
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
+                user.setLuck(user.getLuck() + 1);
+                break;
+            default:
+                break;
+        }
+
+        userRepository.save(user);
         return user;
     }
 

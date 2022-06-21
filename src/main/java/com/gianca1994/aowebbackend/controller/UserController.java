@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
@@ -44,11 +45,13 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("/add-skill-points")
+    @PostMapping("/add-skill-points")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User setFreeSkillPoints(@RequestHeader(value = "Authorization") String token) {
+    public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
+                                   @RequestBody FreeSkillPointDTO freeSkillPointDTO) {
+
         if (token != null && token.startsWith("Bearer ")) {
-            return userService.setFreeSkillPoints(getTokenUser(token));
+            return userService.setFreeSkillPoint(getTokenUser(token), freeSkillPointDTO);
         }
         return null;
     }
