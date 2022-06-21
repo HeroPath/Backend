@@ -55,13 +55,21 @@ public class UserService {
         return users;
     }
 
-    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO){
+
+    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of adding skill points to the user.
+         * @param String username
+         * @param FreeSkillPointDTO freeSkillPointDTO
+         * @return User
+         */
         User user = userRepository.findByUsername(username);
 
-        if(user == null) return null;
+        if (user == null) return null;
         if (user.getFreeSkillPoints() <= 0) return null;
 
-        switch (freeSkillPointDTO.getSkillPointName()){
+        switch (freeSkillPointDTO.getSkillPointName()) {
             case "strength":
                 user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
                 user.setStrength(user.getStrength() + 1);

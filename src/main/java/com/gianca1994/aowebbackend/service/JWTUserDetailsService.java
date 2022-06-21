@@ -1,5 +1,7 @@
 package com.gianca1994.aowebbackend.service;
 
+import com.gianca1994.aowebbackend.model.Class;
+import com.gianca1994.aowebbackend.repository.ClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class JWTUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder bcryptEncoder;
+    private ClassRepository classRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -65,15 +66,22 @@ public class JWTUserDetailsService implements UserDetailsService {
     public User saveUser(UserDTO user) {
         if (validateEmail(user.getEmail())) {
             Role standardRole = roleRepository.findById(1L).get();
+            Class aClass = classRepository.findById(user.getClassId()).get();
+
             User newUser = new User(
                     user.getUsername(), encryptPassword(user.getPassword()),
                     user.getEmail(),
                     standardRole,
+                    aClass,
                     (short) 1, 0L, 100L,
                     1000L, 0,
                     15L, 10L,
                     1000, 1000,
-                    5, 5, 5, 5, 5,
+                    5 + aClass.getStrength(),
+                    5 + aClass.getDexterity(),
+                    5 + aClass.getIntelligence(),
+                    5 + aClass.getVitality(),
+                    5 + aClass.getLuck(),
                     0
             );
             return userRepository.save(newUser);

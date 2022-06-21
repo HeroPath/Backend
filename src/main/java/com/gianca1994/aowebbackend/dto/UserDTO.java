@@ -1,10 +1,14 @@
 package com.gianca1994.aowebbackend.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     private String username;
     private String password;
     private String email;
+    private long classId;
 }

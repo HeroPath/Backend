@@ -39,6 +39,14 @@ public class User {
                     referencedColumnName = "id"))
     private Role role;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_class",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "class_id",
+                    referencedColumnName = "id"))
+    private Class aClass;
+
     @Column
     private short level;
     @Column
@@ -74,11 +82,12 @@ public class User {
     @Column
     private int freeSkillPoints;
 
-    public User(String username, String password, String email, Role role, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints) {
+    public User(String username, String password, String email, Role role, Class aClass, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.aClass = aClass;
         this.level = level;
         this.experience = experience;
         this.experienceToNextLevel = experienceToNextLevel;
