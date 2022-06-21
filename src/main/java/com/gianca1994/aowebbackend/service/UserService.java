@@ -5,13 +5,14 @@ import java.util.Comparator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
+import com.gianca1994.aowebbackend.combatSystem.PvpUserVsUser;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.pvpSystem.PveUserVsNpc;
+import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class UserService {
     @Autowired
     NpcRepository npcRepository;
 
+    GenericFunctionCombat genericFunctionCombat = new GenericFunctionCombat();
+    PvpUserVsUser pvpUserVsUser = new PvpUserVsUser();
     PveUserVsNpc pveUserVsNpc = new PveUserVsNpc();
 
     public User getProfile(String username) {
@@ -56,16 +59,13 @@ public class UserService {
     ////////////// INFO: Abajo, lo relacionado al PVP y PVE //////////////
     //////////////////////////////////////////////////////////////////////
 
-    public ArrayList<ObjectNode> pvpUserVsUser(String usernameAttacker, String usernameDefender) {
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String usernameAttacker, String usernameDefender) {
         User attacker = userRepository.findByUsername(usernameAttacker);
         User defender = userRepository.findByUsername(usernameDefender);
 
         if (attacker == null || defender == null) return null;
-
-        if (attacker.getHp() < attacker.getMaxHp() * 0.25f ||
-                defender.getHp() < defender.getMaxHp() * 0.25f) {
-            return null;
-        }
+        if (genericFunctionCombat.checkLifeStartCombat(attacker) ||
+                genericFunctionCombat.checkLifeStartCombat(defender)) return null;
 
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
@@ -73,34 +73,34 @@ public class UserService {
         boolean stopPvP = false;
         do {
             roundCounter++;
-            int attackerDmg = (int) ((int) (Math.random() * (attacker.getMaxDmg() - attacker.getMinDmg())) + attacker.getMinDmg());
-            int defenderDmg = (int) ((int) (Math.random() * (defender.getMaxDmg() - defender.getMinDmg())) + defender.getMinDmg());
+
+            // Calculate the damage of the attacker and defender.
+            int attackerDmg = genericFunctionCombat.getUserDmg(attacker);
+            int defenderDmg = genericFunctionCombat.getUserDmg(defender);
 
             if (!stopPvP) {
-                defender.setHp(defender.getHp() - attackerDmg);
-                if (defender.getHp() <= 0) {
+                defender.setHp(genericFunctionCombat.userReceiveDmg(defender, attackerDmg));
+
+                // Check if the defender has died.
+                if (genericFunctionCombat.checkIfUserDied(defender)) {
                     defender.setHp(0);
-                    long goldTheft = (long) (defender.getGold() * 0.25f);
-                    attacker.setGold(attacker.getGold() + goldTheft);
-                    defender.setGold(defender.getGold() - goldTheft);
+                    attacker.setGold(pvpUserVsUser.getUserGoldAmountWin(attacker, defender));
+                    defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
                     stopPvP = true;
+
                 } else {
-                    attacker.setHp(attacker.getHp() - defenderDmg);
-                    if (attacker.getHp() <= 0) {
+                    attacker.setHp(genericFunctionCombat.userReceiveDmg(attacker, defenderDmg));
+
+                    // Check if the attacker has died.
+                    if (genericFunctionCombat.checkIfUserDied(attacker)) {
                         attacker.setHp(0);
-                        attacker.setGold((long) (attacker.getGold() - (attacker.getGold() * 0.1f)));
+                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
                         stopPvP = true;
                     }
                 }
             }
-
-            ObjectNode round = new ObjectMapper().createObjectNode();
-            round.put("round", roundCounter);
-            round.put("attackerLife", attacker.getHp());
-            round.put("defenderLife", defender.getHp());
-            round.put("attackerDmg", attackerDmg);
-            round.put("defenderDmg", defenderDmg);
-            historyCombat.add(round);
+            historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
+                    attacker, defender, roundCounter, attackerDmg, defenderDmg));
 
 
         } while (attacker.getHp() > 0 && defender.getHp() > 0);
@@ -124,7 +124,7 @@ public class UserService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) return null;
-        if (pveUserVsNpc.checkLifeStartCombat(user)) return null;
+        if (genericFunctionCombat.checkLifeStartCombat(user)) return null;
 
         Npc npc = npcRepository.findById(npcId).get();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
@@ -134,7 +134,7 @@ public class UserService {
 
         do {
             roundCounter++;
-            int userDmg = pveUserVsNpc.calculateUserDmg(user);
+            int userDmg = genericFunctionCombat.getUserDmg(user);
             int npcDmg = pveUserVsNpc.calculateNpcDmg(npc);
 
             // El pvp concluyo?
@@ -145,7 +145,7 @@ public class UserService {
                 if (pveUserVsNpc.checkIfNpcDied(npc)) {
                     npc.setHp(0);
                     user.setExperience(pveUserVsNpc.CalculateUserExperienceGain(user, npc));
-                    user.setGold(pveUserVsNpc.CalculateUserGoldGain(user, npc));
+                    user.setGold(pveUserVsNpc.calculateUserGoldGain(user, npc));
 
                     // Usuario sube de nivel?
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
@@ -154,8 +154,8 @@ public class UserService {
                     }
                     stopPvP = true;
                 } else {
-                    user.setHp(user.getHp() - npcDmg);
-                    if (pveUserVsNpc.checkIfUserDied(user)) {
+                    user.setHp(genericFunctionCombat.userReceiveDmg(user, npcDmg));
+                    if (genericFunctionCombat.checkIfUserDied(user)) {
                         user.setHp(0);
                         stopPvP = true;
                     }

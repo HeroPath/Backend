@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.pvpSystem;
+package com.gianca1994.aowebbackend.combatSystem;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,28 +9,6 @@ public class PveUserVsNpc {
 
     private final int EXPERIENCE_MULTIPLIER = 1;
     private final int GOLD_MULTIPLIER = 1;
-    private final float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.25f;
-
-    public boolean checkLifeStartCombat(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user has enough
-         * life to start a combat.
-         * @param User user
-         * @return boolean
-         */
-        return user.getHp() < user.getMaxHp() * MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED;
-    }
-
-    public int calculateUserDmg(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the damage that the user.
-         * @param User user
-         * @return int
-         */
-        return (int) ((int) (Math.random() * (user.getMaxDmg() - user.getMinDmg())) + user.getMinDmg());
-    }
 
     public int calculateNpcDmg(Npc npc) {
         /**
@@ -97,16 +75,6 @@ public class PveUserVsNpc {
         return newExperienceToNextLevel;
     }
 
-    public boolean checkIfUserDied(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user has died.
-         * @param User user
-         * @return boolean
-         */
-        return user.getHp() <= 0;
-    }
-
     public boolean checkIfNpcDied(Npc npc) {
         /**
          * @Author: Gianca1994
@@ -117,7 +85,7 @@ public class PveUserVsNpc {
         return npc.getHp() <= 0;
     }
 
-    public long CalculateUserGoldGain(User user, Npc npc) {
+    public long calculateUserGoldGain(User user, Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the gold gain.
