@@ -73,7 +73,8 @@ public class JWTUserDetailsService implements UserDetailsService {
                     1000L, 0,
                     15L, 10L,
                     1000, 1000,
-                    5, 5, 5, 5, 5
+                    5, 5, 5, 5, 5,
+                    0
             );
             return userRepository.save(newUser);
         }

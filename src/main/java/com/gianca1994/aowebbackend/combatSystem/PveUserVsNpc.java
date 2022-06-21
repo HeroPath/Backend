@@ -9,6 +9,7 @@ public class PveUserVsNpc {
 
     private final int EXPERIENCE_MULTIPLIER = 1;
     private final int GOLD_MULTIPLIER = 1;
+    private final int FREE_SKILL_POINTS_PER_LEVEL = 3;
 
     public int calculateNpcDmg(Npc npc) {
         /**
@@ -115,5 +116,15 @@ public class PveUserVsNpc {
         round.put("userDmg", userDmg);
         round.put("NpcDmg", npcDmg);
         return round;
+    }
+
+    public int freeSkillPointsAdd(User user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of adding the free skill points.
+         * @param User user
+         * @return int
+         */
+        return user.getFreeSkillPoints() + FREE_SKILL_POINTS_PER_LEVEL;
     }
 }

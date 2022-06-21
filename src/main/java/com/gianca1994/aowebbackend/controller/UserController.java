@@ -37,9 +37,26 @@ public class UserController {
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<User> getRankingAll() {
-        return userService.getRankingAll();
+    public ArrayList<User> getRankingAll(@RequestHeader(value = "Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return userService.getRankingAll();
+        }
+        return null;
     }
+
+    @GetMapping("/add-skill-points")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public User setFreeSkillPoints(@RequestHeader(value = "Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            return userService.setFreeSkillPoints(getTokenUser(token));
+        }
+        return null;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     @PostMapping("/attack-user/{usernameDefender}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")

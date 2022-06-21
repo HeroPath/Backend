@@ -55,8 +55,13 @@ public class UserService {
         return users;
     }
 
+    public User setFreeSkillPoints(String username){
+        User user = userRepository.findByUsername(username);
+        return user;
+    }
+
     //////////////////////////////////////////////////////////////////////
-    ////////////// INFO: Abajo, lo relacionado al PVP y PVE //////////////
+    ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String usernameAttacker, String usernameDefender) {
@@ -151,6 +156,7 @@ public class UserService {
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
                         user.setLevel(pveUserVsNpc.userLevelUp(user));
                         user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
+                        user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
                     }
                     stopPvP = true;
                 } else {
