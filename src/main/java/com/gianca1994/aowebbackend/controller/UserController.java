@@ -54,9 +54,8 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @PathVariable long npcId) {
         if (token != null && token.startsWith("Bearer ")) {
-            return userService.pvpUserVsNPC(getTokenUser(token), npcId);
+            return userService.userVsNpcCombatSystem(getTokenUser(token), npcId);
         }
         return null;
     }
-
 }
