@@ -30,20 +30,23 @@ public class UserService {
 
     PveUserVsNpc pveUserVsNpc = new PveUserVsNpc();
 
-    @Value("${MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED}")
-    private float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED;
-
-    @Value("${PVP_GOLD_THEFT_RATE}")
-    private float PVP_GOLD_THEFT_RATE;
-
-    @Value("${PVP_GOLD_LOSS_RATE}")
-    private float PVP_GOLD_LOSS_RATE;
-
     public User getProfile(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting the profile of the user.
+         * @param String username
+         * @return User
+         */
         return userRepository.findByUsername(username);
     }
 
     public ArrayList<User> getRankingAll() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting the ranking of all users.
+         * @param none
+         * @return ArrayList<User>
+         */
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
         users.sort(Comparator.comparing(User::getLevel).reversed());
         return users;
@@ -57,8 +60,10 @@ public class UserService {
         User attacker = userRepository.findByUsername(usernameAttacker);
         User defender = userRepository.findByUsername(usernameDefender);
 
-        if (attacker.getHp() < attacker.getMaxHp() * MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED ||
-                defender.getHp() < defender.getMaxHp() * MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED) {
+        if (attacker == null || defender == null) return null;
+
+        if (attacker.getHp() < attacker.getMaxHp() * 0.25f ||
+                defender.getHp() < defender.getMaxHp() * 0.25f) {
             return null;
         }
 
@@ -75,7 +80,7 @@ public class UserService {
                 defender.setHp(defender.getHp() - attackerDmg);
                 if (defender.getHp() <= 0) {
                     defender.setHp(0);
-                    long goldTheft = (long) (defender.getGold() * PVP_GOLD_THEFT_RATE);
+                    long goldTheft = (long) (defender.getGold() * 0.25f);
                     attacker.setGold(attacker.getGold() + goldTheft);
                     defender.setGold(defender.getGold() - goldTheft);
                     stopPvP = true;
@@ -83,7 +88,7 @@ public class UserService {
                     attacker.setHp(attacker.getHp() - defenderDmg);
                     if (attacker.getHp() <= 0) {
                         attacker.setHp(0);
-                        attacker.setGold((long) (attacker.getGold() - (attacker.getGold() * PVP_GOLD_LOSS_RATE)));
+                        attacker.setGold((long) (attacker.getGold() - (attacker.getGold() * 0.1f)));
                         stopPvP = true;
                     }
                 }
@@ -107,7 +112,7 @@ public class UserService {
     }
 
 
-    public ArrayList<ObjectNode> userVsNpcCombatSystem(String usernameAttacker, long npcId) {
+    public ArrayList<ObjectNode> userVsNpcCombatSystem(String username, long npcId) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -116,7 +121,7 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
 
-        User user = userRepository.findByUsername(usernameAttacker);
+        User user = userRepository.findByUsername(username);
 
         if (user == null) return null;
         if (pveUserVsNpc.checkLifeStartCombat(user)) return null;
