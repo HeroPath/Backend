@@ -21,16 +21,17 @@ public class User {
     @JsonIgnore
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     @JsonIgnore
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String email;
 
+    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id",
@@ -39,6 +40,7 @@ public class User {
                     referencedColumnName = "id"))
     private Role role;
 
+    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_class",
             joinColumns = @JoinColumn(name = "user_id",
