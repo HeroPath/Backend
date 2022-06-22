@@ -49,7 +49,7 @@ public class UserController {
     @PostMapping("/add-skill-points")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
-                                   @RequestBody FreeSkillPointDTO freeSkillPointDTO) {
+                                  @RequestBody FreeSkillPointDTO freeSkillPointDTO) {
 
         if (token != null && token.startsWith("Bearer ")) {
             return userService.setFreeSkillPoint(getTokenUser(token), freeSkillPointDTO);
@@ -64,7 +64,8 @@ public class UserController {
 
     @PostMapping("/attack-user/{usernameDefender}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @PathVariable String usernameDefender) {
+    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
+                                            @PathVariable String usernameDefender) {
         if (token != null && token.startsWith("Bearer ")) {
             return userService.userVsUserCombatSystem(getTokenUser(token), usernameDefender);
         }
@@ -73,7 +74,8 @@ public class UserController {
 
     @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @RequestBody UserAttackNpcDTO userAttackNpcDTO) {
+    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
+                                            @RequestBody UserAttackNpcDTO userAttackNpcDTO) {
         if (token != null && token.startsWith("Bearer ")) {
             return userService.userVsNpcCombatSystem(getTokenUser(token), userAttackNpcDTO);
         }

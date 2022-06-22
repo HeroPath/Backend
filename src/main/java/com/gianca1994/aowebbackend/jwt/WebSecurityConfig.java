@@ -32,8 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    @Value("${jwt.authorizeRequests.patterns}")
-    private String AUTHORIZE_PATTERNS;
+    @Value("${jwt.authorizeRequests.patterns.auth}")
+    private String AUTHORIZE_PATTERNS_AUTHORIZATION;
+
+    @Value("${jwt.authorizeRequests.patterns.classes}")
+    private String AUTHORIZE_PATTERNS_CLASSES;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -74,7 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers(AUTHORIZE_PATTERNS).permitAll()
+                .antMatchers(AUTHORIZE_PATTERNS_AUTHORIZATION).permitAll()
+                .antMatchers(AUTHORIZE_PATTERNS_CLASSES).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

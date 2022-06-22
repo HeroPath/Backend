@@ -47,4 +47,17 @@ public class Npc {
 
     @Column(nullable = false)
     private int defense;
+
+    public Npc(String name, Long giveMinExp, Long giveMaxExp, Long giveMinGold, Long giveMaxGold, int hp, int maxHp, int minDmg, int maxDmg, int defense) {
+        this.name = name;
+        this.giveMinExp = giveMinExp;
+        this.giveMaxExp = giveMaxExp;
+        this.giveMinGold = giveMinGold;
+        this.giveMaxGold = giveMaxGold;
+        this.hp = hp;
+        this.maxHp = maxHp;
+        this.minDmg = minDmg;
+        this.maxDmg = maxDmg;
+        this.defense = defense;
+    }
 }

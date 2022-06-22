@@ -1,0 +1,23 @@
+package com.gianca1994.aowebbackend.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class NpcDTO {
+    private String name;
+    private Long giveMaxExp;
+    private Long giveMinExp;
+    private Long giveMaxGold;
+    private Long giveMinGold;
+    private int hp;
+    private int maxHp;
+    private int minDmg;
+    private int maxDmg;
+    private int defense;
+}
