@@ -3,6 +3,7 @@ package com.gianca1994.aowebbackend.controller;
 import com.gianca1994.aowebbackend.dto.JwtRequestDTO;
 import com.gianca1994.aowebbackend.dto.JwtResponseDTO;
 import com.gianca1994.aowebbackend.dto.UserDTO;
+import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.service.JWTUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +36,15 @@ public class AuthController {
          * @param JwtRequestDTO authenticationRequest
          * @return ResponseEntity<?>
          */
-
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
-
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponseDTO(token));
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to register a new user.

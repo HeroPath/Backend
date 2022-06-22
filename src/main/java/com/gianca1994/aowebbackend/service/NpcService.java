@@ -1,6 +1,8 @@
 package com.gianca1994.aowebbackend.service;
 
 import com.gianca1994.aowebbackend.dto.NpcDTO;
+import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +34,18 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        if(npcRepository.findByName(name) == null) return null;
+        if(npcRepository.findByName(name) == null) throw new NotFoundException("Npc not found");
         return npcRepository.findByName(name);
-
     }
 
-    public Npc saveNpc(NpcDTO npc) {
+    public Npc saveNpc(NpcDTO npc) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving the npc.
          * @param Npc npc
          * @return Npc
          */
-        if(!(npcRepository.findByName(npc.getName().toLowerCase()) == null)) return null;
+        if(!(npcRepository.findByName(npc.getName().toLowerCase()) == null)) throw new ConflictException("Npc already exists");
 
         Npc newNpc = new Npc(
                 npc.getName().toLowerCase(),
