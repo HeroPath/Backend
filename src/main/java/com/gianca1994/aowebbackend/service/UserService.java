@@ -8,6 +8,10 @@ import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
 import com.gianca1994.aowebbackend.combatSystem.PvpUserVsUser;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
+import com.gianca1994.aowebbackend.exception.BadRequestException;
+import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.NotFoundException;
+import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
@@ -34,15 +38,28 @@ public class UserService {
     PvpUserVsUser pvpUserVsUser = new PvpUserVsUser();
     PveUserVsNpc pveUserVsNpc = new PveUserVsNpc();
 
-    public User getProfile(String username) {
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    private String getTokenUser(String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get the username from the token.
+         * @param String token
+         * @return String username
+         */
+        String jwtToken = token.substring(7);
+        return jwtTokenUtil.getUsernameFromToken(jwtToken);
+    }
+
+    public User getProfile(String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
          * @param String username
          * @return User
          */
-
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(getTokenUser(token));
     }
 
     public ArrayList<User> getRankingAll() {
@@ -58,7 +75,7 @@ public class UserService {
     }
 
 
-    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) {
+    public User setFreeSkillPoint(String token, FreeSkillPointDTO freeSkillPointDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of adding skill points to the user.
@@ -66,10 +83,10 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(getTokenUser(token));
 
-        if (user == null) return null;
-        if (user.getFreeSkillPoints() <= 0) return null;
+        if (user == null) throw new NotFoundException("User not found");
+        if (user.getFreeSkillPoints() <= 0) throw new ConflictException("You don't have any free skill points");
 
         switch (freeSkillPointDTO.getSkillPointName()) {
             case "strength":
@@ -104,7 +121,7 @@ public class UserService {
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
 
-    public ArrayList<ObjectNode> userVsUserCombatSystem(String usernameAttacker, String usernameDefender) {
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, String usernameDefender) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between two users.
@@ -112,12 +129,15 @@ public class UserService {
          * @param String usernameDefender
          * @return ArrayList<ObjectNode>
          */
-        User attacker = userRepository.findByUsername(usernameAttacker);
+        User attacker = userRepository.findByUsername(getTokenUser(token));
         User defender = userRepository.findByUsername(usernameDefender);
 
-        if (attacker == null || defender == null) return null;
-        if (genericFunctionCombat.checkLifeStartCombat(attacker) ||
-                genericFunctionCombat.checkLifeStartCombat(defender)) return null;
+        if (attacker == null) throw new NotFoundException("User not found");
+        if (defender == null) throw new NotFoundException("Enemy not found");
+        if (genericFunctionCombat.checkLifeStartCombat(attacker))
+            throw new BadRequestException("Impossible to attack with less than 25% of life");
+        if (genericFunctionCombat.checkLifeStartCombat(defender))
+            throw new BadRequestException("Impossible to attack an enemy with less than 25% of its health");
 
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
@@ -164,7 +184,7 @@ public class UserService {
     }
 
 
-    public ArrayList<ObjectNode> userVsNpcCombatSystem(String username, UserAttackNpcDTO userAttackNpcDTO) {
+    public ArrayList<ObjectNode> userVsNpcCombatSystem(String token, UserAttackNpcDTO userAttackNpcDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -172,10 +192,11 @@ public class UserService {
          * @param long npcId
          * @return ArrayList<ObjectNode>
          */
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(getTokenUser(token));
 
-        if (user == null) return null;
-        if (genericFunctionCombat.checkLifeStartCombat(user)) return null;
+        if (user == null) throw new NotFoundException("User not found");
+        if (genericFunctionCombat.checkLifeStartCombat(user))
+            throw new BadRequestException("Impossible to attack with less than 25% of life");
 
         Npc npc = npcRepository.findById(userAttackNpcDTO.getNpcId()).get();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();

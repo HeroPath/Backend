@@ -11,10 +11,9 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
-    private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND;
-    private final HttpStatus CONFLICT = HttpStatus.CONFLICT;
-    private final HttpStatus UNAUTHORIZED = HttpStatus.UNAUTHORIZED;
+    private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST; // 400
+    private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND; // 404
+    private final HttpStatus CONFLICT = HttpStatus.CONFLICT; // 409
 
     @ExceptionHandler(value = {BadRequestException.class})
     public ResponseEntity<Object> handleBadRequestException(BadRequestException e) {
@@ -44,15 +43,5 @@ public class ApiExceptionHandler {
                 CONFLICT.value(),
                 ZonedDateTime.now(ZoneId.of("Z"))
         ), CONFLICT);
-    }
-
-    @ExceptionHandler(value = {ExpiredTokenException.class})
-    public ResponseEntity<Object> handleExpiredTokenException(ExpiredTokenException e) {
-        return new ResponseEntity<>(new ExceptionModel(
-                e.getMessage(),
-                UNAUTHORIZED,
-                UNAUTHORIZED.value(),
-                ZonedDateTime.now(ZoneId.of("Z"))
-        ), UNAUTHORIZED);
     }
 }
