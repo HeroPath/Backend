@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
 import com.gianca1994.aowebbackend.combatSystem.PvpUserVsUser;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
@@ -157,7 +158,7 @@ public class UserService {
     }
 
 
-    public ArrayList<ObjectNode> userVsNpcCombatSystem(String username, long npcId) {
+    public ArrayList<ObjectNode> userVsNpcCombatSystem(String username, UserAttackNpcDTO userAttackNpcDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -171,7 +172,7 @@ public class UserService {
         if (user == null) return null;
         if (genericFunctionCombat.checkLifeStartCombat(user)) return null;
 
-        Npc npc = npcRepository.findById(npcId).get();
+        Npc npc = npcRepository.findById(userAttackNpcDTO.getNpcId()).get();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
         int roundCounter = 0;

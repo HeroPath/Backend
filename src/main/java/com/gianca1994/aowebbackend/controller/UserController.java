@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
@@ -70,11 +71,11 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/attack-npc/{npcId}")
+    @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @PathVariable long npcId) {
+    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token, @RequestBody UserAttackNpcDTO userAttackNpcDTO) {
         if (token != null && token.startsWith("Bearer ")) {
-            return userService.userVsNpcCombatSystem(getTokenUser(token), npcId);
+            return userService.userVsNpcCombatSystem(getTokenUser(token), userAttackNpcDTO);
         }
         return null;
     }
