@@ -41,7 +41,6 @@ public class UserService {
          * @param String username
          * @return User
          */
-        User user = userRepository.findByUsername(username);
 
         return userRepository.findByUsername(username);
     }
