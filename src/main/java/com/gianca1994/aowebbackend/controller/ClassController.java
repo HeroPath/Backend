@@ -16,6 +16,12 @@ public class ClassController {
 
     @GetMapping()
     public List<Class> getAllClasses() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get all the classes from the database.
+         * @param none
+         * @return List<Class>
+         */
         return classService.getAllClasses();
     }
 }

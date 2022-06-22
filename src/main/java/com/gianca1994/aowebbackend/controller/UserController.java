@@ -24,6 +24,12 @@ public class UserController {
     private JwtTokenUtil jwtTokenUtil;
 
     private String getTokenUser(String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get the username from the token.
+         * @param String token
+         * @return String username
+         */
         String jwtToken = token.substring(7);
         return jwtTokenUtil.getUsernameFromToken(jwtToken);
     }
@@ -31,6 +37,12 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User getProfile(@RequestHeader(value = "Authorization") String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get the profile of the user.
+         * @param String token
+         * @return User user
+         */
         if (token != null && token.startsWith("Bearer ")) {
             return userService.getProfile(getTokenUser(token));
         }
@@ -40,6 +52,12 @@ public class UserController {
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<User> getRankingAll(@RequestHeader(value = "Authorization") String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get the ranking of all users.
+         * @param String token
+         * @return ArrayList<User> users
+         */
         if (token != null && token.startsWith("Bearer ")) {
             return userService.getRankingAll();
         }
@@ -50,6 +68,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
                                   @RequestBody FreeSkillPointDTO freeSkillPointDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add skill points to the user.
+         * @param String token
+         * @param FreeSkillPointDTO freeSkillPointDTO
+         * @return User user
+         */
 
         if (token != null && token.startsWith("Bearer ")) {
             return userService.setFreeSkillPoint(getTokenUser(token), freeSkillPointDTO);
@@ -66,6 +91,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
                                             @PathVariable String usernameDefender) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to attack a user.
+         * @param String token
+         * @param String usernameDefender
+         * @return ArrayList<ObjectNode> objectNodes
+         */
         if (token != null && token.startsWith("Bearer ")) {
             return userService.userVsUserCombatSystem(getTokenUser(token), usernameDefender);
         }
@@ -76,6 +108,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
                                             @RequestBody UserAttackNpcDTO userAttackNpcDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to attack a user.
+         * @param String token
+         * @param UserAttackNpcDTO userAttackNpcDTO
+         * @return ArrayList<ObjectNode> objectNodes
+         */
         if (token != null && token.startsWith("Bearer ")) {
             return userService.userVsNpcCombatSystem(getTokenUser(token), userAttackNpcDTO);
         }

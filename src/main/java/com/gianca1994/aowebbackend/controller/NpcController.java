@@ -40,7 +40,6 @@ public class NpcController {
          * @return Npc
          */
         return npcService.getNpcByName(name);
-
     }
 
     @PostMapping()

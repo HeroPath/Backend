@@ -29,6 +29,12 @@ public class AuthController {
 
     @PostMapping(value = "login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to authenticate the user and generate a JWT token.
+         * @param JwtRequestDTO authenticationRequest
+         * @return ResponseEntity<?>
+         */
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -42,10 +48,23 @@ public class AuthController {
 
     @PostMapping(value = "register")
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to register a new user.
+         * @param UserDTO user
+         * @return ResponseEntity<?>
+         */
         return ResponseEntity.ok(userDetailsService.saveUser(user));
     }
 
     private void authenticate(String username, String password) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to authenticate the user.
+         * @param String username: The username of the user.
+         * @param String password: The password of the user.
+         * @return void
+         */
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {

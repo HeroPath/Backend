@@ -40,6 +40,12 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to load the user by username.
+         * @param String username
+         * @return UserDetails
+         */
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -54,16 +60,34 @@ public class JWTUserDetailsService implements UserDetailsService {
     }
 
     private boolean validateEmail(String email) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to validate the email address.
+         * @param String email
+         * @return boolean
+         */
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
 
     private String encryptPassword(String password) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method encrypts the password using BCrypt.
+         * @param String password
+         * @return String
+         */
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
     public User saveUser(UserDTO user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to save a new user in the database.
+         * @param UserDTO user
+         * @return User
+         */
         if (validateEmail(user.getEmail())) {
             Role standardRole = roleRepository.findById(1L).get();
             Class aClass = classRepository.findById(user.getClassId()).get();
