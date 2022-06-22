@@ -38,7 +38,11 @@ public class User {
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",
                     referencedColumnName = "id"))
+    @JsonIgnore
     private Role role;
+
+    @Column
+    private String roleName;
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -47,7 +51,11 @@ public class User {
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "class_id",
                     referencedColumnName = "id"))
+    @JsonIgnore
     private Class aClass;
+
+    @Column
+    private String aClassName;
 
     @Column
     private short level;
@@ -60,7 +68,6 @@ public class User {
     private long gold;
     @Column
     private int diamond;
-
 
     @Column
     private long maxDmg;
@@ -84,12 +91,14 @@ public class User {
     @Column
     private int freeSkillPoints;
 
-    public User(String username, String password, String email, Role role, Class aClass, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints) {
+    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.roleName = roleName;
         this.aClass = aClass;
+        this.aClassName = aClassName;
         this.level = level;
         this.experience = experience;
         this.experienceToNextLevel = experienceToNextLevel;

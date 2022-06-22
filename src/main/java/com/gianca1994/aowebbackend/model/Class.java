@@ -15,14 +15,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Class {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String className;
+    private String name;
     @Column
     private int strength;
     @Column
