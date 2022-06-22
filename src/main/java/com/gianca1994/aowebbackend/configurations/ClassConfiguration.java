@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Configuration;
 public class ClassConfiguration {
     @Bean
     public CommandLineRunner autoSaveClasses(ClassRepository classRepository) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to auto save the classes in the database.
+         * @param ClassRepository classRepository
+         * @return CommandLineRunner
+         */
         return args -> {
             classRepository.save(new Class(1L, "Mage", 1, 2, 3, 1, 2));
             classRepository.save(new Class(2L, "Warrior", 3, 1, 1, 3, 1));

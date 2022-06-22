@@ -105,6 +105,13 @@ public class UserService {
     //////////////////////////////////////////////////////////////////////
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String usernameAttacker, String usernameDefender) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of the combat system between two users.
+         * @param String usernameAttacker
+         * @param String usernameDefender
+         * @return ArrayList<ObjectNode>
+         */
         User attacker = userRepository.findByUsername(usernameAttacker);
         User defender = userRepository.findByUsername(usernameDefender);
 
@@ -165,7 +172,6 @@ public class UserService {
          * @param long npcId
          * @return ArrayList<ObjectNode>
          */
-
         User user = userRepository.findByUsername(username);
 
         if (user == null) return null;

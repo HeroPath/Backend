@@ -10,6 +10,12 @@ import org.springframework.context.annotation.Configuration;
 public class RoleConfiguration {
     @Bean
     public CommandLineRunner autoSaveRoles(RoleRepository roleRepository) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to auto save the roles in the database.
+         * @param RoleRepository roleRepository
+         * @return CommandLineRunner
+         */
         return args -> {
             roleRepository.save(new Role(1L, "STANDARD"));
             roleRepository.save(new Role(2L, "ADMIN"));

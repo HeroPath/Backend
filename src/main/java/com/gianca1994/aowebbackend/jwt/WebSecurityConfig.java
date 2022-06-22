@@ -40,22 +40,46 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to configure the authentication manager.
+         * @param AuthenticationManagerBuilder auth
+         * @return void
+         */
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to encode the password.
+         * @param void
+         * @return PasswordEncoder
+         */
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to configure the authentication manager.
+         * @param void
+         * @return AuthenticationManager
+         */
         return super.authenticationManagerBean();
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to configure the http security.
+         * @param HttpSecurity http
+         * @return void
+         */
 
         http = http.cors().and().csrf().disable();
 
