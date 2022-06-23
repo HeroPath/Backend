@@ -20,4 +20,5 @@ public class NpcDTO {
     private int minDmg;
     private int maxDmg;
     private int defense;
+    private String zone;
 }

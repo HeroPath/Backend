@@ -57,7 +57,8 @@ public class NpcService {
                 npc.getMaxHp(),
                 npc.getMinDmg(),
                 npc.getMaxDmg(),
-                npc.getDefense()
+                npc.getDefense(),
+                npc.getZone()
         );
 
         return npcRepository.save(newNpc);
