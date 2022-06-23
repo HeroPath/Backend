@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NpcDTO {
     private String name;
+    private short level;
     private Long giveMaxExp;
     private Long giveMinExp;
     private Long giveMaxGold;
@@ -22,3 +23,4 @@ public class NpcDTO {
     private int defense;
     private String zone;
 }
+
