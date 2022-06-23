@@ -96,6 +96,26 @@ public class JWTUserDetailsService implements UserDetailsService {
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
 
+        int minDmg = 0, maxDmg = 0, maxHp = 0;
+
+        switch (aClass.getName()) {
+            case "mage":
+                minDmg = aClass.getIntelligence() * 4;
+                maxDmg = aClass.getIntelligence() * 7;
+                maxHp = aClass.getVitality() * 10;
+                break;
+            case "warrior":
+                minDmg = aClass.getStrength() * 3;
+                maxDmg = aClass.getStrength() * 5;
+                maxHp = aClass.getVitality() * 20;
+                break;
+            case "archer":
+                minDmg = aClass.getDexterity() * 4;
+                maxDmg = aClass.getDexterity() * 6;
+                maxHp = aClass.getVitality() * 15;
+                break;
+        }
+
         User newUser = new User(
                 user.getUsername(), encryptPassword(user.getPassword()),
                 user.getEmail(),
@@ -105,13 +125,13 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getName(),
                 (short) 1, 0L, 100L,
                 1000L, 0,
-                15L, 10L,
-                1000, 1000,
-                5 + aClass.getStrength(),
-                5 + aClass.getDexterity(),
-                5 + aClass.getIntelligence(),
-                5 + aClass.getVitality(),
-                5 + aClass.getLuck(),
+                maxDmg, minDmg,
+                maxHp, maxHp,
+                aClass.getStrength(),
+                aClass.getDexterity(),
+                aClass.getIntelligence(),
+                aClass.getVitality(),
+                aClass.getLuck(),
                 0, 0, 0, 0
         );
 

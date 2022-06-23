@@ -70,9 +70,9 @@ public class User {
     private int diamond;
 
     @Column
-    private long maxDmg;
+    private int maxDmg;
     @Column
-    private long minDmg;
+    private int minDmg;
 
     @Column
     private int maxHp;
@@ -98,7 +98,7 @@ public class User {
     private int pvpLosses;
 
 
-    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
+    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
         this.username = username;
         this.password = password;
         this.email = email;

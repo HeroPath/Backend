@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
@@ -87,28 +88,54 @@ public class UserService {
 
         if (user == null) throw new NotFoundException("User not found");
         if (user.getFreeSkillPoints() <= 0) throw new ConflictException("You don't have any free skill points");
+        if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
+            throw new ConflictException("You don't have enough free skill points");
 
         switch (freeSkillPointDTO.getSkillPointName()) {
             case "strength":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
-                user.setStrength(user.getStrength() + 1);
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                user.setStrength(user.getStrength() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(user.getAClass().getName(), "warrior")) {
+                    user.setMinDmg(user.getStrength() * 3);
+                    user.setMaxDmg(user.getStrength() * 5);
+                }
                 break;
+
             case "dexterity":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
-                user.setDexterity(user.getDexterity() + 1);
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                user.setDexterity(user.getDexterity() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(user.getAClass().getName(), "archer")) {
+                    user.setMinDmg(user.getDexterity() * 4);
+                    user.setMaxDmg(user.getDexterity() * 6);
+                }
                 break;
+
             case "intelligence":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
-                user.setIntelligence(user.getIntelligence() + 1);
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                user.setIntelligence(user.getIntelligence() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(user.getAClass().getName(), "mage")) {
+                    user.setMinDmg(user.getIntelligence() * 4);
+                    user.setMaxDmg(user.getIntelligence() * 7);
+                }
                 break;
+
             case "vitality":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
-                user.setVitality(user.getVitality() + 1);
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                user.setVitality(user.getVitality() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(user.getAClass().getName(), "mage")) {
+                    user.setMaxHp(user.getVitality() * 10);
+                } else if (Objects.equals(user.getAClass().getName(), "warrior")) {
+                    user.setMaxHp(user.getVitality() * 20);
+                } else if (Objects.equals(user.getAClass().getName(), "archer")) {
+                    user.setMaxHp(user.getVitality() * 15);
+                }
                 break;
+
             case "luck":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - 1);
-                user.setLuck(user.getLuck() + 1);
+                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                user.setLuck(user.getLuck() + freeSkillPointDTO.getAmount());
                 break;
+
             default:
                 break;
         }
@@ -207,7 +234,9 @@ public class UserService {
         if (genericFunctionCombat.checkLifeStartCombat(user))
             throw new BadRequestException("Impossible to attack with less than 25% of life");
 
-        Npc npc = npcRepository.findById(userAttackNpcDTO.getNpcId()).get();
+        Npc npc = npcRepository.findByName(userAttackNpcDTO.getName().toLowerCase());
+        if (npc == null) throw new NotFoundException("Npc not found");
+
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
         int roundCounter = 0;

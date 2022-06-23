@@ -10,5 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAttackNpcDTO {
-    private long npcId;
+    private String name;
 }

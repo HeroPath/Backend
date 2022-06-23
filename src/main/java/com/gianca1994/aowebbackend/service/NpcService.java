@@ -34,8 +34,8 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        if(npcRepository.findByName(name) == null) throw new NotFoundException("Npc not found");
-        return npcRepository.findByName(name);
+        if(npcRepository.findByName(name.toLowerCase()) == null) throw new NotFoundException("Npc not found");
+        return npcRepository.findByName(name.toLowerCase());
     }
 
     public Npc saveNpc(NpcDTO npc) throws ConflictException {
