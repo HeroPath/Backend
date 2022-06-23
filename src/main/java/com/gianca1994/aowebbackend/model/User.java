@@ -38,7 +38,6 @@ public class User {
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id",
                     referencedColumnName = "id"))
-    @JsonIgnore
     private Role role;
 
     @Column
@@ -51,7 +50,6 @@ public class User {
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "class_id",
                     referencedColumnName = "id"))
-    @JsonIgnore
     private Class aClass;
 
     @Column
