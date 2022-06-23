@@ -10,6 +10,8 @@ public class PveUserVsNpc {
     private final int EXPERIENCE_MULTIPLIER = 1;
     private final int GOLD_MULTIPLIER = 1;
     private final int FREE_SKILL_POINTS_PER_LEVEL = 3;
+    private final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
+    private final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 5;
 
     public int calculateNpcDmg(Npc npc) {
         /**
@@ -97,6 +99,45 @@ public class PveUserVsNpc {
         return (long) (user.getGold() + ((Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()) * GOLD_MULTIPLIER);
     }
 
+    public int freeSkillPointsAdd(User user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of adding the free skill points.
+         * @param User user
+         * @return int
+         */
+        return user.getFreeSkillPoints() + FREE_SKILL_POINTS_PER_LEVEL;
+    }
+
+    public boolean checkUserAndNpcAlive(User user, Npc npc) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of verifying if the user and the npc are alive.
+         * @param User user
+         * @param Npc npc
+         * @return boolean
+         */
+        return user.getHp() > 0 && npc.getHp() > 0;
+    }
+
+    public boolean chanceDropDiamonds() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the chance of dropping diamonds.
+         * @return boolean
+         */
+        return ((Math.random() * 100) + 1) > (100 - DIAMOND_DROP_CHANCE_PERCENTAGE);
+    }
+
+    public int amountOfDiamondsDrop() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
+         * @return int
+         */
+        return (int) (Math.random() * MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+    }
+
     public ObjectNode roundJsonGeneratorUserVsNpc(User user, Npc npc,
                                                   int roundCounter, int userDmg, int npcDmg) {
         /**
@@ -116,15 +157,5 @@ public class PveUserVsNpc {
         round.put("userDmg", userDmg);
         round.put("NpcDmg", npcDmg);
         return round;
-    }
-
-    public int freeSkillPointsAdd(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of adding the free skill points.
-         * @param User user
-         * @return int
-         */
-        return user.getFreeSkillPoints() + FREE_SKILL_POINTS_PER_LEVEL;
     }
 }

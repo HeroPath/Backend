@@ -90,7 +90,8 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return User
          */
         if (!validateEmail(user.getEmail())) throw new BadRequestException("Invalid email address");
-        if (userRepository.findByUsername(user.getUsername()) != null) throw new ConflictException("Username already exists");
+        if (userRepository.findByUsername(user.getUsername()) != null)
+            throw new ConflictException("Username already exists");
 
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
@@ -111,10 +112,11 @@ public class JWTUserDetailsService implements UserDetailsService {
                 5 + aClass.getIntelligence(),
                 5 + aClass.getVitality(),
                 5 + aClass.getLuck(),
-                0
+                0, 0, 0, 0
         );
 
-        if(Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho")) {
+        if (Objects.equals(user.getUsername(), "gianca") ||
+                Objects.equals(user.getUsername(), "lucho")) {
             newUser.setRole(roleRepository.findById(2L).get());
             newUser.setRoleName("ADMIN");
         }

@@ -42,13 +42,14 @@ public class NpcService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving the npc.
-         * @param Npc npc
+         * @param NpcDTO npc
          * @return Npc
          */
         if(!(npcRepository.findByName(npc.getName().toLowerCase()) == null)) throw new ConflictException("Npc already exists");
 
         Npc newNpc = new Npc(
                 npc.getName().toLowerCase(),
+                npc.getLevel(),
                 npc.getGiveMinExp(),
                 npc.getGiveMaxExp(),
                 npc.getGiveMinGold(),
