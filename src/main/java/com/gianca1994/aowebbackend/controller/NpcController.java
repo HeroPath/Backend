@@ -43,6 +43,18 @@ public class NpcController {
         return npcService.getNpcByName(name);
     }
 
+    @GetMapping("/zone/{zone}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of filtering the npcs by zone.
+         * @param String zone
+         * @return ArrayList<Npc>
+         */
+        return npcService.filterNpcByZone(zone);
+    }
+
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
     public Npc saveNpc(@RequestBody NpcDTO npc) throws ConflictException {

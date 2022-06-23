@@ -40,9 +40,6 @@ public class User {
                     referencedColumnName = "id"))
     private Role role;
 
-    @Column
-    private String roleName;
-
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_class",
@@ -53,25 +50,19 @@ public class User {
     private Class aClass;
 
     @Column
-    private String aClassName;
-
-    @Column
     private short level;
     @Column
     private long experience;
     @Column
     private long experienceToNextLevel;
-
     @Column
     private long gold;
     @Column
     private int diamond;
-
     @Column
     private int maxDmg;
     @Column
     private int minDmg;
-
     @Column
     private int maxHp;
     @Column
@@ -95,15 +86,12 @@ public class User {
     @Column
     private int pvpLosses;
 
-
-    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
+    public User(String username, String password, String email, Role role, Class aClass, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.roleName = roleName;
         this.aClass = aClass;
-        this.aClassName = aClassName;
         this.level = level;
         this.experience = experience;
         this.experienceToNextLevel = experienceToNextLevel;
