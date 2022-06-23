@@ -90,8 +90,15 @@ public class User {
     private int luck;
     @Column
     private int freeSkillPoints;
+    @Column
+    private int npcKills;
+    @Column
+    private int pvpWins;
+    @Column
+    private int pvpLosses;
 
-    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints) {
+
+    public User(String username, String password, String email, Role role, String roleName, Class aClass, String aClassName, short level, long experience, long experienceToNextLevel, long gold, int diamond, long maxDmg, long minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -114,5 +121,8 @@ public class User {
         this.vitality = vitality;
         this.luck = luck;
         this.freeSkillPoints = freeSkillPoints;
+        this.npcKills = npcKills;
+        this.pvpWins = pvpWins;
+        this.pvpLosses = pvpLosses;
     }
 }

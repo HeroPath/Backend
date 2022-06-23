@@ -50,8 +50,19 @@ public class PvpUserVsUser {
         return (long) (user.getGold() - (user.getGold() * PVP_GOLD_LOSS_RATE));
     }
 
+    public boolean checkBothUsersAlive(User attacker, User defender) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of verifying if both fighters are alive.
+         * @param User user
+         * @param User defender
+         * @return boolean
+         */
+        return attacker.getHp() > 0 && defender.getHp() > 0;
+    }
+
     public ObjectNode roundJsonGeneratorUserVsUser(User attacker, User defender,
-                                                  int roundCounter, int attackerDmg, int defenderDmg) {
+                                                   int roundCounter, int attackerDmg, int defenderDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of generating the json for the round.

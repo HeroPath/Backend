@@ -156,9 +156,14 @@ public class UserService {
                 // Check if the defender has died.
                 if (genericFunctionCombat.checkIfUserDied(defender)) {
                     defender.setHp(0);
+                    stopPvP = true;
+
+                    // Add the history of the combat.
+                    defender.setPvpLosses(defender.getPvpLosses() + 1);
+                    attacker.setPvpWins(attacker.getPvpWins() + 1);
+
                     attacker.setGold(pvpUserVsUser.getUserGoldAmountWin(attacker, defender));
                     defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
-                    stopPvP = true;
 
                 } else {
                     attacker.setHp(genericFunctionCombat.userReceiveDmg(attacker, defenderDmg));
@@ -166,8 +171,13 @@ public class UserService {
                     // Check if the attacker has died.
                     if (genericFunctionCombat.checkIfUserDied(attacker)) {
                         attacker.setHp(0);
-                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
                         stopPvP = true;
+
+                        // Add the history of the combat.
+                        attacker.setPvpLosses(defender.getPvpLosses() + 1);
+                        defender.setPvpWins(attacker.getPvpWins() + 1);
+
+                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
                     }
                 }
             }
@@ -175,11 +185,10 @@ public class UserService {
                     attacker, defender, roundCounter, attackerDmg, defenderDmg));
 
 
-        } while (attacker.getHp() > 0 && defender.getHp() > 0);
+        } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
 
         userRepository.save(attacker);
         userRepository.save(defender);
-
         return historyCombat;
     }
 
@@ -209,17 +218,21 @@ public class UserService {
             int userDmg = genericFunctionCombat.getUserDmg(user);
             int npcDmg = pveUserVsNpc.calculateNpcDmg(npc);
 
-            // El pvp concluyo?
+            // Check if the finish combat.
             if (!stopPvP) {
                 npc.setHp(npc.getHp() - userDmg);
 
-                // El npc murio?
+                // Check if the npc has died.
                 if (pveUserVsNpc.checkIfNpcDied(npc)) {
                     npc.setHp(0);
+
+                    // Add the history of the combat.
+                    user.setNpcKills(user.getNpcKills() + 1);
+
                     user.setExperience(pveUserVsNpc.CalculateUserExperienceGain(user, npc));
                     user.setGold(pveUserVsNpc.calculateUserGoldGain(user, npc));
 
-                    // Usuario sube de nivel?
+                    // Check if the user has enough experience to level up.
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
                         do {
                             user.setLevel(pveUserVsNpc.userLevelUp(user));
@@ -229,6 +242,7 @@ public class UserService {
                     }
                     stopPvP = true;
                 } else {
+                    // Check if the user has died.
                     user.setHp(genericFunctionCombat.userReceiveDmg(user, npcDmg));
                     if (genericFunctionCombat.checkIfUserDied(user)) {
                         user.setHp(0);
@@ -241,11 +255,10 @@ public class UserService {
                     user, npc, roundCounter, userDmg, npcDmg)
             );
 
-        } while (user.getHp() > 0 && npc.getHp() > 0);
+        } while (pveUserVsNpc.checkUserAndNpcAlive(user, npc));
 
-        if (((int) (Math.random() * 100) + 1) > 95) {
-            user.setDiamond(user.getDiamond() + (int) (Math.random() * 5) + 1);
-        }
+        if (pveUserVsNpc.chanceDropDiamonds())
+            user.setDiamond(user.getDiamond() + pveUserVsNpc.amountOfDiamondsDrop());
 
         npc.setHp(npc.getMaxHp());
         userRepository.save(user);
