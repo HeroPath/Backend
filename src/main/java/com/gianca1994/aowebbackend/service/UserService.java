@@ -221,9 +221,11 @@ public class UserService {
 
                     // Usuario sube de nivel?
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
-                        user.setLevel(pveUserVsNpc.userLevelUp(user));
-                        user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
-                        user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
+                        do {
+                            user.setLevel(pveUserVsNpc.userLevelUp(user));
+                            user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
+                            user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
+                        } while (pveUserVsNpc.checkUserLevelUp(user));
                     }
                     stopPvP = true;
                 } else {
@@ -240,6 +242,10 @@ public class UserService {
             );
 
         } while (user.getHp() > 0 && npc.getHp() > 0);
+
+        if (((int) (Math.random() * 100) + 1) > 95) {
+            user.setDiamond(user.getDiamond() + (int) (Math.random() * 5) + 1);
+        }
 
         npc.setHp(npc.getMaxHp());
         userRepository.save(user);
