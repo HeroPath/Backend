@@ -120,9 +120,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 user.getUsername(), encryptPassword(user.getPassword()),
                 user.getEmail(),
                 standardRole,
-                standardRole.getRoleName(),
                 aClass,
-                aClass.getName(),
                 (short) 1, 0L, 100L,
                 1000L, 0,
                 maxDmg, minDmg,
@@ -138,7 +136,6 @@ public class JWTUserDetailsService implements UserDetailsService {
         if (Objects.equals(user.getUsername(), "gianca") ||
                 Objects.equals(user.getUsername(), "lucho")) {
             newUser.setRole(roleRepository.findById(2L).get());
-            newUser.setRoleName("ADMIN");
         }
         return userRepository.save(newUser);
     }

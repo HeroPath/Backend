@@ -44,6 +44,7 @@ public class UserController {
         return userService.getRankingAll();
     }
 
+
     @PostMapping("/add-skill-points")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
