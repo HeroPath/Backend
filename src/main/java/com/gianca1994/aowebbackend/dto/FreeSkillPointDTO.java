@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class FreeSkillPointDTO {
     private String skillPointName;
+    private int amount;
 }

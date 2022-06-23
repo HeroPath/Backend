@@ -17,9 +17,9 @@ public class ClassConfiguration {
          * @return CommandLineRunner
          */
         return args -> {
-            classRepository.save(new Class(1L, "Mage", 1, 2, 3, 1, 2));
-            classRepository.save(new Class(2L, "Warrior", 3, 1, 1, 3, 1));
-            classRepository.save(new Class(3L, "Archer", 2, 3, 1, 1, 2));
+            classRepository.save(new Class(1L, "mage", 1, 2, 3, 1, 2));
+            classRepository.save(new Class(2L, "warrior", 3, 1, 1, 3, 1));
+            classRepository.save(new Class(3L, "archer", 2, 3, 1, 1, 2));
         };
     }
 }
