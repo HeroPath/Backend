@@ -34,6 +34,7 @@ public class GenericFunctionCombat {
          * @param int dmg
          * @return int
          */
+        if (user.getRole().getRoleName().equals("ADMIN")) dmg = 0;
         return user.getHp() - dmg;
     }
 

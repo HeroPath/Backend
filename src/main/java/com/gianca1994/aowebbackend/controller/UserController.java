@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,6 @@ public class UserController {
          */
         return userService.getRankingAll();
     }
-
 
     @PostMapping("/add-skill-points")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")

@@ -16,6 +16,7 @@ import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
+import com.gianca1994.aowebbackend.repository.ClassRepository;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
@@ -75,7 +76,6 @@ public class UserService {
         return users;
     }
 
-
     public User setFreeSkillPoint(String token, FreeSkillPointDTO freeSkillPointDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
@@ -123,11 +123,11 @@ public class UserService {
                 user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
                 user.setVitality(user.getVitality() + freeSkillPointDTO.getAmount());
                 if (Objects.equals(user.getAClass().getName(), "mage")) {
-                    user.setMaxHp(user.getVitality() * 10);
+                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 10);
                 } else if (Objects.equals(user.getAClass().getName(), "warrior")) {
-                    user.setMaxHp(user.getVitality() * 20);
+                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 20);
                 } else if (Objects.equals(user.getAClass().getName(), "archer")) {
-                    user.setMaxHp(user.getVitality() * 15);
+                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 15);
                 }
                 break;
 
