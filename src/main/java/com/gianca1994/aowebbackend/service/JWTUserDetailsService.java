@@ -41,6 +41,8 @@ public class JWTUserDetailsService implements UserDetailsService {
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
 
+    private final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
+
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFoundException {
         /**
@@ -89,27 +91,37 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @param UserDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail())) throw new BadRequestException("Invalid email address");
+        if (!validateEmail(user.getEmail()))
+            throw new BadRequestException("Invalid email address");
+
         if (userRepository.findByUsername(user.getUsername()) != null)
             throw new ConflictException("Username already exists");
+        if (!user.getUsername().matches("[A-Za-z0-9]+"))
+            throw new BadRequestException("Username must be alphanumeric");
+
+        if (user.getUsername().length() < 3 || user.getUsername().length() > 20)
+            throw new BadRequestException("Username must be between 3 and 20 characters");
+        if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
+            throw new BadRequestException("Password must be between 3 and 20 characters");
 
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
+        if (aClass.getName() == null) throw new BadRequestException("Class not found");
 
         int minDmg = 0, maxDmg = 0, maxHp = 0;
 
         switch (aClass.getName()) {
-            case "mage":
+            case MAGE:
                 minDmg = aClass.getIntelligence() * 4;
                 maxDmg = aClass.getIntelligence() * 7;
                 maxHp = aClass.getVitality() * 10;
                 break;
-            case "warrior":
+            case WARRIOR:
                 minDmg = aClass.getStrength() * 3;
                 maxDmg = aClass.getStrength() * 5;
                 maxHp = aClass.getVitality() * 20;
                 break;
-            case "archer":
+            case ARCHER:
                 minDmg = aClass.getDexterity() * 4;
                 maxDmg = aClass.getDexterity() * 6;
                 maxHp = aClass.getVitality() * 15;
