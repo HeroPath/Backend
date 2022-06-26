@@ -126,12 +126,18 @@ public class UserService {
             case "vitality":
                 user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
                 user.setVitality(user.getVitality() + freeSkillPointDTO.getAmount());
+
                 if (Objects.equals(user.getAClass().getName(), "mage")) {
-                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 10);
+                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 10);
+                    user.setMaxHp(user.getVitality() * 10);
+
                 } else if (Objects.equals(user.getAClass().getName(), "warrior")) {
-                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 20);
+                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 20);
+                    user.setMaxHp(user.getVitality() * 20);
+
                 } else if (Objects.equals(user.getAClass().getName(), "archer")) {
-                    user.setMaxHp(user.getMaxHp() + user.getVitality() * 15);
+                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 15);
+                    user.setMaxHp(user.getVitality() * 15);
                 }
                 break;
 
@@ -152,7 +158,7 @@ public class UserService {
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
 
-    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, String usernameDefender) {
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, String usernameDefender) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between two users.
@@ -165,6 +171,7 @@ public class UserService {
 
         if (attacker == null) throw new NotFoundException("User not found");
         if (defender == null) throw new NotFoundException("Enemy not found");
+        if (defender.getRole().getRoleName().equals("ADMIN")) throw new ConflictException("You can't attack an admin");
         if (genericFunctionCombat.checkLifeStartCombat(attacker))
             throw new BadRequestException("Impossible to attack with less than 25% of life");
         if (genericFunctionCombat.checkLifeStartCombat(defender))
