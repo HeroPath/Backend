@@ -4,7 +4,10 @@ import com.gianca1994.aowebbackend.dto.JwtRequestDTO;
 import com.gianca1994.aowebbackend.dto.JwtResponseDTO;
 import com.gianca1994.aowebbackend.dto.UserDTO;
 import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.repository.UserRepository;
 import com.gianca1994.aowebbackend.service.JWTUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private JWTUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping(value = "login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest) throws Exception {
@@ -69,5 +75,17 @@ public class AuthController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+
+    @GetMapping(value = "restore/{username}")
+    public void restoreHpUser(@PathVariable String username){
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to restore the hp of the user.
+         */
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFoundException("User not found");
+        user.setHp(user.getMaxHp());
+        userRepository.save(user);
     }
 }
