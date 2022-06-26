@@ -142,7 +142,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getIntelligence(),
                 aClass.getVitality(),
                 aClass.getLuck(),
-                0, 0, 0, 0
+                3, 0, 0, 0
         );
 
         if (Objects.equals(user.getUsername(), "gianca") ||

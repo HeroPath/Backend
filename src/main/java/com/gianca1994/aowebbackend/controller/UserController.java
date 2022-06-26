@@ -66,12 +66,12 @@ public class UserController {
     @PostMapping("/attack-user/{usernameDefender}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @PathVariable String usernameDefender) {
+                                            @PathVariable String usernameDefender) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.
          * @param String token
-         * @param String usernameDefender
+         * @param String usernameDefender-
          * @return ArrayList<ObjectNode> objectNodes
          */
         return userService.userVsUserCombatSystem(token, usernameDefender);
