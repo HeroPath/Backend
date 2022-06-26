@@ -133,7 +133,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 user.getEmail(),
                 standardRole,
                 aClass,
-                (short) 1, 0L, 100L,
+                (short) 1, 0L, 5L,
                 1000L, 0,
                 maxDmg, minDmg,
                 maxHp, maxHp,
