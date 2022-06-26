@@ -16,7 +16,6 @@ import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
-import com.gianca1994.aowebbackend.repository.ClassRepository;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
@@ -26,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class UserService {
+
+    private final short LEVEL_MAX = 150;
+    private final long EXP_MAX = 155573478387079L;
 
     @Autowired
     UserRepository userRepository;
@@ -258,12 +260,29 @@ public class UserService {
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
-                    user.setExperience(pveUserVsNpc.CalculateUserExperienceGain(user, npc));
+                    if (user.getLevel() < LEVEL_MAX)
+                        user.setExperience(pveUserVsNpc.CalculateUserExperienceGain(user, npc));
+
                     user.setGold(pveUserVsNpc.calculateUserGoldGain(user, npc));
 
                     // Check if the user has enough experience to level up.
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
                         do {
+                            if (user.getLevel() >= LEVEL_MAX) {
+                                user.setExperienceToNextLevel(0);
+                                break;
+                            }
+
+                            /*
+                            if (user.getExperience() + pveUserVsNpc.CalculateUserExperienceGain(user, npc) >= EXP_MAX) {
+                                user.setLevel(LEVEL_MAX);
+                                user.setExperience(0);
+                                user.setExperienceToNextLevel(0);
+                            }
+
+                             */
+
+                            user.setHp(user.getMaxHp());
                             user.setLevel(pveUserVsNpc.userLevelUp(user));
                             user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
                             user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));

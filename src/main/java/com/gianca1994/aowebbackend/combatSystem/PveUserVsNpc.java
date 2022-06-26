@@ -41,6 +41,7 @@ public class PveUserVsNpc {
          * @param User user
          * @return boolean
          */
+        if (user.getLevel() >= 150) return false;
         return user.getExperience() >= user.getExperienceToNextLevel();
     }
 
@@ -62,20 +63,9 @@ public class PveUserVsNpc {
          * @param User user
          * @return long
          */
-        long newExperienceToNextLevel = 0;
+        if (user.getLevel() < 10) return user.getExperienceToNextLevel() * 2;
+        return (long) (user.getExperienceToNextLevel() * 1.2);
 
-        if (user.getLevel() <= 10) {
-            newExperienceToNextLevel = user.getExperienceToNextLevel() * 2;
-        } else if (user.getLevel() <= 20) {
-            newExperienceToNextLevel = (long) (user.getExperienceToNextLevel() * 1.5);
-        } else if (user.getLevel() <= 30) {
-            newExperienceToNextLevel = (long) (user.getExperienceToNextLevel() * 1.25);
-        } else if (user.getLevel() <= 40) {
-            newExperienceToNextLevel = (long) (user.getExperienceToNextLevel() * 1.15);
-        } else if (user.getLevel() <= 50) {
-            newExperienceToNextLevel = (long) (user.getExperienceToNextLevel() * 1.1);
-        }
-        return newExperienceToNextLevel;
     }
 
     public boolean checkIfNpcDied(Npc npc) {

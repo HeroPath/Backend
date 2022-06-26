@@ -25,16 +25,16 @@ public class Npc {
     private short level;
 
     @Column(nullable = false)
-    private Long giveMinExp;
+    private long giveMinExp;
 
     @Column(nullable = false)
-    private Long giveMaxExp;
+    private long giveMaxExp;
 
     @Column(nullable = false)
-    private Long giveMinGold;
+    private long giveMinGold;
 
     @Column(nullable = false)
-    private Long giveMaxGold;
+    private long giveMaxGold;
 
     @Column(nullable = false)
     private int hp;

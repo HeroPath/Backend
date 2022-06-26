@@ -23,7 +23,7 @@ public class GenericFunctionCombat {
          * @param User user
          * @return int
          */
-        return (int) ((int) (Math.random() * (user.getMaxDmg() - user.getMinDmg())) + user.getMinDmg());
+        return (int) (Math.random() * (user.getMaxDmg() - user.getMinDmg())) + user.getMinDmg();
     }
 
     public int userReceiveDmg(User user, int dmg) {
