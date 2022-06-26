@@ -19,6 +19,7 @@ import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,7 @@ public class UserService {
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFoundException("User not found");
+        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequestException("Amount must be greater than 0");
         if (user.getFreeSkillPoints() <= 0) throw new ConflictException("You don't have any free skill points");
         if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
             throw new ConflictException("You don't have enough free skill points");
@@ -268,24 +270,17 @@ public class UserService {
                     // Check if the user has enough experience to level up.
                     if (pveUserVsNpc.checkUserLevelUp(user)) {
                         do {
-                            if (user.getLevel() >= LEVEL_MAX) {
-                                user.setExperienceToNextLevel(0);
-                                break;
-                            }
+                            user.setHp(user.getMaxHp());
+                            user.setLevel(pveUserVsNpc.userLevelUp(user));
+                            user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
 
-                            /*
-                            if (user.getExperience() + pveUserVsNpc.CalculateUserExperienceGain(user, npc) >= EXP_MAX) {
-                                user.setLevel(LEVEL_MAX);
+                            if (user.getLevel() < LEVEL_MAX) {
+                                user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
+                            } else {
                                 user.setExperience(0);
                                 user.setExperienceToNextLevel(0);
                             }
 
-                             */
-
-                            user.setHp(user.getMaxHp());
-                            user.setLevel(pveUserVsNpc.userLevelUp(user));
-                            user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
-                            user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
                         } while (pveUserVsNpc.checkUserLevelUp(user));
                     }
                     stopPvP = true;

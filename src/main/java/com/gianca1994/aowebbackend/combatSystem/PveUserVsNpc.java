@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
+import org.springframework.beans.factory.annotation.Value;
 
 public class PveUserVsNpc {
 
+    private final short LEVEL_MAX = 150;
     private final int EXPERIENCE_MULTIPLIER = 1;
     private final int GOLD_MULTIPLIER = 1;
     private final int FREE_SKILL_POINTS_PER_LEVEL = 3;
@@ -41,7 +43,7 @@ public class PveUserVsNpc {
          * @param User user
          * @return boolean
          */
-        if (user.getLevel() >= 150) return false;
+        if (user.getLevel() >= LEVEL_MAX) return false;
         return user.getExperience() >= user.getExperienceToNextLevel();
     }
 

@@ -4,10 +4,5 @@
          "name": "jwt.secret.key",
          "type": "java.lang.String",
          "description": "Description for jwt.secret.key."
-      },
-      {
-         "name": "SERVER_EXPERIENCE_RATE",
-         "type": "java.lang.String",
-         "description": "Description for SERVER_EXPERIENCE_RATE."
       }
    ] }
