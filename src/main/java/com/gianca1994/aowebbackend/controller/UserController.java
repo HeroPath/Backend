@@ -71,7 +71,7 @@ public class UserController {
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.
          * @param String token
-         * @param String usernameDefender
+         * @param String usernameDefender-
          * @return ArrayList<ObjectNode> objectNodes
          */
         return userService.userVsUserCombatSystem(token, usernameDefender);
