@@ -13,6 +13,18 @@ data_login = {
     "password": "test"
 }
 
+data_register_lucho = {
+    "username": "lucho",
+    "password": "test",
+    "email": "lucho@gmail.com",
+    "classId": 1
+}
+
+data_login_lucho = {
+    "username": "lucho",
+    "password": "test"
+}
+
 
 def main():
     test = pandas.read_excel("NpcsAo-Web.xlsx")
@@ -31,12 +43,17 @@ def main():
         "zone"
     ])
 
-    response_login = requests.post("http://localhost:8000/api/v1/auth/login", json=data_login)
+    response_login = requests.post("http://ao-web.herokuapp.com/api/v1/auth/login", json=data_login)
+
+    response_login_lucho = requests.post("http://ao-web.herokuapp.com/api/v1/auth/login", json=data_login_lucho)
+
+    if response_login_lucho.status_code == 404:
+        requests.post("http://ao-web.herokuapp.com/api/v1/auth/register", json=data_register_lucho)
 
     if response_login.status_code == 404:
-        response_register = requests.post("http://localhost:8000/api/v1/auth/register", json=data_register)
+        requests.post("http://ao-web.herokuapp.com/api/v1/auth/register", json=data_register)
 
-        response_login = requests.post("http://localhost:8000/api/v1/auth/login", json=data_login)
+        response_login = requests.post("http://ao-web.herokuapp.com/api/v1/auth/login", json=data_login)
 
     headers = {
         "Authorization": "Bearer " + str(response_login.json()['token']),
@@ -44,7 +61,7 @@ def main():
     }
 
     for i in dataframe.to_dict('records'):
-        res = requests.post("http://localhost:8000/api/v1/npcs", headers=headers, json=i)
+        res = requests.post("http://ao-web.herokuapp.com/api/v1/npcs", headers=headers, json=i)
         print(res.json())
 
 
