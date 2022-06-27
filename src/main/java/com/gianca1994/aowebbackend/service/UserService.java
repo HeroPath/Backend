@@ -5,8 +5,13 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.GenericFunctionCombat;
-import com.gianca1994.aowebbackend.combatSystem.PvpUserVsUser;
+import com.gianca1994.aowebbackend.combatSystem.*;
+import com.gianca1994.aowebbackend.combatSystem.pve.PveFunctions;
+import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
+import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
+import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
+import com.gianca1994.aowebbackend.combatSystem.pvp.PvpFunctions;
+import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
@@ -15,20 +20,15 @@ import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.combatSystem.PveUserVsNpc;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class UserService {
-
-    private final short LEVEL_MAX = 150;
-    private final long EXP_MAX = 155573478387079L;
 
     @Autowired
     UserRepository userRepository;
@@ -39,12 +39,11 @@ public class UserService {
     @Autowired
     NpcRepository npcRepository;
 
-    GenericFunctionCombat genericFunctionCombat = new GenericFunctionCombat();
-    PvpUserVsUser pvpUserVsUser = new PvpUserVsUser();
-    PveUserVsNpc pveUserVsNpc = new PveUserVsNpc();
+    GenericFunctions genericFunctions = new GenericFunctions();
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
 
     private String getTokenUser(String token) {
         /**
@@ -167,67 +166,23 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(getTokenUser(token));
-        User defender = userRepository.findByUsername(usernameDefender);
-
         if (attacker == null) throw new NotFoundException("User not found");
+        if (genericFunctions.checkLifeStartCombat(attacker))
+            throw new BadRequestException("Impossible to attack with less than 25% of life");
+
+        User defender = userRepository.findByUsername(usernameDefender);
         if (defender == null) throw new NotFoundException("Enemy not found");
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new ConflictException("You can't attack an admin");
-        if (genericFunctionCombat.checkLifeStartCombat(attacker))
-            throw new BadRequestException("Impossible to attack with less than 25% of life");
-        if (genericFunctionCombat.checkLifeStartCombat(defender))
+        if (genericFunctions.checkLifeStartCombat(defender))
             throw new BadRequestException("Impossible to attack an enemy with less than 25% of its health");
 
-        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+        if (attacker == defender) throw new ConflictException("You can't fight yourself");
 
-        int roundCounter = 0;
-        boolean stopPvP = false;
-        do {
-            roundCounter++;
+        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender);
 
-            // Calculate the damage of the attacker and defender.
-            int attackerDmg = genericFunctionCombat.getUserDmg(attacker);
-            int defenderDmg = genericFunctionCombat.getUserDmg(defender);
-
-            if (!stopPvP) {
-                defender.setHp(genericFunctionCombat.userReceiveDmg(defender, attackerDmg));
-
-                // Check if the defender has died.
-                if (genericFunctionCombat.checkIfUserDied(defender)) {
-                    defender.setHp(0);
-                    stopPvP = true;
-
-                    // Add the history of the combat.
-                    defender.setPvpLosses(defender.getPvpLosses() + 1);
-                    attacker.setPvpWins(attacker.getPvpWins() + 1);
-
-                    attacker.setGold(pvpUserVsUser.getUserGoldAmountWin(attacker, defender));
-                    defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
-
-                } else {
-                    attacker.setHp(genericFunctionCombat.userReceiveDmg(attacker, defenderDmg));
-
-                    // Check if the attacker has died.
-                    if (genericFunctionCombat.checkIfUserDied(attacker)) {
-                        attacker.setHp(0);
-                        stopPvP = true;
-
-                        // Add the history of the combat.
-                        attacker.setPvpLosses(defender.getPvpLosses() + 1);
-                        defender.setPvpWins(attacker.getPvpWins() + 1);
-
-                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
-                    }
-                }
-            }
-            historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
-                    attacker, defender, roundCounter, attackerDmg, defenderDmg));
-
-
-        } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
-
-        userRepository.save(attacker);
-        userRepository.save(defender);
-        return historyCombat;
+        userRepository.save(pvpUserVsUserModel.getAttacker());
+        userRepository.save(pvpUserVsUserModel.getDefender());
+        return pvpUserVsUserModel.getHistoryCombat();
     }
 
 
@@ -242,77 +197,15 @@ public class UserService {
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFoundException("User not found");
-        if (genericFunctionCombat.checkLifeStartCombat(user))
+        if (genericFunctions.checkLifeStartCombat(user))
             throw new BadRequestException("Impossible to attack with less than 25% of life");
 
         Npc npc = npcRepository.findByName(userAttackNpcDTO.getName().toLowerCase());
         if (npc == null) throw new NotFoundException("Npc not found");
 
-        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
 
-        int roundCounter = 0;
-        boolean stopPvP = false;
-
-        do {
-            roundCounter++;
-            int userDmg = genericFunctionCombat.getUserDmg(user);
-            int npcDmg = pveUserVsNpc.calculateNpcDmg(npc);
-
-            // Check if the finish combat.
-            if (!stopPvP) {
-                npc.setHp(npc.getHp() - userDmg);
-
-                // Check if the npc has died.
-                if (pveUserVsNpc.checkIfNpcDied(npc)) {
-                    npc.setHp(0);
-
-                    // Add the history of the combat.
-                    user.setNpcKills(user.getNpcKills() + 1);
-
-                    if (user.getLevel() < LEVEL_MAX)
-                        user.setExperience(pveUserVsNpc.CalculateUserExperienceGain(user, npc));
-
-                    user.setGold(pveUserVsNpc.calculateUserGoldGain(user, npc));
-
-                    // Check if the user has enough experience to level up.
-                    if (pveUserVsNpc.checkUserLevelUp(user)) {
-                        do {
-                            user.setHp(user.getMaxHp());
-                            user.setLevel(pveUserVsNpc.userLevelUp(user));
-                            user.setFreeSkillPoints(pveUserVsNpc.freeSkillPointsAdd(user));
-
-                            if (user.getLevel() < LEVEL_MAX) {
-                                user.setExperienceToNextLevel(pveUserVsNpc.userLevelUpNewNextExpToLevel(user));
-                            } else {
-                                user.setExperience(0);
-                                user.setExperienceToNextLevel(0);
-                            }
-
-                        } while (pveUserVsNpc.checkUserLevelUp(user));
-                    }
-                    stopPvP = true;
-                } else {
-                    // Check if the user has died.
-                    user.setHp(genericFunctionCombat.userReceiveDmg(user, npcDmg));
-                    if (genericFunctionCombat.checkIfUserDied(user)) {
-                        user.setHp(0);
-                        stopPvP = true;
-                    }
-                }
-            }
-
-            historyCombat.add(pveUserVsNpc.roundJsonGeneratorUserVsNpc(
-                    user, npc, roundCounter, userDmg, npcDmg)
-            );
-
-        } while (pveUserVsNpc.checkUserAndNpcAlive(user, npc));
-
-        if (pveUserVsNpc.chanceDropDiamonds())
-            user.setDiamond(user.getDiamond() + pveUserVsNpc.amountOfDiamondsDrop());
-
-        npc.setHp(npc.getMaxHp());
-        userRepository.save(user);
-
-        return historyCombat;
+        userRepository.save(pveSystem.getUser());
+        return pveSystem.getHistoryCombat();
     }
 }

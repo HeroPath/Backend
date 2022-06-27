@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.combatSystem;
 
 import com.gianca1994.aowebbackend.model.User;
 
-public class GenericFunctionCombat {
+public class GenericFunctions {
     private final float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.25f;
 
     public boolean checkLifeStartCombat(User user) {

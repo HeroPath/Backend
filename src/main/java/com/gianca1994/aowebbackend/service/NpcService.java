@@ -58,9 +58,6 @@ public class NpcService {
          * @param NpcDTO npc
          * @return Npc
          */
-        if (!(npcRepository.findByName(npc.getName().toLowerCase()) == null))
-            throw new ConflictException("Npc already exists");
-
         if (npc.getName().isEmpty()) throw new ConflictException("Name cannot be empty");
         if (npc.getLevel() < 1) throw new ConflictException("Level cannot be less than 1");
         if (npc.getGiveMinExp() < 0) throw new ConflictException("GiveMinExp cannot be less than 0");
@@ -74,21 +71,36 @@ public class NpcService {
         if (npc.getDefense() < 0) throw new ConflictException("MinDefense cannot be less than 0");
         if (npc.getZone().isEmpty()) throw new ConflictException("Zone cannot be empty");
 
-        Npc newNpc = new Npc(
-                npc.getName().toLowerCase(),
-                npc.getLevel(),
-                npc.getGiveMinExp(),
-                npc.getGiveMaxExp(),
-                npc.getGiveMinGold(),
-                npc.getGiveMaxGold(),
-                npc.getHp(),
-                npc.getMaxHp(),
-                npc.getMinDmg(),
-                npc.getMaxDmg(),
-                npc.getDefense(),
-                npc.getZone()
-        );
+        Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
+        Npc newNpc = new Npc();
 
-        return npcRepository.save(newNpc);
+        if (checkNpcSave == null) {
+            newNpc.setName(npc.getName().toLowerCase());
+            newNpc.setLevel(npc.getLevel());
+            newNpc.setGiveMinExp(npc.getGiveMinExp());
+            newNpc.setGiveMaxExp(npc.getGiveMaxExp());
+            newNpc.setGiveMinGold(npc.getGiveMinGold());
+            newNpc.setGiveMaxGold(npc.getGiveMaxGold());
+            newNpc.setHp(npc.getHp());
+            newNpc.setMaxHp(npc.getMaxHp());
+            newNpc.setMinDmg(npc.getMinDmg());
+            newNpc.setMaxDmg(npc.getMaxDmg());
+            newNpc.setDefense(npc.getDefense());
+            newNpc.setZone(npc.getZone());
+            return npcRepository.save(newNpc);
+        }else {
+            checkNpcSave.setLevel(npc.getLevel());
+            checkNpcSave.setGiveMinExp(npc.getGiveMinExp());
+            checkNpcSave.setGiveMaxExp(npc.getGiveMaxExp());
+            checkNpcSave.setGiveMinGold(npc.getGiveMinGold());
+            checkNpcSave.setGiveMaxGold(npc.getGiveMaxGold());
+            checkNpcSave.setHp(npc.getHp());
+            checkNpcSave.setMaxHp(npc.getMaxHp());
+            checkNpcSave.setMinDmg(npc.getMinDmg());
+            checkNpcSave.setMaxDmg(npc.getMaxDmg());
+            checkNpcSave.setDefense(npc.getDefense());
+            checkNpcSave.setZone(npc.getZone());
+            return npcRepository.save(checkNpcSave);
+        }
     }
 }

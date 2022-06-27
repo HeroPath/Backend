@@ -1,6 +1,8 @@
 package com.gianca1994.aowebbackend.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,15 +27,19 @@ public class Npc {
     private short level;
 
     @Column(nullable = false)
+    @JsonIgnore
     private long giveMinExp;
 
     @Column(nullable = false)
+    @JsonIgnore
     private long giveMaxExp;
 
     @Column(nullable = false)
+    @JsonIgnore
     private long giveMinGold;
 
     @Column(nullable = false)
+    @JsonIgnore
     private long giveMaxGold;
 
     @Column(nullable = false)
