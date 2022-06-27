@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.combatSystem;
+package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -6,7 +6,7 @@ import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 import org.springframework.beans.factory.annotation.Value;
 
-public class PveUserVsNpc {
+public class PveFunctions {
 
     private final short LEVEL_MAX = 150;
     private final int EXPERIENCE_MULTIPLIER = 1;

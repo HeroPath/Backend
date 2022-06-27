@@ -1,10 +1,10 @@
-package com.gianca1994.aowebbackend.combatSystem;
+package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.model.User;
 
-public class PvpUserVsUser {
+public class PvpFunctions {
     private final float PVP_GOLD_THEFT_RATE = 0.25f;
     private final float PVP_GOLD_LOSS_RATE = 0.1f;
 

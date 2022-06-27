@@ -1,0 +1,71 @@
+package com.gianca1994.aowebbackend.combatSystem.pvp;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
+import com.gianca1994.aowebbackend.model.User;
+
+import java.util.ArrayList;
+
+public class PvpSystem {
+
+    public static PvpModel PvpUserVsUser(User attacker, User defender) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of starting a combat between two users.
+         * @param User attacker
+         * @param User defender
+         * @return PvpModel
+         */
+        GenericFunctions genericFunctions = new GenericFunctions();
+        PvpFunctions pvpUserVsUser = new PvpFunctions();
+        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+
+        int roundCounter = 0;
+        boolean stopPvP = false;
+        do {
+            roundCounter++;
+
+            // Calculate the damage of the attacker and defender.
+            int attackerDmg = genericFunctions.getUserDmg(attacker);
+            int defenderDmg = genericFunctions.getUserDmg(defender);
+
+            if (!stopPvP) {
+                defender.setHp(genericFunctions.userReceiveDmg(defender, attackerDmg));
+
+                // Check if the defender has died.
+                if (genericFunctions.checkIfUserDied(defender)) {
+                    defender.setHp(0);
+                    stopPvP = true;
+
+                    // Add the history of the combat.
+                    defender.setPvpLosses(defender.getPvpLosses() + 1);
+                    attacker.setPvpWins(attacker.getPvpWins() + 1);
+
+                    attacker.setGold(pvpUserVsUser.getUserGoldAmountWin(attacker, defender));
+                    defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
+
+                } else {
+                    attacker.setHp(genericFunctions.userReceiveDmg(attacker, defenderDmg));
+
+                    // Check if the attacker has died.
+                    if (genericFunctions.checkIfUserDied(attacker)) {
+                        attacker.setHp(0);
+                        stopPvP = true;
+
+                        // Add the history of the combat.
+                        attacker.setPvpLosses(defender.getPvpLosses() + 1);
+                        defender.setPvpWins(attacker.getPvpWins() + 1);
+
+                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
+                    }
+                }
+            }
+            historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
+                    attacker, defender, roundCounter, attackerDmg, defenderDmg));
+
+
+        } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
+
+        return new PvpModel(attacker, defender, historyCombat);
+    }
+}
