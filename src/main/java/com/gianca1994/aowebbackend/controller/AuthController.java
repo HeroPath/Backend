@@ -43,7 +43,9 @@ public class AuthController {
          * @return ResponseEntity<?>
          */
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(
+                authenticationRequest.getUsername());
+
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponseDTO(token));
@@ -82,6 +84,8 @@ public class AuthController {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to restore the hp of the user.
+         * @param String username
+         * @return void
          */
         User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFoundException("User not found");

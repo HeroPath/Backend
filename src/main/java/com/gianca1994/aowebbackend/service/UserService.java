@@ -6,14 +6,13 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.*;
-import com.gianca1994.aowebbackend.combatSystem.pve.PveFunctions;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
-import com.gianca1994.aowebbackend.combatSystem.pvp.PvpFunctions;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
+import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
@@ -126,18 +125,14 @@ public class UserService {
                 user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
                 user.setVitality(user.getVitality() + freeSkillPointDTO.getAmount());
 
-                if (Objects.equals(user.getAClass().getName(), "mage")) {
-                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 10);
-                    user.setMaxHp(user.getVitality() * 10);
+                int classMultiplier = 1;
 
-                } else if (Objects.equals(user.getAClass().getName(), "warrior")) {
-                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 20);
-                    user.setMaxHp(user.getVitality() * 20);
+                if (Objects.equals(user.getAClass().getName(), "mage")) classMultiplier = 10;
+                else if (Objects.equals(user.getAClass().getName(), "warrior")) classMultiplier = 20;
+                else if (Objects.equals(user.getAClass().getName(), "archer")) classMultiplier = 10;
 
-                } else if (Objects.equals(user.getAClass().getName(), "archer")) {
-                    user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * 15);
-                    user.setMaxHp(user.getVitality() * 15);
-                }
+                user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * classMultiplier);
+                user.setMaxHp(user.getVitality() * classMultiplier);
                 break;
 
             case "luck":
@@ -156,8 +151,7 @@ public class UserService {
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
-
-    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, String usernameDefender) throws ConflictException {
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, UserAttackUserDTO userAttackUserDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between two users.
@@ -170,7 +164,7 @@ public class UserService {
         if (genericFunctions.checkLifeStartCombat(attacker))
             throw new BadRequestException("Impossible to attack with less than 25% of life");
 
-        User defender = userRepository.findByUsername(usernameDefender);
+        User defender = userRepository.findByUsername(userAttackUserDTO.getName());
         if (defender == null) throw new NotFoundException("Enemy not found");
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new ConflictException("You can't attack an admin");
         if (genericFunctions.checkLifeStartCombat(defender))
