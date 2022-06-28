@@ -1,10 +1,13 @@
 package com.gianca1994.aowebbackend.configurations;
 
+import com.gianca1994.aowebbackend.model.Class;
 import com.gianca1994.aowebbackend.model.Role;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class RoleConfiguration {
@@ -17,8 +20,11 @@ public class RoleConfiguration {
          * @return CommandLineRunner
          */
         return args -> {
-            roleRepository.save(new Role(1L, "STANDARD"));
-            roleRepository.save(new Role(2L, "ADMIN"));
+            List<Role> roles = roleRepository.findAll();
+            if (roles.isEmpty()) {
+                roleRepository.save(new Role(1L, "STANDARD"));
+                roleRepository.save(new Role(2L, "ADMIN"));
+            }
         };
     }
 }

@@ -45,7 +45,7 @@ public class PveSystem {
                 // Check if the npc has died.
                 if (pveFunctions.checkIfNpcDied(npc)) {
                     npc.setHp(0);
-
+                    npcDmg = 0;
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
@@ -80,6 +80,7 @@ public class PveSystem {
                     user.setHp(genericFunctions.userReceiveDmg(user, npcDmg));
                     if (genericFunctions.checkIfUserDied(user)) {
                         user.setHp(0);
+                        userDmg = 0;
                         stopPvP = true;
                     }
                 }

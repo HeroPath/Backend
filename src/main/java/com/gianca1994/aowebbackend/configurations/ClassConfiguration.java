@@ -6,6 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class ClassConfiguration {
     @Bean
@@ -17,9 +19,13 @@ public class ClassConfiguration {
          * @return CommandLineRunner
          */
         return args -> {
-            classRepository.save(new Class(1L, "mage", 1, 1, 3, 2, 2));
-            classRepository.save(new Class(2L, "warrior", 3, 1, 1, 3, 1));
-            classRepository.save(new Class(3L, "archer", 1, 3, 1, 2, 2));
+            List<Class> classes = classRepository.findAll();
+            if (classes.isEmpty()) {
+                classRepository.save(new Class(1L, "mage", 1, 1, 3, 2, 2));
+                classRepository.save(new Class(2L, "warrior", 3, 1, 1, 3, 1));
+                classRepository.save(new Class(3L, "archer", 1, 3, 1, 2, 2));
+
+            }
         };
     }
 }
