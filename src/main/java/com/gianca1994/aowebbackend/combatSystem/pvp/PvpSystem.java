@@ -38,6 +38,7 @@ public class PvpSystem {
                 // Check if the defender has died.
                 if (genericFunctions.checkIfUserDied(defender)) {
                     defender.setHp(0);
+                    defenderDmg = 0;
                     stopPvP = true;
 
                     // Add the history of the combat.
@@ -54,6 +55,7 @@ public class PvpSystem {
                     // Check if the attacker has died.
                     if (genericFunctions.checkIfUserDied(attacker)) {
                         attacker.setHp(0);
+                        attackerDmg = 0;
                         stopPvP = true;
 
                         // Add the history of the combat.
