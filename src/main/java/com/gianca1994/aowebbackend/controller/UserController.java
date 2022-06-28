@@ -3,8 +3,8 @@ package com.gianca1994.aowebbackend.controller;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
+import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
 import com.gianca1994.aowebbackend.exception.ConflictException;
-import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,10 +63,10 @@ public class UserController {
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
 
-    @PostMapping("/attack-user/{usernameDefender}")
+    @PostMapping("/attack-user")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @PathVariable String usernameDefender) throws ConflictException {
+                                            @RequestBody UserAttackUserDTO userAttackUserDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.
@@ -74,7 +74,7 @@ public class UserController {
          * @param String usernameDefender-
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsUserCombatSystem(token, usernameDefender);
+        return userService.userVsUserCombatSystem(token, userAttackUserDTO);
 
     }
 

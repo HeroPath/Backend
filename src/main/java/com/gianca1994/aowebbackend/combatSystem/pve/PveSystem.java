@@ -24,6 +24,12 @@ public class PveSystem {
         PveFunctions pveFunctions = new PveFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
+        long experienceGain = 0;
+        long goldGain = 0;
+        int diamondsGain = 0;
+        boolean levelUp = false;
+
+
         int roundCounter = 0;
         boolean stopPvP = false;
 
@@ -43,10 +49,13 @@ public class PveSystem {
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
-                    if (user.getLevel() < LEVEL_MAX)
-                        user.setExperience(pveFunctions.CalculateUserExperienceGain(user, npc));
+                    if (user.getLevel() < LEVEL_MAX) {
+                        experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
+                        user.setExperience(user.getExperience() + experienceGain);
+                    }
 
-                    user.setGold(pveFunctions.calculateUserGoldGain(user, npc));
+                    goldGain = pveFunctions.calculateUserGoldGain(npc);
+                    user.setGold(user.getGold() + goldGain);
 
                     // Check if the user has enough experience to level up.
                     if (pveFunctions.checkUserLevelUp(user)) {
@@ -54,6 +63,7 @@ public class PveSystem {
                             user.setHp(user.getMaxHp());
                             user.setLevel(pveFunctions.userLevelUp(user));
                             user.setFreeSkillPoints(pveFunctions.freeSkillPointsAdd(user));
+                            levelUp = true;
 
                             if (user.getLevel() < LEVEL_MAX) {
                                 user.setExperienceToNextLevel(pveFunctions.userLevelUpNewNextExpToLevel(user));
@@ -81,8 +91,13 @@ public class PveSystem {
 
         } while (pveFunctions.checkUserAndNpcAlive(user, npc));
 
-        if (pveFunctions.chanceDropDiamonds())
-            user.setDiamond(user.getDiamond() + pveFunctions.amountOfDiamondsDrop());
+        if (pveFunctions.chanceDropDiamonds()) {
+            diamondsGain = pveFunctions.amountOfDiamondsDrop();
+            user.setDiamond(user.getDiamond() + diamondsGain);
+        }
+
+        historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpcFinish(
+                user, npc, experienceGain, goldGain, diamondsGain, levelUp));
 
         npc.setHp(npc.getMaxHp());
         return new PveModel(user, historyCombat);

@@ -20,6 +20,9 @@ public class PvpSystem {
         PvpFunctions pvpUserVsUser = new PvpFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
+        long goldAmountWin = 0;
+        long goldLoseForLoseCombat = 0;
+
         int roundCounter = 0;
         boolean stopPvP = false;
         do {
@@ -41,7 +44,8 @@ public class PvpSystem {
                     defender.setPvpLosses(defender.getPvpLosses() + 1);
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
-                    attacker.setGold(pvpUserVsUser.getUserGoldAmountWin(attacker, defender));
+                    goldAmountWin = pvpUserVsUser.getUserGoldAmountWin(defender);
+                    attacker.setGold(attacker.getGold() + goldAmountWin);
                     defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
 
                 } else {
@@ -55,8 +59,8 @@ public class PvpSystem {
                         // Add the history of the combat.
                         attacker.setPvpLosses(defender.getPvpLosses() + 1);
                         defender.setPvpWins(attacker.getPvpWins() + 1);
-
-                        attacker.setGold(pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker));
+                        goldLoseForLoseCombat = pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker);
+                        attacker.setGold(goldLoseForLoseCombat);
                     }
                 }
             }
@@ -65,6 +69,9 @@ public class PvpSystem {
 
 
         } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
+
+        historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUserFinish(
+                attacker, defender, goldAmountWin, goldLoseForLoseCombat));
 
         return new PvpModel(attacker, defender, historyCombat);
     }

@@ -19,7 +19,7 @@ public class PvpFunctions {
         return (long) (user.getGold() * PVP_GOLD_THEFT_RATE);
     }
 
-    public long getUserGoldAmountWin(User attacker, User defender) {
+    public long getUserGoldAmountWin(User defender) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the gold that the attacker.
@@ -27,7 +27,7 @@ public class PvpFunctions {
          * @param User defender
          * @return long
          */
-        return attacker.getGold() + getUserGoldThief(defender);
+        return getUserGoldThief(defender);
     }
 
     public long getUserGoldAmountLose(User user) {
@@ -61,8 +61,12 @@ public class PvpFunctions {
         return attacker.getHp() > 0 && defender.getHp() > 0;
     }
 
-    public ObjectNode roundJsonGeneratorUserVsUser(User attacker, User defender,
-                                                   int roundCounter, int attackerDmg, int defenderDmg) {
+    public ObjectNode roundJsonGeneratorUserVsUser(
+            User attacker,
+            User defender,
+            int roundCounter,
+            int attackerDmg,
+            int defenderDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of generating the json for the round.
@@ -79,6 +83,36 @@ public class PvpFunctions {
         round.put("defenderLife", defender.getHp());
         round.put("attackerDmg", attackerDmg);
         round.put("defenderDmg", defenderDmg);
+        return round;
+    }
+
+    public ObjectNode roundJsonGeneratorUserVsUserFinish(
+            User attacker,
+            User defender,
+            long goldAmountWin,
+            long goldAmountLoseForLoseCombat) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of generating the json for the round.
+         * @param User attacker
+         * @param User defender
+         * @param long goldAmountWin
+         * @param long goldAmountLoseForLoseCombat
+         * @return ObjectNode
+         */
+        ObjectNode round = new ObjectMapper().createObjectNode();
+
+        if (attacker.getHp() > 0) {
+            round.put("win", attacker.getUsername());
+            round.put("lose", defender.getUsername());
+        } else {
+            round.put("win", defender.getUsername());
+            round.put("lose", attacker.getUsername());
+        }
+
+        if (goldAmountWin > 0) round.put("goldAmountWin", goldAmountWin);
+        if (goldAmountLoseForLoseCombat > 0) round.put("goldAmountLoseForLoseCombat", goldAmountLoseForLoseCombat);
+
         return round;
     }
 }

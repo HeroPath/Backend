@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -55,11 +56,10 @@ public class JWTUserDetailsService implements UserDetailsService {
 
         if (user == null) throw new NotFoundException("User not found");
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
+        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getRoleName());
 
         return new org.springframework.security.core.userdetails.
-                User(user.getUsername(), user.getPassword(), authorities);
+                User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
     }
 
     private boolean validateEmail(String email) {
@@ -151,5 +151,4 @@ public class JWTUserDetailsService implements UserDetailsService {
         }
         return userRepository.save(newUser);
     }
-
 }

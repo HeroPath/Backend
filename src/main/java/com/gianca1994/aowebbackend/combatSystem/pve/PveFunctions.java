@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
-import org.springframework.beans.factory.annotation.Value;
+
 
 public class PveFunctions {
 
@@ -25,7 +25,7 @@ public class PveFunctions {
         return (int) (Math.random() * (npc.getMaxDmg() - npc.getMinDmg())) + npc.getMinDmg();
     }
 
-    public long CalculateUserExperienceGain(User user, Npc npc) {
+    public long CalculateUserExperienceGain(Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the experience gain.
@@ -33,7 +33,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) (user.getExperience() + ((Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp())) + npc.getGiveMinExp()) * EXPERIENCE_MULTIPLIER);
+        return (long) ((Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp())) + npc.getGiveMinExp()) * EXPERIENCE_MULTIPLIER;
     }
 
     public boolean checkUserLevelUp(User user) {
@@ -80,7 +80,7 @@ public class PveFunctions {
         return npc.getHp() <= 0;
     }
 
-    public long calculateUserGoldGain(User user, Npc npc) {
+    public long calculateUserGoldGain(Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the gold gain.
@@ -88,7 +88,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) (user.getGold() + ((Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()) * GOLD_MULTIPLIER);
+        return (long) ((Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()) * GOLD_MULTIPLIER;
     }
 
     public int freeSkillPointsAdd(User user) {
@@ -130,8 +130,12 @@ public class PveFunctions {
         return (int) (Math.random() * MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
     }
 
-    public ObjectNode roundJsonGeneratorUserVsNpc(User user, Npc npc,
-                                                  int roundCounter, int userDmg, int npcDmg) {
+    public ObjectNode roundJsonGeneratorUserVsNpc(
+            User user,
+            Npc npc,
+            int roundCounter,
+            int userDmg,
+            int npcDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of generating the json for the round.
@@ -148,6 +152,41 @@ public class PveFunctions {
         round.put("NpcLife", npc.getHp());
         round.put("userDmg", userDmg);
         round.put("NpcDmg", npcDmg);
+        return round;
+    }
+
+    public ObjectNode roundJsonGeneratorUserVsNpcFinish(
+            User user,
+            Npc npc,
+            long userExperienceGain,
+            long userGoldGain,
+            int diamondsGain,
+            boolean userLevelUp) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of generating the json for the round.
+         * @param User user
+         * @param Npc npc
+         * @param long userExperienceGain
+         * @param long userGoldGain
+         * @param int diamondsGain
+         * @param boolean userLevelUp
+         * @return ObjectNode
+         */
+        ObjectNode round = new ObjectMapper().createObjectNode();
+
+        if (user.getHp() > 0) {
+            round.put("win", user.getUsername());
+            round.put("lose", npc.getName());
+        } else {
+            round.put("win", npc.getName());
+            round.put("lose", user.getUsername());
+        }
+        if (userExperienceGain > 0) round.put("userExperienceGain", userExperienceGain);
+        if (userGoldGain > 0) round.put("goldAmountWin", userGoldGain);
+        if (diamondsGain > 0) round.put("diamondsAmountWin", diamondsGain);
+        if (userLevelUp) round.put("levelUp", true);
+
         return round;
     }
 }
