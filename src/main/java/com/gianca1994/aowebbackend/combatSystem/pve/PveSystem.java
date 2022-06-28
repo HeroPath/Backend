@@ -2,7 +2,6 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
-import com.gianca1994.aowebbackend.combatSystem.pvp.PvpFunctions;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 
@@ -18,7 +17,7 @@ public class PveSystem {
          * @param Npc npc
          * @return PveModel
          */
-        final short LEVEL_MAX = 150;
+        final short LEVEL_MAX = 300;
 
         GenericFunctions genericFunctions = new GenericFunctions();
         PveFunctions pveFunctions = new PveFunctions();
@@ -66,6 +65,7 @@ public class PveSystem {
                             levelUp = true;
 
                             if (user.getLevel() < LEVEL_MAX) {
+                                user.setExperience(user.getExperience() - user.getExperienceToNextLevel());
                                 user.setExperienceToNextLevel(pveFunctions.userLevelUpNewNextExpToLevel(user));
                             } else {
                                 user.setExperience(0);

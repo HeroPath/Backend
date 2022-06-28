@@ -8,7 +8,7 @@ import com.gianca1994.aowebbackend.model.User;
 
 public class PveFunctions {
 
-    private final short LEVEL_MAX = 150;
+    private final short LEVEL_MAX = 300;
     private final int EXPERIENCE_MULTIPLIER = 1;
     private final int GOLD_MULTIPLIER = 1;
     private final int FREE_SKILL_POINTS_PER_LEVEL = 3;
@@ -65,8 +65,10 @@ public class PveFunctions {
          * @param User user
          * @return long
          */
-        if (user.getLevel() < 10) return user.getExperienceToNextLevel() * 2;
-        return (long) (user.getExperienceToNextLevel() * 1.2);
+        if (user.getLevel() < 10) return (long) Math.ceil(user.getExperienceToNextLevel() * 1.25);
+        else if (user.getLevel() >= 10 && user.getLevel() < 150)
+            return (long) Math.ceil(user.getExperienceToNextLevel() * 1.125);
+        return (long) Math.ceil(user.getExperienceToNextLevel() * 1.025);
 
     }
 
