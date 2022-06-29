@@ -8,6 +8,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+
+/**
+ * @Author: Gianca1994
+ * Explanation: Class
+ */
+
 @Entity
 @Table(name = "role")
 @Getter

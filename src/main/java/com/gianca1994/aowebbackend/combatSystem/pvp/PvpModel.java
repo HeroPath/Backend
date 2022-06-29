@@ -6,6 +6,12 @@ import lombok.*;
 
 import java.util.ArrayList;
 
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to represent a PvP combat.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

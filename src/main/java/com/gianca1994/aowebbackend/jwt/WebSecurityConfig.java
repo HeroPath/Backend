@@ -18,6 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: WebSecurityConfig
+ */
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

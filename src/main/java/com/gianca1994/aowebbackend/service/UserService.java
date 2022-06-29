@@ -26,6 +26,12 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+
+/**
+ * @Author: Gianca1994
+ * Explanation: NpcService
+ */
+
 @Service
 public class UserService {
 
@@ -74,6 +80,7 @@ public class UserService {
          */
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
         users.sort(Comparator.comparing(User::getLevel).reversed());
+        users.sort(Comparator.comparing(User::getPvpWins).reversed());
         return users;
     }
 

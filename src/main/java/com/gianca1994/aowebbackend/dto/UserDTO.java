@@ -2,6 +2,11 @@ package com.gianca1994.aowebbackend.dto;
 
 import lombok.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: UserDTO
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

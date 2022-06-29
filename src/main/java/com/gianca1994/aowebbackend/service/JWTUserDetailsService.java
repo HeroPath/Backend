@@ -27,6 +27,12 @@ import com.gianca1994.aowebbackend.repository.UserRepository;
 import com.gianca1994.aowebbackend.model.Role;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 
+
+/**
+ * @Author: Gianca1994
+ * Explanation: UserService
+ */
+
 @Service
 public class JWTUserDetailsService implements UserDetailsService {
 

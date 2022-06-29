@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: UserAttackNpcDTO
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor
