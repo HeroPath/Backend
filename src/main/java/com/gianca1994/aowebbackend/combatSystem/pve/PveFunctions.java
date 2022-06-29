@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
 
-
+/**
+ * @Author: Gianca1994
+ * Explanation: PveFunctions
+ */
 public class PveFunctions {
 
     private final short LEVEL_MAX = 300;

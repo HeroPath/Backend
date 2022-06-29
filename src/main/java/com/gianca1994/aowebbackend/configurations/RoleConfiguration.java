@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: RoleConfiguration
+ */
 @Configuration
 public class RoleConfiguration {
     @Bean

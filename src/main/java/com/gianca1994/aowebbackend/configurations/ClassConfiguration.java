@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: ClassConfiguration
+ */
 @Configuration
 public class ClassConfiguration {
     @Bean

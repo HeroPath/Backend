@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: NpcController
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/npcs")

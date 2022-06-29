@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: JwtRequestDTO
+ */
 
 @Getter
 @Setter

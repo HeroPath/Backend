@@ -18,6 +18,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: AuthController
+ */
 @RestController
 @CrossOrigin()
 @RequestMapping("/api/v1/auth")

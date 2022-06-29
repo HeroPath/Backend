@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.model.User;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
+ */
 public class PvpFunctions {
     private final float PVP_GOLD_THEFT_RATE = 0.25f;
     private final float PVP_GOLD_LOSS_RATE = 0.1f;

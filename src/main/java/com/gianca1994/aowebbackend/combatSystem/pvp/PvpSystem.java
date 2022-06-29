@@ -6,6 +6,10 @@ import com.gianca1994.aowebbackend.model.User;
 
 import java.util.ArrayList;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
+ */
 public class PvpSystem {
 
     public static PvpModel PvpUserVsUser(User attacker, User defender) {

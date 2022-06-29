@@ -7,6 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: ClassService
+ */
+
 @Service
 public class ClassService {
 

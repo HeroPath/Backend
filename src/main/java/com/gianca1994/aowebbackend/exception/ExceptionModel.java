@@ -4,6 +4,10 @@ import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: ExceptionModel
+ */
 public class ExceptionModel {
     private final String message;
     private final HttpStatus httpStatus;

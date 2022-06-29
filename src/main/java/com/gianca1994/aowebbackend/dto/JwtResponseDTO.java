@@ -5,6 +5,11 @@ import lombok.Getter;
 
 import java.io.Serializable;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: JwtRequestDTO
+ */
+
 @Getter
 @AllArgsConstructor
 public class JwtResponseDTO implements Serializable {
