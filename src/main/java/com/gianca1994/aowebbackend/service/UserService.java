@@ -79,8 +79,7 @@ public class UserService {
          * @return ArrayList<User>
          */
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        users.sort(Comparator.comparing(User::getLevel).reversed());
-        users.sort(Comparator.comparing(User::getPvpWins).reversed());
+        users.sort(Comparator.comparing(User::getLevel).thenComparing(User::getPvpWins).reversed());
         return users;
     }
 
