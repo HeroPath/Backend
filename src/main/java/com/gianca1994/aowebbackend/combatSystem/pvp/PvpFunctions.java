@@ -51,7 +51,7 @@ public class PvpFunctions {
          * @param User user
          * @return long
          */
-        return (long) (user.getGold() - (user.getGold() * PVP_GOLD_LOSS_RATE));
+        return (long) (user.getGold() * PVP_GOLD_LOSS_RATE);
     }
 
     public boolean checkBothUsersAlive(User attacker, User defender) {
