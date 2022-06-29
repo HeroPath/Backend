@@ -66,7 +66,7 @@ public class PvpSystem {
                         attacker.setPvpLosses(defender.getPvpLosses() + 1);
                         defender.setPvpWins(attacker.getPvpWins() + 1);
                         goldLoseForLoseCombat = pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker);
-                        attacker.setGold(goldLoseForLoseCombat);
+                        attacker.setGold(attacker.getGold() - goldLoseForLoseCombat);
                     }
                 }
             }
