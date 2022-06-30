@@ -1,12 +1,12 @@
 package com.gianca1994.aowebbackend.model;
 
-import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,12 +17,12 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "inventories")
+@Table(name = "equipments")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Inventory {
+public class Equipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,10 +30,9 @@ public class Inventory {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "inventory_items",
-            joinColumns = {@JoinColumn(name = "inventory_id")},
+            name = "equipment_items",
+            joinColumns = {@JoinColumn(name = "equipment_id")},
             inverseJoinColumns = {@JoinColumn(name = "items_id")}
     )
     private Set<Item> items = new HashSet<>();
-
 }

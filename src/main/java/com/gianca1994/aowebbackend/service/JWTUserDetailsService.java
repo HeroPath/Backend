@@ -5,8 +5,7 @@ import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.model.*;
 import com.gianca1994.aowebbackend.model.Class;
-import com.gianca1994.aowebbackend.repository.ClassRepository;
-import com.gianca1994.aowebbackend.repository.InventoryRepository;
+import com.gianca1994.aowebbackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,9 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gianca1994.aowebbackend.dto.UserDTO;
-import com.gianca1994.aowebbackend.repository.UserRepository;
-
-import com.gianca1994.aowebbackend.repository.RoleRepository;
 
 
 /**
@@ -47,6 +43,9 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Autowired
     private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
@@ -138,7 +137,10 @@ public class JWTUserDetailsService implements UserDetailsService {
         }
 
         Inventory inventory = new Inventory();
+        Equipment equipment = new Equipment();
         inventoryRepository.save(inventory);
+        equipmentRepository.save(equipment);
+
 
         User newUser = new User(
                 user.getUsername(), encryptPassword(user.getPassword()),
@@ -146,6 +148,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 standardRole,
                 aClass,
                 inventory,
+                equipment,
                 (short) 1, 0L, 5L,
                 1000L, 0,
                 maxDmg, minDmg,
