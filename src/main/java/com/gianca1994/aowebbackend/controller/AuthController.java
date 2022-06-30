@@ -6,7 +6,9 @@ import com.gianca1994.aowebbackend.dto.UserDTO;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.model.Inventory;
 import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.repository.InventoryRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
 import com.gianca1994.aowebbackend.service.JWTUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,7 @@ public class AuthController {
     }
 
     @GetMapping(value = "restore/{username}")
-    public void restoreHpUser(@PathVariable String username){
+    public void restoreHpUser(@PathVariable String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to restore the hp of the user.
@@ -96,4 +98,5 @@ public class AuthController {
         user.setHp(user.getMaxHp());
         userRepository.save(user);
     }
+
 }
