@@ -3,8 +3,9 @@ package com.gianca1994.aowebbackend.service;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
+import com.gianca1994.aowebbackend.model.*;
 import com.gianca1994.aowebbackend.model.Class;
-import com.gianca1994.aowebbackend.repository.ClassRepository;
+import com.gianca1994.aowebbackend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,11 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gianca1994.aowebbackend.dto.UserDTO;
-import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.repository.UserRepository;
-
-import com.gianca1994.aowebbackend.model.Role;
-import com.gianca1994.aowebbackend.repository.RoleRepository;
 
 
 /**
@@ -44,6 +40,15 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
@@ -134,11 +139,31 @@ public class JWTUserDetailsService implements UserDetailsService {
                 break;
         }
 
+        Inventory inventory = new Inventory();
+        Equipment equipment = new Equipment();
+
+        inventory.getItems().add(itemRepository.findById(1L).get());
+        inventory.getItems().add(itemRepository.findById(2L).get());
+        inventory.getItems().add(itemRepository.findById(3L).get());
+        inventory.getItems().add(itemRepository.findById(4L).get());
+
+        equipment.getItems().add(itemRepository.findById(5L).get());
+        equipment.getItems().add(itemRepository.findById(6L).get());
+        equipment.getItems().add(itemRepository.findById(7L).get());
+        equipment.getItems().add(itemRepository.findById(8L).get());
+        equipment.getItems().add(itemRepository.findById(9L).get());
+
+        inventoryRepository.save(inventory);
+        equipmentRepository.save(equipment);
+
+
         User newUser = new User(
                 user.getUsername(), encryptPassword(user.getPassword()),
                 user.getEmail(),
                 standardRole,
                 aClass,
+                inventory,
+                equipment,
                 (short) 1, 0L, 5L,
                 1000L, 0,
                 maxDmg, minDmg,

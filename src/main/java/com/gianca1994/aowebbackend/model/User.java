@@ -51,9 +51,25 @@ public class User {
     @JoinTable(name = "user_class",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "class_id",
+            inverseJoinColumns = @JoinColumn(name = "a_class_id",
                     referencedColumnName = "id"))
     private Class aClass;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_inventory",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "inventory_id",
+                    referencedColumnName = "id"))
+    private Inventory inventory;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_equipment",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id",
+                    referencedColumnName = "id"))
+    private Equipment equipment;
 
     @Column
     private short level;
@@ -92,12 +108,14 @@ public class User {
     @Column
     private int pvpLosses;
 
-    public User(String username, String password, String email, Role role, Class aClass, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
+    public User(String username, String password, String email, Role role, Class aClass, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
         this.aClass = aClass;
+        this.inventory = inventory;
+        this.equipment = equipment;
         this.level = level;
         this.experience = experience;
         this.experienceToNextLevel = experienceToNextLevel;
