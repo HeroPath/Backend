@@ -47,6 +47,9 @@ public class JWTUserDetailsService implements UserDetailsService {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
 
@@ -138,6 +141,18 @@ public class JWTUserDetailsService implements UserDetailsService {
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
+
+        inventory.getItems().add(itemRepository.findById(1L).get());
+        inventory.getItems().add(itemRepository.findById(2L).get());
+        inventory.getItems().add(itemRepository.findById(3L).get());
+        inventory.getItems().add(itemRepository.findById(4L).get());
+
+        equipment.getItems().add(itemRepository.findById(5L).get());
+        equipment.getItems().add(itemRepository.findById(6L).get());
+        equipment.getItems().add(itemRepository.findById(7L).get());
+        equipment.getItems().add(itemRepository.findById(8L).get());
+        equipment.getItems().add(itemRepository.findById(9L).get());
+
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
 
