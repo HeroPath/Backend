@@ -38,6 +38,9 @@ public class Item {
     private int price;
 
     @Column()
+    private int amount;
+
+    @Column()
     private int minDmg;
 
     @Column()
@@ -55,6 +58,18 @@ public class Item {
         this.type = type;
         this.lvlMin = lvlMin;
         this.price = price;
+        this.minDmg = minDmg;
+        this.maxDmg = maxDmg;
+        this.minDef = minDef;
+        this.maxDef = maxDef;
+    }
+
+    public Item(String name, String type, short lvlMin, int price, int amount, int minDmg, int maxDmg, int minDef, int maxDef) {
+        this.name = name;
+        this.type = type;
+        this.lvlMin = lvlMin;
+        this.price = price;
+        this.amount = amount;
         this.minDmg = minDmg;
         this.maxDmg = maxDmg;
         this.minDef = minDef;

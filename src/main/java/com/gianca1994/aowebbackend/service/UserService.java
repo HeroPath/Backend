@@ -183,7 +183,11 @@ public class UserService {
                 throw new ConflictException("You can't equip two items of the same type");
         }
 
-        user.getInventory().getItems().remove(item);
+        if(item.getAmount() > 1)
+            item.setAmount(item.getAmount() - 1);
+        else
+            user.getInventory().getItems().remove(item);
+
         user.getEquipment().getItems().add(item);
 
         userRepository.save(user);
@@ -208,6 +212,9 @@ public class UserService {
             throw new ConflictException("Inventory is full");
 
         user.getEquipment().getItems().remove(item);
+        if (user.getInventory().getItems().contains(item))
+            item.setAmount(item.getAmount() + 1);
+
         user.getInventory().getItems().add(item);
 
         userRepository.save(user);
