@@ -58,12 +58,12 @@ public class Item {
     @Column()
     private int luck;
 
-    public Item(String name, String type, short lvlMin, int price, int amount, int strength, int dexterity, int intelligence, int vitality, int luck) {
+
+    public Item(String name, String type, short lvlMin, int price, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
         this.price = price;
-        this.amount = amount;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
