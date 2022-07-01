@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
+import com.gianca1994.aowebbackend.dto.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
@@ -17,8 +19,10 @@ import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.repository.ItemRepository;
 import com.gianca1994.aowebbackend.repository.NpcRepository;
 import com.gianca1994.aowebbackend.repository.RoleRepository;
 import com.gianca1994.aowebbackend.repository.UserRepository;
@@ -37,6 +41,9 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
 
     @Autowired
     RoleRepository roleRepository;
@@ -149,6 +156,34 @@ public class UserService {
             default:
                 break;
         }
+
+        userRepository.save(user);
+        return user;
+    }
+
+    public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFoundException("User not found");
+
+        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
+        if (!user.getInventory().getItems().contains(item)) throw new NotFoundException("Item not found in inventory");
+
+        user.getInventory().getItems().remove(item);
+        user.getEquipment().getItems().add(item);
+
+        userRepository.save(user);
+        return user;
+    }
+
+    public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFoundException("User not found");
+
+        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
+        if (!user.getEquipment().getItems().contains(item)) throw new NotFoundException("Item not found in equipment");
+
+        user.getEquipment().getItems().remove(item);
+        user.getInventory().getItems().add(item);
 
         userRepository.save(user);
         return user;
