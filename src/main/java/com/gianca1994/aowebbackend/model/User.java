@@ -165,40 +165,42 @@ public class User {
         this.maxHp = maxHp;
     }
 
-    public void addItemToEquipment(Item item) {
-        this.strength += item.getStrength();
-        this.dexterity += item.getDexterity();
-        this.intelligence += item.getIntelligence();
-        this.vitality += item.getVitality();
-        this.luck += item.getLuck();
-        reloadAddStatsForSwapItems(item);
+    public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
+        int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
+
+        this.strength += item.getStrength() * multiplierToEquipOrUnequip;
+        this.dexterity += item.getDexterity() * multiplierToEquipOrUnequip;
+        this.intelligence += item.getIntelligence() * multiplierToEquipOrUnequip;
+        this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
+        this.luck += item.getLuck() * multiplierToEquipOrUnequip;
+        reloadAddStatsForSwapItems(item, multiplierToEquipOrUnequip);
     }
 
-    public void reloadAddStatsForSwapItems(Item item) {
+    public void reloadAddStatsForSwapItems(Item item, int multiplierToEquipOrUnequip) {
         final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
 
         switch (this.getAClass().getName()) {
             case MAGE:
-                this.minDmg += item.getIntelligence() * 4;
-                this.maxDmg += item.getIntelligence() * 7;
-                this.hp += item.getVitality() * 10;
-                this.maxHp += item.getVitality() * 10;
+                this.minDmg += (item.getIntelligence() * 4) * multiplierToEquipOrUnequip;
+                this.maxDmg += (item.getIntelligence() * 7) * multiplierToEquipOrUnequip;
+                this.hp += (item.getVitality() * 10) * multiplierToEquipOrUnequip;
+                this.maxHp += (item.getVitality() * 10) * multiplierToEquipOrUnequip;
                 break;
             case WARRIOR:
-                this.minDmg += item.getStrength() * 3;
-                this.maxDmg += item.getStrength() * 5;
-                this.hp += item.getVitality() * 20;
-                this.maxHp += item.getVitality() * 20;
+                this.minDmg += (item.getStrength() * 3) * multiplierToEquipOrUnequip;
+                this.maxDmg += (item.getStrength() * 5) * multiplierToEquipOrUnequip;
+                this.hp += (item.getVitality() * 20) * multiplierToEquipOrUnequip;
+                this.maxHp += (item.getVitality() * 20) * multiplierToEquipOrUnequip;
                 break;
             case ARCHER:
-                this.minDmg += item.getDexterity() * 4;
-                this.maxDmg += item.getDexterity() * 6;
-                this.hp += item.getVitality() * 15;
-                this.maxHp += item.getVitality() * 15;
+                this.minDmg += (item.getDexterity() * 4) * multiplierToEquipOrUnequip;
+                this.maxDmg += (item.getDexterity() * 6) * multiplierToEquipOrUnequip;
+                this.hp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
+                this.maxHp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
                 break;
         }
     }
-
+    /*
     public void removeItemFromEquipment(Item item) {
         this.strength -= item.getStrength();
         this.dexterity -= item.getDexterity();
@@ -229,6 +231,59 @@ public class User {
                 this.maxDmg -= item.getDexterity() * 6;
                 this.hp -= item.getVitality() * 15;
                 this.maxHp -= item.getVitality() * 15;
+                break;
+        }
+    }
+    */
+    public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
+        switch (freeSkillPointDTO.getSkillPointName()) {
+            case "strength":
+                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                this.setStrength(this.getStrength() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(this.getAClass().getName(), "warrior")) {
+                    this.setMinDmg(this.getStrength() * 3);
+                    this.setMaxDmg(this.getStrength() * 5);
+                }
+                break;
+
+            case "dexterity":
+                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                this.setDexterity(this.getDexterity() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(this.getAClass().getName(), "archer")) {
+                    this.setMinDmg(this.getDexterity() * 4);
+                    this.setMaxDmg(this.getDexterity() * 6);
+                }
+                break;
+
+            case "intelligence":
+                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                this.setIntelligence(this.getIntelligence() + freeSkillPointDTO.getAmount());
+                if (Objects.equals(this.getAClass().getName(), "mage")) {
+                    this.setMinDmg(this.getIntelligence() * 4);
+                    this.setMaxDmg(this.getIntelligence() * 7);
+                }
+                break;
+
+            case "vitality":
+                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                this.setVitality(this.getVitality() + freeSkillPointDTO.getAmount());
+
+                int classMultiplier = 1;
+
+                if (Objects.equals(this.getAClass().getName(), "mage")) classMultiplier = 10;
+                else if (Objects.equals(this.getAClass().getName(), "warrior")) classMultiplier = 20;
+                else if (Objects.equals(this.getAClass().getName(), "archer")) classMultiplier = 10;
+
+                this.setHp(this.getHp() + freeSkillPointDTO.getAmount() * classMultiplier);
+                this.setMaxHp(this.getVitality() * classMultiplier);
+                break;
+
+            case "luck":
+                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
+                this.setLuck(this.getLuck() + freeSkillPointDTO.getAmount());
+                break;
+
+            default:
                 break;
         }
     }
