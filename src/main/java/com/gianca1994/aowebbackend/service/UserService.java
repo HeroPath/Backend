@@ -174,10 +174,10 @@ public class UserService {
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
         if (!user.getInventory().getItems().contains(item)) throw new NotFoundException("Item not found in inventory");
 
-        List<String> listItemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
+        List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
-            if (!listItemsEnabledToEquip.contains(itemEquipedOld.getType()))
+            if (!itemsEnabledToEquip.contains(itemEquipedOld.getType()))
                 throw new ConflictException("You can't equip more than one " + itemEquipedOld.getType() + " item");
             if (Objects.equals(itemEquipedOld.getType(), item.getType()))
                 throw new ConflictException("You can't equip two items of the same type");
