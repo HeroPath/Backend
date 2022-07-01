@@ -1,9 +1,6 @@
 package com.gianca1994.aowebbackend.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.*;
@@ -38,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class UserService {
+
+    private final int MAX_ITEMS_INVENTORY = 24;
 
     @Autowired
     UserRepository userRepository;
@@ -161,12 +160,28 @@ public class UserService {
         return user;
     }
 
-    public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+    public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * @param String username
+         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User
+         */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
         if (!user.getInventory().getItems().contains(item)) throw new NotFoundException("Item not found in inventory");
+
+        List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
+
+        for (Item itemEquipedOld : user.getEquipment().getItems()) {
+            if (!itemsEnabledToEquip.contains(itemEquipedOld.getType()))
+                throw new ConflictException("You can't equip more than one " + itemEquipedOld.getType() + " item");
+            if (Objects.equals(itemEquipedOld.getType(), item.getType()))
+                throw new ConflictException("You can't equip two items of the same type");
+        }
 
         user.getInventory().getItems().remove(item);
         user.getEquipment().getItems().add(item);
@@ -175,12 +190,22 @@ public class UserService {
         return user;
     }
 
-    public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+    public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * @param String username
+         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User
+         */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
-        if (!user.getEquipment().getItems().contains(item)) throw new NotFoundException("Item not found in equipment");
+        if (!user.getEquipment().getItems().contains(item))
+            throw new NotFoundException("Item not found in equipment");
+        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY)
+            throw new ConflictException("Inventory is full");
 
         user.getEquipment().getItems().remove(item);
         user.getInventory().getItems().add(item);
@@ -192,7 +217,8 @@ public class UserService {
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
-    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, UserAttackUserDTO userAttackUserDTO) throws ConflictException {
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String token, UserAttackUserDTO userAttackUserDTO) throws
+            ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between two users.
@@ -207,7 +233,8 @@ public class UserService {
 
         User defender = userRepository.findByUsername(userAttackUserDTO.getName());
         if (defender == null) throw new NotFoundException("Enemy not found");
-        if (defender.getRole().getRoleName().equals("ADMIN")) throw new ConflictException("You can't attack an admin");
+        if (defender.getRole().getRoleName().equals("ADMIN"))
+            throw new ConflictException("You can't attack an admin");
         if (genericFunctions.checkLifeStartCombat(defender))
             throw new BadRequestException("Impossible to attack an enemy with less than 25% of its health");
 
