@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.dto.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
 import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
@@ -63,6 +64,21 @@ public class UserController {
          */
         return userService.setFreeSkillPoint(token, freeSkillPointDTO);
     }
+
+    @PostMapping("/equip-item")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public User equipItem(@RequestHeader(value = "Authorization") String token,
+                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+        return userService.equipItem(token, equipUnequipItemDTO);
+    }
+
+    @PostMapping("/unequip-item")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public User unequipItem(@RequestHeader(value = "Authorization") String token,
+                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+        return userService.unequipItem(token, equipUnequipItemDTO);
+    }
+
 
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
