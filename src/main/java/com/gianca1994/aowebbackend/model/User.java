@@ -1,12 +1,14 @@
 package com.gianca1994.aowebbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 /**
@@ -179,16 +181,19 @@ public class User {
             case MAGE:
                 this.minDmg += item.getIntelligence() * 4;
                 this.maxDmg += item.getIntelligence() * 7;
+                this.hp += item.getVitality() * 10;
                 this.maxHp += item.getVitality() * 10;
                 break;
             case WARRIOR:
                 this.minDmg += item.getStrength() * 3;
                 this.maxDmg += item.getStrength() * 5;
+                this.hp += item.getVitality() * 20;
                 this.maxHp += item.getVitality() * 20;
                 break;
             case ARCHER:
                 this.minDmg += item.getDexterity() * 4;
                 this.maxDmg += item.getDexterity() * 6;
+                this.hp += item.getVitality() * 15;
                 this.maxHp += item.getVitality() * 15;
                 break;
         }
@@ -210,16 +215,19 @@ public class User {
             case MAGE:
                 this.minDmg -= item.getIntelligence() * 4;
                 this.maxDmg -= item.getIntelligence() * 7;
+                this.hp -= item.getVitality() * 10;
                 this.maxHp -= item.getVitality() * 10;
                 break;
             case WARRIOR:
                 this.minDmg -= item.getStrength() * 3;
                 this.maxDmg -= item.getStrength() * 5;
+                this.hp -= item.getVitality() * 20;
                 this.maxHp -= item.getVitality() * 20;
                 break;
             case ARCHER:
                 this.minDmg -= item.getDexterity() * 4;
                 this.maxDmg -= item.getDexterity() * 6;
+                this.hp -= item.getVitality() * 15;
                 this.maxHp -= item.getVitality() * 15;
                 break;
         }
