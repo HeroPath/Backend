@@ -106,56 +106,7 @@ public class UserService {
         if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
             throw new ConflictException("You don't have enough free skill points");
 
-        switch (freeSkillPointDTO.getSkillPointName()) {
-            case "strength":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                user.setStrength(user.getStrength() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(user.getAClass().getName(), "warrior")) {
-                    user.setMinDmg(user.getStrength() * 3);
-                    user.setMaxDmg(user.getStrength() * 5);
-                }
-                break;
-
-            case "dexterity":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                user.setDexterity(user.getDexterity() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(user.getAClass().getName(), "archer")) {
-                    user.setMinDmg(user.getDexterity() * 4);
-                    user.setMaxDmg(user.getDexterity() * 6);
-                }
-                break;
-
-            case "intelligence":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                user.setIntelligence(user.getIntelligence() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(user.getAClass().getName(), "mage")) {
-                    user.setMinDmg(user.getIntelligence() * 4);
-                    user.setMaxDmg(user.getIntelligence() * 7);
-                }
-                break;
-
-            case "vitality":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                user.setVitality(user.getVitality() + freeSkillPointDTO.getAmount());
-
-                int classMultiplier = 1;
-
-                if (Objects.equals(user.getAClass().getName(), "mage")) classMultiplier = 10;
-                else if (Objects.equals(user.getAClass().getName(), "warrior")) classMultiplier = 20;
-                else if (Objects.equals(user.getAClass().getName(), "archer")) classMultiplier = 10;
-
-                user.setHp(user.getHp() + freeSkillPointDTO.getAmount() * classMultiplier);
-                user.setMaxHp(user.getVitality() * classMultiplier);
-                break;
-
-            case "luck":
-                user.setFreeSkillPoints(user.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                user.setLuck(user.getLuck() + freeSkillPointDTO.getAmount());
-                break;
-
-            default:
-                break;
-        }
+        user.addFreeSkillPoints(freeSkillPointDTO);
 
         userRepository.save(user);
         return user;
@@ -191,7 +142,7 @@ public class UserService {
 
         user.getEquipment().getItems().add(item);
 
-        user.addItemToEquipment(item);
+        user.swapItemToEquipmentOrInventory(item, true);
         userRepository.save(user);
         return user;
     }
@@ -219,7 +170,7 @@ public class UserService {
 
         user.getInventory().getItems().add(item);
 
-        user.removeItemFromEquipment(item);
+        user.swapItemToEquipmentOrInventory(item, false);
         userRepository.save(user);
         return user;
     }
