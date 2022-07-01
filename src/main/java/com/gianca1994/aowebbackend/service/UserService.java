@@ -162,6 +162,13 @@ public class UserService {
     }
 
     public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * @param String username
+         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User
+         */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
 
@@ -176,6 +183,13 @@ public class UserService {
     }
 
     public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * @param String username
+         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User
+         */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
 

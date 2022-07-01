@@ -69,6 +69,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User equipItem(@RequestHeader(value = "Authorization") String token,
                           @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to equip an item to the user.
+         * @param String token
+         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User user
+         */
         return userService.equipItem(token, equipUnequipItemDTO);
     }
 
@@ -76,6 +83,13 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User unequipItem(@RequestHeader(value = "Authorization") String token,
                             @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to unequip an item from the user.
+         * @param String token
+         * @Param EquipUnequipItemDTO equipUnequipItemDTO
+         * @return User user
+         */
         return userService.unequipItem(token, equipUnequipItemDTO);
     }
 
