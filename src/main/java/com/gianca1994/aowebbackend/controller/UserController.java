@@ -68,7 +68,7 @@ public class UserController {
     @PostMapping("/equip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User equipItem(@RequestHeader(value = "Authorization") String token,
-                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
@@ -82,7 +82,7 @@ public class UserController {
     @PostMapping("/unequip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User unequipItem(@RequestHeader(value = "Authorization") String token,
-                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) {
+                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item from the user.

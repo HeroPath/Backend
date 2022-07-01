@@ -146,6 +146,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         inventory.getItems().add(itemRepository.findById(2L).get());
         inventory.getItems().add(itemRepository.findById(3L).get());
         inventory.getItems().add(itemRepository.findById(4L).get());
+        inventory.getItems().add(itemRepository.findById(5L).get());
 
         equipment.getItems().add(itemRepository.findById(5L).get());
         equipment.getItems().add(itemRepository.findById(6L).get());
