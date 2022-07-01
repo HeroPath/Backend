@@ -119,25 +119,6 @@ public class JWTUserDetailsService implements UserDetailsService {
         Class aClass = classRepository.findById(user.getClassId()).get();
         if (aClass.getName() == null) throw new BadRequestException("Class not found");
 
-        int minDmg = 0, maxDmg = 0, maxHp = 0;
-
-        switch (aClass.getName()) {
-            case MAGE:
-                minDmg = aClass.getIntelligence() * 4;
-                maxDmg = aClass.getIntelligence() * 7;
-                maxHp = aClass.getVitality() * 10;
-                break;
-            case WARRIOR:
-                minDmg = aClass.getStrength() * 3;
-                maxDmg = aClass.getStrength() * 5;
-                maxHp = aClass.getVitality() * 20;
-                break;
-            case ARCHER:
-                minDmg = aClass.getDexterity() * 4;
-                maxDmg = aClass.getDexterity() * 6;
-                maxHp = aClass.getVitality() * 15;
-                break;
-        }
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
@@ -147,13 +128,12 @@ public class JWTUserDetailsService implements UserDetailsService {
         inventory.getItems().add(itemRepository.findById(3L).get());
         inventory.getItems().add(itemRepository.findById(4L).get());
         inventory.getItems().add(itemRepository.findById(5L).get());
+        inventory.getItems().add(itemRepository.findById(9L).get());
 
         equipment.getItems().add(itemRepository.findById(5L).get());
         equipment.getItems().add(itemRepository.findById(6L).get());
         equipment.getItems().add(itemRepository.findById(7L).get());
         equipment.getItems().add(itemRepository.findById(8L).get());
-        equipment.getItems().add(itemRepository.findById(9L).get());
-
 
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
@@ -168,8 +148,8 @@ public class JWTUserDetailsService implements UserDetailsService {
                 equipment,
                 (short) 1, 0L, 5L,
                 1000L, 0,
-                maxDmg, minDmg,
-                maxHp, maxHp,
+                0, 0,
+                0, 0,
                 aClass.getStrength(),
                 aClass.getDexterity(),
                 aClass.getIntelligence(),
@@ -177,6 +157,8 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getLuck(),
                 3, 0, 0, 0
         );
+
+        newUser.setStatsForClass(aClass);
 
         if (Objects.equals(user.getUsername(), "gianca") ||
                 Objects.equals(user.getUsername(), "lucho")) {

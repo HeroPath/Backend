@@ -135,4 +135,93 @@ public class User {
         this.pvpWins = pvpWins;
         this.pvpLosses = pvpLosses;
     }
+
+    public void setStatsForClass(Class aClass) {
+        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
+        int minDmg = 0, maxDmg = 0, maxHp = 0;
+
+        switch (aClass.getName()) {
+            case MAGE:
+                minDmg = aClass.getIntelligence() * 4;
+                maxDmg = aClass.getIntelligence() * 7;
+                maxHp = aClass.getVitality() * 10;
+                break;
+            case WARRIOR:
+                minDmg = aClass.getStrength() * 3;
+                maxDmg = aClass.getStrength() * 5;
+                maxHp = aClass.getVitality() * 20;
+                break;
+            case ARCHER:
+                minDmg = aClass.getDexterity() * 4;
+                maxDmg = aClass.getDexterity() * 6;
+                maxHp = aClass.getVitality() * 15;
+                break;
+        }
+        this.minDmg = minDmg;
+        this.maxDmg = maxDmg;
+        this.hp = maxHp;
+        this.maxHp = maxHp;
+    }
+
+    public void addItemToEquipment(Item item) {
+        this.strength += item.getStrength();
+        this.dexterity += item.getDexterity();
+        this.intelligence += item.getIntelligence();
+        this.vitality += item.getVitality();
+        this.luck += item.getLuck();
+        reloadAddStatsForSwapItems(item);
+    }
+
+    public void reloadAddStatsForSwapItems(Item item) {
+        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
+
+        switch (this.getAClass().getName()) {
+            case MAGE:
+                this.minDmg += item.getIntelligence() * 4;
+                this.maxDmg += item.getIntelligence() * 7;
+                this.maxHp += item.getVitality() * 10;
+                break;
+            case WARRIOR:
+                this.minDmg += item.getStrength() * 3;
+                this.maxDmg += item.getStrength() * 5;
+                this.maxHp += item.getVitality() * 20;
+                break;
+            case ARCHER:
+                this.minDmg += item.getDexterity() * 4;
+                this.maxDmg += item.getDexterity() * 6;
+                this.maxHp += item.getVitality() * 15;
+                break;
+        }
+    }
+
+    public void removeItemFromEquipment(Item item) {
+        this.strength -= item.getStrength();
+        this.dexterity -= item.getDexterity();
+        this.intelligence -= item.getIntelligence();
+        this.vitality -= item.getVitality();
+        this.luck -= item.getLuck();
+        reloadRemoveStatsForSwapItems(item);
+    }
+
+    public void reloadRemoveStatsForSwapItems(Item item) {
+        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
+
+        switch (this.getAClass().getName()) {
+            case MAGE:
+                this.minDmg -= item.getIntelligence() * 4;
+                this.maxDmg -= item.getIntelligence() * 7;
+                this.maxHp -= item.getVitality() * 10;
+                break;
+            case WARRIOR:
+                this.minDmg -= item.getStrength() * 3;
+                this.maxDmg -= item.getStrength() * 5;
+                this.maxHp -= item.getVitality() * 20;
+                break;
+            case ARCHER:
+                this.minDmg -= item.getDexterity() * 4;
+                this.maxDmg -= item.getDexterity() * 6;
+                this.maxHp -= item.getVitality() * 15;
+                break;
+        }
+    }
 }
