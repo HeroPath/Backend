@@ -34,6 +34,9 @@ public class Item {
     @Column(nullable = false)
     private short lvlMin;
 
+    @Column()
+    private String classRequired;
+
     @Column(nullable = false)
     private int price;
 
@@ -41,38 +44,45 @@ public class Item {
     private int amount;
 
     @Column()
-    private int minDmg;
+    private int strength;
 
     @Column()
-    private int maxDmg;
+    private int dexterity;
 
     @Column()
-    private int minDef;
+    private int intelligence;
 
     @Column()
-    private int maxDef;
+    private int vitality;
 
+    @Column()
+    private int luck;
 
-    public Item(String name, String type, short lvlMin, int price, int minDmg, int maxDmg, int minDef, int maxDef) {
-        this.name = name;
-        this.type = type;
-        this.lvlMin = lvlMin;
-        this.price = price;
-        this.minDmg = minDmg;
-        this.maxDmg = maxDmg;
-        this.minDef = minDef;
-        this.maxDef = maxDef;
-    }
-
-    public Item(String name, String type, short lvlMin, int price, int amount, int minDmg, int maxDmg, int minDef, int maxDef) {
+    public Item(String name, String type, short lvlMin, int price, int amount, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
         this.price = price;
         this.amount = amount;
-        this.minDmg = minDmg;
-        this.maxDmg = maxDmg;
-        this.minDef = minDef;
-        this.maxDef = maxDef;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.vitality = vitality;
+        this.luck = luck;
     }
+
+    public Item(String name, String type, short lvlMin, String classRequired, int price, int amount, int strength, int dexterity, int intelligence, int vitality, int luck) {
+        this.name = name;
+        this.type = type;
+        this.lvlMin = lvlMin;
+        this.classRequired = classRequired;
+        this.price = price;
+        this.amount = amount;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.vitality = vitality;
+        this.luck = luck;
+    }
+
 }
