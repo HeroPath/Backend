@@ -125,7 +125,8 @@ public class UserService {
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
         if (!user.getInventory().getItems().contains(item)) throw new NotFoundException("Item not found in inventory");
-        if (!Objects.equals(user.getAClass().getName(), item.getClassRequired() ) && item.getClassRequired() != null) throw new ConflictException("The item does not correspond to your class");
+        if (!Objects.equals(user.getAClass().getName(), item.getClassRequired()) && !Objects.equals(item.getClassRequired(), ""))
+            throw new ConflictException("The item does not correspond to your class");
 
         List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
@@ -135,7 +136,8 @@ public class UserService {
                 throw new ConflictException("You can't equip two items of the same type");
         }
 
-        if (user.getLevel() < item.getLvlMin()) throw new ConflictException("You can't equip an item that requires level " + item.getLvlMin());
+        if (user.getLevel() < item.getLvlMin())
+            throw new ConflictException("You can't equip an item that requires level " + item.getLvlMin());
 
         if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
         else user.getInventory().getItems().remove(item);
