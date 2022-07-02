@@ -139,6 +139,12 @@ public class User {
     }
 
     public void setStatsForClass(Class aClass) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to set the stats for the class.
+         * @param Class aClass
+         * @return none
+         */
         final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         int minDmg = 0, maxDmg = 0, maxHp = 0;
 
@@ -166,6 +172,14 @@ public class User {
     }
 
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
+        /**
+         * @Author: Gianca1994
+         * Explanation:
+         * @param Item item
+         * @param boolean toEquip
+         * @return none
+         */
+        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
 
         this.strength += item.getStrength() * multiplierToEquipOrUnequip;
@@ -173,11 +187,6 @@ public class User {
         this.intelligence += item.getIntelligence() * multiplierToEquipOrUnequip;
         this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
         this.luck += item.getLuck() * multiplierToEquipOrUnequip;
-        reloadAddStatsForSwapItems(item, multiplierToEquipOrUnequip);
-    }
-
-    public void reloadAddStatsForSwapItems(Item item, int multiplierToEquipOrUnequip) {
-        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
 
         switch (this.getAClass().getName()) {
             case MAGE:
@@ -199,43 +208,16 @@ public class User {
                 this.maxHp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
                 break;
         }
-    }
-    /*
-    public void removeItemFromEquipment(Item item) {
-        this.strength -= item.getStrength();
-        this.dexterity -= item.getDexterity();
-        this.intelligence -= item.getIntelligence();
-        this.vitality -= item.getVitality();
-        this.luck -= item.getLuck();
-        reloadRemoveStatsForSwapItems(item);
+
     }
 
-    public void reloadRemoveStatsForSwapItems(Item item) {
-        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
-
-        switch (this.getAClass().getName()) {
-            case MAGE:
-                this.minDmg -= item.getIntelligence() * 4;
-                this.maxDmg -= item.getIntelligence() * 7;
-                this.hp -= item.getVitality() * 10;
-                this.maxHp -= item.getVitality() * 10;
-                break;
-            case WARRIOR:
-                this.minDmg -= item.getStrength() * 3;
-                this.maxDmg -= item.getStrength() * 5;
-                this.hp -= item.getVitality() * 20;
-                this.maxHp -= item.getVitality() * 20;
-                break;
-            case ARCHER:
-                this.minDmg -= item.getDexterity() * 4;
-                this.maxDmg -= item.getDexterity() * 6;
-                this.hp -= item.getVitality() * 15;
-                this.maxHp -= item.getVitality() * 15;
-                break;
-        }
-    }
-    */
     public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add free skill points to the user.
+         * @param freeSkillPointDTO freeSkillPointDTO
+         * @return none
+         */
         switch (freeSkillPointDTO.getSkillPointName()) {
             case "strength":
                 this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
@@ -272,7 +254,7 @@ public class User {
 
                 if (Objects.equals(this.getAClass().getName(), "mage")) classMultiplier = 10;
                 else if (Objects.equals(this.getAClass().getName(), "warrior")) classMultiplier = 20;
-                else if (Objects.equals(this.getAClass().getName(), "archer")) classMultiplier = 10;
+                else if (Objects.equals(this.getAClass().getName(), "archer")) classMultiplier = 15;
 
                 this.setHp(this.getHp() + freeSkillPointDTO.getAmount() * classMultiplier);
                 this.setMaxHp(this.getVitality() * classMultiplier);
