@@ -139,6 +139,12 @@ public class User {
     }
 
     public void setStatsForClass(Class aClass) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to set the stats for the class.
+         * @param Class aClass
+         * @return none
+         */
         final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         int minDmg = 0, maxDmg = 0, maxHp = 0;
 
@@ -166,6 +172,14 @@ public class User {
     }
 
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
+        /**
+         * @Author: Gianca1994
+         * Explanation:
+         * @param Item item
+         * @param boolean toEquip
+         * @return none
+         */
+        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
 
         this.strength += item.getStrength() * multiplierToEquipOrUnequip;
@@ -173,11 +187,6 @@ public class User {
         this.intelligence += item.getIntelligence() * multiplierToEquipOrUnequip;
         this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
         this.luck += item.getLuck() * multiplierToEquipOrUnequip;
-        reloadAddStatsForSwapItems(item, multiplierToEquipOrUnequip);
-    }
-
-    public void reloadAddStatsForSwapItems(Item item, int multiplierToEquipOrUnequip) {
-        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
 
         switch (this.getAClass().getName()) {
             case MAGE:
@@ -199,9 +208,16 @@ public class User {
                 this.maxHp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
                 break;
         }
+
     }
 
     public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add free skill points to the user.
+         * @param freeSkillPointDTO freeSkillPointDTO
+         * @return none
+         */
         switch (freeSkillPointDTO.getSkillPointName()) {
             case "strength":
                 this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());

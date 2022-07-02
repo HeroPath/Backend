@@ -11,10 +11,21 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+
+/**
+ * @Author: Gianca1994
+ * Explanation: ItemConfiguration
+ */
 @Configuration
 public class ItemConfiguration {
     @Bean
     public CommandLineRunner autoSaveItems(ItemRepository itemRepository) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to auto save the items in the database.
+         * @param ItemRepository itemRepository
+         * @return CommandLineRunner
+         */
         return args -> {
             List<Item> items = itemRepository.findAll();
             if (items.isEmpty()) {
