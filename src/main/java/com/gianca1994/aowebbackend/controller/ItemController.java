@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.controller;
 
 
 import com.gianca1994.aowebbackend.dto.ItemDTO;
+import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class ItemController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Item saveItem(ItemDTO newItem) {
+    public Item saveItem(ItemDTO newItem) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.

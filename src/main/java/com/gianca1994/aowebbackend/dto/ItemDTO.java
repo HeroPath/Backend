@@ -25,16 +25,4 @@ public class ItemDTO {
     private int intelligence;
     private int vitality;
     private int luck;
-
-    public ItemDTO(String name, String type, short lvlMin, int price, int strength, int dexterity, int intelligence, int vitality, int luck) {
-        this.name = name;
-        this.type = type;
-        this.lvlMin = lvlMin;
-        this.price = price;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
-        this.vitality = vitality;
-        this.luck = luck;
-    }
 }
