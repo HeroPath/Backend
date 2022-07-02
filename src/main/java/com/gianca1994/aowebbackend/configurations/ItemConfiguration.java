@@ -29,15 +29,15 @@ public class ItemConfiguration {
         return args -> {
             List<Item> items = itemRepository.findAll();
             if (items.isEmpty()) {
-                itemRepository.save(new Item("testSword", "weapon", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testShield", "shield", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testHelmet", "helmet", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testArmor", "armor", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testPants", "pants", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testGloves", "gloves", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testBoots", "boots", 1, "", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testShip", "ship", 1, "mage", 100, 0, 0, 0, 0, 0));
-                itemRepository.save(new Item("testWings", "wings", 1, "", 100, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testSword", "weapon", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testShield", "shield", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testHelmet", "helmet", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testArmor", "armor", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testPants", "pants", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testGloves", "gloves", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testBoots", "boots", 1, "", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testShip", "ship", 1, "mage", 100, 1, 0, 0, 0, 0, 0));
+                itemRepository.save(new Item("testWings", "wings", 1, "", 100, 1, 0, 0, 0, 0, 0));
             }
         };
     }
