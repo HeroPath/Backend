@@ -38,18 +38,18 @@ public class ItemService {
         if (!itemsEnabledToEquip.contains(newItem.getType()))
             throw new ConflictException("You can't equip more than one " + newItem.getType() + " item");
 
-
-        Item item = new Item();
-        item.setName(newItem.getName());
-        item.setType(newItem.getType());
-        item.setLvlMin(newItem.getLvlMin());
-        item.setClassRequired(newItem.getClassRequired());
-        item.setPrice(newItem.getPrice());
-        item.setStrength(newItem.getStrength());
-        item.setDexterity(newItem.getDexterity());
-        item.setIntelligence(newItem.getIntelligence());
-        item.setVitality(newItem.getVitality());
-        item.setLuck(newItem.getLuck());
-        return itemRepository.save(item);
+        return itemRepository.save(new Item(
+                newItem.getName(),
+                newItem.getType(),
+                newItem.getLvlMin(),
+                newItem.getClassRequired(),
+                newItem.getPrice(),
+                1,
+                newItem.getStrength(),
+                newItem.getDexterity(),
+                newItem.getIntelligence(),
+                newItem.getVitality(),
+                newItem.getLuck())
+        );
     }
 }
