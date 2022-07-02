@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ItemDTO {
     private String name;
     private String type;
-    private short lvlMin;
+    private int lvlMin;
     private String classRequired;
     private int price;
     private int strength;
@@ -25,4 +25,5 @@ public class ItemDTO {
     private int intelligence;
     private int vitality;
     private int luck;
+
 }
