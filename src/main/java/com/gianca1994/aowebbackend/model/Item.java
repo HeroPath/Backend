@@ -71,4 +71,5 @@ public class Item {
         this.vitality = vitality;
         this.luck = luck;
     }
+
 }
