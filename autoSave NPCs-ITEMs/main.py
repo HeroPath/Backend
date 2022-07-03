@@ -1,10 +1,14 @@
-import pandas
+import pandas as pd
 import requests
+import numpy as np
 
-url_register = "http://ao-web.herokuapp.com/api/v1/auth/register"
-url_login = "http://ao-web.herokuapp.com/api/v1/auth/login"
-url_save_ncs = "http://ao-web.herokuapp.com/api/v1/npcs"
-url_save_items = "http://ao-web.herokuapp.com/api/v1/items"
+local = "http://localhost:8000/"
+heroku = "https://ao-web.herokuapp.com/"
+
+url_register = "http://localhost:8000/api/v1/auth/register"
+url_login = "http://localhost:8000/api/v1/auth/login"
+url_save_ncs = "http://localhost:8000/api/v1/npcs"
+url_save_items = "http://localhost:8000/api/v1/items"
 
 data_register_gianca = {
     "username": "gianca",
@@ -32,9 +36,9 @@ data_login_lucho = {
 
 
 def main():
-    npcs = pandas.read_excel("NpcsAo-Web.xlsx")
-    items = pandas.read_excel("ItemsAo-Web.xlsx")
-    npcsDataFrame = pandas.DataFrame(npcs, columns=[
+    npcs = pd.read_excel("NpcsAo-Web.xlsx")
+    items = pd.read_excel("ItemsAo-Web.xlsx")
+    npcsDataFrame = pd.DataFrame(npcs, columns=[
         "name",
         "level",
         "giveMaxExp",
@@ -48,7 +52,7 @@ def main():
         "defense",
         "zone"
     ])
-    itemsDataFrame = pandas.DataFrame(items, columns=[
+    itemsDataFrame = pd.DataFrame(items, columns=[
         "name",
         "type",
         "lvlMin",
@@ -82,6 +86,8 @@ def main():
 
     print("Saving items...")
     for i in itemsDataFrame.to_dict('records'):
+        if pd.isna(i["classRequired"]):
+            i["classRequired"] = ""
         res = requests.post(url_save_items, headers=headers, json=i)
         print(res.json())
 
