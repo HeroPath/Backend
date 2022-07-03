@@ -123,17 +123,8 @@ public class JWTUserDetailsService implements UserDetailsService {
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
 
-        inventory.getItems().add(itemRepository.findById(1L).get());
-        inventory.getItems().add(itemRepository.findById(2L).get());
-        inventory.getItems().add(itemRepository.findById(3L).get());
-        inventory.getItems().add(itemRepository.findById(4L).get());
-        inventory.getItems().add(itemRepository.findById(5L).get());
-        inventory.getItems().add(itemRepository.findById(6L).get());
-        inventory.getItems().add(itemRepository.findById(7L).get());
-        inventory.getItems().add(itemRepository.findById(8L).get());
-        inventory.getItems().add(itemRepository.findById(9L).get());
+        // inventory.getItems().add(itemRepository.findById(1L).get());
 
-        equipment.getItems().add(itemRepository.findById(9L).get());
 
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);

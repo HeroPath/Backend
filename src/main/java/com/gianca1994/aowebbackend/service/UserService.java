@@ -177,6 +177,32 @@ public class UserService {
         return user;
     }
 
+    public void buyItem(String token, String name) throws ConflictException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of buying an item.
+         * @param String token
+         * @param String name
+         * @return none
+         */
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFoundException("User not found");
+        Item itemBuy = itemRepository.findByName(name);
+        if (Objects.isNull(itemBuy)) throw new BadRequestException("Item not found");
+
+        if (user.getGold() < itemBuy.getPrice()) throw new ConflictException("You don't have enough gold");
+        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY) throw new ConflictException("Inventory is full");
+
+        user.setGold(user.getGold() - itemBuy.getPrice());
+
+        if (user.getInventory().getItems().contains(itemBuy))
+            itemBuy.setAmount(itemBuy.getAmount() + 1);
+        else
+            user.getInventory().getItems().add(itemBuy);
+
+        userRepository.save(user);
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////

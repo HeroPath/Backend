@@ -27,6 +27,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
     @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User getProfile(@RequestHeader(value = "Authorization") String token) {
@@ -91,6 +92,20 @@ public class UserController {
          * @return User user
          */
         return userService.unequipItem(token, equipUnequipItemDTO);
+    }
+
+    @PostMapping("/buyitem/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void buyItem(@RequestHeader(value = "Authorization") String token,
+                        @PathVariable String name) throws ConflictException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to buy an item from the shop.
+         * @param String token
+         * @param String name
+         * @return none
+         */
+        userService.buyItem(token, name);
     }
 
 
