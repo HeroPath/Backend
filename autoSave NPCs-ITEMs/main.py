@@ -1,14 +1,13 @@
 import pandas as pd
 import requests
-import numpy as np
 
 local = "http://localhost:8000/"
 heroku = "https://ao-web.herokuapp.com/"
 
-url_register = "http://localhost:8000/api/v1/auth/register"
-url_login = "http://localhost:8000/api/v1/auth/login"
-url_save_ncs = "http://localhost:8000/api/v1/npcs"
-url_save_items = "http://localhost:8000/api/v1/items"
+url_register = "http://ao-web.herokuapp.com/api/v1/auth/register"
+url_login = "http://ao-web.herokuapp.com/api/v1/auth/login"
+url_save_ncs = "http://ao-web.herokuapp.com/api/v1/npcs"
+url_save_items = "http://ao-web.herokuapp.com/api/v1/items"
 
 data_register_gianca = {
     "username": "gianca",
