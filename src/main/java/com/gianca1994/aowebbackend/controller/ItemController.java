@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/items")
@@ -16,6 +18,18 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    @GetMapping("/shop/{aClass}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public List<Item> getMageShop(@PathVariable String aClass) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting the items of a specific class.
+         * @param String aClass
+         * @return List<Item>
+         */
+        return itemService.getMageShop(aClass);
+    }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")

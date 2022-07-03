@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.service;
 
-import java.io.Serializable;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -125,7 +124,7 @@ public class UserService {
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFoundException("Item not found"));
         if (!user.getInventory().getItems().contains(item)) throw new NotFoundException("Item not found in inventory");
-        if (!Objects.equals(user.getAClass().getName(), item.getClassRequired()) && !Objects.equals(item.getClassRequired(), ""))
+        if (!Objects.equals(user.getAClass().getName(), item.getClassRequired()) && !Objects.equals(item.getClassRequired(), "none"))
             throw new ConflictException("The item does not correspond to your class");
 
         List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
@@ -145,6 +144,7 @@ public class UserService {
         user.getEquipment().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, true);
+
         userRepository.save(user);
         return user;
     }
@@ -187,11 +187,12 @@ public class UserService {
          */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
-        Item itemBuy = itemRepository.findByName(name);
+        Item itemBuy = itemRepository.findByName(name.toLowerCase());
         if (Objects.isNull(itemBuy)) throw new BadRequestException("Item not found");
 
         if (user.getGold() < itemBuy.getPrice()) throw new ConflictException("You don't have enough gold");
-        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY) throw new ConflictException("Inventory is full");
+        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY && !user.getInventory().getItems().contains(itemBuy))
+            throw new ConflictException("Inventory is full");
 
         user.setGold(user.getGold() - itemBuy.getPrice());
 

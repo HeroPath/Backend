@@ -4,13 +4,12 @@ import com.gianca1994.aowebbackend.dto.ItemDTO;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.model.Item;
+import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ItemService {
@@ -18,6 +17,17 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    public List<Item> getMageShop(String aClass){
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting the items of a specific class.
+         * @param String aClass
+         * @return List<Item>
+         */
+        List<Item> items = itemRepository.findAll();
+        items.removeIf(item -> !item.getClassRequired().equals(aClass));
+        return items;
+    }
 
     public Item saveItem(ItemDTO newItem) throws ConflictException {
         /**
@@ -26,7 +36,7 @@ public class ItemService {
          * @param Item item
          * @return Item
          */
-        Item item = itemRepository.findByName(newItem.getName());
+        Item item = itemRepository.findByName(newItem.getName().toLowerCase());
         if (item != null) throw new ConflictException("Item already exists");
 
         if (Objects.equals(newItem.getName(), "")) throw new BadRequestException("Name cannot be empty");
@@ -46,7 +56,7 @@ public class ItemService {
         if (Objects.equals(newItem.getClassRequired(), "")) newItem.setClassRequired("none");
 
         return itemRepository.save(new Item(
-                newItem.getName(),
+                newItem.getName().toLowerCase(),
                 newItem.getType(),
                 newItem.getLvlMin(),
                 newItem.getClassRequired(),
