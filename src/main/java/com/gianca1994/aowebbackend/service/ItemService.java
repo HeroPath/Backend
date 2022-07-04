@@ -16,7 +16,7 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public List<Item> getClassShop(String aClass){
+    public List<Item> getClassShop(String aClass) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the items of a specific class.
@@ -43,11 +43,11 @@ public class ItemService {
         if (Objects.equals(newItem.getType(), "")) throw new BadRequestException("Type cannot be empty");
         if (newItem.getLvlMin() <= 0) throw new BadRequestException("LvlMin cannot be less than 0");
         if (newItem.getPrice() < 0) throw new BadRequestException("Price cannot be less than 0");
-        if (newItem.getStrength() < 0) throw new BadRequestException("Strength cannot be less than 0");
-        if (newItem.getDexterity() < 0) throw new BadRequestException("Dexterity cannot be less than 0");
-        if (newItem.getIntelligence() < 0) throw new BadRequestException("Intelligence cannot be less than 0");
-        if (newItem.getVitality() < 0) throw new BadRequestException("Vitality cannot be less than 0");
-        if (newItem.getLuck() < 0) throw new BadRequestException("Luck cannot be less than 0");
+
+        if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 ||
+                newItem.getVitality() < 0 || newItem.getLuck() < 0
+        ) throw new BadRequestException("Stats cannot be less than 0");
+
 
         List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
         if (!itemsEnabledToEquip.contains(newItem.getType()))
