@@ -21,14 +21,14 @@ public class ItemController {
 
     @GetMapping("/shop/{aClass}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Item> getMageShop(@PathVariable String aClass) {
+    public List<Item> getClassShop(@PathVariable String aClass) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the items of a specific class.
          * @param String aClass
          * @return List<Item>
          */
-        return itemService.getMageShop(aClass);
+        return itemService.getClassShop(aClass);
     }
 
     @PostMapping()
