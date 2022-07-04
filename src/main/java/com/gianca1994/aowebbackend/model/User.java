@@ -159,7 +159,7 @@ public class User {
                 this.maxHp = this.vitality * 10;
                 this.defense = this.strength * 2;
                 this.evasion = this.dexterity * 2;
-                this.criticalChance = this.luck * 0.1f;
+                this.criticalChance = this.luck * 0.15f;
                 break;
             case WARRIOR:
                 this.minDmg = this.strength * 3;
@@ -175,7 +175,7 @@ public class User {
                 this.maxHp = this.vitality * 15;
                 this.defense = this.intelligence * 3;
                 this.evasion = this.strength * 4;
-                this.criticalChance = this.luck * 0.1f;
+                this.criticalChance = this.luck * 0.125f;
                 break;
         }
         if (fullMinHp) this.hp = this.maxHp;

@@ -20,14 +20,17 @@ public class GenericFunctions {
         return user.getHp() < user.getMaxHp() * MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED;
     }
 
-    public int getUserDmg(User user) {
+    public int getUserDmg(User user, int defense) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the damage that the user.
          * @param User user
          * @return int
          */
-        return (int) (Math.random() * (user.getMaxDmg() - user.getMinDmg())) + user.getMinDmg();
+        int dmg = (int) Math.floor(Math.random() * (user.getMaxDmg() - user.getMinDmg() + 1) + user.getMinDmg());
+        dmg = defense >= dmg ? 0 : dmg - defense;
+        if (Math.random() > (1 - user.getCriticalChance())) return dmg * 2;
+        else return dmg;
     }
 
     public int userReceiveDmg(User user, int dmg) {

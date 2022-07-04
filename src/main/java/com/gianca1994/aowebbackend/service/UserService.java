@@ -148,7 +148,6 @@ public class UserService {
         user.getEquipment().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, true);
-        if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
         return user;
     }
@@ -177,6 +176,7 @@ public class UserService {
         user.getInventory().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, false);
+        if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
         return user;
     }
