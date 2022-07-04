@@ -8,10 +8,7 @@ import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
-import com.gianca1994.aowebbackend.dto.EquipUnequipItemDTO;
-import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
-import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
-import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
+import com.gianca1994.aowebbackend.dto.*;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.exception.NotFoundException;
@@ -177,7 +174,7 @@ public class UserService {
         return user;
     }
 
-    public void buyItem(String token, String name) throws ConflictException {
+    public void buyItem(String token, BuyItemDTO buyItemDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -187,7 +184,7 @@ public class UserService {
          */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
-        Item itemBuy = itemRepository.findByName(name.toLowerCase());
+        Item itemBuy = itemRepository.findByName(buyItemDTO.getName().toLowerCase());
         if (Objects.isNull(itemBuy)) throw new BadRequestException("Item not found");
 
         if (user.getGold() < itemBuy.getPrice()) throw new ConflictException("You don't have enough gold");

@@ -4,7 +4,6 @@ import com.gianca1994.aowebbackend.dto.ItemDTO;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.model.Item;
-import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

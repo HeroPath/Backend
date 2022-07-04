@@ -1,10 +1,7 @@
 package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.dto.EquipUnequipItemDTO;
-import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
-import com.gianca1994.aowebbackend.dto.UserAttackNpcDTO;
-import com.gianca1994.aowebbackend.dto.UserAttackUserDTO;
+import com.gianca1994.aowebbackend.dto.*;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
@@ -94,10 +91,10 @@ public class UserController {
         return userService.unequipItem(token, equipUnequipItemDTO);
     }
 
-    @PostMapping("/buyitem/{name}")
+    @PostMapping("/buyitem}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void buyItem(@RequestHeader(value = "Authorization") String token,
-                        @PathVariable String name) throws ConflictException {
+                        @RequestBody BuyItemDTO buyItemDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to buy an item from the shop.
@@ -105,7 +102,7 @@ public class UserController {
          * @param String name
          * @return none
          */
-        userService.buyItem(token, name);
+        userService.buyItem(token, buyItemDTO);
     }
 
 
