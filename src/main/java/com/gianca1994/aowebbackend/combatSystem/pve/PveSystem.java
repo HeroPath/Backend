@@ -27,19 +27,14 @@ public class PveSystem {
         PveFunctions pveFunctions = new PveFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        long experienceGain = 0;
-        long goldGain = 0;
-        int diamondsGain = 0;
-        boolean levelUp = false;
-
-
-        int roundCounter = 0;
-        boolean stopPvP = false;
+        long experienceGain = 0, goldGain = 0;
+        int diamondsGain = 0, roundCounter = 0;
+        boolean levelUp = false, stopPvP = false;
 
         do {
             roundCounter++;
-            int userDmg = genericFunctions.getUserDmg(user);
-            int npcDmg = pveFunctions.calculateNpcDmg(npc);
+            int userDmg = genericFunctions.getUserDmg(user, npc.getDefense());
+            int npcDmg = pveFunctions.calculateNpcDmg(npc, user.getDefense());
 
             // Check if the finish combat.
             if (!stopPvP) {
@@ -56,7 +51,6 @@ public class PveSystem {
                         experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
                         user.setExperience(user.getExperience() + experienceGain);
                     }
-
                     goldGain = pveFunctions.calculateUserGoldGain(npc);
                     user.setGold(user.getGold() + goldGain);
 
@@ -75,7 +69,6 @@ public class PveSystem {
                                 user.setExperience(0);
                                 user.setExperienceToNextLevel(0);
                             }
-
                         } while (pveFunctions.checkUserLevelUp(user));
                     }
                     stopPvP = true;
@@ -89,11 +82,9 @@ public class PveSystem {
                     }
                 }
             }
-
             historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpc(
                     user, npc, roundCounter, userDmg, npcDmg)
             );
-
         } while (pveFunctions.checkUserAndNpcAlive(user, npc));
 
         if (pveFunctions.chanceDropDiamonds()) {

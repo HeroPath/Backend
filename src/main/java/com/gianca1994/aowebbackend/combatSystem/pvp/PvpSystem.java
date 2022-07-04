@@ -33,8 +33,9 @@ public class PvpSystem {
             roundCounter++;
 
             // Calculate the damage of the attacker and defender.
-            int attackerDmg = genericFunctions.getUserDmg(attacker);
-            int defenderDmg = genericFunctions.getUserDmg(defender);
+            int attackerDmg = genericFunctions.getUserDmg(attacker, defender.getDefense());
+            int defenderDmg = genericFunctions.getUserDmg(defender, attacker.getDefense());
+
 
             if (!stopPvP) {
                 defender.setHp(genericFunctions.userReceiveDmg(defender, attackerDmg));

@@ -18,14 +18,15 @@ public class PveFunctions {
     private final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
     private final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 5;
 
-    public int calculateNpcDmg(Npc npc) {
+    public int calculateNpcDmg(Npc npc, int userDefense) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the damage that the npc.
          * @param Npc npc
          * @return int
          */
-        return (int) (Math.random() * (npc.getMaxDmg() - npc.getMinDmg())) + npc.getMinDmg();
+        int npcDmg = (int) Math.floor(Math.random() * (npc.getMaxDmg() - npc.getMinDmg() + 1) + npc.getMinDmg());
+        return userDefense >= npcDmg ? 0 : npcDmg - userDefense;
     }
 
     public long CalculateUserExperienceGain(Npc npc) {
@@ -36,7 +37,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) ((Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp())) + npc.getGiveMinExp()) * EXPERIENCE_MULTIPLIER;
+        return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * EXPERIENCE_MULTIPLIER;
     }
 
     public boolean checkUserLevelUp(User user) {
@@ -93,7 +94,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) ((Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold())) + npc.getGiveMinGold()) * GOLD_MULTIPLIER;
+        return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * GOLD_MULTIPLIER;
     }
 
     public int freeSkillPointsAdd(User user) {
