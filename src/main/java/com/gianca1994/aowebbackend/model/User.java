@@ -92,6 +92,12 @@ public class User {
     @Column
     private int hp;
     @Column
+    private int defense;
+    @Column
+    private int evasion;
+    @Column
+    private float criticalChance;
+    @Column
     private int strength;
     @Column
     private int dexterity;
@@ -138,37 +144,41 @@ public class User {
         this.pvpLosses = pvpLosses;
     }
 
-    public void setStatsForClass(Class aClass) {
+    public void calculateStats(boolean fullMinHp) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to set the stats for the class.
-         * @param Class aClass
-         * @return none
+         * Explanation: Calculate status method
+         * @param boolean fullMinHp
+         * @return void
          */
         final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
-        int minDmg = 0, maxDmg = 0, maxHp = 0;
-
-        switch (aClass.getName()) {
+        switch (this.getAClass().getName()) {
             case MAGE:
-                minDmg = aClass.getIntelligence() * 4;
-                maxDmg = aClass.getIntelligence() * 7;
-                maxHp = aClass.getVitality() * 10;
+                this.minDmg = this.intelligence * 5;
+                this.maxDmg = this.intelligence * 7;
+                this.maxHp = this.vitality * 10;
+                this.defense = this.strength * 2;
+                this.evasion = this.dexterity * 2;
+                this.criticalChance = this.luck * 0.1f;
                 break;
             case WARRIOR:
-                minDmg = aClass.getStrength() * 3;
-                maxDmg = aClass.getStrength() * 5;
-                maxHp = aClass.getVitality() * 20;
+                this.minDmg = this.strength * 3;
+                this.maxDmg = this.strength * 5;
+                this.maxHp = this.vitality * 20;
+                this.defense = this.intelligence * 5;
+                this.evasion = this.dexterity * 2;
+                this.criticalChance = this.luck * 0.1f;
                 break;
             case ARCHER:
-                minDmg = aClass.getDexterity() * 4;
-                maxDmg = aClass.getDexterity() * 6;
-                maxHp = aClass.getVitality() * 15;
+                this.minDmg = this.dexterity * 4;
+                this.maxDmg = this.dexterity * 6;
+                this.maxHp = this.vitality * 15;
+                this.defense = this.intelligence * 3;
+                this.evasion = this.strength * 4;
+                this.criticalChance = this.luck * 0.1f;
                 break;
         }
-        this.minDmg = minDmg;
-        this.maxDmg = maxDmg;
-        this.hp = maxHp;
-        this.maxHp = maxHp;
+        if (fullMinHp) this.hp = this.maxHp;
     }
 
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
@@ -179,7 +189,6 @@ public class User {
          * @param boolean toEquip
          * @return none
          */
-        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
 
         this.strength += item.getStrength() * multiplierToEquipOrUnequip;
@@ -188,27 +197,7 @@ public class User {
         this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
         this.luck += item.getLuck() * multiplierToEquipOrUnequip;
 
-        switch (this.getAClass().getName()) {
-            case MAGE:
-                this.minDmg += (item.getIntelligence() * 4) * multiplierToEquipOrUnequip;
-                this.maxDmg += (item.getIntelligence() * 7) * multiplierToEquipOrUnequip;
-                this.hp += (item.getVitality() * 10) * multiplierToEquipOrUnequip;
-                this.maxHp += (item.getVitality() * 10) * multiplierToEquipOrUnequip;
-                break;
-            case WARRIOR:
-                this.minDmg += (item.getStrength() * 3) * multiplierToEquipOrUnequip;
-                this.maxDmg += (item.getStrength() * 5) * multiplierToEquipOrUnequip;
-                this.hp += (item.getVitality() * 20) * multiplierToEquipOrUnequip;
-                this.maxHp += (item.getVitality() * 20) * multiplierToEquipOrUnequip;
-                break;
-            case ARCHER:
-                this.minDmg += (item.getDexterity() * 4) * multiplierToEquipOrUnequip;
-                this.maxDmg += (item.getDexterity() * 6) * multiplierToEquipOrUnequip;
-                this.hp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
-                this.maxHp += (item.getVitality() * 15) * multiplierToEquipOrUnequip;
-                break;
-        }
-
+        calculateStats(false);
     }
 
     public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
@@ -218,55 +207,17 @@ public class User {
          * @param freeSkillPointDTO freeSkillPointDTO
          * @return none
          */
-        switch (freeSkillPointDTO.getSkillPointName()) {
-            case "strength":
-                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                this.setStrength(this.getStrength() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(this.getAClass().getName(), "warrior")) {
-                    this.setMinDmg(this.getStrength() * 3);
-                    this.setMaxDmg(this.getStrength() * 5);
-                }
-                break;
+        boolean isAdded = true;
+        String skillName = freeSkillPointDTO.getSkillPointName().toLowerCase();
 
-            case "dexterity":
-                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                this.setDexterity(this.getDexterity() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(this.getAClass().getName(), "archer")) {
-                    this.setMinDmg(this.getDexterity() * 4);
-                    this.setMaxDmg(this.getDexterity() * 6);
-                }
-                break;
+        if (skillName.equals("strength")) this.strength += freeSkillPointDTO.getAmount();
+        else if (skillName.equals("dexterity")) this.dexterity += freeSkillPointDTO.getAmount();
+        else if (skillName.equals("intelligence")) this.intelligence += freeSkillPointDTO.getAmount();
+        else if (skillName.equals("vitality")) this.vitality += freeSkillPointDTO.getAmount();
+        else if (skillName.equals("luck")) this.luck += freeSkillPointDTO.getAmount();
+        else isAdded = false;
 
-            case "intelligence":
-                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                this.setIntelligence(this.getIntelligence() + freeSkillPointDTO.getAmount());
-                if (Objects.equals(this.getAClass().getName(), "mage")) {
-                    this.setMinDmg(this.getIntelligence() * 4);
-                    this.setMaxDmg(this.getIntelligence() * 7);
-                }
-                break;
-
-            case "vitality":
-                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                this.setVitality(this.getVitality() + freeSkillPointDTO.getAmount());
-
-                int classMultiplier = 1;
-
-                if (Objects.equals(this.getAClass().getName(), "mage")) classMultiplier = 10;
-                else if (Objects.equals(this.getAClass().getName(), "warrior")) classMultiplier = 20;
-                else if (Objects.equals(this.getAClass().getName(), "archer")) classMultiplier = 15;
-
-                this.setHp(this.getHp() + freeSkillPointDTO.getAmount() * classMultiplier);
-                this.setMaxHp(this.getVitality() * classMultiplier);
-                break;
-
-            case "luck":
-                this.setFreeSkillPoints(this.getFreeSkillPoints() - freeSkillPointDTO.getAmount());
-                this.setLuck(this.getLuck() + freeSkillPointDTO.getAmount());
-                break;
-
-            default:
-                break;
-        }
+        if (isAdded) this.freeSkillPoints -= freeSkillPointDTO.getAmount();
+        calculateStats(false);
     }
 }

@@ -94,6 +94,7 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
+
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFoundException("User not found");
@@ -101,6 +102,12 @@ public class UserService {
         if (user.getFreeSkillPoints() <= 0) throw new ConflictException("You don't have any free skill points");
         if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
             throw new ConflictException("You don't have enough free skill points");
+
+
+        List<String> skillsEnabled = Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck");
+        if (!skillsEnabled.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
+            throw new ConflictException("Skill point name must be one of the following: " + skillsEnabled);
+
 
         user.addFreeSkillPoints(freeSkillPointDTO);
 
@@ -141,7 +148,7 @@ public class UserService {
         user.getEquipment().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, true);
-
+        if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
         return user;
     }

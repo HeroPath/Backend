@@ -119,12 +119,10 @@ public class JWTUserDetailsService implements UserDetailsService {
         Class aClass = classRepository.findById(user.getClassId()).get();
         if (aClass.getName() == null) throw new BadRequestException("Class not found");
 
-
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
-
 
         User newUser = new User(
                 user.getUsername(), encryptPassword(user.getPassword()),
@@ -145,7 +143,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 3, 0, 0, 0
         );
 
-        newUser.setStatsForClass(aClass);
+        newUser.calculateStats(true);
 
         if (Objects.equals(user.getUsername(), "gianca") ||
                 Objects.equals(user.getUsername(), "lucho")) {
