@@ -4,7 +4,6 @@ import com.gianca1994.aowebbackend.dto.ItemDTO;
 import com.gianca1994.aowebbackend.exception.BadRequestException;
 import com.gianca1994.aowebbackend.exception.ConflictException;
 import com.gianca1994.aowebbackend.model.Item;
-import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public List<Item> getMageShop(String aClass){
+    public List<Item> getClassShop(String aClass){
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the items of a specific class.
@@ -26,6 +25,7 @@ public class ItemService {
          */
         List<Item> items = itemRepository.findAll();
         items.removeIf(item -> !item.getClassRequired().equals(aClass));
+        items.sort(Comparator.comparing(Item::getLvlMin));
         return items;
     }
 
