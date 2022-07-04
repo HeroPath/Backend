@@ -91,7 +91,7 @@ public class UserController {
         return userService.unequipItem(token, equipUnequipItemDTO);
     }
 
-    @PostMapping("/buyitem}")
+    @PostMapping("/buyitem")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void buyItem(@RequestHeader(value = "Authorization") String token,
                         @RequestBody BuyItemDTO buyItemDTO) throws ConflictException {
