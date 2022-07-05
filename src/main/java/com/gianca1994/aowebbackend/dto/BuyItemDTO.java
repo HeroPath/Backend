@@ -11,5 +11,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BuyItemDTO {
     private String name;
-
 }
