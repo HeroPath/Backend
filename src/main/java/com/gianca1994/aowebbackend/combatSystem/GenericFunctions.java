@@ -29,7 +29,7 @@ public class GenericFunctions {
          */
         int dmg = (int) Math.floor(Math.random() * (user.getMaxDmg() - user.getMinDmg() + 1) + user.getMinDmg());
         dmg = defense >= dmg ? 0 : dmg - defense;
-        if (Math.random() > (1 - user.getCriticalChance())) return dmg * 2;
+        if (Math.floor(Math.random() * 100) + 1 > (1 - user.getCriticalChance())) return dmg * 2;
         else return dmg;
     }
 
