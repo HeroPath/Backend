@@ -128,7 +128,7 @@ public class UserController {
     @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody UserAttackNpcDTO userAttackNpcDTO) {
+                                            @RequestBody UserAttackNpcDTO userAttackNpcDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.

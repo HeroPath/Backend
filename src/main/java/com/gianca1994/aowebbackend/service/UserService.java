@@ -242,7 +242,7 @@ public class UserService {
     }
 
 
-    public ArrayList<ObjectNode> userVsNpcCombatSystem(String token, UserAttackNpcDTO userAttackNpcDTO) {
+    public ArrayList<ObjectNode> userVsNpcCombatSystem(String token, UserAttackNpcDTO userAttackNpcDTO) throws ConflictException {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -258,6 +258,21 @@ public class UserService {
 
         Npc npc = npcRepository.findByName(userAttackNpcDTO.getName().toLowerCase());
         if (npc == null) throw new NotFoundException("Npc not found");
+
+        if (npc.getLevel() > user.getLevel() + 5)
+            throw new ConflictException("You can't attack an npc with level higher than 5 levels higher than you");
+
+        // TODO: CORREGIR ESTO...
+        boolean enabledSea = false, enabledHell = false;
+        for (Item item : user.getEquipment().getItems()) {
+            if (item.getType().equals("sea")) enabledSea = true;
+            if (item.getType().equals("hell")) enabledHell = true;
+        }
+
+        if (npc.getZone().equals("sea") && !enabledSea)
+            throw new ConflictException("You can't attack an npc in the sea without a ship");
+        if (npc.getZone().equals("hell") && !enabledHell)
+            throw new ConflictException("You can't attack an npc in hell without wings");
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
 
