@@ -265,8 +265,9 @@ public class UserService {
         // TODO: CORREGIR ESTO...
         boolean enabledSea = false, enabledHell = false;
         for (Item item : user.getEquipment().getItems()) {
-            if (item.getType().equals("sea")) enabledSea = true;
-            if (item.getType().equals("hell")) enabledHell = true;
+            System.out.println(item.getType());
+            if (item.getType().equals("ship")) enabledSea = true;
+            if (item.getType().equals("wings")) enabledHell = true;
         }
 
         if (npc.getZone().equals("sea") && !enabledSea)
