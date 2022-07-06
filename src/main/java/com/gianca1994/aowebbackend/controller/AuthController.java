@@ -48,12 +48,11 @@ public class AuthController {
          * @param JwtRequestDTO authenticationRequest
          * @return ResponseEntity<?>
          */
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(
-                authenticationRequest.getUsername());
-
+        String username = authenticationRequest.getUsername().toLowerCase();
+        String password = authenticationRequest.getPassword();
+        authenticate(username, password);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         final String token = jwtTokenUtil.generateToken(userDetails);
-
         return ResponseEntity.ok(new JwtResponseDTO(token));
     }
 

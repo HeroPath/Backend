@@ -102,15 +102,15 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @param UserDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail()))
+        if (!validateEmail(user.getEmail().toLowerCase()))
             throw new BadRequestException("Invalid email address");
 
-        if (userRepository.findByUsername(user.getUsername()) != null)
-            throw new ConflictException("Username already exists");
-        if (!user.getUsername().matches("[A-Za-z0-9]+"))
-            throw new BadRequestException("Username must be alphanumeric");
+        String username = user.getUsername().toLowerCase();
 
-        if (user.getUsername().length() < 3 || user.getUsername().length() > 20)
+        if (!username.matches("^[a-zA-Z0-9]*$")) throw new BadRequestException("Username must be alphanumeric");
+        if (userRepository.findByUsername(username) != null) throw new ConflictException("Username already exists");
+
+        if (username.length() < 3 || username.length() > 20)
             throw new BadRequestException("Username must be between 3 and 20 characters");
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
             throw new BadRequestException("Password must be between 3 and 20 characters");
@@ -125,8 +125,8 @@ public class JWTUserDetailsService implements UserDetailsService {
         equipmentRepository.save(equipment);
 
         User newUser = new User(
-                user.getUsername(), encryptPassword(user.getPassword()),
-                user.getEmail(),
+                username, encryptPassword(user.getPassword()),
+                user.getEmail().toLowerCase(),
                 standardRole,
                 aClass,
                 inventory,
