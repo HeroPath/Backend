@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.model.User;
  * Explanation: This class contains all the generic functions that are used in the combat system.
  */
 public class GenericFunctions {
-    private final float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.25f;
+    private final float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.15f;
 
     public boolean checkLifeStartCombat(User user) {
         /**

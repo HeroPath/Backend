@@ -20,8 +20,8 @@ public class ApiExceptionHandler {
     private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND; // 404
     private final HttpStatus CONFLICT = HttpStatus.CONFLICT; // 409
 
-    @ExceptionHandler(value = {BadRequestException.class})
-    public ResponseEntity<Object> handleBadRequestException(BadRequestException e) {
+    @ExceptionHandler(value = {BadRequest.class})
+    public ResponseEntity<Object> handleBadRequestException(BadRequest e) {
         return new ResponseEntity<>(new ExceptionModel(
                 e.getMessage(),
                 BAD_REQUEST,
@@ -30,8 +30,8 @@ public class ApiExceptionHandler {
         ), BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {NotFoundException.class})
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException e) {
+    @ExceptionHandler(value = {NotFound.class})
+    public ResponseEntity<Object> handleNotFoundException(NotFound e) {
         return new ResponseEntity<>(new ExceptionModel(
                 e.getMessage(),
                 NOT_FOUND,
@@ -40,8 +40,8 @@ public class ApiExceptionHandler {
         ), NOT_FOUND);
     }
 
-    @ExceptionHandler(value = {ConflictException.class})
-    public ResponseEntity<Object> handleConflictException(ConflictException e) {
+    @ExceptionHandler(value = {Conflict.class})
+    public ResponseEntity<Object> handleConflictException(Conflict e) {
         return new ResponseEntity<>(new ExceptionModel(
                 e.getMessage(),
                 CONFLICT,
