@@ -191,8 +191,9 @@ public class UserService {
          */
         User user = userRepository.findByUsername(getTokenUser(token));
         if (user == null) throw new NotFoundException("User not found");
+
         Item itemBuy = itemRepository.findByName(buyItemDTO.getName().toLowerCase());
-        if (Objects.isNull(itemBuy)) throw new BadRequestException("Item not found");
+        if (Objects.isNull(itemBuy)) throw new NotFoundException("Item not found");
 
         if (user.getGold() < itemBuy.getPrice()) throw new ConflictException("You don't have enough gold");
         if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY && !user.getInventory().getItems().contains(itemBuy))
@@ -204,6 +205,30 @@ public class UserService {
             itemBuy.setAmount(itemBuy.getAmount() + 1);
         else
             user.getInventory().getItems().add(itemBuy);
+
+        userRepository.save(user);
+    }
+
+    public void sellItem(String token, SellItemDTO sellItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of selling an item.
+         * @param String token
+         * @param SellItemDTO sellItemDTO
+         * @return none
+         */
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFoundException("User not found");
+
+        Item itemBuy = itemRepository.findByName(sellItemDTO.getName().toLowerCase());
+        if (Objects.isNull(itemBuy)) throw new NotFoundException("Item not found");
+
+        if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFoundException("Item not found in inventory");
+
+        user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
+
+        if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
+        else user.getInventory().getItems().remove(itemBuy);
 
         userRepository.save(user);
     }
@@ -262,10 +287,8 @@ public class UserService {
         if (npc.getLevel() > user.getLevel() + 5)
             throw new ConflictException("You can't attack an npc with level higher than 5 levels higher than you");
 
-        // TODO: CORREGIR ESTO...
         boolean enabledSea = false, enabledHell = false;
         for (Item item : user.getEquipment().getItems()) {
-            System.out.println(item.getType());
             if (item.getType().equals("ship")) enabledSea = true;
             if (item.getType().equals("wings")) enabledHell = true;
         }
