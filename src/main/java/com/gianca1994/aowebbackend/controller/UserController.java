@@ -105,6 +105,20 @@ public class UserController {
         userService.buyItem(token, buyItemDTO);
     }
 
+    @PostMapping("/sellitem")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void sellItem(@RequestHeader(value = "Authorization") String token,
+                         @RequestBody SellItemDTO sellItemDTO) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to sell an item to the shop.
+         * @param String token
+         * @param SellItemDTO sellItemDTO
+         * @return none
+         */
+        userService.sellItem(token, sellItemDTO);
+    }
+
 
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
