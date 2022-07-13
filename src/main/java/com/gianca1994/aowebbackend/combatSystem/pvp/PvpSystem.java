@@ -46,6 +46,13 @@ public class PvpSystem {
                     defenderDmg = 0;
                     stopPvP = true;
 
+                    int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
+
+                    attacker.setTitlePoints(attacker.getTitlePoints() + mmrWinAndLose);
+                    if (defender.getTitlePoints() > mmrWinAndLose)
+                        defender.setTitlePoints(defender.getTitlePoints() - mmrWinAndLose);
+                    else defender.setTitlePoints(0);
+
                     // Add the history of the combat.
                     defender.setPvpLosses(defender.getPvpLosses() + 1);
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
@@ -62,6 +69,12 @@ public class PvpSystem {
                         attacker.setHp(0);
                         attackerDmg = 0;
                         stopPvP = true;
+
+                        int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
+
+                        if (attacker.getTitlePoints() > mmrWinAndLose)
+                            attacker.setTitlePoints(attacker.getTitlePoints() - mmrWinAndLose);
+                        else attacker.setTitlePoints(0);
 
                         // Add the history of the combat.
                         attacker.setPvpLosses(defender.getPvpLosses() + 1);

@@ -11,6 +11,8 @@ import com.gianca1994.aowebbackend.model.User;
 public class PvpFunctions {
     private final float PVP_GOLD_THEFT_RATE = 0.25f;
     private final float PVP_GOLD_LOSS_RATE = 0.1f;
+    private final int PVP_MAX_RATE_POINT_TITLE = 10;
+    private final int PVP_MIN_RATE_POINT_TITLE = 5;
 
 
     private long getUserGoldThief(User user) {
@@ -63,6 +65,10 @@ public class PvpFunctions {
          * @return boolean
          */
         return attacker.getHp() > 0 && defender.getHp() > 0;
+    }
+
+    public int calculatePointsTitleWinOrLose() {
+        return (int) Math.floor(Math.random() * (PVP_MAX_RATE_POINT_TITLE - PVP_MIN_RATE_POINT_TITLE + 1) + PVP_MIN_RATE_POINT_TITLE);
     }
 
     public ObjectNode roundJsonGeneratorUserVsUser(

@@ -652,6 +652,14 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Sell Item",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		}
