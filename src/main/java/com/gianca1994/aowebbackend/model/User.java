@@ -58,6 +58,14 @@ public class User {
     private Class aClass;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_title",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "title_id",
+                    referencedColumnName = "id"))
+    private Title title;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -115,13 +123,16 @@ public class User {
     private int pvpWins;
     @Column
     private int pvpLosses;
+    @Column
+    private int titlePoints;
 
-    public User(String username, String password, String email, Role role, Class aClass, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
+    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses, int titlePoints) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
         this.aClass = aClass;
+        this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
         this.level = level;
@@ -142,6 +153,7 @@ public class User {
         this.npcKills = npcKills;
         this.pvpWins = pvpWins;
         this.pvpLosses = pvpLosses;
+        this.titlePoints = titlePoints;
     }
 
     public void calculateStats(boolean fullMinHp) {

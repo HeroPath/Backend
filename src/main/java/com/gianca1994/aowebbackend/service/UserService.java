@@ -94,7 +94,6 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
-
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFound("User not found");
@@ -103,11 +102,9 @@ public class UserService {
         if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
             throw new Conflict("You don't have enough free skill points");
 
-
         List<String> skillsEnabled = Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck");
         if (!skillsEnabled.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
             throw new Conflict("Skill point name must be one of the following: " + skillsEnabled);
-
 
         user.addFreeSkillPoints(freeSkillPointDTO);
 
@@ -201,11 +198,8 @@ public class UserService {
 
         user.setGold(user.getGold() - itemBuy.getPrice());
 
-        if (user.getInventory().getItems().contains(itemBuy))
-            itemBuy.setAmount(itemBuy.getAmount() + 1);
-        else
-            user.getInventory().getItems().add(itemBuy);
-
+        if (user.getInventory().getItems().contains(itemBuy)) itemBuy.setAmount(itemBuy.getAmount() + 1);
+        else user.getInventory().getItems().add(itemBuy);
         userRepository.save(user);
     }
 
@@ -223,14 +217,12 @@ public class UserService {
         Item itemBuy = itemRepository.findByName(sellItemDTO.getName().toLowerCase());
         if (Objects.isNull(itemBuy)) throw new NotFound("Item not found");
 
-        if (!user.getInventory().getItems().contains(itemBuy))
-            throw new NotFound("Item not found in inventory");
+        if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFound("Item not found in inventory");
 
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
         if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
         else user.getInventory().getItems().remove(itemBuy);
-
         userRepository.save(user);
     }
 

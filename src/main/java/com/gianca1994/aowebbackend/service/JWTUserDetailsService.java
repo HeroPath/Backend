@@ -40,6 +40,9 @@ public class JWTUserDetailsService implements UserDetailsService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private TitleRepository titleRepository;
+
+    @Autowired
     private InventoryRepository inventoryRepository;
 
     @Autowired
@@ -115,10 +118,12 @@ public class JWTUserDetailsService implements UserDetailsService {
 
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
+        Title standardTitle = titleRepository.findById(1L).get();
         if (aClass.getName() == null) throw new BadRequest("Class not found");
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
+
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
 
@@ -127,6 +132,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 user.getEmail().toLowerCase(),
                 standardRole,
                 aClass,
+                standardTitle,
                 inventory,
                 equipment,
                 (short) 1, 0L, 5L,
@@ -138,15 +144,14 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getIntelligence(),
                 aClass.getVitality(),
                 aClass.getLuck(),
-                3, 0, 0, 0
+                3, 0, 0, 0, 0
         );
 
         newUser.calculateStats(true);
 
-        if (Objects.equals(user.getUsername(), "gianca") ||
-                Objects.equals(user.getUsername(), "lucho")) {
+        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
             newUser.setRole(roleRepository.findById(2L).get());
-        }
+
         return userRepository.save(newUser);
     }
 }
