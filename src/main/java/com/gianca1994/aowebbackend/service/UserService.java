@@ -16,10 +16,7 @@ import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.repository.ItemRepository;
-import com.gianca1994.aowebbackend.repository.NpcRepository;
-import com.gianca1994.aowebbackend.repository.RoleRepository;
-import com.gianca1994.aowebbackend.repository.UserRepository;
+import com.gianca1994.aowebbackend.repository.*;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +40,9 @@ public class UserService {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    TitleRepository titleRepository;
 
     @Autowired
     NpcRepository npcRepository;
@@ -161,14 +161,11 @@ public class UserService {
         if (user == null) throw new NotFound("User not found");
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound("Item not found"));
-        if (!user.getEquipment().getItems().contains(item))
-            throw new NotFound("Item not found in equipment");
-        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY)
-            throw new Conflict("Inventory is full");
+        if (!user.getEquipment().getItems().contains(item)) throw new NotFound("Item not found in equipment");
+        if (user.getInventory().getItems().size() >= MAX_ITEMS_INVENTORY) throw new Conflict("Inventory is full");
 
         user.getEquipment().getItems().remove(item);
-        if (user.getInventory().getItems().contains(item))
-            item.setAmount(item.getAmount() + 1);
+        if (user.getInventory().getItems().contains(item)) item.setAmount(item.getAmount() + 1);
 
         user.getInventory().getItems().add(item);
 
@@ -218,7 +215,6 @@ public class UserService {
         if (Objects.isNull(itemBuy)) throw new NotFound("Item not found");
 
         if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFound("Item not found in inventory");
-
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
         if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
@@ -252,8 +248,7 @@ public class UserService {
         if (genericFunctions.checkLifeStartCombat(defender))
             throw new BadRequest("Unable to attack, enemy has less than 15% health");
 
-
-        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender);
+        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository);
 
         userRepository.save(pvpUserVsUserModel.getAttacker());
         userRepository.save(pvpUserVsUserModel.getDefender());

@@ -11,8 +11,8 @@ import com.gianca1994.aowebbackend.model.User;
 public class PvpFunctions {
     private final float PVP_GOLD_THEFT_RATE = 0.25f;
     private final float PVP_GOLD_LOSS_RATE = 0.1f;
-    private final int PVP_MAX_RATE_POINT_TITLE = 10;
-    private final int PVP_MIN_RATE_POINT_TITLE = 5;
+    private final int PVP_MAX_RATE_POINT_TITLE = 100;
+    private final int PVP_MIN_RATE_POINT_TITLE = 50;
 
 
     private long getUserGoldThief(User user) {
@@ -68,6 +68,12 @@ public class PvpFunctions {
     }
 
     public int calculatePointsTitleWinOrLose() {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the points that the attacker.
+         * @param none
+         * @return int
+         */
         return (int) Math.floor(Math.random() * (PVP_MAX_RATE_POINT_TITLE - PVP_MIN_RATE_POINT_TITLE + 1) + PVP_MIN_RATE_POINT_TITLE);
     }
 
@@ -100,7 +106,8 @@ public class PvpFunctions {
             User attacker,
             User defender,
             long goldAmountWin,
-            long goldAmountLoseForLoseCombat) {
+            long goldAmountLoseForLoseCombat,
+            int amountPointsTitleWinOrLose) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of generating the json for the round.
@@ -114,10 +121,13 @@ public class PvpFunctions {
 
         if (attacker.getHp() > 0) {
             round.put("win", attacker.getUsername());
+            round.put("titlePointsWin: ", amountPointsTitleWinOrLose);
             round.put("lose", defender.getUsername());
+            round.put("titlePointsLose: ", amountPointsTitleWinOrLose);
         } else {
             round.put("win", defender.getUsername());
             round.put("lose", attacker.getUsername());
+            round.put("titlePointsLose: ", amountPointsTitleWinOrLose);
         }
 
         if (goldAmountWin > 0) round.put("goldAmountWin", goldAmountWin);

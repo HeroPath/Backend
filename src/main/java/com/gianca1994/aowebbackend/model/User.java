@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.repository.TitleRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -231,5 +232,70 @@ public class User {
 
         if (isAdded) this.freeSkillPoints -= freeSkillPointDTO.getAmount();
         calculateStats(false);
+    }
+
+    public void addTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add title points to the user.
+         * @param int amount
+         * @return none
+         */
+        this.titlePoints += amount;
+    }
+
+    public void removeTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to remove title points from the user.
+         * @param int amount
+         * @return none
+         */
+        if (this.titlePoints >= amount) this.titlePoints -= amount;
+        else this.titlePoints = 0;
+    }
+
+    public void checkStatusTitlePoints(TitleRepository titleRepository) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to check the status of the title points.
+         * @param TitleRepository titleRepository
+         * @return none
+         */
+        Title ironTitle = titleRepository.findById(1L).get();
+        Title bronzeTitle = titleRepository.findById(2L).get();
+        Title silverTitle = titleRepository.findById(3L).get();
+        Title goldTitle = titleRepository.findById(4L).get();
+        Title platinumTitle = titleRepository.findById(5L).get();
+        Title diamondTitle = titleRepository.findById(6L).get();
+        Title challengerTitle = titleRepository.findById(7L).get();
+
+        if (this.titlePoints >= ironTitle.getRequiredPoints() &&
+                this.titlePoints < bronzeTitle.getRequiredPoints() &&
+                this.level >= ironTitle.getRequiredLevel()) this.title = ironTitle;
+
+        else if (this.titlePoints >= bronzeTitle.getRequiredPoints() &&
+                this.titlePoints < silverTitle.getRequiredPoints() &&
+                this.level >= bronzeTitle.getRequiredLevel()) this.title = bronzeTitle;
+
+        else if (this.titlePoints >= silverTitle.getRequiredPoints() &&
+                this.titlePoints < goldTitle.getRequiredPoints() &&
+                this.level >= silverTitle.getRequiredLevel()) this.title = silverTitle;
+
+        else if (this.titlePoints >= goldTitle.getRequiredPoints() &&
+                this.titlePoints < platinumTitle.getRequiredPoints() &&
+                this.level >= goldTitle.getRequiredLevel()) this.title = goldTitle;
+
+        else if (this.titlePoints >= platinumTitle.getRequiredPoints() &&
+                this.titlePoints < diamondTitle.getRequiredPoints() &&
+                this.level >= platinumTitle.getRequiredLevel()) this.title = platinumTitle;
+
+        else if (this.titlePoints >= diamondTitle.getRequiredPoints() &&
+                this.titlePoints < challengerTitle.getRequiredPoints() &&
+                this.level >= diamondTitle.getRequiredLevel()) this.title = diamondTitle;
+
+        else if (this.titlePoints >= challengerTitle.getRequiredPoints() &&
+                this.level >= challengerTitle.getRequiredLevel()) this.title = challengerTitle;
+
     }
 }
