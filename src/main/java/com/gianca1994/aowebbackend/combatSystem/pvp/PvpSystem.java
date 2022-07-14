@@ -14,8 +14,6 @@ import java.util.ArrayList;
  */
 public class PvpSystem {
 
-
-
     public static PvpModel PvpUserVsUser(User attacker, User defender, TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
@@ -88,7 +86,6 @@ public class PvpSystem {
             }
             historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
                     attacker, defender, roundCounter, attackerDmg, defenderDmg));
-
 
         } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
 

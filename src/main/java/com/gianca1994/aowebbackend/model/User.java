@@ -261,11 +261,28 @@ public class User {
          * @param TitleRepository titleRepository
          * @return none
          */
+        int discountStrength = 0, discountDexterity = 0, discountIntelligence = 0, discountVitality = 0, discountLuck = 0;
+
         for (long i = 1; i < 8; i++) {
             Title title = titleRepository.findById(i).get();
             if (this.titlePoints >= title.getMinPts() && this.level >= title.getMinLvl()) {
                 this.title = title;
+                break;
             }
+            discountStrength += title.getStrength();
+            discountDexterity += title.getDexterity();
+            discountIntelligence += title.getIntelligence();
+            discountVitality += title.getVitality();
+            discountLuck += title.getLuck();
         }
+
+        this.strength += this.title.getStrength() - discountStrength;
+        this.dexterity += this.title.getDexterity() - discountDexterity;
+        this.intelligence += this.title.getIntelligence() - discountIntelligence;
+        this.vitality += this.title.getVitality() - discountVitality;
+        this.luck += this.title.getLuck() - discountLuck;
+
+        calculateStats(false);
+
     }
 }

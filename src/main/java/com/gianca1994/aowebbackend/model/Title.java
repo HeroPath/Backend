@@ -27,9 +27,25 @@ public class Title {
     @Column(nullable = false)
     private int minPts;
 
-    public Title(String name, int requiredLevel, int requiredPoints) {
+    @Column
+    private int strength;
+    @Column
+    private int dexterity;
+    @Column
+    private int intelligence;
+    @Column
+    private int vitality;
+    @Column
+    private int luck;
+
+    public Title(String name, int minLvl, int minPts, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
-        this.minLvl = requiredLevel;
-        this.minPts = requiredPoints;
+        this.minLvl = minLvl;
+        this.minPts = minPts;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.vitality = vitality;
+        this.luck = luck;
     }
 }
