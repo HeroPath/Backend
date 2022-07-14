@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 
 /**
@@ -262,40 +261,11 @@ public class User {
          * @param TitleRepository titleRepository
          * @return none
          */
-        Title ironTitle = titleRepository.findById(1L).get();
-        Title bronzeTitle = titleRepository.findById(2L).get();
-        Title silverTitle = titleRepository.findById(3L).get();
-        Title goldTitle = titleRepository.findById(4L).get();
-        Title platinumTitle = titleRepository.findById(5L).get();
-        Title diamondTitle = titleRepository.findById(6L).get();
-        Title challengerTitle = titleRepository.findById(7L).get();
-
-        if (this.titlePoints >= ironTitle.getRequiredPoints() &&
-                this.titlePoints < bronzeTitle.getRequiredPoints() &&
-                this.level >= ironTitle.getRequiredLevel()) this.title = ironTitle;
-
-        else if (this.titlePoints >= bronzeTitle.getRequiredPoints() &&
-                this.titlePoints < silverTitle.getRequiredPoints() &&
-                this.level >= bronzeTitle.getRequiredLevel()) this.title = bronzeTitle;
-
-        else if (this.titlePoints >= silverTitle.getRequiredPoints() &&
-                this.titlePoints < goldTitle.getRequiredPoints() &&
-                this.level >= silverTitle.getRequiredLevel()) this.title = silverTitle;
-
-        else if (this.titlePoints >= goldTitle.getRequiredPoints() &&
-                this.titlePoints < platinumTitle.getRequiredPoints() &&
-                this.level >= goldTitle.getRequiredLevel()) this.title = goldTitle;
-
-        else if (this.titlePoints >= platinumTitle.getRequiredPoints() &&
-                this.titlePoints < diamondTitle.getRequiredPoints() &&
-                this.level >= platinumTitle.getRequiredLevel()) this.title = platinumTitle;
-
-        else if (this.titlePoints >= diamondTitle.getRequiredPoints() &&
-                this.titlePoints < challengerTitle.getRequiredPoints() &&
-                this.level >= diamondTitle.getRequiredLevel()) this.title = diamondTitle;
-
-        else if (this.titlePoints >= challengerTitle.getRequiredPoints() &&
-                this.level >= challengerTitle.getRequiredLevel()) this.title = challengerTitle;
-
+        for (long i = 1; i < 8; i++) {
+            Title title = titleRepository.findById(i).get();
+            if (this.titlePoints >= title.getMinPts() && this.level >= title.getMinLvl()) {
+                this.title = title;
+            }
+        }
     }
 }

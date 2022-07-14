@@ -22,14 +22,14 @@ public class Title {
     private String name;
 
     @Column(nullable = false)
-    private int requiredLevel;
+    private int minLvl;
 
     @Column(nullable = false)
-    private int requiredPoints;
+    private int minPts;
 
     public Title(String name, int requiredLevel, int requiredPoints) {
         this.name = name;
-        this.requiredLevel = requiredLevel;
-        this.requiredPoints = requiredPoints;
+        this.minLvl = requiredLevel;
+        this.minPts = requiredPoints;
     }
 }
