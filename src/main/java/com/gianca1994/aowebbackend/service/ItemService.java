@@ -1,8 +1,8 @@
 package com.gianca1994.aowebbackend.service;
 
 import com.gianca1994.aowebbackend.dto.ItemDTO;
-import com.gianca1994.aowebbackend.exception.BadRequestException;
-import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.BadRequest;
+import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ItemService {
         return items;
     }
 
-    public Item saveItem(ItemDTO newItem) throws ConflictException {
+    public Item saveItem(ItemDTO newItem) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
@@ -37,21 +37,21 @@ public class ItemService {
          * @return Item
          */
         Item item = itemRepository.findByName(newItem.getName().toLowerCase());
-        if (item != null) throw new ConflictException("Item already exists");
+        if (item != null) throw new Conflict("Item already exists");
 
-        if (Objects.equals(newItem.getName(), "")) throw new BadRequestException("Name cannot be empty");
-        if (Objects.equals(newItem.getType(), "")) throw new BadRequestException("Type cannot be empty");
-        if (newItem.getLvlMin() <= 0) throw new BadRequestException("LvlMin cannot be less than 0");
-        if (newItem.getPrice() < 0) throw new BadRequestException("Price cannot be less than 0");
+        if (Objects.equals(newItem.getName(), "")) throw new BadRequest("Name cannot be empty");
+        if (Objects.equals(newItem.getType(), "")) throw new BadRequest("Type cannot be empty");
+        if (newItem.getLvlMin() <= 0) throw new BadRequest("LvlMin cannot be less than 0");
+        if (newItem.getPrice() < 0) throw new BadRequest("Price cannot be less than 0");
 
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 ||
                 newItem.getVitality() < 0 || newItem.getLuck() < 0
-        ) throw new BadRequestException("Stats cannot be less than 0");
+        ) throw new BadRequest("Stats cannot be less than 0");
 
 
         List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
         if (!itemsEnabledToEquip.contains(newItem.getType()))
-            throw new ConflictException("You can't equip more than one " + newItem.getType() + " item");
+            throw new Conflict("You can't equip more than one " + newItem.getType() + " item");
 
         if (Objects.equals(newItem.getClassRequired(), "")) newItem.setClassRequired("none");
 

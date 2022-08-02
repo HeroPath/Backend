@@ -1,8 +1,8 @@
 package com.gianca1994.aowebbackend.service;
 
-import com.gianca1994.aowebbackend.exception.BadRequestException;
-import com.gianca1994.aowebbackend.exception.ConflictException;
-import com.gianca1994.aowebbackend.exception.NotFoundException;
+import com.gianca1994.aowebbackend.exception.BadRequest;
+import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.model.*;
 import com.gianca1994.aowebbackend.model.Class;
 import com.gianca1994.aowebbackend.repository.*;
@@ -14,9 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +40,9 @@ public class JWTUserDetailsService implements UserDetailsService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private TitleRepository titleRepository;
+
+    @Autowired
     private InventoryRepository inventoryRepository;
 
     @Autowired
@@ -56,7 +57,7 @@ public class JWTUserDetailsService implements UserDetailsService {
     private final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws NotFoundException {
+    public UserDetails loadUserByUsername(String username) throws NotFound {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to load the user by username.
@@ -65,7 +66,7 @@ public class JWTUserDetailsService implements UserDetailsService {
          */
         User user = userRepository.findByUsername(username);
 
-        if (user == null) throw new NotFoundException("User not found");
+        if (user == null) throw new NotFound("User not found");
 
         GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getRoleName());
 
@@ -95,7 +96,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public User saveUser(UserDTO user) throws ConflictException {
+    public User saveUser(UserDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to save a new user in the database.
@@ -103,24 +104,26 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return User
          */
         if (!validateEmail(user.getEmail().toLowerCase()))
-            throw new BadRequestException("Invalid email address");
+            throw new BadRequest("Invalid email address");
 
         String username = user.getUsername().toLowerCase();
 
-        if (!username.matches("^[a-zA-Z0-9]*$")) throw new BadRequestException("Username must be alphanumeric");
-        if (userRepository.findByUsername(username) != null) throw new ConflictException("Username already exists");
+        if (!username.matches("^[a-zA-Z0-9]*$")) throw new BadRequest("Username must be alphanumeric");
+        if (userRepository.findByUsername(username) != null) throw new Conflict("Username already exists");
 
         if (username.length() < 3 || username.length() > 20)
-            throw new BadRequestException("Username must be between 3 and 20 characters");
+            throw new BadRequest("Username must be between 3 and 20 characters");
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
-            throw new BadRequestException("Password must be between 3 and 20 characters");
+            throw new BadRequest("Password must be between 3 and 20 characters");
 
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
-        if (aClass.getName() == null) throw new BadRequestException("Class not found");
+        Title standardTitle = titleRepository.findById(1L).get();
+        if (aClass.getName() == null) throw new BadRequest("Class not found");
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
+
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
 
@@ -129,6 +132,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 user.getEmail().toLowerCase(),
                 standardRole,
                 aClass,
+                standardTitle,
                 inventory,
                 equipment,
                 (short) 1, 0L, 5L,
@@ -140,15 +144,14 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getIntelligence(),
                 aClass.getVitality(),
                 aClass.getLuck(),
-                3, 0, 0, 0
+                3, 0, 0, 0, 0
         );
 
         newUser.calculateStats(true);
 
-        if (Objects.equals(user.getUsername(), "gianca") ||
-                Objects.equals(user.getUsername(), "lucho")) {
+        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
             newUser.setRole(roleRepository.findById(2L).get());
-        }
+
         return userRepository.save(newUser);
     }
 }

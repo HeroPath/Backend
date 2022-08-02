@@ -2,13 +2,13 @@ package com.gianca1994.aowebbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.repository.TitleRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 
 /**
@@ -56,6 +56,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "a_class_id",
                     referencedColumnName = "id"))
     private Class aClass;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_title",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "title_id",
+                    referencedColumnName = "id"))
+    private Title title;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",
@@ -115,13 +123,16 @@ public class User {
     private int pvpWins;
     @Column
     private int pvpLosses;
+    @Column
+    private int titlePoints;
 
-    public User(String username, String password, String email, Role role, Class aClass, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses) {
+    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses, int titlePoints) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
         this.aClass = aClass;
+        this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
         this.level = level;
@@ -142,6 +153,7 @@ public class User {
         this.npcKills = npcKills;
         this.pvpWins = pvpWins;
         this.pvpLosses = pvpLosses;
+        this.titlePoints = titlePoints;
     }
 
     public void calculateStats(boolean fullMinHp) {
@@ -219,5 +231,58 @@ public class User {
 
         if (isAdded) this.freeSkillPoints -= freeSkillPointDTO.getAmount();
         calculateStats(false);
+    }
+
+    public void addTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add title points to the user.
+         * @param int amount
+         * @return none
+         */
+        this.titlePoints += amount;
+    }
+
+    public void removeTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to remove title points from the user.
+         * @param int amount
+         * @return none
+         */
+        if (this.titlePoints >= amount) this.titlePoints -= amount;
+        else this.titlePoints = 0;
+    }
+
+    public void checkStatusTitlePoints(TitleRepository titleRepository) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to check the status of the title points.
+         * @param TitleRepository titleRepository
+         * @return none
+         */
+        int discountStrength = 0, discountDexterity = 0, discountIntelligence = 0, discountVitality = 0, discountLuck = 0;
+
+        for (long i = 1; i < 8; i++) {
+            Title title = titleRepository.findById(i).get();
+            if (this.titlePoints >= title.getMinPts() && this.level >= title.getMinLvl()) {
+                this.title = title;
+                break;
+            }
+            discountStrength += title.getStrength();
+            discountDexterity += title.getDexterity();
+            discountIntelligence += title.getIntelligence();
+            discountVitality += title.getVitality();
+            discountLuck += title.getLuck();
+        }
+
+        this.strength += this.title.getStrength() - discountStrength;
+        this.dexterity += this.title.getDexterity() - discountDexterity;
+        this.intelligence += this.title.getIntelligence() - discountIntelligence;
+        this.vitality += this.title.getVitality() - discountVitality;
+        this.luck += this.title.getLuck() - discountLuck;
+
+        calculateStats(false);
+
     }
 }

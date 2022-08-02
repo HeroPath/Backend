@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.dto.*;
-import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class UserController {
     @PostMapping("/add-skill-points")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
-                                  @RequestBody FreeSkillPointDTO freeSkillPointDTO) throws ConflictException {
+                                  @RequestBody FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to add skill points to the user.
@@ -66,7 +66,7 @@ public class UserController {
     @PostMapping("/equip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User equipItem(@RequestHeader(value = "Authorization") String token,
-                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
+                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
@@ -80,7 +80,7 @@ public class UserController {
     @PostMapping("/unequip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User unequipItem(@RequestHeader(value = "Authorization") String token,
-                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws ConflictException {
+                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item from the user.
@@ -94,7 +94,7 @@ public class UserController {
     @PostMapping("/buyitem")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void buyItem(@RequestHeader(value = "Authorization") String token,
-                        @RequestBody BuyItemDTO buyItemDTO) throws ConflictException {
+                        @RequestBody BuyItemDTO buyItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to buy an item from the shop.
@@ -127,7 +127,7 @@ public class UserController {
     @PostMapping("/attack-user")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody UserAttackUserDTO userAttackUserDTO) throws ConflictException {
+                                            @RequestBody UserAttackUserDTO userAttackUserDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.
@@ -142,7 +142,7 @@ public class UserController {
     @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody UserAttackNpcDTO userAttackNpcDTO) throws ConflictException {
+                                            @RequestBody UserAttackNpcDTO userAttackNpcDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.

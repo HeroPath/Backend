@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.controller;
 
 import com.gianca1994.aowebbackend.dto.NpcDTO;
-import com.gianca1994.aowebbackend.exception.ConflictException;
+import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.service.NpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class NpcController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Npc saveNpc(@RequestBody NpcDTO npc) throws ConflictException {
+    public Npc saveNpc(@RequestBody NpcDTO npc) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving the npc.

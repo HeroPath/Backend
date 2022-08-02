@@ -4,12 +4,12 @@ package com.gianca1994.aowebbackend.exception;
  * @Author: Gianca1994
  * Explanation: ConflictException
  */
-public class ConflictException extends Exception {
-    public ConflictException(String message) {
+public class Conflict extends Exception {
+    public Conflict(String message) {
         super(message);
     }
 
-    public ConflictException(String message, Throwable cause) {
+    public Conflict(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -5,12 +5,12 @@ package com.gianca1994.aowebbackend.exception;
  * Explanation: BadRequestException
  */
 
-public class BadRequestException extends RuntimeException {
-    public BadRequestException(String message) {
+public class BadRequest extends RuntimeException {
+    public BadRequest(String message) {
         super(message);
     }
 
-    public BadRequestException(String message, Throwable cause) {
+    public BadRequest(String message, Throwable cause) {
         super(message, cause);
     }
 }
