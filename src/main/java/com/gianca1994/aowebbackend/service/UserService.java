@@ -15,11 +15,13 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.model.Npc;
+import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.*;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -31,22 +33,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserService {
 
     private final int MAX_ITEMS_INVENTORY = 24;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ItemRepository itemRepository;
-
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     TitleRepository titleRepository;
-
     @Autowired
     NpcRepository npcRepository;
-
+    @Autowired
+    QuestRepository questRepository;
     GenericFunctions genericFunctions = new GenericFunctions();
 
     @Autowired
@@ -221,6 +219,25 @@ public class UserService {
         else user.getInventory().getItems().remove(itemBuy);
         userRepository.save(user);
     }
+
+    public void acceptQuest(String token, @PathVariable Long questId) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of accepting a quest.
+         * @param String token
+         * @param Long questId
+         * @return none
+         */
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFound("Quest not found"));
+        User user = userRepository.findByUsername(getTokenUser(token));
+
+        if (user == null) throw new NotFound("User not found");
+        if (user.getQuests().contains(quest)) throw new Conflict("You already accepted this quest");
+
+        user.getQuests().add(quest);
+        userRepository.save(user);
+    }
+
 
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////

@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -65,6 +67,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "title_id",
                     referencedColumnName = "id"))
     private Title title;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_quests",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "quest_id")}
+    )
+    private Set<Quest> quests = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",

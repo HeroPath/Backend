@@ -119,6 +119,15 @@ public class UserController {
         userService.sellItem(token, sellItemDTO);
     }
 
+    @GetMapping("/accept-quest/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void acceptQuest(@RequestHeader(value = "Authorization") String token,
+                            @PathVariable Long id) throws Conflict {
+        /**
+         *
+         */
+        userService.acceptQuest(token, id);
+    }
 
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
