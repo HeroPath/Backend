@@ -45,6 +45,8 @@ public class QuestService {
                 new Quest(
                         quest.getName(),
                         quest.getDescription(),
+                        quest.getNameNpcKill(),
+                        quest.getNpcKillAmount(),
                         quest.getGiveExp(),
                         quest.getGiveGold()
                 )

@@ -12,6 +12,8 @@ import lombok.Setter;
 public class QuestDTO {
     private String name;
     private String description;
+    private String nameNpcKill;
+    private int npcKillAmount;
     private long giveExp;
     private long giveGold;
 }
