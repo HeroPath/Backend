@@ -124,7 +124,11 @@ public class UserController {
     public void acceptQuest(@RequestHeader(value = "Authorization") String token,
                             @PathVariable Long id) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to accept a quest.
+         * @param String token
+         * @param Long id
+         * @return none
          */
         userService.acceptQuest(token, id);
     }
