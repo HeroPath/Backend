@@ -281,13 +281,12 @@ public class UserService {
             if (item.getType().equals("ship")) enabledSea = true;
             if (item.getType().equals("wings")) enabledHell = true;
         }
-
         if (npc.getZone().equals("sea") && !enabledSea)
             throw new Conflict("You can't attack an npc in the sea without a ship");
         if (npc.getZone().equals("hell") && !enabledHell)
             throw new Conflict("You can't attack an npc in hell without wings");
 
-        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
+        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
 
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();

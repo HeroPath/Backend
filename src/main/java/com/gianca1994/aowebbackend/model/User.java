@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 /**
@@ -261,27 +262,20 @@ public class User {
          * @param TitleRepository titleRepository
          * @return none
          */
-        int discountStrength = 0, discountDexterity = 0, discountIntelligence = 0, discountVitality = 0, discountLuck = 0;
+        Title currentTitle = titleRepository.findById(this.title.getId()).get();
 
-        for (long i = 1; i < 8; i++) {
-            Title title = titleRepository.findById(i).get();
-            if (this.titlePoints >= title.getMinPts() && this.level >= title.getMinLvl()) {
-                this.title = title;
-                break;
+        for (Title t : titleRepository.findAll()) {
+            if (this.titlePoints >= t.getMinPts() && this.level >= t.getMinLvl()) {
+                this.title = t;
             }
-            discountStrength += title.getStrength();
-            discountDexterity += title.getDexterity();
-            discountIntelligence += title.getIntelligence();
-            discountVitality += title.getVitality();
-            discountLuck += title.getLuck();
         }
-
-        this.strength += this.title.getStrength() - discountStrength;
-        this.dexterity += this.title.getDexterity() - discountDexterity;
-        this.intelligence += this.title.getIntelligence() - discountIntelligence;
-        this.vitality += this.title.getVitality() - discountVitality;
-        this.luck += this.title.getLuck() - discountLuck;
-
+        if (!Objects.equals(this.title.getId(), currentTitle.getId())) {
+            this.strength += this.title.getStrength() - currentTitle.getStrength();
+            this.dexterity += this.title.getDexterity() - currentTitle.getDexterity();
+            this.intelligence += this.title.getIntelligence() - currentTitle.getIntelligence();
+            this.vitality += this.title.getVitality() - currentTitle.getVitality();
+            this.luck += this.title.getLuck() - currentTitle.getLuck();
+        }
         calculateStats(false);
 
     }

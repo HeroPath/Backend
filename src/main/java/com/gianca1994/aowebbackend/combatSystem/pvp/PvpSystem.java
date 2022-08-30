@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.TitleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
@@ -37,7 +36,7 @@ public class PvpSystem {
         do {
             roundCounter++;
 
-            // Calculate the damage of the attacker and defender.
+            // Calculate the damage to the attacker and defender.
             int attackerDmg = genericFunctions.getUserDmg(attacker, defender.getDefense());
             int defenderDmg = genericFunctions.getUserDmg(defender, attacker.getDefense());
 
@@ -50,10 +49,11 @@ public class PvpSystem {
                     defenderDmg = 0;
                     stopPvP = true;
 
+                    // Add points to the attacker and defender.
                     attacker.addTitlePoints(mmrWinAndLose);
-                    attacker.checkStatusTitlePoints(titleRepository);
-
                     defender.removeTitlePoints(mmrWinAndLose);
+                    // Check status title for the attacker and defender.
+                    attacker.checkStatusTitlePoints(titleRepository);
                     defender.checkStatusTitlePoints(titleRepository);
 
                     // Add the history of the combat.
