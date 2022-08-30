@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.repository.TitleRepository;
 
 import java.util.ArrayList;
 
@@ -13,10 +14,10 @@ import java.util.ArrayList;
  */
 public class PveSystem {
 
-    public static PveModel PveUserVsNpc(User user, Npc npc) {
+    public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of starting a combat between a user and an npc.
+         * Explanation: This function is in charge of starting a combat between a user and a npc.
          * @param User user
          * @param Npc npc
          * @return PveModel
@@ -92,6 +93,8 @@ public class PveSystem {
             user.setDiamond(user.getDiamond() + diamondsGain);
         }
 
+        user.checkStatusTitlePoints(titleRepository);
+        
         historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpcFinish(
                 user, npc, experienceGain, goldGain, diamondsGain, levelUp));
 

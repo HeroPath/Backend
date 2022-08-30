@@ -144,7 +144,7 @@ public class JWTUserDetailsService implements UserDetailsService {
                 aClass.getIntelligence(),
                 aClass.getVitality(),
                 aClass.getLuck(),
-                3, 0, 0, 0, 0
+                2, 0, 0, 0, 0
         );
 
         newUser.calculateStats(true);

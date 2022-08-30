@@ -14,7 +14,7 @@ public class PveFunctions {
     private final short LEVEL_MAX = 300;
     private final int EXPERIENCE_MULTIPLIER = 10;
     private final int GOLD_MULTIPLIER = 10;
-    private final int FREE_SKILL_POINTS_PER_LEVEL = 3;
+    private final int FREE_SKILL_POINTS_PER_LEVEL = 2;
     private final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
     private final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 5;
 

@@ -30,12 +30,12 @@ public class TitleConfiguration {
             List<Title> roles = titleRepository.findAll();
             if (roles.isEmpty()) {
                 titleRepository.save(new Title("iron", 1, 0, 0, 0, 0, 0, 0));
-                titleRepository.save(new Title("bronze", 10, 100, 10, 10, 10, 10, 10));
-                titleRepository.save(new Title("silver", 30, 200, 30, 30, 30, 30, 30));
-                titleRepository.save(new Title("gold", 100, 500, 100, 100, 100, 100, 100));
-                titleRepository.save(new Title("platinum", 150, 1000, 150, 150, 150, 150, 150));
-                titleRepository.save(new Title("diamond", 200, 2000, 200, 200, 200, 200, 200));
-                titleRepository.save(new Title("challenger", 270, 5000, 270, 270, 270, 270, 270));
+                titleRepository.save(new Title("bronze", 10, 50, 5, 5, 5, 5, 5));
+                titleRepository.save(new Title("silver", 20, 100, 10, 10, 10, 10, 10));
+                titleRepository.save(new Title("gold", 40, 200, 20, 20, 20, 20, 20));
+                titleRepository.save(new Title("platinum", 80, 400, 40, 40, 40, 40, 40));
+                titleRepository.save(new Title("diamond", 150, 1000, 100, 100, 100, 100, 100));
+                titleRepository.save(new Title("challenger", 200, 2500, 200, 200, 200, 200, 200));
             }
         };
     }

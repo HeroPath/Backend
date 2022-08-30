@@ -86,6 +86,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * @return void
          */
 
+        // http = http.cors().disable();
+
         http = http.cors().and().csrf().disable();
 
         http = http

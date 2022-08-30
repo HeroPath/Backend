@@ -15,11 +15,13 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.model.Item;
 import com.gianca1994.aowebbackend.model.Npc;
+import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.*;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -31,22 +33,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserService {
 
     private final int MAX_ITEMS_INVENTORY = 24;
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     ItemRepository itemRepository;
-
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     TitleRepository titleRepository;
-
     @Autowired
     NpcRepository npcRepository;
-
+    @Autowired
+    QuestRepository questRepository;
     GenericFunctions genericFunctions = new GenericFunctions();
 
     @Autowired
@@ -222,6 +220,26 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void acceptQuest(String token, @PathVariable Long questId) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of accepting a quest.
+         * @param String token
+         * @param Long questId
+         * @return none
+         */
+        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFound("Quest not found"));
+        User user = userRepository.findByUsername(getTokenUser(token));
+
+        if (user == null) throw new NotFound("User not found");
+        if (user.getQuests().contains(quest)) throw new Conflict("You already accepted this quest");
+        if (user.getQuests().size() >= 3) throw new Conflict("You can't accept more quests");
+
+        user.getQuests().add(quest);
+        userRepository.save(user);
+    }
+
+
     //////////////////////////////////////////////////////////////////////
     ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -281,13 +299,12 @@ public class UserService {
             if (item.getType().equals("ship")) enabledSea = true;
             if (item.getType().equals("wings")) enabledHell = true;
         }
-
         if (npc.getZone().equals("sea") && !enabledSea)
             throw new Conflict("You can't attack an npc in the sea without a ship");
         if (npc.getZone().equals("hell") && !enabledHell)
             throw new Conflict("You can't attack an npc in hell without wings");
 
-        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
+        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
 
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();

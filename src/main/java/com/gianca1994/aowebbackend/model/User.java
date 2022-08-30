@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 
 /**
@@ -64,6 +67,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "title_id",
                     referencedColumnName = "id"))
     private Title title;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_quests",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "quest_id")}
+    )
+    private Set<Quest> quests = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",
@@ -171,7 +182,7 @@ public class User {
                 this.maxHp = this.vitality * 10;
                 this.defense = this.strength * 2;
                 this.evasion = this.dexterity * 2;
-                this.criticalChance = this.luck * 0.15f;
+                this.criticalChance = this.luck * 0.15f > 50 ? 50 : this.luck * 0.15f;
                 break;
             case WARRIOR:
                 this.minDmg = this.strength * 3;
@@ -179,7 +190,7 @@ public class User {
                 this.maxHp = this.vitality * 20;
                 this.defense = this.intelligence * 5;
                 this.evasion = this.dexterity * 2;
-                this.criticalChance = this.luck * 0.1f;
+                this.criticalChance = this.luck * 0.1f > 50 ? 50 : this.luck * 0.1f;
                 break;
             case ARCHER:
                 this.minDmg = this.dexterity * 4;
@@ -187,7 +198,7 @@ public class User {
                 this.maxHp = this.vitality * 15;
                 this.defense = this.intelligence * 3;
                 this.evasion = this.strength * 4;
-                this.criticalChance = this.luck * 0.125f;
+                this.criticalChance = this.luck * 0.125f > 50 ? 50 : this.luck * 0.125f;
                 break;
         }
         if (fullMinHp) this.hp = this.maxHp;
@@ -261,27 +272,20 @@ public class User {
          * @param TitleRepository titleRepository
          * @return none
          */
-        int discountStrength = 0, discountDexterity = 0, discountIntelligence = 0, discountVitality = 0, discountLuck = 0;
+        Title currentTitle = titleRepository.findById(this.title.getId()).get();
 
-        for (long i = 1; i < 8; i++) {
-            Title title = titleRepository.findById(i).get();
-            if (this.titlePoints >= title.getMinPts() && this.level >= title.getMinLvl()) {
-                this.title = title;
-                break;
+        for (Title t : titleRepository.findAll()) {
+            if (this.titlePoints >= t.getMinPts() && this.level >= t.getMinLvl()) {
+                this.title = t;
             }
-            discountStrength += title.getStrength();
-            discountDexterity += title.getDexterity();
-            discountIntelligence += title.getIntelligence();
-            discountVitality += title.getVitality();
-            discountLuck += title.getLuck();
         }
-
-        this.strength += this.title.getStrength() - discountStrength;
-        this.dexterity += this.title.getDexterity() - discountDexterity;
-        this.intelligence += this.title.getIntelligence() - discountIntelligence;
-        this.vitality += this.title.getVitality() - discountVitality;
-        this.luck += this.title.getLuck() - discountLuck;
-
+        if (!Objects.equals(this.title.getId(), currentTitle.getId())) {
+            this.strength += this.title.getStrength() - currentTitle.getStrength();
+            this.dexterity += this.title.getDexterity() - currentTitle.getDexterity();
+            this.intelligence += this.title.getIntelligence() - currentTitle.getIntelligence();
+            this.vitality += this.title.getVitality() - currentTitle.getVitality();
+            this.luck += this.title.getLuck() - currentTitle.getLuck();
+        }
         calculateStats(false);
 
     }

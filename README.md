@@ -1,5 +1,7 @@
 # aoweb-backend
 
+# Demo: https: https://aoweb.vercel.app/
+
 <h1>Documentation</h1>
 
 ## User
@@ -33,3 +35,12 @@
 | --- | --- | --- | --- |
 | PvpUserVsUser | https://ao-web.herokuapp.com/api/v1/users/attack-user | POST | header = { BearerToken } and { "name": "" } |
 | PvpUserVsNPC | https://ao-web.herokuapp.com/api/v1/users/attack-npc | POST | header = { BearerToken } and { "name": "" } |
+
+
+## DockerCommands:
+```
+sudo docker images
+sudo docker ps -a
+sudo docker build --build-arg JAR_FILE=out/artifacts/aoweb_backend_jar/*.jar -t aoweb-backend .
+sudo docker run -p 8080:8080 aoweb-backend
+```
