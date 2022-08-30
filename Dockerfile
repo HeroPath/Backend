@@ -1,5 +1,4 @@
-FROM openjdk:18
-VOLUME /tmp
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} aoweb-backend.jar
-ENTRYPOINT ["java","-jar","aoweb-backend.jar"]
+FROM openjdk:11
+ADD target/aoweb-backend-0.0.1-SNAPSHOT.jar aoweb.jar
+ENTRYPOINT ["java", "-jar","aoweb.jar"]
+EXPOSE 8080

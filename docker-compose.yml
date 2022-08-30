@@ -1,28 +1,28 @@
 version: '3.1'
-
 services:
-    app:
-        container_name: aoweb
-        image: 'aoweb-backend:latest'
+    aoweb:
+        image: "aoweb.jar"
         ports:
-            - '8080:8000'
+            - "8080:8080"
         depends_on:
-            - db
-        environment:
-            - JWT_SECRET_KEY=g8954g++46i984*-76i89*43-+2458+-23r4w-e65f1w+-e98fsdf+-9we-*/
-            - JWT_ACCESS_TOKEN_EXPIRES=86400
-            - JWT_AUTHORIZE_PATH=/api/v1/auth/**
-            - JWT_AUTHORIZE_PATH=/api/v1/classes/**
+            - PostgresSQL
 
-    db:
-        container_name: postgres
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgresSQL:5432/aoweb
+            - SPRING_DATASOURCE_USERNAME=postgres
+            - SPRING_DATASOURCE_PASSWORD=password
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+    PostgresSQL:
         image: postgres
         ports:
             - "5432:5432"
         environment:
-            - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=root
+            - POSTGRES_USER=postgres
             - POSTGRES_DB=aoweb
-        volumes:
-            - ./scripts:/docker-entrypoint-initdb.d postgres
-        restart: unless-stopped
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
