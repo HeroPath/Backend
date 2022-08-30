@@ -93,7 +93,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxODE0MDksImlhdCI6MTY1NzEwOTQwOX0.YeRk0Zt7x8KTRD3EPWzjxG9y8CrXW1XGbytYnzwFTk7-OE2D9YQLHVpeO42XP7eOcGL0mFKX4M4-TRZmO3VN9Q",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
 									"type": "string"
 								}
 							]
@@ -102,7 +102,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Demonio\"\r\n}",
+							"raw": "{\r\n    \"name\": \"murcielago\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -133,7 +133,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNjU3MDk2MzMxLCJpYXQiOjE2NTcwMjQzMzF9.C7lx2mnVDoNCDDTvJSIbTHgPsJ99Zwx9eP0Pq4FfPqn14M92oRMRcgNjVC2oOvJJy0BegpnEB6cjB524pThbDw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
 									"type": "string"
 								}
 							]
@@ -210,7 +210,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxODE0MDksImlhdCI6MTY1NzEwOTQwOX0.YeRk0Zt7x8KTRD3EPWzjxG9y8CrXW1XGbytYnzwFTk7-OE2D9YQLHVpeO42XP7eOcGL0mFKX4M4-TRZmO3VN9Q",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTc5MDAwMTEsImlhdCI6MTY1NzgxMzYxMX0.rUenE3WGGYRtJrQkUYdWsvRRozbMHmkOTeu3-RUr5qOJHdQBNwJbd0YIGQMKoZE1fqfyzTkltlKNPJo7hFUz7w",
 									"type": "string"
 								}
 							]
@@ -279,7 +279,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/auth/restore/gianca",
+							"raw": "http://{{local}}/api/v1/auth/restore/test",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -289,7 +289,7 @@
 								"v1",
 								"auth",
 								"restore",
-								"gianca"
+								"test"
 							]
 						}
 					},
@@ -374,6 +374,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Accept Quest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NTM3NjAsImlhdCI6MTY2MTg2NzM2MH0.G4AmMmWVmewZ6IXHdDRklkCJupEuoQNaYMATpsyt1RZWmn-4tKrJGg4lFdk_OUE76L4g1sMohKGrir7PMADPEw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/users/accept-quest/1",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"accept-quest",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -449,7 +481,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxNDM2NDksImlhdCI6MTY1NzA3MTY0OX0.ezgOPzUaErEujuGLwf8quXf-kbQ0DSAG09DwPlu3zuN6eM1WljiTLvCHR0EY8cxgx8Gd0cQe5HoQFp8vsJx6GA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTc5MjU2OTgsImlhdCI6MTY1NzgzOTI5OH0.IIZjEe2hbw9g570UlfbY9hTyoyxMKmOM7Pl3UM1-6NQVwwmOL6BURf4i1cuDabB1SFAet3EwAwolca2DrqU4Cg",
 									"type": "string"
 								}
 							]
@@ -458,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"test\",\r\n    \"level\": 1,\r\n    \"giveMaxExp\": 70000,\r\n    \"giveMinExp\": 70000,\r\n    \"giveMaxGold\": 5000,\r\n    \"giveMinGold\": 1500,\r\n    \"hp\": 500,\r\n    \"maxHp\": 500,\r\n    \"minDmg\": 1500,    \r\n    \"maxDmg\": 2000,\r\n    \"defense\": 5,\r\n    \"zone\": \"forest\"\r\n}",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"level\": 1,\r\n    \"giveMaxExp\": 70000000,\r\n    \"giveMinExp\": 70000000,\r\n    \"giveMaxGold\": 5000,\r\n    \"giveMinGold\": 1500,\r\n    \"hp\": 5,\r\n    \"maxHp\": 5,\r\n    \"minDmg\": 1,    \r\n    \"maxDmg\": 2,\r\n    \"defense\": 5,\r\n    \"zone\": \"forest\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -658,6 +690,142 @@
 					"request": {
 						"method": "POST",
 						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quest",
+			"item": [
+				{
+					"name": "All Quests",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/quests",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Quest By Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/quests/murcielagos",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quests",
+								"murcielagos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save Quest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NTM3NjAsImlhdCI6MTY2MTg2NzM2MH0.G4AmMmWVmewZ6IXHdDRklkCJupEuoQNaYMATpsyt1RZWmn-4tKrJGg4lFdk_OUE76L4g1sMohKGrir7PMADPEw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"murcielagos\",\r\n    \"description\": \"Deberas viajar al bosque y encontrar los murcielagos malditos\",\r\n    \"nameNpcKill\": \"murcielago\",\r\n    \"npcKillAmount\": 5,\r\n    \"giveExp\": 1000,\r\n    \"giveGold\": 500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/quests",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/quests/murcielagos",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quests",
+								"murcielagos"
+							]
+						}
 					},
 					"response": []
 				}
