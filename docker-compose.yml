@@ -1,12 +1,12 @@
 version: '3.1'
 
 services:
-    aoweb:
-        image: "aoweb"
+    ao:
+        image: aoweb
         ports:
             - "8080:8080"
         depends_on:
-            - PostgresSQL
+            - db
 
         environment:
             - spring.main.banner-mode=off
