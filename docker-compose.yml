@@ -1,13 +1,13 @@
 version: '3.1'
 
 services:
-    app:
-        container_name: aoweb
-        image: 'aoweb-backend:latest'
+    aoweb:
+        image: "aoweb"
         ports:
-            - '8080:8000'
+            - "8080:8080"
         depends_on:
-            - db
+            - PostgresSQL
+
         environment:
             - spring.main.banner-mode=off
             - spring.output.ansi.enabled=ALWAYS
@@ -17,6 +17,7 @@ services:
             - jwt.authorizeRequests.patterns.auth=/api/v1/auth/**
             - jwt.authorizeRequests.patterns.classes=/api/v1/classes/**
             - spring.main.allow-circular-references=true
+            - spring.datasource.driverClassName=org.postgresql.Driver
             - spring.datasource.url=jdbc:postgresql://db:5432/aoweb
             - spring.datasource.username=postgres
             - spring.datasource.password=root
@@ -37,3 +38,4 @@ services:
 
 networks:
     ao:
+
