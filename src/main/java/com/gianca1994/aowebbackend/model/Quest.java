@@ -20,11 +20,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Quest {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true)
     private String name;
     @Column
