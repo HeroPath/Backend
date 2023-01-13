@@ -24,7 +24,7 @@ public class QuestService {
     public List<Quest> getAllQuests(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * Explanation: This method is used to get all the quests.
          * @param none
          * @return List<Quest>
          */
@@ -36,8 +36,6 @@ public class QuestService {
             if (!user.getQuests().contains(quest)) questsList.add(quest);
         }
         return questsList;
-
-
     }
 
     public Quest getQuestByName(String name) {
