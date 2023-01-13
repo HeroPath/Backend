@@ -220,7 +220,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void acceptQuest(String token, @PathVariable Long questId) throws Conflict {
+    public void acceptQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
@@ -228,7 +228,9 @@ public class UserService {
          * @param Long questId
          * @return none
          */
-        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFound("Quest not found"));
+        Quest quest = questRepository.findByName(acceptedQuestDTO.getName());
+        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
+
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFound("User not found");

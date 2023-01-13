@@ -119,10 +119,10 @@ public class UserController {
         userService.sellItem(token, sellItemDTO);
     }
 
-    @GetMapping("/accept-quest/{id}")
+    @GetMapping("/accept-quest")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void acceptQuest(@RequestHeader(value = "Authorization") String token,
-                            @PathVariable Long id) throws Conflict {
+                            @RequestBody AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to accept a quest.
@@ -130,7 +130,7 @@ public class UserController {
          * @param Long id
          * @return none
          */
-        userService.acceptQuest(token, id);
+        userService.acceptQuest(token, acceptedQuestDTO);
     }
 
     //////////////////////////////////////////////////////////////////////

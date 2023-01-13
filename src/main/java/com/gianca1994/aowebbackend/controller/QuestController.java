@@ -17,17 +17,19 @@ public class QuestController {
     private QuestService questService;
 
     @GetMapping
-    public List<Quest> getAllQuests() {
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public List<Quest> getAllQuests(@RequestHeader(value = "Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param none
          * @return List<Quest>
          */
-        return questService.getAllQuests();
+        return questService.getAllQuests(token);
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public Quest getQuestByName(@PathVariable String name) {
         /**
          * @Author: Gianca1994
@@ -61,6 +63,5 @@ public class QuestController {
          */
         questService.deleteQuest(name);
     }
-
 
 }
