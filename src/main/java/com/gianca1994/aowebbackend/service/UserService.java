@@ -110,6 +110,7 @@ public class UserService {
         return user;
     }
 
+    ///////////////////// OPEN: ITEMS SYSTEMS ///////////////////////////
     public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -219,6 +220,7 @@ public class UserService {
         else user.getInventory().getItems().remove(itemBuy);
         userRepository.save(user);
     }
+    ///////////////////// CLOSE: ITEMS SYSTEMS ///////////////////////////
 
     ///////////////////// OPEN: QUESTS SYSTEMS ///////////////////////////
     public void acceptQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
@@ -239,6 +241,7 @@ public class UserService {
         if (user.getQuests().size() >= 3) throw new Conflict("You can't accept more quests");
 
         quest.setNpcKillAmount(0);
+        quest.setUserKillAmount(0);
 
         user.getQuests().add(quest);
         userRepository.save(user);
@@ -291,6 +294,9 @@ public class UserService {
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository);
 
         userRepository.save(pvpUserVsUserModel.getAttacker());
+        if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
+            pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
+        }
         userRepository.save(pvpUserVsUserModel.getDefender());
         return pvpUserVsUserModel.getHistoryCombat();
     }

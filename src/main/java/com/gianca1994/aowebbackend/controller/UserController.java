@@ -63,6 +63,7 @@ public class UserController {
         return userService.setFreeSkillPoint(token, freeSkillPointDTO);
     }
 
+    ///////////////////// OPEN: ITEMS SYSTEMS ///////////////////////////
     @PostMapping("/equip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User equipItem(@RequestHeader(value = "Authorization") String token,
@@ -118,6 +119,7 @@ public class UserController {
          */
         userService.sellItem(token, sellItemDTO);
     }
+    ///////////////////// CLOSE: ITEMS SYSTEMS ///////////////////////////
 
     ///////////////////// OPEN: QUESTS SYSTEMS ///////////////////////////
     @PostMapping("/accept-quest")

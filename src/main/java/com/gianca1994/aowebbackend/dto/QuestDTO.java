@@ -14,6 +14,8 @@ public class QuestDTO {
     private String description;
     private String nameNpcKill;
     private int npcKillAmountNeeded;
+    private int userKillAmountNeeded;
     private long giveExp;
     private long giveGold;
+    private short giveDiamonds;
 }

@@ -5,9 +5,7 @@ import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.model.Npc;
 import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.repository.QuestRepository;
 import com.gianca1994.aowebbackend.repository.TitleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -54,14 +52,16 @@ public class PveSystem {
                     user.setNpcKills(user.getNpcKills() + 1);
 
                     for (Quest quest : user.getQuests()) {
-                        if (Objects.equals(quest.getNameNpcKill(), npc.getName())) {
+                        if (Objects.equals(quest.getNameNpcKill(), npc.getName()) &&
+                                !Objects.equals(quest.getNameNpcKill(), "player")) {
                             quest.setNpcKillAmount(quest.getNpcKillAmount() + 1);
                             user.getQuests().add(quest);
-                        }
-                        if (quest.getNpcKillAmount() >= quest.getNpcKillAmountNeeded()) {
-                            experienceQuestGain = quest.getGiveExp();
-                            goldQuestGain = quest.getGiveGold();
-                            user.getQuests().remove(quest);
+
+                            if (quest.getNpcKillAmount() >= quest.getNpcKillAmountNeeded()) {
+                                experienceQuestGain = quest.getGiveExp();
+                                goldQuestGain = quest.getGiveGold();
+                                user.getQuests().remove(quest);
+                            }
                         }
                     }
 

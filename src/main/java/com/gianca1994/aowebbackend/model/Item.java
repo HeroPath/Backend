@@ -24,37 +24,26 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(unique = true, nullable = false)
     private String name;
-
     @Column(nullable = false)
     private String type;
-
     @Column(nullable = false)
     private int lvlMin;
-
     @Column()
     private String classRequired;
-
     @Column(nullable = false)
     private int price;
-
     @Column()
     private int amount;
-
     @Column()
     private int strength;
-
     @Column()
     private int dexterity;
-
     @Column()
     private int intelligence;
-
     @Column()
     private int vitality;
-
     @Column()
     private int luck;
 

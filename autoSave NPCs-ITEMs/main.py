@@ -72,8 +72,10 @@ def main():
         "description",
         "nameNpcKill",
         "npcKillAmountNeeded",
+        "userKillAmountNeeded",
         "giveExp",
-        "giveGold"
+        "giveGold",
+        "giveDiamonds"
     ])
 
     response_login = requests.post(url_login, json=data_login_gianca)

@@ -62,8 +62,11 @@ public class QuestService {
                         quest.getNameNpcKill().toLowerCase(),
                         0,
                         quest.getNpcKillAmountNeeded(),
+                        0,
+                        quest.getUserKillAmountNeeded(),
                         quest.getGiveExp(),
-                        quest.getGiveGold()
+                        quest.getGiveGold(),
+                        quest.getGiveDiamonds()
                 )
         );
     }
