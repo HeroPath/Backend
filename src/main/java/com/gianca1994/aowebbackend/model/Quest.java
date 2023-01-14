@@ -44,4 +44,5 @@ public class Quest {
         this.giveExp = giveExp;
         this.giveGold = giveGold;
     }
+
 }

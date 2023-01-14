@@ -3,16 +3,21 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.model.Npc;
+import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.repository.QuestRepository;
 import com.gianca1994.aowebbackend.repository.TitleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @Author: Gianca1994
  * Explanation: PveSystem
  */
 public class PveSystem {
+
 
     public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
         /**
@@ -47,6 +52,13 @@ public class PveSystem {
                     npcDmg = 0;
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
+
+                    for (Quest quest : user.getQuests()) {
+                        if (Objects.equals(quest.getNameNpcKill(), npc.getName())) {
+                            quest.setNpcKillAmount(quest.getNpcKillAmount() + 1);
+                            user.getQuests().add(quest);
+                        }
+                    }
 
                     if (user.getLevel() < LEVEL_MAX) {
                         experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
@@ -94,7 +106,7 @@ public class PveSystem {
         }
 
         user.checkStatusTitlePoints(titleRepository);
-        
+
         historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpcFinish(
                 user, npc, experienceGain, goldGain, diamondsGain, levelUp));
 

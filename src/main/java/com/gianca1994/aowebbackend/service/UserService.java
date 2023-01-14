@@ -237,6 +237,8 @@ public class UserService {
         if (user.getQuests().contains(quest)) throw new Conflict("You already accepted this quest");
         if (user.getQuests().size() >= 3) throw new Conflict("You can't accept more quests");
 
+        quest.setNpcKillAmount(0);
+
         user.getQuests().add(quest);
         userRepository.save(user);
     }
