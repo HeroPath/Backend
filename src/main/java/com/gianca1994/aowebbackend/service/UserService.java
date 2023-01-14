@@ -110,6 +110,7 @@ public class UserService {
         return user;
     }
 
+    ///////////////////// OPEN: ITEMS SYSTEMS ///////////////////////////
     public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -137,12 +138,16 @@ public class UserService {
         if (user.getLevel() < item.getLvlMin())
             throw new Conflict("You can't equip an item that requires level " + item.getLvlMin());
 
+        if (Objects.equals(item.getType(), "potion")){
+            user.setHp(user.getMaxHp());
+        } else{
+            user.getEquipment().getItems().add(item);
+            user.swapItemToEquipmentOrInventory(item, true);
+        }
+
         if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
         else user.getInventory().getItems().remove(item);
 
-        user.getEquipment().getItems().add(item);
-
-        user.swapItemToEquipmentOrInventory(item, true);
         userRepository.save(user);
         return user;
     }
@@ -219,30 +224,54 @@ public class UserService {
         else user.getInventory().getItems().remove(itemBuy);
         userRepository.save(user);
     }
+    ///////////////////// CLOSE: ITEMS SYSTEMS ///////////////////////////
 
-    public void acceptQuest(String token, @PathVariable Long questId) throws Conflict {
+    ///////////////////// OPEN: QUESTS SYSTEMS ///////////////////////////
+    public void acceptQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
          * @param String token
-         * @param Long questId
+         * @param AcceptedQuestDTO acceptedQuestDTO
          * @return none
          */
-        Quest quest = questRepository.findById(questId).orElseThrow(() -> new NotFound("Quest not found"));
+        Quest quest = questRepository.findByName(acceptedQuestDTO.getName());
+        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
+
         User user = userRepository.findByUsername(getTokenUser(token));
 
         if (user == null) throw new NotFound("User not found");
         if (user.getQuests().contains(quest)) throw new Conflict("You already accepted this quest");
         if (user.getQuests().size() >= 3) throw new Conflict("You can't accept more quests");
 
+        quest.setNpcKillAmount(0);
+        quest.setUserKillAmount(0);
+
         user.getQuests().add(quest);
         userRepository.save(user);
     }
 
+    public void cancelQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of canceling a quest.
+         * @param String token
+         * @param AcceptedQuestDTO acceptedQuestDTO
+         * @return none
+         */
+        Quest quest = questRepository.findByName(acceptedQuestDTO.getName());
+        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
 
-    //////////////////////////////////////////////////////////////////////
-    ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
-    //////////////////////////////////////////////////////////////////////
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFound("User not found");
+        if (!user.getQuests().contains(quest)) throw new Conflict("You didn't accept this quest");
+
+        user.getQuests().remove(quest);
+        userRepository.save(user);
+    }
+    //////////////////// CLOSE: QUESTS SYSTEMS ///////////////////////////
+
+    ////////////////// OPEN: PVP AND PVE SYSTEMS /////////////////////////
     public ArrayList<ObjectNode> userVsUserCombatSystem(String token, UserAttackUserDTO userAttackUserDTO) throws
             Conflict {
         /**
@@ -269,10 +298,12 @@ public class UserService {
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository);
 
         userRepository.save(pvpUserVsUserModel.getAttacker());
+        if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
+            pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
+        }
         userRepository.save(pvpUserVsUserModel.getDefender());
         return pvpUserVsUserModel.getHistoryCombat();
     }
-
 
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String token, UserAttackNpcDTO userAttackNpcDTO) throws Conflict {
         /**
@@ -309,4 +340,5 @@ public class UserService {
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }
+    ////////////////// CLOSE: PVP AND PVE SYSTEMS ////////////////////////
 }

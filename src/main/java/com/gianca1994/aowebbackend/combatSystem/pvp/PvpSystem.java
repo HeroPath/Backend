@@ -2,10 +2,12 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
+import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.TitleRepository;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @Author: Gianca1994
@@ -22,11 +24,13 @@ public class PvpSystem {
          * @param TitleRepository titleRepository
          * @return PvpModel
          */
+        final short LEVEL_MAX = 300;
         GenericFunctions genericFunctions = new GenericFunctions();
         PvpFunctions pvpUserVsUser = new PvpFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        long goldAmountWin = 0;
+        long goldAmountWin = 0, goldQuestGain = 0;
+        short diamondsQuestGain = 0;
         long goldLoseForLoseCombat = 0;
 
         int roundCounter = 0;
@@ -60,7 +64,22 @@ public class PvpSystem {
                     defender.setPvpLosses(defender.getPvpLosses() + 1);
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
-                    goldAmountWin = pvpUserVsUser.getUserGoldAmountWin(defender);
+                    for (Quest quest : attacker.getQuests()) {
+                        if (Objects.equals(quest.getNameNpcKill(), "player")) {
+                            quest.setUserKillAmount(quest.getUserKillAmount() + 1);
+                            attacker.getQuests().add(quest);
+
+                            if (quest.getUserKillAmount() >= quest.getUserKillAmountNeeded()) {
+                                goldQuestGain = quest.getGiveGold();
+                                diamondsQuestGain = (short) (Math.random() * 6);
+                                attacker.getQuests().remove(quest);
+                            }
+                        }
+
+                    }
+                    attacker.setDiamond(attacker.getDiamond() + diamondsQuestGain);
+
+                    goldAmountWin = pvpUserVsUser.getUserGoldAmountWin(defender) + goldQuestGain;
                     attacker.setGold(attacker.getGold() + goldAmountWin);
                     defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
 

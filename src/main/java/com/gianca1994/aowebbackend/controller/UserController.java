@@ -63,6 +63,7 @@ public class UserController {
         return userService.setFreeSkillPoint(token, freeSkillPointDTO);
     }
 
+    ///////////////////// OPEN: ITEMS SYSTEMS ///////////////////////////
     @PostMapping("/equip-item")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User equipItem(@RequestHeader(value = "Authorization") String token,
@@ -118,25 +119,39 @@ public class UserController {
          */
         userService.sellItem(token, sellItemDTO);
     }
+    ///////////////////// CLOSE: ITEMS SYSTEMS ///////////////////////////
 
-    @GetMapping("/accept-quest/{id}")
+    ///////////////////// OPEN: QUESTS SYSTEMS ///////////////////////////
+    @PostMapping("/accept-quest")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void acceptQuest(@RequestHeader(value = "Authorization") String token,
-                            @PathVariable Long id) throws Conflict {
+                            @RequestBody AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to accept a quest.
          * @param String token
-         * @param Long id
+         * @param AcceptedQuestDTO acceptedQuestDTO
          * @return none
          */
-        userService.acceptQuest(token, id);
+        userService.acceptQuest(token, acceptedQuestDTO);
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
-    //////////////////////////////////////////////////////////////////////
+    @PostMapping("/cancel-quest")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void cancelQuest(@RequestHeader(value = "Authorization") String token,
+                            @RequestBody AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to cancel a quest.
+         * @param String token
+         * @param AcceptedQuestDTO acceptedQuestDTO
+         * @return none
+         */
+        userService.cancelQuest(token, acceptedQuestDTO);
+    }
+    //////////////////// CLOSE: QUESTS SYSTEMS ///////////////////////////
 
+    ////////////////// OPEN: PVP AND PVE SYSTEMS /////////////////////////
     @PostMapping("/attack-user")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
@@ -145,11 +160,10 @@ public class UserController {
          * @Author: Gianca1994
          * Explanation: This method is used to attack a user.
          * @param String token
-         * @param String usernameDefender-
+         * @param UserAttackUserDTO userAttackUserDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
         return userService.userVsUserCombatSystem(token, userAttackUserDTO);
-
     }
 
     @PostMapping("/attack-npc")
@@ -165,4 +179,5 @@ public class UserController {
          */
         return userService.userVsNpcCombatSystem(token, userAttackNpcDTO);
     }
+    ////////////////// CLOSE: PVP AND PVE SYSTEMS ////////////////////////
 }

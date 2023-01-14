@@ -3,16 +3,19 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.model.Npc;
+import com.gianca1994.aowebbackend.model.Quest;
 import com.gianca1994.aowebbackend.model.User;
 import com.gianca1994.aowebbackend.repository.TitleRepository;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @Author: Gianca1994
  * Explanation: PveSystem
  */
 public class PveSystem {
+
 
     public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
         /**
@@ -28,7 +31,7 @@ public class PveSystem {
         PveFunctions pveFunctions = new PveFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        long experienceGain = 0, goldGain = 0;
+        long experienceGain = 0, goldGain = 0, experienceQuestGain = 0, goldQuestGain = 0;
         int diamondsGain = 0, roundCounter = 0;
         boolean levelUp = false, stopPvP = false;
 
@@ -48,12 +51,26 @@ public class PveSystem {
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
+                    for (Quest quest : user.getQuests()) {
+                        if (Objects.equals(quest.getNameNpcKill(), npc.getName()) &&
+                                !Objects.equals(quest.getNameNpcKill(), "player")) {
+                            quest.setNpcKillAmount(quest.getNpcKillAmount() + 1);
+                            user.getQuests().add(quest);
+
+                            if (quest.getNpcKillAmount() >= quest.getNpcKillAmountNeeded()) {
+                                experienceQuestGain = quest.getGiveExp();
+                                goldQuestGain = quest.getGiveGold();
+                                user.getQuests().remove(quest);
+                            }
+                        }
+                    }
+
                     if (user.getLevel() < LEVEL_MAX) {
                         experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                        user.setExperience(user.getExperience() + experienceGain);
+                        user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
                     }
                     goldGain = pveFunctions.calculateUserGoldGain(npc);
-                    user.setGold(user.getGold() + goldGain);
+                    user.setGold(user.getGold() + goldGain + goldQuestGain);
 
                     // Check if the user has enough experience to level up.
                     if (pveFunctions.checkUserLevelUp(user)) {
@@ -94,7 +111,7 @@ public class PveSystem {
         }
 
         user.checkStatusTitlePoints(titleRepository);
-        
+
         historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpcFinish(
                 user, npc, experienceGain, goldGain, diamondsGain, levelUp));
 

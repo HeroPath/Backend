@@ -4,10 +4,11 @@ import requests
 local = "http://localhost:8000"
 heroku = "https://ao-web.herokuapp.com"
 
-url_register = "https://ao-web.herokuapp.com/api/v1/auth/register"
-url_login = "https://ao-web.herokuapp.com/api/v1/auth/login"
-url_save_ncs = "https://ao-web.herokuapp.com/api/v1/npcs"
-url_save_items = "https://ao-web.herokuapp.com/api/v1/items"
+url_register = "http://localhost:8000/api/v1/auth/register"
+url_login = "http://localhost:8000/api/v1/auth/login"
+url_save_ncs = "http://localhost:8000/api/v1/npcs"
+url_save_items = "http://localhost:8000/api/v1/items"
+url_save_quests = "http://localhost:8000/api/v1/quests"
 
 data_register_gianca = {
     "username": "gianca",
@@ -37,6 +38,8 @@ data_login_lucho = {
 def main():
     npcs = pd.read_excel("NpcsAo-Web.xlsx")
     items = pd.read_excel("ItemsAo-Web.xlsx")
+    quests = pd.read_excel("QuestsAo-Web.xlsx")
+
     npcsDataFrame = pd.DataFrame(npcs, columns=[
         "name",
         "level",
@@ -64,6 +67,17 @@ def main():
         "luck"
     ])
 
+    questsDataFrame = pd.DataFrame(quests, columns=[
+        "name",
+        "description",
+        "nameNpcKill",
+        "npcKillAmountNeeded",
+        "userKillAmountNeeded",
+        "giveExp",
+        "giveGold",
+        "giveDiamonds"
+    ])
+
     response_login = requests.post(url_login, json=data_login_gianca)
     if response_login.status_code == 404:
         requests.post(url_register, json=data_register_gianca)
@@ -89,6 +103,11 @@ def main():
             i["classRequired"] = ""
         res = requests.post(url_save_items, headers=headers, json=i)
         print(res.json())
+
+    print("Saving quests...")
+    for i in questsDataFrame.to_dict('records'):
+        res = requests.post(url_save_quests, headers=headers, json=i)
+        print(res)
 
 
 if __name__ == '__main__':
