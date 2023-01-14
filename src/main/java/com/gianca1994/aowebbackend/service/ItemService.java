@@ -49,7 +49,7 @@ public class ItemService {
         ) throw new BadRequest("Stats cannot be less than 0");
 
 
-        List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings");
+        List<String> itemsEnabledToEquip = Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion");
         if (!itemsEnabledToEquip.contains(newItem.getType()))
             throw new Conflict("You can't equip more than one " + newItem.getType() + " item");
 

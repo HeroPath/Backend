@@ -138,12 +138,16 @@ public class UserService {
         if (user.getLevel() < item.getLvlMin())
             throw new Conflict("You can't equip an item that requires level " + item.getLvlMin());
 
+        if (Objects.equals(item.getType(), "potion")){
+            user.setHp(user.getMaxHp());
+        } else{
+            user.getEquipment().getItems().add(item);
+            user.swapItemToEquipmentOrInventory(item, true);
+        }
+
         if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
         else user.getInventory().getItems().remove(item);
 
-        user.getEquipment().getItems().add(item);
-
-        user.swapItemToEquipmentOrInventory(item, true);
         userRepository.save(user);
         return user;
     }
