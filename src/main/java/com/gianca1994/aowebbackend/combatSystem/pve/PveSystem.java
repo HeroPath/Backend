@@ -33,7 +33,7 @@ public class PveSystem {
         PveFunctions pveFunctions = new PveFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        long experienceGain = 0, goldGain = 0;
+        long experienceGain = 0, goldGain = 0, experienceQuestGain = 0, goldQuestGain = 0;
         int diamondsGain = 0, roundCounter = 0;
         boolean levelUp = false, stopPvP = false;
 
@@ -58,14 +58,19 @@ public class PveSystem {
                             quest.setNpcKillAmount(quest.getNpcKillAmount() + 1);
                             user.getQuests().add(quest);
                         }
+                        if (quest.getNpcKillAmount() >= quest.getNpcKillAmountNeeded()) {
+                            experienceQuestGain = quest.getGiveExp();
+                            goldQuestGain = quest.getGiveGold();
+                            user.getQuests().remove(quest);
+                        }
                     }
 
                     if (user.getLevel() < LEVEL_MAX) {
                         experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                        user.setExperience(user.getExperience() + experienceGain);
+                        user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
                     }
                     goldGain = pveFunctions.calculateUserGoldGain(npc);
-                    user.setGold(user.getGold() + goldGain);
+                    user.setGold(user.getGold() + goldGain + goldQuestGain);
 
                     // Check if the user has enough experience to level up.
                     if (pveFunctions.checkUserLevelUp(user)) {

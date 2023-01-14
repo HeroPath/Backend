@@ -220,12 +220,13 @@ public class UserService {
         userRepository.save(user);
     }
 
+    ///////////////////// OPEN: QUESTS SYSTEMS ///////////////////////////
     public void acceptQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
          * @param String token
-         * @param Long questId
+         * @param AcceptedQuestDTO acceptedQuestDTO
          * @return none
          */
         Quest quest = questRepository.findByName(acceptedQuestDTO.getName());
@@ -243,10 +244,27 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void cancelQuest(String token, AcceptedQuestDTO acceptedQuestDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of canceling a quest.
+         * @param String token
+         * @param AcceptedQuestDTO acceptedQuestDTO
+         * @return none
+         */
+        Quest quest = questRepository.findByName(acceptedQuestDTO.getName());
+        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
 
-    //////////////////////////////////////////////////////////////////////
-    ////////////////// INFO: PVP AND PVE SYSTEMS /////////////////////////
-    //////////////////////////////////////////////////////////////////////
+        User user = userRepository.findByUsername(getTokenUser(token));
+        if (user == null) throw new NotFound("User not found");
+        if (!user.getQuests().contains(quest)) throw new Conflict("You didn't accept this quest");
+
+        user.getQuests().remove(quest);
+        userRepository.save(user);
+    }
+    //////////////////// CLOSE: QUESTS SYSTEMS ///////////////////////////
+
+    ////////////////// OPEN: PVP AND PVE SYSTEMS /////////////////////////
     public ArrayList<ObjectNode> userVsUserCombatSystem(String token, UserAttackUserDTO userAttackUserDTO) throws
             Conflict {
         /**
@@ -276,7 +294,6 @@ public class UserService {
         userRepository.save(pvpUserVsUserModel.getDefender());
         return pvpUserVsUserModel.getHistoryCombat();
     }
-
 
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String token, UserAttackNpcDTO userAttackNpcDTO) throws Conflict {
         /**
@@ -313,4 +330,5 @@ public class UserService {
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }
+    ////////////////// CLOSE: PVP AND PVE SYSTEMS ////////////////////////
 }

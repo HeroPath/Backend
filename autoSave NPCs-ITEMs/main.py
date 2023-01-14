@@ -71,7 +71,7 @@ def main():
         "name",
         "description",
         "nameNpcKill",
-        "npcKillAmount",
+        "npcKillAmountNeeded",
         "giveExp",
         "giveGold"
     ])

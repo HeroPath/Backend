@@ -32,17 +32,19 @@ public class Quest {
     @Column
     private int npcKillAmount;
     @Column
+    private int npcKillAmountNeeded;
+    @Column
     private long giveExp;
     @Column
     private long giveGold;
 
-    public Quest(String name, String description, String nameNpcKill, int npcKillAmount, long giveExp, long giveGold) {
+    public Quest(String name, String description, String nameNpcKill, int npcKillAmount, int npcKillAmountNeeded, long giveExp, long giveGold) {
         this.name = name;
         this.description = description;
         this.nameNpcKill = nameNpcKill;
         this.npcKillAmount = npcKillAmount;
+        this.npcKillAmountNeeded = npcKillAmountNeeded;
         this.giveExp = giveExp;
         this.giveGold = giveGold;
     }
-
 }
