@@ -144,7 +144,7 @@ public class User {
     @Column
     private int titlePoints;
 
-    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, short level, long experience, long experienceToNextLevel, long gold, int diamond, int maxDmg, int minDmg, int maxHp, int hp, int strength, int dexterity, int intelligence, int vitality, int luck, int freeSkillPoints, int npcKills, int pvpWins, int pvpLosses, int titlePoints) {
+    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -153,25 +153,25 @@ public class User {
         this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
-        this.level = level;
-        this.experience = experience;
-        this.experienceToNextLevel = experienceToNextLevel;
-        this.gold = gold;
-        this.diamond = diamond;
-        this.maxDmg = maxDmg;
-        this.minDmg = minDmg;
-        this.maxHp = maxHp;
-        this.hp = hp;
+        this.level = 1;
+        this.experience = 0;
+        this.experienceToNextLevel = 5;
+        this.gold = 1000;
+        this.diamond = 0;
+        this.maxDmg = 0;
+        this.minDmg = 0;
+        this.maxHp = 0;
+        this.hp = 0;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
-        this.freeSkillPoints = freeSkillPoints;
-        this.npcKills = npcKills;
-        this.pvpWins = pvpWins;
-        this.pvpLosses = pvpLosses;
-        this.titlePoints = titlePoints;
+        this.freeSkillPoints = 2;
+        this.npcKills = 0;
+        this.pvpWins = 0;
+        this.pvpLosses = 0;
+        this.titlePoints = 0;
     }
 
     public void calculateStats(boolean fullMinHp) {

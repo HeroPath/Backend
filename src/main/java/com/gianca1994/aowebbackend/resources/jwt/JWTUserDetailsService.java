@@ -113,8 +113,7 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @param UserDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail().toLowerCase()))
-            throw new BadRequest("Invalid email address");
+        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest("Invalid email address");
 
         String username = user.getUsername().toLowerCase();
 
@@ -145,16 +144,11 @@ public class JWTUserDetailsService implements UserDetailsService {
                 standardTitle,
                 inventory,
                 equipment,
-                (short) 1, 0L, 5L,
-                1000L, 0,
-                0, 0,
-                0, 0,
                 aClass.getStrength(),
                 aClass.getDexterity(),
                 aClass.getIntelligence(),
                 aClass.getVitality(),
-                aClass.getLuck(),
-                2, 0, 0, 0, 0
+                aClass.getLuck()
         );
 
         newUser.calculateStats(true);

@@ -15,7 +15,6 @@ import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
@@ -79,7 +78,7 @@ public class UserService {
          * @return ArrayList<User>
          */
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        users.sort(Comparator.comparing(User::getLevel).thenComparing(User::getPvpWins).reversed());
+        users.sort(Comparator.comparing(User::getLevel).thenComparing(User::getTitlePoints).thenComparing(User::getExperience).reversed());
         return users;
     }
 
@@ -93,18 +92,16 @@ public class UserService {
          */
         User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
 
-        if (user == null) throw new NotFound("User not found");
-        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest("Amount must be greater than 0");
-        if (user.getFreeSkillPoints() <= 0) throw new Conflict("You don't have any free skill points");
+        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
+        if (user.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
         if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
-            throw new Conflict("You don't have enough free skill points");
+            throw new Conflict(UserConst.DONT_HAVE_ENOUGH_SKILL_POINTS);
 
-        List<String> skillsEnabled = Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck");
-        if (!skillsEnabled.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
-            throw new Conflict("Skill point name must be one of the following: " + skillsEnabled);
+        if (!UserConst.SKILLS_ENABLED.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
+            throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
 
         user.addFreeSkillPoints(freeSkillPointDTO);
-
         userRepository.save(user);
         return user;
     }
@@ -119,18 +116,16 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
-        if (attacker == null) throw new NotFound("User not found");
-        if (genericFunctions.checkLifeStartCombat(attacker))
-            throw new BadRequest("Impossible to attack with less than 15% of life");
-        if (attacker.getLevel() < 5) throw new Conflict("You can't attack with a level lower than 5");
+        if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
+        if (attacker.getLevel() < UserConst.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
 
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
-        if (attacker == defender) throw new Conflict("You can't fight yourself");
-        if (defender == null) throw new NotFound("Enemy not found");
-        if (defender.getLevel() < 5) throw new Conflict("You can't attack with a level lower than 5");
-        if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict("You can't attack an admin");
-        if (genericFunctions.checkLifeStartCombat(defender))
-            throw new BadRequest("Unable to attack, enemy has less than 15% health");
+        if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
+        if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (defender.getLevel() < UserConst.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+        if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
+        if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository);
 
@@ -153,25 +148,22 @@ public class UserService {
          */
         User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
 
-        if (user == null) throw new NotFound("User not found");
-        if (genericFunctions.checkLifeStartCombat(user))
-            throw new BadRequest("Impossible to attack with less than 25% of life");
+        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
 
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        if (npc == null) throw new NotFound("Npc not found");
+        if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
 
-        if (npc.getLevel() > user.getLevel() + 5)
-            throw new Conflict("You can't attack an npc with level higher than 5 levels higher than you");
+        if (npc.getLevel() > user.getLevel() + UserConst.MAX_LEVEL_DIFFERENCE)
+            throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
 
         boolean enabledSea = false, enabledHell = false;
         for (Item item : user.getEquipment().getItems()) {
             if (item.getType().equals("ship")) enabledSea = true;
             if (item.getType().equals("wings")) enabledHell = true;
         }
-        if (npc.getZone().equals("sea") && !enabledSea)
-            throw new Conflict("You can't attack an npc in the sea without a ship");
-        if (npc.getZone().equals("hell") && !enabledHell)
-            throw new Conflict("You can't attack an npc in hell without wings");
+        if (npc.getZone().equals("sea") && !enabledSea) throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
+        if (npc.getZone().equals("hell") && !enabledHell) throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
 
