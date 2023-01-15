@@ -44,13 +44,13 @@ public class Quest {
     @Column
     private short giveDiamonds;
 
-    public Quest(String name, String description, String nameNpcKill, int npcKillAmount, int npcKillAmountNeeded, int userKillAmount, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
+    public Quest(String name, String description, String nameNpcKill, int npcKillAmount, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
         this.name = name;
         this.description = description;
         this.nameNpcKill = nameNpcKill;
         this.npcKillAmount = npcKillAmount;
-        this.npcKillAmountNeeded = npcKillAmountNeeded;
-        this.userKillAmount = userKillAmount;
+        this.npcKillAmountNeeded = 0;
+        this.userKillAmount = 0;
         this.userKillAmountNeeded = userKillAmountNeeded;
         this.giveExp = giveExp;
         this.giveGold = giveGold;

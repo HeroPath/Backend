@@ -19,15 +19,8 @@ public class QuestService {
 
     @Autowired
     private QuestRepository questRepository;
-
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private JwtTokenUtil jwtToken;
-
-    @Autowired
-    private JWTUserDetailsService jwtUserService;
 
     public List<Quest> getAllQuests(String token) {
         /**
@@ -68,9 +61,7 @@ public class QuestService {
                         quest.getName(),
                         quest.getDescription(),
                         quest.getNameNpcKill().toLowerCase(),
-                        0,
                         quest.getNpcKillAmountNeeded(),
-                        0,
                         quest.getUserKillAmountNeeded(),
                         quest.getGiveExp(),
                         quest.getGiveGold(),
@@ -99,13 +90,13 @@ public class QuestService {
          * @return none
          */
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
+        if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
 
         User user = userService.getProfile(token);
 
-        if (user == null) throw new NotFound("User not found");
-        if (user.getQuests().contains(quest)) throw new Conflict("You already accepted this quest");
-        if (user.getQuests().size() >= 3) throw new Conflict("You can't accept more quests");
+        if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
+        if (user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
+        if (user.getQuests().size() >= QuestConst.MAX_ACTIVE_QUESTS) throw new Conflict(QuestConst.QUEST_MAX_ACCEPTED);
 
         quest.setNpcKillAmount(0);
         quest.setUserKillAmount(0);
@@ -123,12 +114,12 @@ public class QuestService {
          * @return none
          */
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (Objects.isNull(quest)) throw new NotFound("Quest not found");
+        if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
 
         User user = userService.getProfile(token);
 
-        if (user == null) throw new NotFound("User not found");
-        if (!user.getQuests().contains(quest)) throw new Conflict("You didn't accept this quest");
+        if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
+        if (!user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_NOT_ACCEPTED);
 
         user.getQuests().remove(quest);
         userService.updateUser(user);
