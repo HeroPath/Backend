@@ -84,7 +84,6 @@ public class ItemService {
         if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConstant.YOU_DONT_HAVE_ENOUGH_GOLD);
         if (user.getInventory().getItems().size() >= ItemConstant.MAX_ITEMS_INVENTORY &&
                 !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConstant.INVENTORY_IS_FULL);
-        
 
         user.setGold(user.getGold() - itemBuy.getPrice());
 

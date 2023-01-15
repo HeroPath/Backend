@@ -38,7 +38,7 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        if (npcRepository.findByName(name.toLowerCase()) == null) throw new NotFound("Npc not found");
+        if (npcRepository.findByName(name.toLowerCase()) == null) throw new NotFound(NpcConst.NPC_NOT_FOUND);
         return npcRepository.findByName(name.toLowerCase());
     }
 
@@ -50,7 +50,7 @@ public class NpcService {
          * @return ArrayList<Npc>
          */
         if (npcRepository.findByZone(zone.toLowerCase()).isEmpty())
-            throw new NotFound("No npcs found in that area");
+            throw new NotFound(NpcConst.NPC_NOT_FOUND_ZONE);
         return npcRepository.findByZone(zone);
     }
 
@@ -61,49 +61,37 @@ public class NpcService {
          * @param NpcDTO npc
          * @return Npc
          */
-        if (npc.getName().isEmpty()) throw new Conflict("Name cannot be empty");
-        if (npc.getLevel() < 1) throw new Conflict("Level cannot be less than 1");
-        if (npc.getGiveMinExp() < 0) throw new Conflict("GiveMinExp cannot be less than 0");
-        if (npc.getGiveMaxExp() < 0) throw new Conflict("GiveMaxExp cannot be less than 0");
-        if (npc.getGiveMinGold() < 0) throw new Conflict("GiveMinGold cannot be less than 0");
-        if (npc.getGiveMaxGold() < 0) throw new Conflict("GiveMaxGold cannot be less than 0");
-        if (npc.getHp() < 0) throw new Conflict("Hp cannot be less than 0");
-        if (npc.getMaxHp() < 0) throw new Conflict("MaxHp cannot be less than 0");
-        if (npc.getMinDmg() < 0) throw new Conflict("MinDmg cannot be less than 0");
-        if (npc.getMaxDmg() < 0) throw new Conflict("MaxDmg cannot be less than 0");
-        if (npc.getDefense() < 0) throw new Conflict("MinDefense cannot be less than 0");
-        if (npc.getZone().isEmpty()) throw new Conflict("Zone cannot be empty");
+        if (npc.getName().isEmpty()) throw new Conflict(NpcConst.NAME_EMPTY);
+        if (npc.getLevel() < 1) throw new Conflict(NpcConst.LEVEL_LESS_THAN_ONE);
+        if (npc.getGiveMinExp() < 0) throw new Conflict(NpcConst.GIVE_MIN_EXP_LESS_THAN_ZERO);
+        if (npc.getGiveMaxExp() < 0) throw new Conflict(NpcConst.GIVE_MAX_EXP_LESS_THAN_ZERO);
+        if (npc.getGiveMinGold() < 0) throw new Conflict(NpcConst.GIVE_MIN_GOLD_LESS_THAN_ZERO);
+        if (npc.getGiveMaxGold() < 0) throw new Conflict(NpcConst.GIVE_MAX_GOLD_LESS_THAN_ZERO);
+        if (npc.getHp() < 0) throw new Conflict(NpcConst.HP_LESS_THAN_ZERO);
+        if (npc.getMaxHp() < 0) throw new Conflict(NpcConst.MAX_HP_LESS_THAN_ZERO);
+        if (npc.getMinDmg() < 0) throw new Conflict(NpcConst.MIN_DMG_LESS_THAN_ZERO);
+        if (npc.getMaxDmg() < 0) throw new Conflict(NpcConst.MAX_DMG_LESS_THAN_ZERO);
+        if (npc.getDefense() < 0) throw new Conflict(NpcConst.DEFENSE_LESS_THAN_ZERO);
+        if (npc.getZone().isEmpty()) throw new Conflict(NpcConst.ZONE_EMPTY);
 
         Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
-        Npc newNpc = new Npc();
 
         if (checkNpcSave == null) {
-            newNpc.setName(npc.getName().toLowerCase());
-            newNpc.setLevel(npc.getLevel());
-            newNpc.setGiveMinExp(npc.getGiveMinExp());
-            newNpc.setGiveMaxExp(npc.getGiveMaxExp());
-            newNpc.setGiveMinGold(npc.getGiveMinGold());
-            newNpc.setGiveMaxGold(npc.getGiveMaxGold());
-            newNpc.setHp(npc.getHp());
-            newNpc.setMaxHp(npc.getMaxHp());
-            newNpc.setMinDmg(npc.getMinDmg());
-            newNpc.setMaxDmg(npc.getMaxDmg());
-            newNpc.setDefense(npc.getDefense());
-            newNpc.setZone(npc.getZone());
-            return npcRepository.save(newNpc);
-        }else {
-            checkNpcSave.setLevel(npc.getLevel());
-            checkNpcSave.setGiveMinExp(npc.getGiveMinExp());
-            checkNpcSave.setGiveMaxExp(npc.getGiveMaxExp());
-            checkNpcSave.setGiveMinGold(npc.getGiveMinGold());
-            checkNpcSave.setGiveMaxGold(npc.getGiveMaxGold());
-            checkNpcSave.setHp(npc.getHp());
-            checkNpcSave.setMaxHp(npc.getMaxHp());
-            checkNpcSave.setMinDmg(npc.getMinDmg());
-            checkNpcSave.setMaxDmg(npc.getMaxDmg());
-            checkNpcSave.setDefense(npc.getDefense());
-            checkNpcSave.setZone(npc.getZone());
-            return npcRepository.save(checkNpcSave);
+            checkNpcSave = new Npc();
+            checkNpcSave.setName(npc.getName().toLowerCase());
         }
+
+        checkNpcSave.setLevel(npc.getLevel());
+        checkNpcSave.setGiveMinExp(npc.getGiveMinExp());
+        checkNpcSave.setGiveMaxExp(npc.getGiveMaxExp());
+        checkNpcSave.setGiveMinGold(npc.getGiveMinGold());
+        checkNpcSave.setGiveMaxGold(npc.getGiveMaxGold());
+        checkNpcSave.setHp(npc.getHp());
+        checkNpcSave.setMaxHp(npc.getMaxHp());
+        checkNpcSave.setMinDmg(npc.getMinDmg());
+        checkNpcSave.setMaxDmg(npc.getMaxDmg());
+        checkNpcSave.setDefense(npc.getDefense());
+        checkNpcSave.setZone(npc.getZone());
+        return npcRepository.save(checkNpcSave);
     }
 }
