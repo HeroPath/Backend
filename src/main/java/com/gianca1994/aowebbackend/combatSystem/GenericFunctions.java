@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.combatSystem;
 
-import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.resources.user.User;
 
 /**
  * @Author: Gianca1994

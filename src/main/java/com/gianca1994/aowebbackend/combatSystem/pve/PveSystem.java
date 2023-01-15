@@ -2,10 +2,10 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
-import com.gianca1994.aowebbackend.model.Npc;
-import com.gianca1994.aowebbackend.model.Quest;
-import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.repository.TitleRepository;
+import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.quest.Quest;
+import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 
 import java.util.ArrayList;
 import java.util.Objects;
