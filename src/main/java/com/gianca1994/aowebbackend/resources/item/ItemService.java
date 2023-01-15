@@ -39,17 +39,17 @@ public class ItemService {
          * @return Item
          */
         Item item = itemRepository.findByName(newItem.getName().toLowerCase());
-        if (item != null) throw new Conflict(ItemConstant.ITEM_ALREADY_EXISTS);
+        if (item != null) throw new Conflict(ItemConst.ITEM_ALREADY_EXISTS);
 
-        if (Objects.equals(newItem.getName(), "")) throw new BadRequest(ItemConstant.NAME_CANNOT_BE_EMPTY);
-        if (Objects.equals(newItem.getType(), "")) throw new BadRequest(ItemConstant.TYPE_CANNOT_BE_EMPTY);
-        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConstant.LVL_MIN_CANNOT_BE_LESS_THAN_0);
-        if (newItem.getPrice() < 0) throw new BadRequest(ItemConstant.PRICE_CANNOT_BE_LESS_THAN_0);
+        if (Objects.equals(newItem.getName(), "")) throw new BadRequest(ItemConst.NAME_CANNOT_BE_EMPTY);
+        if (Objects.equals(newItem.getType(), "")) throw new BadRequest(ItemConst.TYPE_CANNOT_BE_EMPTY);
+        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_MIN_CANNOT_BE_LESS_THAN_0);
+        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_CANNOT_BE_LESS_THAN_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 ||
                 newItem.getIntelligence() < 0 || newItem.getVitality() < 0 ||
-                newItem.getLuck() < 0) throw new BadRequest(ItemConstant.STATS_CANNOT_BE_LESS_THAN_0);
-        if (!ItemConstant.ITEM_ENABLED_TO_EQUIP.contains(newItem.getType()))
-            throw new Conflict(ItemConstant.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType() + " item");
+                newItem.getLuck() < 0) throw new BadRequest(ItemConst.STATS_CANNOT_BE_LESS_THAN_0);
+        if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(newItem.getType()))
+            throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType() + " item");
         if (Objects.equals(newItem.getClassRequired(), "")) newItem.setClassRequired("none");
 
         return itemRepository.save(new Item(
@@ -76,14 +76,14 @@ public class ItemService {
          * @return none
          */
         User user = userService.getProfile(token);
-        if (user == null) throw new NotFound(ItemConstant.USER_NOT_FOUND);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConstant.ITEM_NOT_FOUND);
+        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
-        if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConstant.YOU_DONT_HAVE_ENOUGH_GOLD);
-        if (user.getInventory().getItems().size() >= ItemConstant.MAX_ITEMS_INVENTORY &&
-                !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConstant.INVENTORY_IS_FULL);
+        if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
+        if (user.getInventory().getItems().size() >= ItemConst.MAX_ITEMS_INVENTORY &&
+                !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.setGold(user.getGold() - itemBuy.getPrice());
 
@@ -101,12 +101,12 @@ public class ItemService {
          * @return none
          */
         User user = userService.getProfile(token);
-        if (user == null) throw new NotFound(ItemConstant.USER_NOT_FOUND);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConstant.ITEM_NOT_FOUND);
+        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
-        if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFound(ItemConstant.ITEM_NOT_FOUND_IN_INVENTORY);
+        if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
         if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
@@ -123,24 +123,24 @@ public class ItemService {
          * @return User
          */
         User user = userService.getProfile(token);
-        if (user == null) throw new NotFound(ItemConstant.USER_NOT_FOUND);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
-        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConstant.ITEM_NOT_FOUND));
-        if (!user.getInventory().getItems().contains(item)) throw new NotFound(ItemConstant.ITEM_NOT_FOUND_IN_INVENTORY);
+        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
+        if (!user.getInventory().getItems().contains(item)) throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
         if (!Objects.equals(user.getAClass().getName(), item.getClassRequired()) && !Objects.equals(item.getClassRequired(), "none"))
-            throw new Conflict(ItemConstant.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
+            throw new Conflict(ItemConst.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
-            if (!ItemConstant.ITEM_ENABLED_TO_EQUIP.contains(itemEquipedOld.getType()))
-                throw new Conflict(ItemConstant.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType() + " item");
+            if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(itemEquipedOld.getType()))
+                throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType() + " item");
             if (Objects.equals(itemEquipedOld.getType(), item.getType()))
-                throw new Conflict(ItemConstant.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);
+                throw new Conflict(ItemConst.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);
         }
 
         if (user.getLevel() < item.getLvlMin())
-            throw new Conflict(ItemConstant.YOU_CANT_EQUIP_AN_ITEM_THAT_REQUIRES_LEVEL + item.getLvlMin());
+            throw new Conflict(ItemConst.YOU_CANT_EQUIP_AN_ITEM_THAT_REQUIRES_LEVEL + item.getLvlMin());
 
-        if (Objects.equals(item.getType(), ItemConstant.POTION_NAME)) {
+        if (Objects.equals(item.getType(), ItemConst.POTION_NAME)) {
             user.setHp(user.getMaxHp());
         } else {
             user.getEquipment().getItems().add(item);
@@ -163,12 +163,12 @@ public class ItemService {
          * @return User
          */
         User user = userService.getProfile(token);
-        if (user == null) throw new NotFound(ItemConstant.USER_NOT_FOUND);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
-        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConstant.ITEM_NOT_FOUND));
-        if (!user.getEquipment().getItems().contains(item)) throw new NotFound(ItemConstant.ITEM_NOT_FOUND_IN_EQUIPMENT);
-        if (user.getInventory().getItems().size() >= ItemConstant.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConstant.INVENTORY_IS_FULL);
+        Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
+        if (!user.getEquipment().getItems().contains(item)) throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_EQUIPMENT);
+        if (user.getInventory().getItems().size() >= ItemConst.MAX_ITEMS_INVENTORY)
+            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getEquipment().getItems().remove(item);
         if (user.getInventory().getItems().contains(item)) item.setAmount(item.getAmount() + 1);
