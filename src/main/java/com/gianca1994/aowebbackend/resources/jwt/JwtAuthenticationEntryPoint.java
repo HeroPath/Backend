@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.resources.jwt;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,7 +31,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
          * @param AuthenticationException authException
          * @return void
          */
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWTConst.UNAUTHORIZED);
 
     }
 

@@ -27,10 +27,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-
     @Autowired
     private JWTUserDetailsService jwtUserDetailsService;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -45,25 +43,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
          * @param FilterChain chain
          * @return void
          */
-        final String requestTokenHeader = request.getHeader("Authorization");
+        final String requestTokenHeader = request.getHeader(JWTConst.HEADER_STRING);
+        String username = null, jwtToken = null;
 
-        String username = null;
-        String jwtToken = null;
-
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(JWTConst.TOKEN_PREFIX)) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                System.out.println(JWTConst.UNABLE_GET_TOKEN);
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                System.out.println(JWTConst.TOKEN_EXPIRED);
             } catch (MalformedJwtException e){
-                System.out.println("JWT adulterated");
+                System.out.println(JWTConst.TOKEN_ADULTERATED);
             }
-
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+            logger.warn(JWTConst.TOKEN_NOT_BEARER);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -77,5 +72,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
 }

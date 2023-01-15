@@ -8,7 +8,6 @@ import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
-import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
@@ -42,29 +41,16 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private ClassRepository classRepository;
-
     @Autowired
     private RoleRepository roleRepository;
-
     @Autowired
     private TitleRepository titleRepository;
-
     @Autowired
     private InventoryRepository inventoryRepository;
-
     @Autowired
     private EquipmentRepository equipmentRepository;
-
-    @Autowired
-    private ItemRepository itemRepository;
-
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
-            + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
-
-    private final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
@@ -75,8 +61,7 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return UserDetails
          */
         User user = userRepository.findByUsername(username);
-
-        if (user == null) throw new NotFound("User not found");
+        if (user == null) throw new NotFound(JWTConst.USER_NOT_FOUND);
 
         GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getRoleName());
 
@@ -91,7 +76,7 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @param String email
          * @return boolean
          */
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Pattern pattern = Pattern.compile(JWTConst.EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
@@ -113,22 +98,21 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @param UserDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest("Invalid email address");
+        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
 
         String username = user.getUsername().toLowerCase();
 
-        if (!username.matches("^[a-zA-Z0-9]*$")) throw new BadRequest("Username must be alphanumeric");
-        if (userRepository.findByUsername(username) != null) throw new Conflict("Username already exists");
+        if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
+        if (userRepository.findByUsername(username) != null) throw new Conflict(JWTConst.USERNAME_EXISTS);
 
-        if (username.length() < 3 || username.length() > 20)
-            throw new BadRequest("Username must be between 3 and 20 characters");
+        if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
-            throw new BadRequest("Password must be between 3 and 20 characters");
+            throw new BadRequest(JWTConst.PASSWORD_LENGTH);
 
         Role standardRole = roleRepository.findById(1L).get();
         Class aClass = classRepository.findById(user.getClassId()).get();
         Title standardTitle = titleRepository.findById(1L).get();
-        if (aClass.getName() == null) throw new BadRequest("Class not found");
+        if (aClass.getName() == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();

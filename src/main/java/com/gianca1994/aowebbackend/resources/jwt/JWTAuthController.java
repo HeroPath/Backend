@@ -2,9 +2,6 @@ package com.gianca1994.aowebbackend.resources.jwt;
 
 import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class JWTAuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
     @Autowired
     private JWTUserDetailsService userDetailsService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @PostMapping(value = "login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest) throws Exception {
@@ -72,24 +64,9 @@ public class JWTAuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+            throw new Exception(JWTConst.USER_DISABLED, e);
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new Exception(JWTConst.INVALID_CREDENTIALS, e);
         }
     }
-
-    @GetMapping(value = "restore/{username}")
-    public void restoreHpUser(@PathVariable String username) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to restore the hp of the user.
-         * @param String username
-         * @return void
-         */
-        User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound("User not found");
-        user.setHp(user.getMaxHp());
-        userRepository.save(user);
-    }
-
 }
