@@ -16,7 +16,6 @@ import java.util.Objects;
  */
 public class PveSystem {
 
-
     public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994

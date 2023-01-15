@@ -24,15 +24,12 @@ public class PvpSystem {
          * @param TitleRepository titleRepository
          * @return PvpModel
          */
-        final short LEVEL_MAX = 300;
         GenericFunctions genericFunctions = new GenericFunctions();
         PvpFunctions pvpUserVsUser = new PvpFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        long goldAmountWin = 0, goldQuestGain = 0;
+        long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
         short diamondsQuestGain = 0;
-        long goldLoseForLoseCombat = 0;
-
         int roundCounter = 0;
         boolean stopPvP = false;
         int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
