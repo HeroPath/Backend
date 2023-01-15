@@ -16,7 +16,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="aoweb-backend" value="817d3fdd-36e1-4462-b523-cf88da6650bf" />
-          <factory-entry name="entityManagerFactory" />
+          <factory-entry name="entityManagerFactory" value="a69062c1-054e-41b2-8067-0821364ba67c" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>

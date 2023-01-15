@@ -287,6 +287,5 @@ public class User {
             this.luck += this.title.getLuck() - currentTitle.getLuck();
         }
         calculateStats(false);
-
     }
 }

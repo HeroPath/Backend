@@ -95,14 +95,14 @@ def main():
     print("Saving npcs...")
     for i in npcsDataFrame.to_dict('records'):
         res = requests.post(url_save_ncs, headers=headers, json=i)
-        print(res.json())
+        print(res)
 
     print("Saving items...")
     for i in itemsDataFrame.to_dict('records'):
         if pd.isna(i["classRequired"]):
             i["classRequired"] = ""
         res = requests.post(url_save_items, headers=headers, json=i)
-        print(res.json())
+        print(res)
 
     print("Saving quests...")
     for i in questsDataFrame.to_dict('records'):
