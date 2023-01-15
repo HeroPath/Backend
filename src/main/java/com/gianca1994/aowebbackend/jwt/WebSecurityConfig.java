@@ -43,6 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.authorizeRequests.patterns.classes}")
     private String AUTHORIZE_PATTERNS_CLASSES;
 
+    @Value("${jwt.authorizeRequests.patterns.swagger.docs}")
+    private String AUTHORIZE_PATTERNS_SWAGGER_DOCS;
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         /**
@@ -110,6 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(AUTHORIZE_PATTERNS_AUTHORIZATION).permitAll()
                 .antMatchers(AUTHORIZE_PATTERNS_CLASSES).permitAll()
+                .antMatchers(AUTHORIZE_PATTERNS_SWAGGER_DOCS).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
