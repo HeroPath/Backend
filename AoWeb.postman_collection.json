@@ -93,7 +93,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM4MDUzNzMsImlhdCI6MTY3MzcxODk3M30.58a06VVitC-SYpmQZ5OI1gIH0zkfeQnB3g2s8HPC7e58Y9HDA7n_Mqg22wkiUbWVwxKrZUgc7UiNZgbl_4Dhhw",
 									"type": "string"
 								}
 							]
@@ -102,7 +102,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"murcielago\"\r\n}",
+							"raw": "{\r\n    \"name\": \"experimental\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,7 +179,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTY1ODU4NjcsImlhdCI6MTY1NjUxMzg2N30.Z6chN9ncjEdlmdc4agWkv0Qo5fD1ojIBZzCThKhcwhLvxKNYuKPw9DGQ6CCyQiBECAkwzyDjcGe0aZQZ0wwBcw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzA4ODAsImlhdCI6MTY3MzY0NDQ4MH0.Z-T2trNAlPGvWQJTP2CQPhzOeoeyDbyzUH1haHg56a8O-a4CuaeX4W9Z_yaBdlnYQcGBtdwFo5-6BhhlmeXztA",
 									"type": "string"
 								}
 							]
@@ -383,15 +383,24 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NTM3NjAsImlhdCI6MTY2MTg2NzM2MH0.G4AmMmWVmewZ6IXHdDRklkCJupEuoQNaYMATpsyt1RZWmn-4tKrJGg4lFdk_OUE76L4g1sMohKGrir7PMADPEw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3OTM5MDYsImlhdCI6MTY3MzcwNzUwNn0.wtbJAxcQGS8vjXKKxgGb5G45lVf1tfX2yhhx8Q6oCEdnMFFBHiXESAW7uOop1fh3oQGiVOEjTDAdLfeFsYGicw",
 									"type": "string"
 								}
 							]
 						},
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lobo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://{{local}}/api/v1/users/accept-quest/1",
+							"raw": "http://{{local}}/api/v1/users/accept-quest",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -400,8 +409,7 @@
 								"api",
 								"v1",
 								"users",
-								"accept-quest",
-								"1"
+								"accept-quest"
 							]
 						}
 					},
@@ -420,7 +428,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxNDM2NDksImlhdCI6MTY1NzA3MTY0OX0.ezgOPzUaErEujuGLwf8quXf-kbQ0DSAG09DwPlu3zuN6eM1WljiTLvCHR0EY8cxgx8Gd0cQe5HoQFp8vsJx6GA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzQ3OTYsImlhdCI6MTY3MzY0ODM5Nn0.DSq5A3K2Xrdi5h6mNG7EBZVzYfAnktLOPitiSOpfVuA012vi09Mjg_cFmUjr43fKoRb595xmrvhgnUQhcdwBCw",
 									"type": "string"
 								}
 							]
@@ -481,7 +489,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTc5MjU2OTgsImlhdCI6MTY1NzgzOTI5OH0.IIZjEe2hbw9g570UlfbY9hTyoyxMKmOM7Pl3UM1-6NQVwwmOL6BURf4i1cuDabB1SFAet3EwAwolca2DrqU4Cg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM5MDM0MzksImlhdCI6MTY3MzgxNzAzOX0.BqHxK_g0Tg636IqYijjBpy_oyyrKwdGvjRRymyH5qr3h2Gxl7hvfQmv5pmDs3VnvL-q7wwKx3XX7LDuEgDjE0w",
 									"type": "string"
 								}
 							]
@@ -490,7 +498,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"test\",\r\n    \"level\": 1,\r\n    \"giveMaxExp\": 70000000,\r\n    \"giveMinExp\": 70000000,\r\n    \"giveMaxGold\": 5000,\r\n    \"giveMinGold\": 1500,\r\n    \"hp\": 5,\r\n    \"maxHp\": 5,\r\n    \"minDmg\": 1,    \r\n    \"maxDmg\": 2,\r\n    \"defense\": 5,\r\n    \"zone\": \"forest\"\r\n}",
+							"raw": "{\r\n    \"name\": \"experimental\",\r\n    \"level\": 1,\r\n    \"giveMaxExp\": 504239466,\r\n    \"giveMinExp\": 504239466,\r\n    \"giveMaxGold\": 5000,\r\n    \"giveMinGold\": 1500,\r\n    \"hp\": 50000,\r\n    \"maxHp\": 50000,\r\n    \"minDmg\": 1,    \r\n    \"maxDmg\": 2,\r\n    \"defense\": 5,\r\n    \"zone\": \"hell\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -706,7 +714,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzQ3OTYsImlhdCI6MTY3MzY0ODM5Nn0.DSq5A3K2Xrdi5h6mNG7EBZVzYfAnktLOPitiSOpfVuA012vi09Mjg_cFmUjr43fKoRb595xmrvhgnUQhcdwBCw",
 									"type": "string"
 								}
 							]
@@ -736,7 +744,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NDYxODEsImlhdCI6MTY2MTg1OTc4MX0.InxCNXaUGa8ScOcuGtxIUjxNJmbt3VXrZ5Df3la_toRGVCqjfO8BgIuK3V2ReqJD3SHIv_ZSy1l7p6a4dZjuQg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzQ3OTYsImlhdCI6MTY3MzY0ODM5Nn0.DSq5A3K2Xrdi5h6mNG7EBZVzYfAnktLOPitiSOpfVuA012vi09Mjg_cFmUjr43fKoRb595xmrvhgnUQhcdwBCw",
 									"type": "string"
 								}
 							]
@@ -744,7 +752,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/quests/murcielagos",
+							"raw": "http://{{local}}/api/v1/quests/Murcielago",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -753,7 +761,7 @@
 								"api",
 								"v1",
 								"quests",
-								"murcielagos"
+								"Murcielago"
 							]
 						}
 					},
@@ -767,7 +775,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NjE5NTM3NjAsImlhdCI6MTY2MTg2NzM2MH0.G4AmMmWVmewZ6IXHdDRklkCJupEuoQNaYMATpsyt1RZWmn-4tKrJGg4lFdk_OUE76L4g1sMohKGrir7PMADPEw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzQ3OTYsImlhdCI6MTY3MzY0ODM5Nn0.DSq5A3K2Xrdi5h6mNG7EBZVzYfAnktLOPitiSOpfVuA012vi09Mjg_cFmUjr43fKoRb595xmrvhgnUQhcdwBCw",
 									"type": "string"
 								}
 							]
@@ -776,7 +784,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"murcielagos\",\r\n    \"description\": \"Deberas viajar al bosque y encontrar los murcielagos malditos\",\r\n    \"nameNpcKill\": \"murcielago\",\r\n    \"npcKillAmount\": 5,\r\n    \"giveExp\": 1000,\r\n    \"giveGold\": 500\r\n}",
+							"raw": "{\r\n    \"name\": \"Gallo Salvaje\",\r\n    \"description\": \"Deberas viajar al bosque y encontrar los murcielagos malditos\",\r\n    \"nameNpcKill\": \"gallo salvaje\",\r\n    \"npcKillAmountNeeded\": 5,\r\n    \"userKillAmountNeeded\": 0,\r\n    \"giveExp\": 1000,\r\n    \"giveGold\": 500,\r\n    \"giveDiamonds\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -824,6 +832,183 @@
 								"v1",
 								"quests",
 								"murcielagos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Guild",
+			"item": [
+				{
+					"name": "All Guilds",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM5NjMyODEsImlhdCI6MTY3Mzg3Njg4MX0.FMAVm8QCzLgcTmz1-nDT3xgNFuoz-Nxemr0QfcCNgOkWWjbfMbfZVymqUcva4o0KaJfyWZyLC6nc0zRfAq4fpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Name",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM5NjMyODEsImlhdCI6MTY3Mzg3Njg4MX0.FMAVm8QCzLgcTmz1-nDT3xgNFuoz-Nxemr0QfcCNgOkWWjbfMbfZVymqUcva4o0KaJfyWZyLC6nc0zRfAq4fpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/doritos",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"doritos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Guild",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM5NjMyODEsImlhdCI6MTY3Mzg3Njg4MX0.FMAVm8QCzLgcTmz1-nDT3xgNFuoz-Nxemr0QfcCNgOkWWjbfMbfZVymqUcva4o0KaJfyWZyLC6nc0zRfAq4fpg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Doritos\",\r\n    \"description\": \"el mejor clan del mundo!\",\r\n    \"tag\": \"DOARG\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User To Guild",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3Mzk2OTg4OCwiaWF0IjoxNjczODgzNDg4fQ.McLieTaVPnGX2eDo2Jk_eeYgRgiE30eKjG8iHqtckNABTsqIT6piY06oXuODmqkvPjr4UG61zaw6tG7gLA_HOw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"doritos\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/add",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Member",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM5NzA4NzcsImlhdCI6MTY3Mzg4NDQ3N30.JMQF0BJ5SWro3Ufc5-xpQddVTZ7eJLfrYUgGNaTLzShsNR2pE0oGDkYNocSzA0JzDHnPMTogFRKtBM5MX7q8YQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/remove/lucho",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"remove",
+								"lucho"
 							]
 						}
 					},

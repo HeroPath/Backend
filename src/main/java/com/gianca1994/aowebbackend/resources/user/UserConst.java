@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserConst {
+    /**
+     * @Author: Gianca1994
+     * Explanation: This class contains all the constants used in the User class
+     */
+
     public static final String USER_NOT_FOUND = "User not found";
     public static final String AMOUNT_MUST_GREATER_THAN_0 = "Amount must be greater than 0";
     public static final String DONT_HAVE_SKILL_POINTS = "You don't have any free skill points";

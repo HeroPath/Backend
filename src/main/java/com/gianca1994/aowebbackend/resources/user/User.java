@@ -144,6 +144,8 @@ public class User {
     private int pvpLosses;
     @Column
     private int titlePoints;
+    @Column
+    private String guildName;
 
     public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
@@ -173,6 +175,7 @@ public class User {
         this.pvpWins = 0;
         this.pvpLosses = 0;
         this.titlePoints = 0;
+        this.guildName = "";
     }
 
     public void calculateStats(boolean fullMinHp) {

@@ -14,6 +14,10 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/items")
 public class ItemController {
+    /**
+     * @Author: Gianca1994
+     * Explanation: This class is the controller for the Item resource.
+     */
 
     @Autowired
     private ItemService itemService;
