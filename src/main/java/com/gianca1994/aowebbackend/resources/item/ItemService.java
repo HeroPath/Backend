@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.item;
 
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -82,7 +83,7 @@ public class ItemService {
         if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
         if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
-        if (user.getInventory().getItems().size() >= ItemConst.MAX_ITEMS_INVENTORY &&
+        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY &&
                 !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.setGold(user.getGold() - itemBuy.getPrice());
@@ -167,7 +168,7 @@ public class ItemService {
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
         if (!user.getEquipment().getItems().contains(item)) throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_EQUIPMENT);
-        if (user.getInventory().getItems().size() >= ItemConst.MAX_ITEMS_INVENTORY)
+        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
             throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getEquipment().getItems().remove(item);

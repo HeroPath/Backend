@@ -36,7 +36,6 @@ public class PvpSystem {
 
         do {
             roundCounter++;
-
             // Calculate the damage to the attacker and defender.
             int attackerDmg = genericFunctions.getUserDmg(attacker, defender.getDefense());
             int defenderDmg = genericFunctions.getUserDmg(defender, attacker.getDefense());

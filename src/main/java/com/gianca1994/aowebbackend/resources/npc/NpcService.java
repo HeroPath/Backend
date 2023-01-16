@@ -20,7 +20,6 @@ public class NpcService {
     @Autowired
     private NpcRepository npcRepository;
 
-
     public ArrayList<Npc> getAllNpcs() {
         /**
          * @Author: Gianca1994

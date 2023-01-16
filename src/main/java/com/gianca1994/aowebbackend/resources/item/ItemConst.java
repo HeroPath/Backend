@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ItemConst {
-    public static final int MAX_ITEMS_INVENTORY = 24;
     public static final String POTION_NAME = "potion";
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";

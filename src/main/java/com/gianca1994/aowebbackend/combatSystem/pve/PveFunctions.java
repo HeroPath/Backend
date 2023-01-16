@@ -2,22 +2,15 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
-import org.springframework.core.env.Environment;
 
 /**
  * @Author: Gianca1994
  * Explanation: PveFunctions
  */
 public class PveFunctions {
-    private final short LEVEL_MAX = 300;
-    private final int EXPERIENCE_MULTIPLIER = 100;
-    private final int GOLD_MULTIPLIER = 100;
-    private final int FREE_SKILL_POINTS_PER_LEVEL = 2;
-    private final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
-    private final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 5;
-
     public int calculateNpcDmg(Npc npc, int userDefense) {
         /**
          * @Author: Gianca1994
@@ -37,7 +30,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * EXPERIENCE_MULTIPLIER;
+        return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * SvConfig.EXPERIENCE_MULTIPLIER;
     }
 
     public boolean checkUserLevelUp(User user) {
@@ -47,7 +40,7 @@ public class PveFunctions {
          * @param User user
          * @return boolean
          */
-        if (user.getLevel() >= LEVEL_MAX) return false;
+        if (user.getLevel() >= SvConfig.LEVEL_MAX) return false;
         return user.getExperience() >= user.getExperienceToNextLevel();
     }
 
@@ -94,7 +87,7 @@ public class PveFunctions {
          * @param Npc npc
          * @return long
          */
-        return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * GOLD_MULTIPLIER;
+        return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * SvConfig.GOLD_MULTIPLIER;
     }
 
     public int freeSkillPointsAdd(User user) {
@@ -104,7 +97,7 @@ public class PveFunctions {
          * @param User user
          * @return int
          */
-        return user.getFreeSkillPoints() + FREE_SKILL_POINTS_PER_LEVEL;
+        return user.getFreeSkillPoints() + SvConfig.FREE_SKILL_POINTS_PER_LEVEL;
     }
 
     public boolean checkUserAndNpcAlive(User user, Npc npc) {
@@ -124,7 +117,7 @@ public class PveFunctions {
          * Explanation: This function is in charge of calculating the chance of dropping diamonds.
          * @return boolean
          */
-        return ((Math.random() * 100) + 1) > (100 - DIAMOND_DROP_CHANCE_PERCENTAGE);
+        return ((Math.random() * 100) + 1) > (100 - SvConfig.DIAMOND_DROP_CHANCE_PERCENTAGE);
     }
 
     public int amountOfDiamondsDrop() {
@@ -133,7 +126,7 @@ public class PveFunctions {
          * Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
          * @return int
          */
-        return (int) (Math.random() * MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        return (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
     }
 
     public ObjectNode roundJsonGeneratorUserVsNpc(
