@@ -2,10 +2,11 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
-import com.gianca1994.aowebbackend.model.Npc;
-import com.gianca1994.aowebbackend.model.Quest;
-import com.gianca1994.aowebbackend.model.User;
-import com.gianca1994.aowebbackend.repository.TitleRepository;
+import com.gianca1994.aowebbackend.config.SvConfig;
+import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.quest.Quest;
+import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -16,7 +17,6 @@ import java.util.Objects;
  */
 public class PveSystem {
 
-
     public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
@@ -25,8 +25,6 @@ public class PveSystem {
          * @param Npc npc
          * @return PveModel
          */
-        final short LEVEL_MAX = 300;
-
         GenericFunctions genericFunctions = new GenericFunctions();
         PveFunctions pveFunctions = new PveFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
@@ -65,7 +63,7 @@ public class PveSystem {
                         }
                     }
 
-                    if (user.getLevel() < LEVEL_MAX) {
+                    if (user.getLevel() < SvConfig.LEVEL_MAX) {
                         experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
                         user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
                     }
@@ -80,7 +78,7 @@ public class PveSystem {
                             user.setFreeSkillPoints(pveFunctions.freeSkillPointsAdd(user));
                             levelUp = true;
 
-                            if (user.getLevel() < LEVEL_MAX) {
+                            if (user.getLevel() < SvConfig.LEVEL_MAX) {
                                 user.setExperience(user.getExperience() - user.getExperienceToNextLevel());
                                 user.setExperienceToNextLevel(pveFunctions.userLevelUpNewNextExpToLevel(user));
                             } else {

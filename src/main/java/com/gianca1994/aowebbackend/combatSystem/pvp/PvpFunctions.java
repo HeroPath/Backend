@@ -2,19 +2,14 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.config.SvConfig;
+import com.gianca1994.aowebbackend.resources.user.User;
 
 /**
  * @Author: Gianca1994
  * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
  */
 public class PvpFunctions {
-    private final float PVP_GOLD_THEFT_RATE = 0.25f;
-    private final float PVP_GOLD_LOSS_RATE = 0.1f;
-    private final int PVP_MAX_RATE_POINT_TITLE = 100;
-    private final int PVP_MIN_RATE_POINT_TITLE = 50;
-
-
     private long getUserGoldThief(User user) {
         /**
          * @Author: Gianca1994
@@ -22,7 +17,7 @@ public class PvpFunctions {
          * @param User user
          * @return long
          */
-        return (long) (user.getGold() * PVP_GOLD_THEFT_RATE);
+        return (long) (user.getGold() * SvConfig.PVP_GOLD_WIN_RATE);
     }
 
     public long getUserGoldAmountWin(User defender) {
@@ -53,7 +48,7 @@ public class PvpFunctions {
          * @param User user
          * @return long
          */
-        return (long) (user.getGold() * PVP_GOLD_LOSS_RATE);
+        return (long) (user.getGold() * SvConfig.PVP_GOLD_LOSS_RATE);
     }
 
     public boolean checkBothUsersAlive(User attacker, User defender) {
@@ -74,7 +69,7 @@ public class PvpFunctions {
          * @param none
          * @return int
          */
-        return (int) Math.floor(Math.random() * (PVP_MAX_RATE_POINT_TITLE - PVP_MIN_RATE_POINT_TITLE + 1) + PVP_MIN_RATE_POINT_TITLE);
+        return (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
     }
 
     public ObjectNode roundJsonGeneratorUserVsUser(

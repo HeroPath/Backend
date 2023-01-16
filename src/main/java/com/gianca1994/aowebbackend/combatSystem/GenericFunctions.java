@@ -1,13 +1,13 @@
 package com.gianca1994.aowebbackend.combatSystem;
 
-import com.gianca1994.aowebbackend.model.User;
+import com.gianca1994.aowebbackend.config.SvConfig;
+import com.gianca1994.aowebbackend.resources.user.User;
 
 /**
  * @Author: Gianca1994
  * Explanation: This class contains all the generic functions that are used in the combat system.
  */
 public class GenericFunctions {
-    private final float MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.15f;
 
     public boolean checkLifeStartCombat(User user) {
         /**
@@ -17,7 +17,7 @@ public class GenericFunctions {
          * @param User user
          * @return boolean
          */
-        return user.getHp() < user.getMaxHp() * MINIMUM_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED;
+        return user.getHp() < user.getMaxHp() * SvConfig.MIN_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED;
     }
 
     public int getUserDmg(User user, int defense) {
@@ -29,7 +29,8 @@ public class GenericFunctions {
          */
         int dmg = (int) Math.floor(Math.random() * (user.getMaxDmg() - user.getMinDmg() + 1) + user.getMinDmg());
         dmg = defense >= dmg ? 0 : dmg - defense;
-        if (Math.floor(Math.random() * 100) + 1 <= user.getCriticalChance()) return dmg * 2;
+        if (Math.floor(Math.random() * 100) + 1 <= user.getCriticalChance())
+            return dmg * SvConfig.CRITICAL_DAMAGE_MULTIPLIER;
         else return dmg;
     }
 
