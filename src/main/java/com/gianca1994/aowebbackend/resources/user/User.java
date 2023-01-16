@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
@@ -153,11 +154,11 @@ public class User {
         this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
-        this.level = 1;
-        this.experience = 0;
-        this.experienceToNextLevel = 5;
-        this.gold = 1000;
-        this.diamond = 0;
+        this.level = ModifConfig.START_LVL;
+        this.experience = ModifConfig.START_EXP;
+        this.experienceToNextLevel = ModifConfig.START_EXP_TO_NEXT_LVL;
+        this.gold = ModifConfig.START_GOLD;
+        this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
         this.minDmg = 0;
         this.maxHp = 0;
@@ -167,7 +168,7 @@ public class User {
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
-        this.freeSkillPoints = 2;
+        this.freeSkillPoints = ModifConfig.START_FREE_SKILL_POINTS;
         this.npcKills = 0;
         this.pvpWins = 0;
         this.pvpLosses = 0;
@@ -181,31 +182,30 @@ public class User {
          * @param boolean fullMinHp
          * @return void
          */
-        final String MAGE = "mage", WARRIOR = "warrior", ARCHER = "archer";
         switch (this.getAClass().getName()) {
-            case MAGE:
-                this.minDmg = this.intelligence * 5;
-                this.maxDmg = this.intelligence * 7;
-                this.maxHp = this.vitality * 10;
-                this.defense = this.strength * 2;
-                this.evasion = this.dexterity * 2;
-                this.criticalChance = this.luck * 0.15f > 50 ? 50 : this.luck * 0.15f;
+            case ModifConfig.MAGE_NAME:
+                this.minDmg = this.intelligence * ModifConfig.MIN_DMG_MAGE;
+                this.maxDmg = this.intelligence * ModifConfig.MAX_DMG_MAGE;
+                this.maxHp = this.vitality * ModifConfig.MAX_HP_MAGE;
+                this.defense = this.strength * ModifConfig.DEFENSE_MAGE;
+                this.evasion = this.dexterity * ModifConfig.EVASION_MAGE;
+                this.criticalChance = this.luck * ModifConfig.CRITICAL_MAGE > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_MAGE;
                 break;
-            case WARRIOR:
-                this.minDmg = this.strength * 3;
-                this.maxDmg = this.strength * 5;
-                this.maxHp = this.vitality * 20;
-                this.defense = this.intelligence * 5;
-                this.evasion = this.dexterity * 2;
-                this.criticalChance = this.luck * 0.1f > 50 ? 50 : this.luck * 0.1f;
+            case ModifConfig.WARRIOR_NAME:
+                this.minDmg = this.strength * ModifConfig.MIN_DMG_WARRIOR;
+                this.maxDmg = this.strength * ModifConfig.MAX_DMG_WARRIOR;
+                this.maxHp = this.vitality * ModifConfig.MAX_HP_WARRIOR;
+                this.defense = this.intelligence * ModifConfig.DEFENSE_WARRIOR;
+                this.evasion = this.dexterity * ModifConfig.EVASION_WARRIOR;
+                this.criticalChance = this.luck * ModifConfig.CRITICAL_WARRIOR > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_WARRIOR;
                 break;
-            case ARCHER:
-                this.minDmg = this.dexterity * 4;
-                this.maxDmg = this.dexterity * 6;
-                this.maxHp = this.vitality * 15;
-                this.defense = this.intelligence * 3;
-                this.evasion = this.strength * 4;
-                this.criticalChance = this.luck * 0.125f > 50 ? 50 : this.luck * 0.125f;
+            case ModifConfig.ARCHER_NAME:
+                this.minDmg = this.dexterity * ModifConfig.MIN_DMG_ARCHER;
+                this.maxDmg = this.dexterity * ModifConfig.MAX_DMG_ARCHER;
+                this.maxHp = this.vitality * ModifConfig.MAX_HP_ARCHER;
+                this.defense = this.intelligence * ModifConfig.DEFENSE_ARCHER;
+                this.evasion = this.strength * ModifConfig.EVASION_ARCHER;
+                this.criticalChance = this.luck * ModifConfig.CRITICAL_ARCHER > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_ARCHER;
                 break;
         }
         if (fullMinHp) this.hp = this.maxHp;

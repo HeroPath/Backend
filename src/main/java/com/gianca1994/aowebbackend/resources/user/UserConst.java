@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UserConst {
-    // maximum level difference
-    public static final int MAX_LEVEL_DIFFERENCE = 5;
     public static final String USER_NOT_FOUND = "User not found";
     public static final String AMOUNT_MUST_GREATER_THAN_0 = "Amount must be greater than 0";
     public static final String DONT_HAVE_SKILL_POINTS = "You don't have any free skill points";

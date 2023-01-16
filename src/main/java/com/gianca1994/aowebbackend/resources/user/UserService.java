@@ -8,6 +8,7 @@ import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -118,12 +119,12 @@ public class UserService {
         User attacker = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
         if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-        if (attacker.getLevel() < UserConst.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+        if (attacker.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
 
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
         if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
         if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (defender.getLevel() < UserConst.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+        if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
         if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
 
@@ -154,8 +155,8 @@ public class UserService {
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
         if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
 
-        if (npc.getLevel() > user.getLevel() + UserConst.MAX_LEVEL_DIFFERENCE)
-            throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+        if (npc.getLevel() > user.getLevel() + SvConfig.MAX_LEVEL_DIFFERENCE)
+            throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
 
         boolean enabledSea = false, enabledHell = false;
         for (Item item : user.getEquipment().getItems()) {

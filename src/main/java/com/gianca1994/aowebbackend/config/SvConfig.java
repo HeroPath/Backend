@@ -2,10 +2,9 @@ package com.gianca1994.aowebbackend.config;
 
 public class SvConfig {
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final short LEVEL_MAX = 300;
     public static final int EXPERIENCE_MULTIPLIER = 100;
     public static final int GOLD_MULTIPLIER = 100;
-    public static final int FREE_SKILL_POINTS_PER_LEVEL = 2;
+    public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
@@ -26,6 +25,7 @@ public class SvConfig {
     /////////////////////////// PVP ///////////////////////////
     public static final float MIN_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.15f;
     public static final int CRITICAL_DAMAGE_MULTIPLIER = 2;
+    public static final int MAX_LEVEL_DIFFERENCE = 5;
     /////////////////////////// PVP ///////////////////////////
 
     /////////////////////////// ITEM ///////////////////////////

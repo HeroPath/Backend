@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -97,7 +98,7 @@ public class PveFunctions {
          * @param User user
          * @return int
          */
-        return user.getFreeSkillPoints() + SvConfig.FREE_SKILL_POINTS_PER_LEVEL;
+        return user.getFreeSkillPoints() + ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
     }
 
     public boolean checkUserAndNpcAlive(User user, Npc npc) {

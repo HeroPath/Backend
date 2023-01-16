@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.config;
 
-public class ModifierConfig {
+public class ModifConfig {
 
     /////////////////////////// TITLE ///////////////////////////
     // TITLE 1
@@ -73,4 +73,63 @@ public class ModifierConfig {
     public static final int TITLE7_VIT = 200;
     public static final int TITLE7_LUK = 200;
     /////////////////////////// TITLE ///////////////////////////
+
+    /////////////////////////// USER ///////////////////////////
+    public static final short START_LVL = 1;
+    public static final long START_EXP = 0;
+    public static final long START_EXP_TO_NEXT_LVL = 5;
+    public static final long START_GOLD = 1000;
+    public static final int START_DIAMOND = 0;
+    public static final int START_FREE_SKILL_POINTS = 5;
+    public static final int FREE_SKILL_POINTS_PER_LEVEL = 2;
+    public static final int MAX_CRITICAL_PERCENTAGE = 50;
+    /////////////////////////// USER ///////////////////////////
+
+    /////////////////////////// INITIAL CLASS ///////////////////////////
+    // MAGE
+    public static final int MAGE_START_STR = 1;
+    public static final int MAGE_START_DEX = 1;
+    public static final int MAGE_START_INT = 3;
+    public static final int MAGE_START_VIT = 2;
+    public static final int MAGE_START_LUK = 2;
+    // WARRIOR
+    public static final int WARRIOR_START_STR = 3;
+    public static final int WARRIOR_START_DEX = 1;
+    public static final int WARRIOR_START_INT = 1;
+    public static final int WARRIOR_START_VIT = 3;
+    public static final int WARRIOR_START_LUK = 1;
+    // ARCHER
+    public static final int ARCHER_START_STR = 1;
+    public static final int ARCHER_START_DEX = 3;
+    public static final int ARCHER_START_INT = 1;
+    public static final int ARCHER_START_VIT = 2;
+    public static final int ARCHER_START_LUK = 2;
+    /////////////////////////// INITIAL CLASS ///////////////////////////
+
+    /////////////////////////// CLASSES ///////////////////////////
+    // MAGE
+    public static final String MAGE_NAME = "mage";
+    public static final int MIN_DMG_MAGE = 5;
+    public static final int MAX_DMG_MAGE = 7;
+    public static final int MAX_HP_MAGE = 10;
+    public static final int DEFENSE_MAGE = 2;
+    public static final int EVASION_MAGE = 2;
+    public static final float CRITICAL_MAGE = 0.15f;
+    // WARRIOR
+    public static final String WARRIOR_NAME = "warrior";
+    public static final int MIN_DMG_WARRIOR = 3;
+    public static final int MAX_DMG_WARRIOR = 5;
+    public static final int MAX_HP_WARRIOR = 20;
+    public static final int DEFENSE_WARRIOR = 5;
+    public static final int EVASION_WARRIOR = 2;
+    public static final float CRITICAL_WARRIOR = 0.1f;
+    // ARCHER
+    public static final String ARCHER_NAME = "archer";
+    public static final int MIN_DMG_ARCHER = 4;
+    public static final int MAX_DMG_ARCHER = 6;
+    public static final int MAX_HP_ARCHER = 15;
+    public static final int DEFENSE_ARCHER = 3;
+    public static final int EVASION_ARCHER = 4;
+    public static final float CRITICAL_ARCHER = 0.125f;
+    /////////////////////////// CLASSES ///////////////////////////
 }
