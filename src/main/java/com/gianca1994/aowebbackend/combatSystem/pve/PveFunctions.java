@@ -4,13 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
+import org.springframework.core.env.Environment;
 
 /**
  * @Author: Gianca1994
  * Explanation: PveFunctions
  */
 public class PveFunctions {
-
     private final short LEVEL_MAX = 300;
     private final int EXPERIENCE_MULTIPLIER = 100;
     private final int GOLD_MULTIPLIER = 100;
