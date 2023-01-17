@@ -14,6 +14,11 @@ import java.util.*;
 
 @Service
 public class ItemService {
+    /**
+     * @Author: Gianca1994
+     * Explanation: This class is the service of the Item resource. It contains all the logic of the Item resource.
+     */
+
     @Autowired
     private ItemRepository itemRepository;
     @Autowired
@@ -88,9 +93,19 @@ public class ItemService {
 
         user.setGold(user.getGold() - itemBuy.getPrice());
 
+        // This causes an item duplication bug...
         if (user.getInventory().getItems().contains(itemBuy)) itemBuy.setAmount(itemBuy.getAmount() + 1);
+            // MODIFICAR EL AMOUNT SOLO DEL ITEM DEL USUARIO
+            // for (Item item : user.getInventory().getItems()) {
+            //    if (item.getName().equals(itemBuy.getName())) {
+            //        item.setAmount(item.getAmount() + 1);
+            //        break;
+            //    }
+            //}
         else user.getInventory().getItems().add(itemBuy);
+
         userService.updateUser(user);
+
     }
 
     public void sellItem(String token, NameRequestDTO nameRequestDTO) {
@@ -107,7 +122,8 @@ public class ItemService {
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
         if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
-        if (!user.getInventory().getItems().contains(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
+        if (!user.getInventory().getItems().contains(itemBuy))
+            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
         if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);

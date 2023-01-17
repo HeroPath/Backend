@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to represent a quest in the database.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

@@ -12,6 +12,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.item.Item;
@@ -59,6 +60,25 @@ public class UserService {
          * @return User
          */
         return userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+    }
+
+    public UserGuildDTO getUserForGuild(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting the profile of the user.
+         * @param String username
+         * @return UserGuildDTO
+         */
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFound("User not found");
+
+        UserGuildDTO userGuildDTO = new UserGuildDTO();
+        userGuildDTO.setUsername(user.getUsername());
+        userGuildDTO.setLevel(user.getLevel());
+        userGuildDTO.setTitlePoints(user.getTitlePoints());
+        userGuildDTO.setClassName(user.getAClass().getName());
+        userGuildDTO.setTitleName(user.getTitle().getName());
+        return userGuildDTO;
     }
 
     public void updateUser(User userToUpdate) {

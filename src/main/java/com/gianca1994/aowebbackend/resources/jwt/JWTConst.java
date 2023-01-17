@@ -1,6 +1,10 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
 public class JWTConst {
+    /**
+     * @Author: Gianca1994
+     * Explanation: This class contains all the constants used in the JWT
+     */
     public static final String USER_NOT_FOUND = "User not found";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";

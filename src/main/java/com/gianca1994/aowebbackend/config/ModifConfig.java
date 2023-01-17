@@ -1,7 +1,10 @@
 package com.gianca1994.aowebbackend.config;
 
 public class ModifConfig {
-
+    /**
+     * @Author: Gianca1994
+     * Explanation: This class is used to modify the configuration of the application.
+     */
     /////////////////////////// TITLE ///////////////////////////
     // TITLE 1
     public static final String TITLE1_NAME = "iron";
@@ -106,7 +109,7 @@ public class ModifConfig {
     public static final int ARCHER_START_LUK = 2;
     /////////////////////////// INITIAL CLASS ///////////////////////////
 
-    /////////////////////////// CLASSES ///////////////////////////
+    /////////////////////////// CLASSES MULTIPLIER ///////////////////////////
     // MAGE
     public static final String MAGE_NAME = "mage";
     public static final int MIN_DMG_MAGE = 5;
@@ -131,5 +134,5 @@ public class ModifConfig {
     public static final int DEFENSE_ARCHER = 3;
     public static final int EVASION_ARCHER = 4;
     public static final float CRITICAL_ARCHER = 0.125f;
-    /////////////////////////// CLASSES ///////////////////////////
+    /////////////////////////// CLASSES MULTIPLIER ///////////////////////////
 }
