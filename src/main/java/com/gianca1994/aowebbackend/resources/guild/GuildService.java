@@ -43,6 +43,7 @@ public class GuildService {
         guildsNode.put("tag", guild.getTag());
         guildsNode.put("leader", guild.getLeader());
         guildsNode.put("subLeader", guild.getSubLeader());
+        guildsNode.put("members", guild.getMembers().size());
         return guildsNode;
     }
 
@@ -53,7 +54,6 @@ public class GuildService {
          * @return List<ObjectNode>
          */
         List<Guild> guilds = guildRepository.findAll();
-        // guildNode.putPOJO("users", guild.getUsers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
         return guilds.stream().map(this::GuildToObjectNode).collect(Collectors.toList());
     }
 
@@ -64,11 +64,12 @@ public class GuildService {
          * @param String name
          * @return ObjectNode
          */
-        Guild guild = guildRepository.findByName(name);
+        System.out.println(name);
+        Guild guild = guildRepository.findByName(name.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
         ObjectNode guildNode = GuildToObjectNode(guild);
-        guildNode.putPOJO("users", guild.getUsers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        guildNode.putPOJO("users", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
         return guildNode;
     }
 
@@ -98,7 +99,7 @@ public class GuildService {
         guild.setTag(guildDTO.getTag());
         guild.setLeader(user.getUsername());
         guild.setSubLeader("");
-        guild.getUsers().add(user);
+        guild.getMembers().add(user);
 
         user.setGuildName(guildDTO.getName());
 
@@ -121,7 +122,7 @@ public class GuildService {
         Guild guild = guildRepository.findByName(guildName.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
-        guild.getUsers().add(user);
+        guild.getMembers().add(user);
         user.setGuildName(guild.getName());
 
         userService.updateUser(user);
@@ -153,7 +154,7 @@ public class GuildService {
         if (userRemove == null) throw new NotFound("User not found");
         if (userRemove.getUsername().equals(guild.getLeader())) throw new Conflict("You can't remove the leader of the guild");
 
-        guild.getUsers().remove(userRemove);
+        guild.getMembers().remove(userRemove);
         userRemove.setGuildName("");
 
         userService.updateUser(userRemove);
