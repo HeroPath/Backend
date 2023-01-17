@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
@@ -33,31 +32,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
-
-    @Column(unique = true)
-    private String username;
-
-    @Column(nullable = false)
-    @JsonIgnore
-    private String password;
-
-    @Column(nullable = false)
-    private String email;
-
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    private Role role;
+public class User extends Account {
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
@@ -148,10 +123,7 @@ public class User {
     private String guildName;
 
     public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
+        super(username, password, email, role);
         this.aClass = aClass;
         this.title = title;
         this.inventory = inventory;
