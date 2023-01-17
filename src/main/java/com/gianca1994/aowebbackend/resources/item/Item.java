@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 
 /**
  * @Author: Gianca1994
@@ -35,8 +37,6 @@ public class Item {
     @Column(nullable = false)
     private int price;
     @Column()
-    private int amount;
-    @Column()
     private int strength;
     @Column()
     private int dexterity;
@@ -47,18 +47,16 @@ public class Item {
     @Column()
     private int luck;
 
-    public Item(String name, String type, int lvlMin, String classRequired, int price, int amount, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public Item(String name, String type, int lvlMin, String classRequired, int price, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
         this.classRequired = classRequired;
         this.price = price;
-        this.amount = amount;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
     }
-
 }

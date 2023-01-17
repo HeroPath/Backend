@@ -64,7 +64,6 @@ public class ItemService {
                 newItem.getLvlMin(),
                 newItem.getClassRequired(),
                 newItem.getPrice(),
-                1,
                 newItem.getStrength(),
                 newItem.getDexterity(),
                 newItem.getIntelligence(),
@@ -91,19 +90,8 @@ public class ItemService {
         if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY &&
                 !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
+        user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
-
-        // This causes an item duplication bug...
-        if (user.getInventory().getItems().contains(itemBuy)) itemBuy.setAmount(itemBuy.getAmount() + 1);
-            // MODIFICAR EL AMOUNT SOLO DEL ITEM DEL USUARIO
-            // for (Item item : user.getInventory().getItems()) {
-            //    if (item.getName().equals(itemBuy.getName())) {
-            //        item.setAmount(item.getAmount() + 1);
-            //        break;
-            //    }
-            //}
-        else user.getInventory().getItems().add(itemBuy);
-
         userService.updateUser(user);
 
     }
@@ -124,10 +112,9 @@ public class ItemService {
 
         if (!user.getInventory().getItems().contains(itemBuy))
             throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
-        user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
-        if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
-        else user.getInventory().getItems().remove(itemBuy);
+        user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
+        user.getInventory().getItems().remove(itemBuy);
         userService.updateUser(user);
     }
 
@@ -163,9 +150,7 @@ public class ItemService {
             user.getEquipment().getItems().add(item);
             user.swapItemToEquipmentOrInventory(item, true);
         }
-
-        if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
-        else user.getInventory().getItems().remove(item);
+        user.getInventory().getItems().remove(item);
 
         userService.updateUser(user);
         return user;
@@ -188,8 +173,6 @@ public class ItemService {
             throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getEquipment().getItems().remove(item);
-        if (user.getInventory().getItems().contains(item)) item.setAmount(item.getAmount() + 1);
-
         user.getInventory().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, false);
