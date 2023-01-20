@@ -34,6 +34,6 @@ public class Inventory {
             joinColumns = {@JoinColumn(name = "inventory_id")},
             inverseJoinColumns = {@JoinColumn(name = "items_id")}
     )
-    private List<Item> items = new ArrayList<Item>();
+    private List<Item> items = new ArrayList<>();
 
 }

@@ -29,7 +29,7 @@ public class GuildService {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    private ObjectNode GuildToObjectNode(Guild guild) {
+    public ObjectNode guildToObjectNode(Guild guild) {
         /**
          * @Author: Gianca1994
          * Explanation: This method converts a Guild object into a JSON ObjectNode
@@ -54,7 +54,7 @@ public class GuildService {
          * @return List<ObjectNode>
          */
         List<Guild> guilds = guildRepository.findAll();
-        return guilds.stream().map(this::GuildToObjectNode).collect(Collectors.toList());
+        return guilds.stream().map(this::guildToObjectNode).collect(Collectors.toList());
     }
 
     public ObjectNode getGuildByName(String name) {
@@ -68,7 +68,7 @@ public class GuildService {
         Guild guild = guildRepository.findByName(name.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
-        ObjectNode guildNode = GuildToObjectNode(guild);
+        ObjectNode guildNode = guildToObjectNode(guild);
         guildNode.putPOJO("users", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
         return guildNode;
     }
