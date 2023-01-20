@@ -1,5 +1,20 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.classes.Class;
+import com.gianca1994.aowebbackend.resources.classes.ClassRepository;
+import com.gianca1994.aowebbackend.resources.equipment.Equipment;
+import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
+import com.gianca1994.aowebbackend.resources.inventory.Inventory;
+import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
+import com.gianca1994.aowebbackend.resources.role.Role;
+import com.gianca1994.aowebbackend.resources.role.RoleRepository;
+import com.gianca1994.aowebbackend.resources.title.Title;
+import com.gianca1994.aowebbackend.resources.title.TitleRepository;
+import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
+import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.HashSet;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -18,23 +33,63 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class GuildServiceTest {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ClassRepository classRepository;
+
+    @Autowired
+    private TitleRepository titleRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
     private GuildRepository guildRepository;
 
     @Autowired
     private GuildService guildService;
 
-    private Guild guild;
-
     @BeforeEach
     void setUp() {
         guildRepository.deleteAll();
-        guild = new Guild();
-        guild.setName("test");
-        guild.setDescription("test");
-        guild.setTag("test");
-        guild.setLeader("test");
-        guild.setSubLeader("test");
-        guild.setMembers(new HashSet<>());
+
+        User userTest;
+
+        if (userRepository.findAll().size() >= 1) {
+            userTest = userRepository.findAll().get(0);
+        } else {
+            Class testClass = classRepository.findById(1L).get();
+            Title testTitle = titleRepository.findById(1L).get();
+            Role testRole = roleRepository.findById(1L).get();
+            Inventory inventory = new Inventory();
+            Equipment equipment = new Equipment();
+
+            inventoryRepository.save(inventory);
+            equipmentRepository.save(equipment);
+
+            userTest = new User(
+                    "testusername", "testpassword", "testusername@test.com",
+                    testRole, testClass, testTitle, inventory, equipment,
+                    1, 1, 1, 1, 1
+            );
+            userRepository.save(userTest);
+            userTest = userRepository.findByUsername("testusername");
+        }
+
+        Guild guild = new Guild();
+        guild.setName("testguild");
+        guild.setDescription("testdescription");
+        guild.setTag("testtag");
+        guild.setLeader(userTest.getUsername());
+        guild.setSubLeader("");
+        guild.getMembers().add(userTest);
         guildRepository.save(guild);
     }
 
@@ -45,13 +100,7 @@ class GuildServiceTest {
 
     @Test
     void getGuildByName() {
-        assertThat(guildService.getGuildByName("test")).isNotNull();
+        assertThat(guildService.getGuildByName("testguild").get("name").asText()).isEqualTo("testguild");
     }
-
-    @Test
-    void guildToObjectNodeTest() {
-        assertThat(guildService.guildToObjectNode(guild)).isNotNull();
-    }
-
 
 }

@@ -33,6 +33,8 @@ public class ItemService {
          */
         List<Item> items = itemRepository.findAll();
         items.removeIf(item -> !item.getClassRequired().equals(aClass));
+        if (items.isEmpty()) throw new NotFound("No items found for class " + aClass);
+
         items.sort(Comparator.comparing(Item::getLvlMin));
         return items;
     }

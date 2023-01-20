@@ -3,6 +3,7 @@ package com.gianca1994.aowebbackend.resources.guild;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +32,7 @@ class GuildTest {
 
     @Test
     void constructorArgsTest() {
-        Guild guild = new Guild(1L,"Test", "Test", "Test", "Test", "Test", (short) 1, 1, new HashSet<>());
+        Guild guild = new Guild(1L,"Test", "Test", "Test", "Test", "Test", (short) 1, 1, new ArrayList<>());
         assertNotNull(guild);
     }
 

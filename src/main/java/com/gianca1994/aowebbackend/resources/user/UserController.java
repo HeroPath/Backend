@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -32,7 +35,7 @@ public class UserController {
          * @param String token
          * @return User user
          */
-        return userService.getProfile(token);
+        return userService.getProfile(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
     }
 
     @GetMapping("/ranking")
@@ -57,7 +60,7 @@ public class UserController {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User user
          */
-        return userService.setFreeSkillPoint(token, freeSkillPointDTO);
+        return userService.setFreeSkillPoint(jwtTokenUtil.getUsernameFromToken(token.substring(7)), freeSkillPointDTO);
     }
 
     @PostMapping("/attack-user")
@@ -71,7 +74,7 @@ public class UserController {
          * @param UserAttackUserDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsUserCombatSystem(token, nameRequestDTO);
+        return userService.userVsUserCombatSystem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 
     @PostMapping("/attack-npc")
@@ -85,6 +88,6 @@ public class UserController {
          * @param UserAttackNpcDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsNpcCombatSystem(token, nameRequestDTO);
+        return userService.userVsNpcCombatSystem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 }

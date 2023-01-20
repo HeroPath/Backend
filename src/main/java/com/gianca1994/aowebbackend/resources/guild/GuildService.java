@@ -29,7 +29,7 @@ public class GuildService {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public ObjectNode guildToObjectNode(Guild guild) {
+    private ObjectNode guildToObjectNode(Guild guild) {
         /**
          * @Author: Gianca1994
          * Explanation: This method converts a Guild object into a JSON ObjectNode
@@ -64,7 +64,6 @@ public class GuildService {
          * @param String name
          * @return ObjectNode
          */
-        System.out.println(name);
         Guild guild = guildRepository.findByName(name.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
@@ -73,15 +72,15 @@ public class GuildService {
         return guildNode;
     }
 
-    public void saveGuild(String token, GuildDTO guildDTO) throws Conflict {
+    public void saveGuild(String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild
-         * @param String token
+         * @param String username
          * @param GuildDTO guildDTO
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
@@ -107,15 +106,15 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void addUserGuild(String token, String guildName) throws Conflict {
+    public void addUserGuild(String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
-         * @param String token
+         * @param String username
          * @param String guildName
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userService.getProfile(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
@@ -129,15 +128,15 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void removeUserGuild(String token, String nameRemove) throws Conflict {
+    public void removeUserGuild(String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
-         * @param String token
+         * @param String username
          * @param String nameRemove
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (user.getUsername().equals(nameRemove)) throw new Conflict("You can't remove yourself from the guild");
 

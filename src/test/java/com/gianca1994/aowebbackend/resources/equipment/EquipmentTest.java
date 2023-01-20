@@ -60,8 +60,9 @@ class EquipmentTest {
     }
 
     @Test
-    public void givenEquipment_whenEquals_thenReturnTrue() {
-        assertThat(equipmentTest.equals(equipmentTest)).isTrue();
+    public void givenEquipment_whenEquals_thenReturnFalse() {
+        Equipment equipmentTest2 = new Equipment(1L, new HashSet<>());
+        assertThat(equipmentTest.equals(equipmentTest2)).isFalse();
     }
 
 }

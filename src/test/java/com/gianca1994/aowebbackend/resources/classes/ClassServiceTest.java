@@ -17,19 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ClassServiceTest {
 
     @Autowired
-    private ClassRepository classRepository;
-
-    @Autowired
     public ClassService classService;
-
-    @BeforeEach
-    void setUp() {
-        classRepository.deleteAll();
-        classRepository.save(new Class(1L, "testClass", 1, 1, 1, 1, 1));
-    }
 
     @Test
     public void givenClasses_whenGetAllClasses_thenReturnAllClasses() {
-        assertThat(classService.getAllClasses()).hasSize(1);
+        assertThat(classService.getAllClasses()).hasSize(3);
     }
 }
