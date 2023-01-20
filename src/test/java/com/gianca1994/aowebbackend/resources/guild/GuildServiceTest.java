@@ -1,7 +1,5 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.classes.ClassRepository;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
@@ -14,7 +12,6 @@ import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

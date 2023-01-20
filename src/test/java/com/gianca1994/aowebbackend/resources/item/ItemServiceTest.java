@@ -2,22 +2,6 @@ package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.classes.ClassRepository;
-import com.gianca1994.aowebbackend.resources.equipment.Equipment;
-import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
-import com.gianca1994.aowebbackend.resources.guild.Guild;
-import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.guild.GuildService;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
-import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,24 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 class ItemServiceTest {
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ClassRepository classRepository;
-
-    @Autowired
-    private TitleRepository titleRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private InventoryRepository inventoryRepository;
-
-    @Autowired
-    private EquipmentRepository equipmentRepository;
 
     @Autowired
     private ItemRepository itemRepository;
