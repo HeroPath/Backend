@@ -16,9 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -56,7 +54,7 @@ public class User extends Account {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "quest_id")}
     )
-    private Set<Quest> quests = new HashSet<>();
+    private List<Quest> quests = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",
