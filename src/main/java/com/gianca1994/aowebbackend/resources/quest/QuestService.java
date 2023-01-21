@@ -3,8 +3,6 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.jwt.JWTUserDetailsService;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;
@@ -21,8 +19,10 @@ public class QuestService {
 
     @Autowired
     private QuestRepository questRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserRepository userRepository;
 

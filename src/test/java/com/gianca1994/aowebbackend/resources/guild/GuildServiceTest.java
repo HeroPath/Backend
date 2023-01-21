@@ -52,11 +52,11 @@ class GuildServiceTest {
     @Autowired
     private GuildService guildService;
 
+    private User userTest;
+
     @BeforeEach
     void setUp() {
         guildRepository.deleteAll();
-
-        User userTest;
 
         if (userRepository.findAll().size() >= 1) {
             userTest = userRepository.findAll().get(0);

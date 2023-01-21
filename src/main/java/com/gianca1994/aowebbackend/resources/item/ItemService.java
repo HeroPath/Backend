@@ -15,15 +15,13 @@ import java.util.*;
 
 @Service
 public class ItemService {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class is the service of the Item resource. It contains all the logic of the Item resource.
-     */
 
     @Autowired
     private ItemRepository itemRepository;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserRepository userRepository;
 

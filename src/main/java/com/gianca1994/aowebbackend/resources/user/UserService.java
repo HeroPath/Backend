@@ -14,7 +14,6 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
@@ -37,20 +36,25 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    ItemRepository itemRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    TitleRepository titleRepository;
-    @Autowired
-    NpcRepository npcRepository;
-    @Autowired
-    QuestRepository questRepository;
-    GenericFunctions genericFunctions = new GenericFunctions();
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    ItemRepository itemRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    TitleRepository titleRepository;
+
+    @Autowired
+    NpcRepository npcRepository;
+
+    @Autowired
+    QuestRepository questRepository;
+
+
+    GenericFunctions genericFunctions = new GenericFunctions();
+
 
     public User getProfile(String username) {
         /**
