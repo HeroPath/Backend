@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.item;
 
 
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/shop/{aClass}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -57,7 +61,7 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.buyItem(token, nameRequestDTO);
+        itemService.buyItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 
     @PostMapping("/sell")
@@ -85,7 +89,7 @@ public class ItemController {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.equipItem(token, equipUnequipItemDTO);
+        return itemService.equipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
     }
 
     @PostMapping("/unequip")
@@ -99,6 +103,6 @@ public class ItemController {
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.unequipItem(token, equipUnequipItemDTO);
+        return itemService.unequipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
     }
 }

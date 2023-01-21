@@ -6,6 +6,7 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.jwt.JWTUserDetailsService;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,10 @@ public class QuestService {
     private QuestRepository questRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<Quest> getAllQuests(String token) {
+    public List<Quest> getAllQuests(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get all the quests.
@@ -31,7 +34,7 @@ public class QuestService {
          * @return List<Quest>
          */
         ArrayList<Quest> quests = (ArrayList<Quest>) questRepository.findAll();
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         ArrayList<Quest> questsList = new ArrayList<>();
 
         for (Quest quest : quests) {
@@ -82,18 +85,18 @@ public class QuestService {
         questRepository.delete(quest);
     }
 
-    public void acceptQuest(String token, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void acceptQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
-         * @param String token
+         * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
         if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
 
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
 
         if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
         if (user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
@@ -106,18 +109,18 @@ public class QuestService {
         userService.updateUser(user);
     }
 
-    public void cancelQuest(String token, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void cancelQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of canceling a quest.
-         * @param String token
+         * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
         if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
 
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
         if (!user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_NOT_ACCEPTED);
 

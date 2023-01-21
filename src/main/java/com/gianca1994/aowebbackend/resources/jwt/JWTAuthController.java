@@ -19,10 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin()
 @RequestMapping("/api/v1/auth")
 public class JWTAuthController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
     @Autowired
     private JWTUserDetailsService userDetailsService;
 

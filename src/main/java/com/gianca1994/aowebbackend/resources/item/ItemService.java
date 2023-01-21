@@ -5,6 +5,7 @@ import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class ItemService {
     private ItemRepository itemRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Item> getClassShop(String aClass) {
         /**
@@ -74,15 +77,15 @@ public class ItemService {
         );
     }
 
-    public void buyItem(String token, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
-         * @param String token
+         * @param String username
          * @param String name
          * @return none
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
@@ -98,15 +101,15 @@ public class ItemService {
 
     }
 
-    public void sellItem(String token, NameRequestDTO nameRequestDTO) {
+    public void sellItem(String username, NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
-         * @param String token
+         * @param String username
          * @param SellItemDTO sellItemDTO
          * @return none
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
@@ -120,7 +123,7 @@ public class ItemService {
         userService.updateUser(user);
     }
 
-    public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public User equipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -128,7 +131,7 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
@@ -158,7 +161,7 @@ public class ItemService {
         return user;
     }
 
-    public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public User unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -166,7 +169,7 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
