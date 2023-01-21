@@ -54,7 +54,7 @@ public class User extends Account {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "quest_id")}
     )
-    private List<Quest> quests = new ArrayList<>();
+    private Set<Quest> quests = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_inventory",
