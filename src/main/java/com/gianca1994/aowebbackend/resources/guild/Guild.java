@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,23 +24,36 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Guild {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String description;
+
     @Column(unique = true, nullable = false)
     private String tag;
+
     @Column
     private String leader;
+
     @Column
     private String subLeader;
-    @ManyToMany
+
+    @Column
+    private short level;
+
+    @Column
+    private int points;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "guilds_users",
             joinColumns = @JoinColumn(name = "guild_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
+    private List<User> members = new ArrayList<>();
 
 }

@@ -34,7 +34,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class User extends Account {
 
-    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_class",
             joinColumns = @JoinColumn(name = "user_id",

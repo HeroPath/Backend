@@ -52,14 +52,14 @@ public class UserService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    public User getProfile(String token) {
+    public User getProfile(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
-         * @param String token
+         * @param String username
          * @return User
          */
-        return userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        return userRepository.findByUsername(username);
     }
 
     public UserGuildDTO getUserForGuild(String username) {
@@ -81,14 +81,14 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public void updateUser(User userToUpdate) {
+    public void updateUser(User username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of updating the user.
          * @param String username
          * @return none
          */
-        userRepository.save(userToUpdate);
+        userRepository.save(username);
     }
 
     public ArrayList<User> getRankingAll() {
@@ -103,7 +103,7 @@ public class UserService {
         return users;
     }
 
-    public User setFreeSkillPoint(String token, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
+    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of adding skill points to the user.
@@ -111,7 +111,7 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
-        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        User user = userRepository.findByUsername(username);
 
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
@@ -127,16 +127,16 @@ public class UserService {
         return user;
     }
 
-    public ArrayList<ObjectNode> userVsUserCombatSystem(String token,
+    public ArrayList<ObjectNode> userVsUserCombatSystem(String username,
                                                         UserAttackUserDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users.
-         * @param String token
+         * @param String username
          * @param UserAttackUserDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
-        User attacker = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        User attacker = userRepository.findByUsername(username);
         if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
         if (attacker.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
@@ -158,16 +158,16 @@ public class UserService {
         return pvpUserVsUserModel.getHistoryCombat();
     }
 
-    public ArrayList<ObjectNode> userVsNpcCombatSystem(String token,
+    public ArrayList<ObjectNode> userVsNpcCombatSystem(String username,
                                                        UserAttackNpcDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users and npcs.
-         * @param String token
+         * @param String username
          * @param UserAttackNpcDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
-        User user = userRepository.findByUsername(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        User user = userRepository.findByUsername(username);
 
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);

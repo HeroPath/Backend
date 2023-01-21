@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,8 +13,12 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/quests")
 public class QuestController {
+
     @Autowired
     private QuestService questService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -24,7 +29,7 @@ public class QuestController {
          * @param none
          * @return List<Quest>
          */
-        return questService.getAllQuests(token);
+        return questService.getAllQuests(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
     }
 
     @GetMapping("/{name}")
@@ -74,7 +79,7 @@ public class QuestController {
          * @param AcceptedQuestDTO acceptedQuestDTO
          * @return none
          */
-        questService.acceptQuest(token, nameRequestDTO);
+        questService.acceptQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 
     @PostMapping("/cancel")
@@ -88,7 +93,7 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.cancelQuest(token, nameRequestDTO);
+        questService.cancelQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 
 }

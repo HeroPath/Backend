@@ -5,6 +5,7 @@ import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class ItemService {
     private ItemRepository itemRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Item> getClassShop(String aClass) {
         /**
@@ -33,6 +36,8 @@ public class ItemService {
          */
         List<Item> items = itemRepository.findAll();
         items.removeIf(item -> !item.getClassRequired().equals(aClass));
+        if (items.isEmpty()) throw new NotFound("No items found for class " + aClass);
+
         items.sort(Comparator.comparing(Item::getLvlMin));
         return items;
     }
@@ -64,7 +69,6 @@ public class ItemService {
                 newItem.getLvlMin(),
                 newItem.getClassRequired(),
                 newItem.getPrice(),
-                1,
                 newItem.getStrength(),
                 newItem.getDexterity(),
                 newItem.getIntelligence(),
@@ -73,15 +77,15 @@ public class ItemService {
         );
     }
 
-    public void buyItem(String token, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
-         * @param String token
+         * @param String username
          * @param String name
          * @return none
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
@@ -91,32 +95,21 @@ public class ItemService {
         if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY &&
                 !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
+        user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
-
-        // This causes an item duplication bug...
-        if (user.getInventory().getItems().contains(itemBuy)) itemBuy.setAmount(itemBuy.getAmount() + 1);
-            // MODIFICAR EL AMOUNT SOLO DEL ITEM DEL USUARIO
-            // for (Item item : user.getInventory().getItems()) {
-            //    if (item.getName().equals(itemBuy.getName())) {
-            //        item.setAmount(item.getAmount() + 1);
-            //        break;
-            //    }
-            //}
-        else user.getInventory().getItems().add(itemBuy);
-
         userService.updateUser(user);
 
     }
 
-    public void sellItem(String token, NameRequestDTO nameRequestDTO) {
+    public void sellItem(String username, NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
-         * @param String token
+         * @param String username
          * @param SellItemDTO sellItemDTO
          * @return none
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
@@ -124,14 +117,13 @@ public class ItemService {
 
         if (!user.getInventory().getItems().contains(itemBuy))
             throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
-        user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
 
-        if (itemBuy.getAmount() > 1) itemBuy.setAmount(itemBuy.getAmount() - 1);
-        else user.getInventory().getItems().remove(itemBuy);
+        user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
+        user.getInventory().getItems().remove(itemBuy);
         userService.updateUser(user);
     }
 
-    public User equipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public User equipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -139,7 +131,7 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
@@ -163,15 +155,13 @@ public class ItemService {
             user.getEquipment().getItems().add(item);
             user.swapItemToEquipmentOrInventory(item, true);
         }
-
-        if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
-        else user.getInventory().getItems().remove(item);
+        user.getInventory().getItems().remove(item);
 
         userService.updateUser(user);
         return user;
     }
 
-    public User unequipItem(String token, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public User unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -179,7 +169,7 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
         Item item = itemRepository.findById(equipUnequipItemDTO.getId()).orElseThrow(() -> new NotFound(ItemConst.ITEM_NOT_FOUND));
@@ -188,8 +178,6 @@ public class ItemService {
             throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getEquipment().getItems().remove(item);
-        if (user.getInventory().getItems().contains(item)) item.setAmount(item.getAmount() + 1);
-
         user.getInventory().getItems().add(item);
 
         user.swapItemToEquipmentOrInventory(item, false);

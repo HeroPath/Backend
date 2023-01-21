@@ -32,13 +32,8 @@ public class Account {
     @Column(nullable = false)
     private String email;
 
-    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Role role;
 
     public Account(String username, String password, String email, Role role) {

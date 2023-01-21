@@ -29,7 +29,7 @@ public class GuildService {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    private ObjectNode GuildToObjectNode(Guild guild) {
+    private ObjectNode guildToObjectNode(Guild guild) {
         /**
          * @Author: Gianca1994
          * Explanation: This method converts a Guild object into a JSON ObjectNode
@@ -43,6 +43,7 @@ public class GuildService {
         guildsNode.put("tag", guild.getTag());
         guildsNode.put("leader", guild.getLeader());
         guildsNode.put("subLeader", guild.getSubLeader());
+        guildsNode.put("members", guild.getMembers().size());
         return guildsNode;
     }
 
@@ -53,8 +54,7 @@ public class GuildService {
          * @return List<ObjectNode>
          */
         List<Guild> guilds = guildRepository.findAll();
-        // guildNode.putPOJO("users", guild.getUsers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
-        return guilds.stream().map(this::GuildToObjectNode).collect(Collectors.toList());
+        return guilds.stream().map(this::guildToObjectNode).collect(Collectors.toList());
     }
 
     public ObjectNode getGuildByName(String name) {
@@ -64,23 +64,23 @@ public class GuildService {
          * @param String name
          * @return ObjectNode
          */
-        Guild guild = guildRepository.findByName(name);
+        Guild guild = guildRepository.findByName(name.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
-        ObjectNode guildNode = GuildToObjectNode(guild);
-        guildNode.putPOJO("users", guild.getUsers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        ObjectNode guildNode = guildToObjectNode(guild);
+        guildNode.putPOJO("users", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
         return guildNode;
     }
 
-    public void saveGuild(String token, GuildDTO guildDTO) throws Conflict {
+    public void saveGuild(String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild
-         * @param String token
+         * @param String username
          * @param GuildDTO guildDTO
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
@@ -98,7 +98,7 @@ public class GuildService {
         guild.setTag(guildDTO.getTag());
         guild.setLeader(user.getUsername());
         guild.setSubLeader("");
-        guild.getUsers().add(user);
+        guild.getMembers().add(user);
 
         user.setGuildName(guildDTO.getName());
 
@@ -106,37 +106,37 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void addUserGuild(String token, String guildName) throws Conflict {
+    public void addUserGuild(String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
-         * @param String token
+         * @param String username
          * @param String guildName
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userService.getProfile(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
         Guild guild = guildRepository.findByName(guildName.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
-        guild.getUsers().add(user);
+        guild.getMembers().add(user);
         user.setGuildName(guild.getName());
 
         userService.updateUser(user);
         guildRepository.save(guild);
     }
 
-    public void removeUserGuild(String token, String nameRemove) throws Conflict {
+    public void removeUserGuild(String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
-         * @param String token
+         * @param String username
          * @param String nameRemove
          * @return void
          */
-        User user = userService.getProfile(token);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (user.getUsername().equals(nameRemove)) throw new Conflict("You can't remove yourself from the guild");
 
@@ -153,7 +153,7 @@ public class GuildService {
         if (userRemove == null) throw new NotFound("User not found");
         if (userRemove.getUsername().equals(guild.getLeader())) throw new Conflict("You can't remove the leader of the guild");
 
-        guild.getUsers().remove(userRemove);
+        guild.getMembers().remove(userRemove);
         userRemove.setGuildName("");
 
         userService.updateUser(userRemove);

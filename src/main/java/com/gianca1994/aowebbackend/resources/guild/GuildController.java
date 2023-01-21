@@ -2,11 +2,16 @@ package com.gianca1994.aowebbackend.resources.guild;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -15,6 +20,9 @@ public class GuildController {
 
     @Autowired
     private GuildService guildService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -49,7 +57,7 @@ public class GuildController {
          * @param token - Token of the user that is trying to save the guild
          * @return void
          */
-        guildService.saveGuild(token, guildDTO);
+        guildService.saveGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), guildDTO);
     }
 
     @PostMapping("/add")
@@ -62,7 +70,7 @@ public class GuildController {
          * @param token - Token of the user that is trying to add the user to the guild
          * @return void
          */
-        guildService.addUserGuild(token, requestGuildNameDTO.getName());
+        guildService.addUserGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), requestGuildNameDTO.getName());
     }
 
     @GetMapping("/remove/{name}")
@@ -75,7 +83,7 @@ public class GuildController {
          * @param token - Token of the user that is trying to remove the user from the guild
          * @return void
          */
-        guildService.removeUserGuild(token, name);
+        guildService.removeUserGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
     }
 
 }
