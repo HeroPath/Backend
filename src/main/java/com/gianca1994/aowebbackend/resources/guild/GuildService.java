@@ -83,6 +83,10 @@ public class GuildService {
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
+        if (user.getLevel() < 100) throw new Conflict("You need to be level 100 to create a guild");
+        if (user.getGold() < 100000) throw new Conflict("You need 100.000 gold to create a guild");
+        if (user.getDiamond() < 50) throw new Conflict("You need 50 diamonds to create a guild");
+
         if (guildDTO.getName() == null) throw new Conflict("Name is required");
         if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
         if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
@@ -100,6 +104,9 @@ public class GuildService {
         guild.getMembers().add(user);
 
         user.setGuildName(guildDTO.getName());
+
+        user.setGold(user.getGold() - 100000);
+        user.setDiamond(user.getDiamond() - 50);
 
         userService.updateUser(user);
         guildRepository.save(guild);
@@ -137,26 +144,83 @@ public class GuildService {
          */
         User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (user.getUsername().equals(nameRemove)) throw new Conflict("You can't remove yourself from the guild");
 
         if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
 
         Guild guild = guildRepository.findByName(user.getGuildName().toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
 
-        if (!Objects.equals(user.getUsername(), guild.getLeader()) && !Objects.equals(user.getUsername(), guild.getSubLeader()))
-            throw new Conflict("You are not the leader or subleader of the guild");
+        if (!Objects.equals(nameRemove, user.getUsername())) {
+            // si quiero borrar a otro miembro
+            if (!Objects.equals(nameRemove, user.getUsername()) &&
+                    !Objects.equals(user.getUsername(), guild.getLeader()) &&
+                    !Objects.equals(user.getUsername(), guild.getSubLeader())
+            ) throw new Conflict("You do not have the permissions to delete another member");
+
+            // si quiero borrar a un lider
+            if (Objects.equals(nameRemove, guild.getLeader())) throw new Conflict("You cannot remove the guild leader");
+
+            // si quiero borrar a un sub lider, pero no soy el lider
+            if (Objects.equals(nameRemove, guild.getSubLeader()) && !Objects.equals(user.getUsername(), guild.getLeader())
+            ) throw new Conflict("You cannot remove the guild subleader");
+        }
+
+        // la persona que quiero borrar soy yo mismo.
+        if (nameRemove.equals(guild.getLeader()) &&
+                guild.getSubLeader().equals("") &&
+                guild.getMembers().size() > 1
+        ) throw new Conflict("You cannot leave the clan because there is no sub-leader to take command");
+
 
         User userRemove = userRepository.findByUsername(nameRemove);
-
         if (userRemove == null) throw new NotFound("User not found");
-        if (userRemove.getUsername().equals(guild.getLeader()))
-            throw new Conflict("You can't remove the leader of the guild");
+
+        if (userRemove.getUsername().equals(guild.getSubLeader())) guild.setSubLeader("");
+
+        if (Objects.equals(userRemove.getUsername(), guild.getLeader())) {
+            guild.setLeader(guild.getSubLeader());
+            guild.setSubLeader("");
+        }
 
         guild.getMembers().remove(userRemove);
         userRemove.setGuildName("");
 
         userService.updateUser(userRemove);
+
+        if (guild.getMembers().size() == 0) guildRepository.delete(guild);
+        else guildRepository.save(guild);
+    }
+
+    public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method makes a user subleader
+         * @param String username
+         * @param String nameSubLeader
+         * @return void
+         */
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+
+        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
+
+        Guild guild = guildRepository.findByName(user.getGuildName().toLowerCase());
+        if (guild == null) throw new NotFound("Guild not found");
+
+        if (!Objects.equals(user.getUsername(), guild.getLeader()))
+            throw new Conflict("You do not have the permissions to make a subleader");
+
+        User userSubLeader = userRepository.findByUsername(nameSubLeader);
+        if (userSubLeader == null) throw new NotFound("User not found");
+
+        if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader()))
+            throw new Conflict("User is already subleader");
+
+        if (Objects.equals(userSubLeader.getUsername(), guild.getLeader()))
+            throw new Conflict("User is already leader");
+
+        guild.setSubLeader(userSubLeader.getUsername());
+
         guildRepository.save(guild);
     }
 
@@ -177,6 +241,7 @@ public class GuildService {
 
         if (guild == null) return guildNode;
 
+        guildNode.put("username", userInGuild.getUsername());
         guildNode.put("name", guild.getName());
         guildNode.put("tag", guild.getTag());
         guildNode.put("description", guild.getDescription());
