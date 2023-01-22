@@ -53,7 +53,10 @@ public class GuildController {
          * @param token - Token of the user that is trying to save the guild
          * @return void
          */
-        guildService.saveGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), guildDTO);
+        guildService.saveGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                guildDTO
+        );
     }
 
     @PostMapping("/add")
@@ -66,7 +69,10 @@ public class GuildController {
          * @param token - Token of the user that is trying to add the user to the guild
          * @return void
          */
-        guildService.addUserGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), requestGuildNameDTO.getName());
+        guildService.addUserGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                requestGuildNameDTO.getName()
+        );
     }
 
     @GetMapping("/remove/{name}")
@@ -79,7 +85,24 @@ public class GuildController {
          * @param token - Token of the user that is trying to remove the user from the guild
          * @return void
          */
-        guildService.removeUserGuild(jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+        guildService.removeUserGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name
+        );
+    }
+
+    @GetMapping("/in-guild")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public ObjectNode getUserGuild(@RequestHeader("Authorization") String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method returns the guild of the user
+         * @param token - Token of the user that is trying to get the guild
+         * @return ObjectNode - Guild of the user
+         */
+        return guildService.getUserGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
     }
 
 }

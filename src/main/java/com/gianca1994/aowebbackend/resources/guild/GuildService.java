@@ -37,13 +37,12 @@ public class GuildService {
          * @return ObjectNode
          */
         ObjectNode guildsNode = mapper.createObjectNode();
-        guildsNode.put("id", guild.getId());
         guildsNode.put("name", guild.getName());
         guildsNode.put("description", guild.getDescription());
         guildsNode.put("tag", guild.getTag());
         guildsNode.put("leader", guild.getLeader());
         guildsNode.put("subLeader", guild.getSubLeader());
-        guildsNode.put("members", guild.getMembers().size());
+        guildsNode.put("memberAmount", guild.getMembers().size());
         return guildsNode;
     }
 
@@ -68,7 +67,7 @@ public class GuildService {
         if (guild == null) throw new NotFound("Guild not found");
 
         ObjectNode guildNode = guildToObjectNode(guild);
-        guildNode.putPOJO("users", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        guildNode.putPOJO("members", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
         return guildNode;
     }
 
@@ -151,12 +150,41 @@ public class GuildService {
         User userRemove = userRepository.findByUsername(nameRemove);
 
         if (userRemove == null) throw new NotFound("User not found");
-        if (userRemove.getUsername().equals(guild.getLeader())) throw new Conflict("You can't remove the leader of the guild");
+        if (userRemove.getUsername().equals(guild.getLeader()))
+            throw new Conflict("You can't remove the leader of the guild");
 
         guild.getMembers().remove(userRemove);
         userRemove.setGuildName("");
 
         userService.updateUser(userRemove);
         guildRepository.save(guild);
+    }
+
+    public ObjectNode getUserGuild(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method returns a guild by a user
+         * @param String username
+         * @return ObjectNode
+         */
+        User userInGuild = userRepository.findByUsername(username);
+        if (userInGuild == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+
+        ObjectNode guildNode = mapper.createObjectNode();
+        guildNode.put("userInGuild", !Objects.equals(userInGuild.getGuildName(), ""));
+
+        Guild guild = guildRepository.findByName(userInGuild.getGuildName().toLowerCase());
+
+        if (guild == null) return guildNode;
+
+        guildNode.put("name", guild.getName());
+        guildNode.put("tag", guild.getTag());
+        guildNode.put("description", guild.getDescription());
+        guildNode.put("leader", guild.getLeader());
+        guildNode.put("subLeader", guild.getSubLeader());
+        guildNode.put("memberAmount", guild.getMembers().size());
+        guildNode.putPOJO("members", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+
+        return guildNode;
     }
 }
