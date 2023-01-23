@@ -33,7 +33,7 @@ public class PvpSystem {
         PvpFunctions pvpUserVsUser = new PvpFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
-        Guild guildAttacker = null, guildDefender = null;
+        Guild guildAttacker, guildDefender;
         long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
         short diamondsQuestGain = 0;
         int roundCounter = 0;

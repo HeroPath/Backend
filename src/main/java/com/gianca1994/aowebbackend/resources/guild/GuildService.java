@@ -12,6 +12,7 @@ import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,7 +57,57 @@ public class GuildService {
          * @return List<ObjectNode>
          */
         List<Guild> guilds = guildRepository.findAll();
-        return guilds.stream().map(this::guildToObjectNode).collect(Collectors.toList());
+        return guilds.stream()
+                .sorted(Comparator.comparingInt(Guild::getTitlePoints).reversed())
+                .map(this::guildToObjectNode)
+                .collect(Collectors.toList());
+    }
+
+    public ObjectNode getUserGuild(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method returns a guild by a user
+         * @param String username
+         * @return ObjectNode
+         */
+        User userInGuild = userRepository.findByUsername(username);
+        if (userInGuild == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+
+        ObjectNode guildNode = mapper.createObjectNode();
+        guildNode.put("userInGuild", !Objects.equals(userInGuild.getGuildName(), ""));
+
+        Guild guild = guildRepository.findByName(userInGuild.getGuildName());
+
+        if (guild == null) return guildNode;
+
+        guildNode.put("username", userInGuild.getUsername());
+        guildNode.put("name", guild.getName());
+        guildNode.put("tag", guild.getTag());
+        guildNode.put("description", guild.getDescription());
+        guildNode.put("leader", guild.getLeader());
+        guildNode.put("subLeader", guild.getSubLeader());
+        guildNode.put("memberAmount", guild.getMembers().size());
+        guildNode.put("level", guild.getLevel());
+        guildNode.put("diamonds", guild.getDiamonds());
+        guildNode.put("titlePoints", guild.getTitlePoints());
+        guildNode.put("maxMembers", SvConfig.MAX_MEMBERS_IN_GUILD);
+        guildNode.putPOJO("members",
+                guild.getMembers().stream()
+                        .map(user -> userService.getUserForGuild(user.getUsername()))
+                        .sorted((user1, user2) -> {
+                            if (user1.getUsername().equals(guild.getLeader())) return -1;
+                            else if (user2.getUsername().equals(guild.getLeader())) return 1;
+                            else if (user1.getUsername().equals(guild.getSubLeader())) return -1;
+                            else if (user2.getUsername().equals(guild.getSubLeader())) return 1;
+                            else if (user1.getTitlePoints() == user2.getTitlePoints())
+                                return -1 * Integer.compare(user1.getLevel(), user2.getLevel());
+                            else return -1 * Integer.compare(user1.getTitlePoints(), user2.getTitlePoints());
+                        }).collect(Collectors.toList())
+        );
+
+        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+
+        return guildNode;
     }
 
     public void saveGuild(String username, GuildDTO guildDTO) throws Conflict {
@@ -126,7 +177,11 @@ public class GuildService {
 
     public void acceptUserGuild(String username, String nameAccept) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method accepts a user to a guild
+         * @param String username
+         * @param String nameAccept
+         * @return void
          */
         User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
@@ -235,48 +290,12 @@ public class GuildService {
         User userSubLeader = userRepository.findByUsername(nameSubLeader);
         if (userSubLeader == null) throw new NotFound("User not found");
 
-        if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader()))
-            throw new Conflict("User is already subleader");
-
         if (Objects.equals(userSubLeader.getUsername(), guild.getLeader()))
             throw new Conflict("User is already leader");
 
-        guild.setSubLeader(userSubLeader.getUsername());
+        if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
+        else guild.setSubLeader(userSubLeader.getUsername());
 
         guildRepository.save(guild);
-    }
-
-    public ObjectNode getUserGuild(String username) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method returns a guild by a user
-         * @param String username
-         * @return ObjectNode
-         */
-        User userInGuild = userRepository.findByUsername(username);
-        if (userInGuild == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-
-        ObjectNode guildNode = mapper.createObjectNode();
-        guildNode.put("userInGuild", !Objects.equals(userInGuild.getGuildName(), ""));
-
-        Guild guild = guildRepository.findByName(userInGuild.getGuildName());
-
-        if (guild == null) return guildNode;
-
-        guildNode.put("username", userInGuild.getUsername());
-        guildNode.put("name", guild.getName());
-        guildNode.put("tag", guild.getTag());
-        guildNode.put("description", guild.getDescription());
-        guildNode.put("leader", guild.getLeader());
-        guildNode.put("subLeader", guild.getSubLeader());
-        guildNode.put("memberAmount", guild.getMembers().size());
-        guildNode.put("level", guild.getLevel());
-        guildNode.put("diamonds", guild.getDiamonds());
-        guildNode.put("titlePoints", guild.getTitlePoints());
-        guildNode.put("maxMembers", SvConfig.MAX_MEMBERS_IN_GUILD);
-        guildNode.putPOJO("members", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
-        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
-
-        return guildNode;
     }
 }
