@@ -48,10 +48,6 @@ class NpcServiceTest {
     }
 
     @Test
-    void filterNpcByZone() {
-    }
-
-    @Test
     void givenNameZone_whenGetNpcByZone_thenReturnListNpcsByZone() {
         assertEquals(1, npcService.filterNpcByZone("test").size());
     }

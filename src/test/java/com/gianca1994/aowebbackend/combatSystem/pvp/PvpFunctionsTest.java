@@ -36,10 +36,6 @@ class PvpFunctionsTest {
     private final PvpFunctions pvpFunctionsTest = new PvpFunctions();
 
     @Test
-    void getUserGoldAmountWin() {
-    }
-
-    @Test
     void givenUserDefender_whenCalculateUserAttackerGoldAmountWin_thenReturnUserAttackerGoldAmountWin() {
         userTest2.setGold(100);
         assertThat(pvpFunctionsTest.getUserGoldAmountWin(userTest2)).isEqualTo(25);

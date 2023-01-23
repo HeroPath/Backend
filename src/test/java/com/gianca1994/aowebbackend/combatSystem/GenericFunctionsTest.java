@@ -25,10 +25,6 @@ class GenericFunctionsTest {
     private GenericFunctions genericFunctionsTest = new GenericFunctions();
 
     @Test
-    void checkLifeStartCombat() {
-    }
-
-    @Test
     void givenUser_whenCheckLifeStartCombat_thenReturnTrue() {
         userTest.setMaxHp(100);
         userTest.setHp(10);

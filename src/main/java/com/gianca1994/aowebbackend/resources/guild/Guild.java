@@ -56,4 +56,10 @@ public class Guild {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> members = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "guilds_invites",
+            joinColumns = @JoinColumn(name = "guild_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> requests = new HashSet<>();
+
 }
