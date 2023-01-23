@@ -31,18 +31,6 @@ public class GuildController {
         return guildService.getAllGuilds();
     }
 
-    @GetMapping("/{name}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ObjectNode getGuildByName(@PathVariable String name) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method returns the guild with the name passed as parameter
-         * @param name - Name of the guild to be returned
-         * @return ObjectNode - Guild with the name passed as parameter
-         */
-        return guildService.getGuildByName(name);
-    }
-
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void saveGuild(@RequestHeader("Authorization") String token,

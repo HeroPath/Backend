@@ -2,6 +2,8 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
+import com.gianca1994.aowebbackend.resources.guild.Guild;
+import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
@@ -15,7 +17,10 @@ import java.util.Objects;
  */
 public class PvpSystem {
 
-    public static PvpModel PvpUserVsUser(User attacker, User defender, TitleRepository titleRepository) {
+    public static PvpModel PvpUserVsUser(User attacker,
+                                         User defender,
+                                         TitleRepository titleRepository,
+                                         GuildRepository guildRepository) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of starting a combat between two users.
@@ -28,6 +33,7 @@ public class PvpSystem {
         PvpFunctions pvpUserVsUser = new PvpFunctions();
         ArrayList<ObjectNode> historyCombat = new ArrayList<>();
 
+        Guild guildAttacker = null, guildDefender = null;
         long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
         short diamondsQuestGain = 0;
         int roundCounter = 0;
@@ -52,6 +58,22 @@ public class PvpSystem {
                     // Add points to the attacker and defender.
                     attacker.addTitlePoints(mmrWinAndLose);
                     defender.removeTitlePoints(mmrWinAndLose);
+
+                    if (attacker.getGuildName() != null) {
+                        guildAttacker = guildRepository.findByName(attacker.getGuildName());
+                        if (guildAttacker != null) {
+                            guildAttacker.setTitlePoints(guildAttacker.getTitlePoints() + mmrWinAndLose);
+                            guildRepository.save(guildAttacker);
+                        }
+                    }
+                    if (defender.getGuildName() != null){
+                        guildDefender = guildRepository.findByName(defender.getGuildName());
+                        if (guildDefender != null) {
+                            guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
+                            guildRepository.save(guildDefender);
+                        }
+                    }
+
                     // Check status title for the attacker and defender.
                     attacker.checkStatusTitlePoints(titleRepository);
                     defender.checkStatusTitlePoints(titleRepository);

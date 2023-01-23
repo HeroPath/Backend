@@ -48,7 +48,10 @@ public class Guild {
     private short level;
 
     @Column
-    private int points;
+    private int diamonds;
+
+    @Column
+    private int titlePoints;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "guilds_users",
@@ -62,4 +65,14 @@ public class Guild {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> requests = new HashSet<>();
 
+    public Guild(String name, String description, String tag, String leader, short level, int diamonds) {
+        this.name = name;
+        this.description = description;
+        this.tag = tag;
+        this.leader = leader;
+        this.subLeader = "";
+        this.level = level;
+        this.diamonds = diamonds;
+        this.titlePoints = 0;
+    }
 }

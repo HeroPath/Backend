@@ -34,6 +34,18 @@ data_login_lucho = {
     "password": "test"
 }
 
+data_register_test = {
+    "username": "test",
+    "password": "test",
+    "email": "test@gmail.com",
+    "classId": 2
+}
+
+data_login_test = {
+    "username": "test",
+    "password": "test"
+}
+
 
 def main():
     npcs = pd.read_excel("NpcsAo-Web.xlsx")
@@ -78,14 +90,18 @@ def main():
         "giveDiamonds"
     ])
 
+    response_login_lucho = requests.post(url_login, json=data_login_lucho)
+    if response_login_lucho.status_code == 404:
+        requests.post(url_register, json=data_register_lucho)
+
+    response_login = requests.post(url_login, json=data_login_test)
+    if response_login.status_code == 404:
+        requests.post(url_register, json=data_register_test)
+
     response_login = requests.post(url_login, json=data_login_gianca)
     if response_login.status_code == 404:
         requests.post(url_register, json=data_register_gianca)
         response_login = requests.post(url_login, json=data_login_gianca)
-
-    response_login_lucho = requests.post(url_login, json=data_login_lucho)
-    if response_login_lucho.status_code == 404:
-        requests.post(url_register, json=data_register_lucho)
 
     headers = {
         "Authorization": "Bearer " + str(response_login.json()['token']),

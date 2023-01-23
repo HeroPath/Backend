@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +20,7 @@ class GuildTest {
         guildTest.setLeader("Test");
         guildTest.setSubLeader("Test");
         guildTest.setLevel((short) 1);
-        guildTest.setPoints(1);
+        guildTest.setDiamonds(1);
     }
 
     @Test
@@ -75,7 +74,7 @@ class GuildTest {
 
     @Test
     void getPoints() {
-        assertEquals(1, guildTest.getPoints());
+        assertEquals(1, guildTest.getDiamonds());
     }
 
     @Test
@@ -128,8 +127,8 @@ class GuildTest {
 
     @Test
     void setPoints() {
-        guildTest.setPoints(2);
-        assertEquals(2, guildTest.getPoints());
+        guildTest.setDiamonds(2);
+        assertEquals(2, guildTest.getDiamonds());
     }
 
     @Test
