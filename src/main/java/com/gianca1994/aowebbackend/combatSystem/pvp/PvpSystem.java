@@ -36,15 +36,17 @@ public class PvpSystem {
         Guild guildAttacker, guildDefender;
         long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
         short diamondsQuestGain = 0;
-        int roundCounter = 0;
+        int roundCounter = 0, attackerDmg = 0, defenderDmg = 0;
         boolean stopPvP = false;
         int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
 
         do {
             roundCounter++;
             // Calculate the damage to the attacker and defender.
-            int attackerDmg = genericFunctions.getUserDmg(attacker, defender.getDefense());
-            int defenderDmg = genericFunctions.getUserDmg(defender, attacker.getDefense());
+            if (attacker.getRole().getRoleName().equals("ADMIN")) attackerDmg = 9999999;
+            else attackerDmg = genericFunctions.getUserDmg(attacker, defender.getDefense());
+
+            defenderDmg = genericFunctions.getUserDmg(defender, attacker.getDefense());
 
             if (!stopPvP) {
                 defender.setHp(genericFunctions.userReceiveDmg(defender, attackerDmg));
@@ -66,7 +68,7 @@ public class PvpSystem {
                             guildRepository.save(guildAttacker);
                         }
                     }
-                    if (defender.getGuildName() != null){
+                    if (defender.getGuildName() != null) {
                         guildDefender = guildRepository.findByName(defender.getGuildName());
                         if (guildDefender != null) {
                             guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
