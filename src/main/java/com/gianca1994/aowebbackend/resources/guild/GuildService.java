@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.guild;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.ItemConst;
@@ -83,9 +84,12 @@ public class GuildService {
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
 
-        if (user.getLevel() < 100) throw new Conflict("You need to be level 100 to create a guild");
-        if (user.getGold() < 100000) throw new Conflict("You need 100.000 gold to create a guild");
-        if (user.getDiamond() < 50) throw new Conflict("You need 50 diamonds to create a guild");
+        if (user.getLevel() < SvConfig.LEVEL_TO_CREATE_GUILD)
+            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_CREATE_GUILD + " to create a guild");
+        if (user.getGold() < SvConfig.GOLD_TO_CREATE_GUILD)
+            throw new Conflict("You need " + SvConfig.GOLD_TO_CREATE_GUILD + " gold to create a guild");
+        if (user.getDiamond() < SvConfig.DIAMOND_TO_CREATE_GUILD)
+            throw new Conflict("You need " + SvConfig.DIAMOND_TO_CREATE_GUILD + " diamonds to create a guild");
 
         if (guildDTO.getName() == null) throw new Conflict("Name is required");
         if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
@@ -105,14 +109,14 @@ public class GuildService {
 
         user.setGuildName(guildDTO.getName());
 
-        user.setGold(user.getGold() - 100000);
-        user.setDiamond(user.getDiamond() - 50);
+        user.setGold(user.getGold() - SvConfig.GOLD_TO_CREATE_GUILD);
+        user.setDiamond(user.getDiamond() - SvConfig.DIAMOND_TO_CREATE_GUILD);
 
         userService.updateUser(user);
         guildRepository.save(guild);
     }
 
-    public void addUserGuild(String username, String guildName) throws Conflict {
+    public void requestUserGuild(String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
@@ -123,15 +127,53 @@ public class GuildService {
         User user = userService.getProfile(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
+        if (user.getLevel() < SvConfig.LEVEL_TO_JOIN_GUILD)
+            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_JOIN_GUILD + " to join a guild");
 
         Guild guild = guildRepository.findByName(guildName.toLowerCase());
         if (guild == null) throw new NotFound("Guild not found");
+        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
+            throw new Conflict("Guild is full");
 
-        guild.getMembers().add(user);
-        user.setGuildName(guild.getName());
+        guild.getRequests().add(user);
+        // user.setGuildName(guild.getName());
 
-        userService.updateUser(user);
+        // userService.updateUser(user);
         guildRepository.save(guild);
+    }
+
+    public void acceptUserGuild(String username, String nameAccept) throws Conflict {
+        /**
+         *
+         */
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+
+        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
+
+        Guild guild = guildRepository.findByName(user.getGuildName().toLowerCase());
+        if (guild == null) throw new NotFound("Guild not found");
+
+        if (!Objects.equals(user.getUsername(), guild.getLeader()) && !Objects.equals(user.getUsername(), guild.getSubLeader()))
+            throw new Conflict("You are not the leader or subleader of the guild");
+
+        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
+            throw new Conflict("Guild is full");
+
+        User userAccept = userRepository.findByUsername(nameAccept);
+        if (userAccept == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+
+        if (!Objects.equals(userAccept.getGuildName(), "")) throw new Conflict("User is already in a guild");
+        if (!guild.getRequests().contains(userAccept)) throw new Conflict("User is not in the guild requests");
+
+        guild.getRequests().remove(userAccept);
+        guild.getMembers().add(userAccept);
+
+        userAccept.setGuildName(guild.getName());
+
+        userService.updateUser(userAccept);
+        guildRepository.save(guild);
+
     }
 
     public void removeUserGuild(String username, String nameRemove) throws Conflict {
@@ -249,6 +291,7 @@ public class GuildService {
         guildNode.put("subLeader", guild.getSubLeader());
         guildNode.put("memberAmount", guild.getMembers().size());
         guildNode.putPOJO("members", guild.getMembers().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
 
         return guildNode;
     }

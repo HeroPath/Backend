@@ -59,9 +59,9 @@ public class GuildController {
         );
     }
 
-    @PostMapping("/add")
+    @PostMapping("/request")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void addUserGuild(@RequestHeader("Authorization") String token,
+    public void requestUserGuild(@RequestHeader("Authorization") String token,
                              @RequestBody RequestGuildNameDTO requestGuildNameDTO) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -69,10 +69,22 @@ public class GuildController {
          * @param token - Token of the user that is trying to add the user to the guild
          * @return void
          */
-        guildService.addUserGuild(
+        guildService.requestUserGuild(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 requestGuildNameDTO.getName()
         );
+    }
+
+    @GetMapping("/accept/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void acceptUserGuild(@RequestHeader("Authorization") String token,
+                                @PathVariable String name) throws Conflict {
+        /**
+         *
+         */
+        guildService.acceptUserGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name);
     }
 
     @GetMapping("/remove/{name}")

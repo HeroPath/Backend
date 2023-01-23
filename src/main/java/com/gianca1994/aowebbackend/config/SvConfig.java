@@ -40,4 +40,12 @@ public class SvConfig {
     public static final int MAX_ACTIVE_QUESTS = 3;
     /////////////////////////// QUEST ///////////////////////////
 
+    /////////////////////////// GUILD ///////////////////////////
+    public static final int MAX_MEMBERS_IN_GUILD = 10;
+    public static final int LEVEL_TO_CREATE_GUILD = 100;
+    public static final int GOLD_TO_CREATE_GUILD = 500000;
+    public static final int DIAMOND_TO_CREATE_GUILD = 100;
+    public static final int LEVEL_TO_JOIN_GUILD = 10;
+    /////////////////////////// GUILD ///////////////////////////
+
 }
