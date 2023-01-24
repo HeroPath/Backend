@@ -6,8 +6,8 @@ public class SvConfig {
      * Explanation: This class is used to modify the configuration of the application.
      */
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 100;
-    public static final int GOLD_MULTIPLIER = 100;
+    public static final int EXPERIENCE_MULTIPLIER = 1000;
+    public static final int GOLD_MULTIPLIER = 1000;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
@@ -41,7 +41,7 @@ public class SvConfig {
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////
-    public static final int MAX_MEMBERS_IN_GUILD = 10;
+    public static final int MAX_MEMBERS_IN_GUILD = 5;
     public static final int LEVEL_TO_CREATE_GUILD = 100;
     public static final int GOLD_TO_CREATE_GUILD = 500000;
     public static final int DIAMOND_TO_CREATE_GUILD = 100;

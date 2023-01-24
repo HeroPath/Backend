@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.resources.item;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EquipUnequipItemDTOTest {
@@ -13,6 +12,7 @@ class EquipUnequipItemDTOTest {
     @BeforeEach
     void setUp() {
         equipUnequipItemDTO = new EquipUnequipItemDTO();
+        equipUnequipItemDTO.setId(1L);
     }
 
     @Test
@@ -28,14 +28,7 @@ class EquipUnequipItemDTOTest {
     }
 
     @Test
-    void getId() {
-        equipUnequipItemDTO.setId(1L);
-        assertEquals(1L, equipUnequipItemDTO.getId());
-    }
-
-    @Test
-    void setId() {
-        equipUnequipItemDTO.setId(1L);
+    void givenEquipUnequipItemDTO_whenGetId_thenReturnId() {
         assertEquals(1L, equipUnequipItemDTO.getId());
     }
 }

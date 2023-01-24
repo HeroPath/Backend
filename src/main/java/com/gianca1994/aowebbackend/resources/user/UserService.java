@@ -12,6 +12,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.item.Item;
@@ -52,6 +53,8 @@ public class UserService {
     @Autowired
     QuestRepository questRepository;
 
+    @Autowired
+    GuildRepository guildRepository;
 
     GenericFunctions genericFunctions = new GenericFunctions();
 
@@ -83,16 +86,6 @@ public class UserService {
         userGuildDTO.setClassName(user.getAClass().getName());
         userGuildDTO.setTitleName(user.getTitle().getName());
         return userGuildDTO;
-    }
-
-    public void updateUser(User username) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the user.
-         * @param String username
-         * @return none
-         */
-        userRepository.save(username);
     }
 
     public ArrayList<User> getRankingAll() {
@@ -152,13 +145,14 @@ public class UserService {
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
         if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
 
-        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository);
+        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getAttacker());
         if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
             pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
         }
         userRepository.save(pvpUserVsUserModel.getDefender());
+
         return pvpUserVsUserModel.getHistoryCombat();
     }
 

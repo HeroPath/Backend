@@ -31,76 +31,100 @@ public class GuildController {
         return guildService.getAllGuilds();
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/in-guild")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ObjectNode getGuildByName(@PathVariable String name) {
+    public ObjectNode getUserGuild(@RequestHeader("Authorization") String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns the guild with the name passed as parameter
-         * @param name - Name of the guild to be returned
-         * @return ObjectNode - Guild with the name passed as parameter
+         * Explanation: This method returns the guild of the user
+         * @param token - Token of the user that is trying to get the guild
+         * @return ObjectNode - Guild of the user
          */
-        return guildService.getGuildByName(name);
+        return guildService.getUserGuild(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
+
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void saveGuild(@RequestHeader("Authorization") String token,
-                          @RequestBody GuildDTO guildDTO) throws Conflict {
+                          @RequestBody GuildDTO guildDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild in the database
          * @param token - Token of the user that is trying to save the guild
          * @return void
          */
-        guildService.saveGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                guildDTO
-        );
+        try {
+            guildService.saveGuild(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    guildDTO
+            );
+        } catch (Conflict e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/request")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void requestUserGuild(@RequestHeader("Authorization") String token,
-                             @RequestBody RequestGuildNameDTO requestGuildNameDTO) throws Conflict {
+                                 @RequestBody RequestGuildNameDTO requestGuildNameDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
          * @param token - Token of the user that is trying to add the user to the guild
          * @return void
          */
-        guildService.requestUserGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                requestGuildNameDTO.getName()
-        );
+        try {
+            guildService.requestUserGuild(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    requestGuildNameDTO.getName()
+            );
+        } catch (Conflict e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/accept/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void acceptUserGuild(@RequestHeader("Authorization") String token,
-                                @PathVariable String name) throws Conflict {
+                                @PathVariable String name) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method accepts a user to a guild
+         * @param String token - Token of the user that is trying to accept the user to the guild
+         * @param String name - Name of the user to be accepted
+         * @return void
          */
-        guildService.acceptUserGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                name);
+        try {
+            guildService.acceptUserGuild(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    name);
+        } catch (Conflict e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @GetMapping("/remove/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void removeUserGuild(@RequestHeader("Authorization") String token,
-                                @PathVariable String name) throws Conflict {
+                                @PathVariable String name) {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
          * @param token - Token of the user that is trying to remove the user from the guild
          * @return void
          */
-        guildService.removeUserGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                name
-        );
+        try {
+            guildService.removeUserGuild(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    name
+            );
+        } catch (Conflict e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/make-subleader/{name}")
@@ -116,21 +140,6 @@ public class GuildController {
          */
         guildService.makeUserSubLeader(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
-    }
-
-
-    @GetMapping("/in-guild")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ObjectNode getUserGuild(@RequestHeader("Authorization") String token) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method returns the guild of the user
-         * @param token - Token of the user that is trying to get the guild
-         * @return ObjectNode - Guild of the user
-         */
-        return guildService.getUserGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
-        );
     }
 
 }

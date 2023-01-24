@@ -25,16 +25,17 @@ class NpcServiceTest {
     @BeforeEach
     void setUp() {
         npcRepository.deleteAll();
-
-        npcRepository.save(new Npc(
-                "test", (short) 1,
-                1L, 1L,
-                1L, 1L,
-                1, 1,
-                1, 1,
-                1,
-                "test"
-        ));
+        npcRepository.save(
+                new Npc(
+                        "test", (short) 1,
+                        1L, 1L,
+                        1L, 1L,
+                        1, 1,
+                        1, 1,
+                        1,
+                        "test"
+                )
+        );
     }
 
     @Test
@@ -53,7 +54,7 @@ class NpcServiceTest {
     }
 
     @Test
-    void givenNpcDTO_whenSaveNpc_thenReturnNpc() {
+    void givenNpcDTO_whenSaveNpc_thenReturnNpc() throws Conflict {
         NpcDTO npcDTO = new NpcDTO(
                 "test2", (short) 1,
                 1L, 1L,
@@ -64,11 +65,7 @@ class NpcServiceTest {
                 "test"
         );
 
-        try {
-            npcService.saveNpc(npcDTO);
-        } catch (Conflict e) {
-            throw new RuntimeException(e);
-        }
+        npcService.saveNpc(npcDTO);
         assertEquals(2, npcRepository.findAll().size());
     }
 }

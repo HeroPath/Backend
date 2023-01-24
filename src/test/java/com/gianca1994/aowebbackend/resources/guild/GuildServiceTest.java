@@ -90,13 +90,7 @@ class GuildServiceTest {
     }
 
     @Test
-    void getAllGuilds() {
+    void givenGuild_whenGetAllGuilds_thenReturnGuildList() {
         assertThat(guildService.getAllGuilds().size()).isEqualTo(1);
     }
-
-    @Test
-    void getGuildByName() {
-        assertThat(guildService.getGuildByName("testguild").get("name").asText()).isEqualTo("testguild");
-    }
-
 }

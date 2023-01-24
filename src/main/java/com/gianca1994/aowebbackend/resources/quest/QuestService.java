@@ -106,7 +106,7 @@ public class QuestService {
         quest.setUserKillAmount(0);
 
         user.getQuests().add(quest);
-        userService.updateUser(user);
+        userRepository.save(user);
     }
 
     public void cancelQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
@@ -125,6 +125,6 @@ public class QuestService {
         if (!user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_NOT_ACCEPTED);
 
         user.getQuests().remove(quest);
-        userService.updateUser(user);
+        userRepository.save(user);
     }
 }

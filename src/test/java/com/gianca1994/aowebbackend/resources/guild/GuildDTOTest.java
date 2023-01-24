@@ -34,35 +34,17 @@ class GuildDTOTest {
     }
 
     @Test
-    void getNameTest() {
+    void givenUserDTO_whenGetNewUserDTO_thenReturnNameUserDTO() {
         assertEquals("Test", guildDTO.getName());
     }
 
     @Test
-    void setNameTest() {
-        guildDTO.setName("Test2");
-        assertEquals("Test2", guildDTO.getName());
-    }
-
-    @Test
-    void getDescriptionTest() {
+    void givenUserDTO_whenGetNewUserDTO_thenReturnDescriptionUserDTO() {
         assertEquals("Test", guildDTO.getDescription());
     }
 
     @Test
-    void setDescriptionTest() {
-        guildDTO.setDescription("Test2");
-        assertEquals("Test2", guildDTO.getDescription());
-    }
-
-    @Test
-    void getTagTest() {
+    void givenUserDTO_whenGetNewUserDTO_thenReturnTagUserDTO() {
         assertEquals("Test", guildDTO.getTag());
-    }
-
-    @Test
-    void setTagTest() {
-        guildDTO.setTag("Test2");
-        assertEquals("Test2", guildDTO.getTag());
     }
 }
