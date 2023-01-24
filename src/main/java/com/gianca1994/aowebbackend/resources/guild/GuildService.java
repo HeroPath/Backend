@@ -160,7 +160,7 @@ public class GuildService {
          * @param String guildName
          * @return void
          */
-        User user = userService.getProfile(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
         if (user.getLevel() < SvConfig.LEVEL_TO_JOIN_GUILD)

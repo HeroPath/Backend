@@ -11,7 +11,8 @@ class RequestGuildNameDTOTest {
 
     @BeforeEach
     void setUp() {
-        requestGuildNameDTO = new RequestGuildNameDTO("test");
+        requestGuildNameDTO = new RequestGuildNameDTO();
+        requestGuildNameDTO.setName("test");
     }
 
     @Test
