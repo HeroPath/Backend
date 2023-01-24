@@ -45,18 +45,16 @@ class ItemServiceTest {
     }
 
     @Test
-    void saveItem() {
+    void saveItem() throws Conflict {
         ItemDTO itemDTO = new ItemDTO(
                 "testitem2", "armor", 1,
                 "none", 1,
                 1, 1, 1, 1, 1
         );
 
-        try {
-            itemService.saveItem(itemDTO);
-        } catch (Conflict e) {
-            throw new RuntimeException(e);
-        }
+
+        itemService.saveItem(itemDTO);
+
         assertEquals(2, itemRepository.findAll().size());
         assertAll(
                 () -> assertEquals("testitem2", itemRepository.findAll().get(1).getName()),

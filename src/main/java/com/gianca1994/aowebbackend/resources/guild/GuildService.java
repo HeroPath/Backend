@@ -148,7 +148,7 @@ public class GuildService {
         user.setGold(user.getGold() - SvConfig.GOLD_TO_CREATE_GUILD);
         user.setDiamond(user.getDiamond() - SvConfig.DIAMOND_TO_CREATE_GUILD);
 
-        userService.updateUser(user);
+        userRepository.save(user);
         guildRepository.save(guild);
     }
 
@@ -209,7 +209,7 @@ public class GuildService {
 
         userAccept.setGuildName(guild.getName());
 
-        userService.updateUser(userAccept);
+        userRepository.save(userAccept);
         guildRepository.save(guild);
 
     }
@@ -262,7 +262,7 @@ public class GuildService {
 
         userRemove.setGuildName("");
 
-        userService.updateUser(userRemove);
+        userRepository.save(userRemove);
 
         if (guild.getMembers().size() == 0) guildRepository.delete(guild);
         else guildRepository.save(guild);

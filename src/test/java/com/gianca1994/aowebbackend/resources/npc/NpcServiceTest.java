@@ -26,15 +26,16 @@ class NpcServiceTest {
     void setUp() {
         npcRepository.deleteAll();
 
-        npcRepository.save(new Npc(
-                "test", (short) 1,
-                1L, 1L,
-                1L, 1L,
-                1, 1,
-                1, 1,
-                1,
-                "test"
-        ));
+        npcRepository.save(
+                new Npc(
+                        "test", (short) 1,
+                        1L, 1L,
+                        1L, 1L,
+                        1, 1,
+                        1, 1,
+                        1,
+                        "test"
+                ));
     }
 
     @Test

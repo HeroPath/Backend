@@ -1,14 +1,11 @@
 package com.gianca1994.aowebbackend.resources.inventory;
 
-import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
 

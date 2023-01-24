@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +15,7 @@ class GuildTest {
     @BeforeEach
     void setUp() {
         guildTest = new Guild();
+        guildTest.setId(1L);
         guildTest.setName("Test");
         guildTest.setDescription("Test");
         guildTest.setTag("Test");
@@ -21,6 +23,9 @@ class GuildTest {
         guildTest.setSubLeader("Test");
         guildTest.setLevel((short) 1);
         guildTest.setDiamonds(1);
+        guildTest.setTitlePoints(1);
+        guildTest.setMembers(new ArrayList<>());
+        guildTest.setRequests(new HashSet<>());
     }
 
     @Test
@@ -30,110 +35,154 @@ class GuildTest {
     }
 
     @Test
-    void constructorArgsTest() {
-        Guild guild = new Guild(1L,"Test", "Test", "Test", "Test", "Test", (short) 1, 1, new ArrayList<>());
+    void constructorAllArgsTest() {
+        Guild guild = new Guild(
+                1L,
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                (short) 1,
+                1,
+                1,
+                new ArrayList<>(),
+                new HashSet<>()
+        );
         assertNotNull(guild);
     }
 
     @Test
-    void getId() {
-        Long idValue = 4L;
-        guildTest.setId(idValue);
-        assertEquals(idValue, guildTest.getId());
+    void constructorArgsTest() {
+        Guild guild = new Guild(
+                "Test",
+                "Test",
+                "Test",
+                "Test",
+                (short) 1,
+                1
+        );
+        assertNotNull(guild);
     }
 
     @Test
-    void getName() {
+    void givenGuild_whenGetId_thenReturnId() {
+        assertEquals(1L, guildTest.getId());
+    }
+
+    @Test
+    void givenGuild_whenGetName_thenReturnName() {
         assertEquals("Test", guildTest.getName());
     }
 
     @Test
-    void getDescription() {
+    void givenGuild_whenGetDescription_thenReturnDescription() {
         assertEquals("Test", guildTest.getDescription());
     }
 
     @Test
-    void getTag() {
+    void givenGuild_whenGetTag_thenReturnTag() {
         assertEquals("Test", guildTest.getTag());
     }
 
     @Test
-    void getLeader() {
+    void givenGuild_whenGetLeader_thenReturnLeader() {
         assertEquals("Test", guildTest.getLeader());
     }
 
     @Test
-    void getSubLeader() {
+    void givenGuild_whenGetSubLeader_thenReturnSubLeader() {
         assertEquals("Test", guildTest.getSubLeader());
     }
 
     @Test
-    void getLevel() {
+    void givenGuild_whenGetLevel_thenReturnLevel() {
         assertEquals(1, guildTest.getLevel());
     }
 
     @Test
-    void getPoints() {
+    void givenGuild_whenGetDiamonds_thenReturnDiamonds() {
         assertEquals(1, guildTest.getDiamonds());
     }
 
     @Test
-    void getMembers() {
+    void givenGuild_whenGetTitlePoints_thenReturnTitlePoints() {
+        assertEquals(1, guildTest.getTitlePoints());
+    }
+
+    @Test
+    void givenGuild_whenGetMembers_thenReturnMembers() {
         assertEquals(0, guildTest.getMembers().size());
     }
 
     @Test
-    void setId() {
-        Long idValue = 4L;
-        guildTest.setId(idValue);
-        assertEquals(idValue, guildTest.getId());
+    void givenGuild_whenGetRequests_thenReturnRequests() {
+        assertEquals(0, guildTest.getRequests().size());
     }
 
     @Test
-    void setName() {
+    void givenGuild_whenSetId_thenReturnId() {
+        guildTest.setId(10L);
+        assertEquals(10L, guildTest.getId());
+    }
+
+    @Test
+    void givenGuild_whenSetName_thenReturnName() {
         guildTest.setName("Test2");
         assertEquals("Test2", guildTest.getName());
     }
 
     @Test
-    void setDescription() {
+    void givenGuild_whenSetDescription_thenReturnDescription() {
         guildTest.setDescription("Test2");
         assertEquals("Test2", guildTest.getDescription());
     }
 
     @Test
-    void setTag() {
+    void givenGuild_whenSetTag_thenReturnTag() {
         guildTest.setTag("Test2");
         assertEquals("Test2", guildTest.getTag());
     }
 
     @Test
-    void setLeader() {
+    void givenGuild_whenSetLeader_thenReturnLeader() {
         guildTest.setLeader("Test2");
         assertEquals("Test2", guildTest.getLeader());
     }
 
     @Test
-    void setSubLeader() {
+    void givenGuild_whenSetSubLeader_thenReturnSubLeader() {
         guildTest.setSubLeader("Test2");
         assertEquals("Test2", guildTest.getSubLeader());
     }
 
     @Test
-    void setLevel() {
+    void givenGuild_whenSetLevel_thenReturnLevel() {
         guildTest.setLevel((short) 2);
         assertEquals(2, guildTest.getLevel());
     }
 
     @Test
-    void setPoints() {
+    void givenGuild_whenSetDiamonds_thenReturnDiamonds() {
         guildTest.setDiamonds(2);
         assertEquals(2, guildTest.getDiamonds());
     }
 
     @Test
-    void setMembers() {
-        guildTest.setMembers(null);
-        assertNull(guildTest.getMembers());
+    void givenGuild_whenSetTitlePoints_thenReturnTitlePoints() {
+        guildTest.setTitlePoints(2);
+        assertEquals(2, guildTest.getTitlePoints());
+    }
+
+    @Test
+    void givenGuild_whenSetMembers_thenReturnMembers() {
+        guildTest.setMembers(new ArrayList<>());
+        assertEquals(0, guildTest.getMembers().size());
+    }
+
+    @Test
+    void givenGuild_whenSetRequests_thenReturnRequests() {
+        guildTest.setRequests(new HashSet<>());
+        assertEquals(0, guildTest.getRequests().size());
     }
 }

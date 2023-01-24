@@ -95,7 +95,7 @@ public class ItemService {
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
-        userService.updateUser(user);
+        userRepository.save(user);
 
     }
 
@@ -118,7 +118,7 @@ public class ItemService {
 
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
         user.getInventory().getItems().remove(itemBuy);
-        userService.updateUser(user);
+        userRepository.save(user);
     }
 
     public User equipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
@@ -155,7 +155,7 @@ public class ItemService {
         }
         user.getInventory().getItems().remove(item);
 
-        userService.updateUser(user);
+        userRepository.save(user);
         return user;
     }
 
@@ -180,7 +180,7 @@ public class ItemService {
 
         user.swapItemToEquipmentOrInventory(item, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
-        userService.updateUser(user);
+        userRepository.save(user);
         return user;
     }
 }

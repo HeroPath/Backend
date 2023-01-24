@@ -88,16 +88,6 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public void updateUser(User username) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the user.
-         * @param String username
-         * @return none
-         */
-        userRepository.save(username);
-    }
-
     public ArrayList<User> getRankingAll() {
         /**
          * @Author: Gianca1994
