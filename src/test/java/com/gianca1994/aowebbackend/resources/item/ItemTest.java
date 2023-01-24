@@ -1,13 +1,9 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
@@ -100,72 +96,6 @@ class ItemTest {
     @Test
     public void givenItem_whenGetLuck_thenReturnLuck() {
         assertThat(itemTest.getLuck()).isEqualTo(1);
-    }
-
-    @Test
-    public void givenItem_whenSetId_thenReturnId() {
-        itemTest.setId(2L);
-        assertThat(itemTest.getId()).isEqualTo(2L);
-    }
-
-    @Test
-    public void givenItem_whenSetName_thenReturnName() {
-        itemTest.setName("Test2");
-        assertThat(itemTest.getName()).isEqualTo("Test2");
-    }
-
-    @Test
-    public void givenItem_whenSetType_thenReturnType() {
-        itemTest.setType("Test2");
-        assertThat(itemTest.getType()).isEqualTo("Test2");
-    }
-
-    @Test
-    public void givenItem_whenSetLvlMin_thenReturnLvlMin() {
-        itemTest.setLvlMin(2);
-        assertThat(itemTest.getLvlMin()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetClassRequired_thenReturnClassRequired() {
-        itemTest.setClassRequired("Test2");
-        assertThat(itemTest.getClassRequired()).isEqualTo("Test2");
-    }
-
-    @Test
-    public void givenItem_whenSetPrice_thenReturnPrice() {
-        itemTest.setPrice(2);
-        assertThat(itemTest.getPrice()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetStrength_thenReturnStrength() {
-        itemTest.setStrength(2);
-        assertThat(itemTest.getStrength()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetDexterity_thenReturnDexterity() {
-        itemTest.setDexterity(2);
-        assertThat(itemTest.getDexterity()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetIntelligence_thenReturnIntelligence() {
-        itemTest.setIntelligence(2);
-        assertThat(itemTest.getIntelligence()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetVitality_thenReturnVitality() {
-        itemTest.setVitality(2);
-        assertThat(itemTest.getVitality()).isEqualTo(2);
-    }
-
-    @Test
-    public void givenItem_whenSetLuck_thenReturnLuck() {
-        itemTest.setLuck(2);
-        assertThat(itemTest.getLuck()).isEqualTo(2);
     }
 
     @Test

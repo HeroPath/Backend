@@ -11,7 +11,12 @@ class UserGuildDTOTest {
 
     @BeforeEach
     void setUp() {
-        userGuildDTO = new UserGuildDTO("test", (short) 1, 1, "test", "test");
+        userGuildDTO = new UserGuildDTO();
+        userGuildDTO.setUsername("test");
+        userGuildDTO.setLevel((short) 1);
+        userGuildDTO.setTitlePoints(1);
+        userGuildDTO.setClassName("test");
+        userGuildDTO.setTitleName("test");
     }
 
     @Test
@@ -55,33 +60,4 @@ class UserGuildDTOTest {
         assertEquals("test", userGuildDTO.getTitleName());
     }
 
-    @Test
-    void givenUserGuildDTO_whenSetUsername_thenReturnUsername() {
-        userGuildDTO.setUsername("test2");
-        assertEquals("test2", userGuildDTO.getUsername());
-    }
-
-    @Test
-    void givenUserGuildDTO_whenSetLevel_thenReturnLevel() {
-        userGuildDTO.setLevel((short) 2);
-        assertEquals(2, userGuildDTO.getLevel());
-    }
-
-    @Test
-    void givenUserGuildDTO_whenSetTitlePoints_thenReturnTitlePoints() {
-        userGuildDTO.setTitlePoints(2);
-        assertEquals(2, userGuildDTO.getTitlePoints());
-    }
-
-    @Test
-    void givenUserGuildDTO_whenSetClassName_thenReturnClassName() {
-        userGuildDTO.setClassName("test2");
-        assertEquals("test2", userGuildDTO.getClassName());
-    }
-
-    @Test
-    void givenUserGuildDTO_whenSetTitleName_thenReturnTitleName() {
-        userGuildDTO.setTitleName("test2");
-        assertEquals("test2", userGuildDTO.getTitleName());
-    }
 }

@@ -37,16 +37,4 @@ class RoleTest {
     void givenRole_whenGetRoleName_thenReturnRoleName() {
         assertThat(roleTest.getRoleName()).isEqualTo("ROLE_TEST");
     }
-
-    @Test
-    void givenRole_whenSetId_thenSetId() {
-        roleTest.setId(2L);
-        assertThat(roleTest.getId()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenRole_whenSetRoleName_thenSetRoleName() {
-        roleTest.setRoleName("ROLE_TEST2");
-        assertThat(roleTest.getRoleName()).isEqualTo("ROLE_TEST2");
-    }
 }

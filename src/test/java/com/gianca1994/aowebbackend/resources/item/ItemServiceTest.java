@@ -35,17 +35,17 @@ class ItemServiceTest {
     }
 
     @Test
-    void getClassShop() {
+    void givenClassNames_whenGetClassShop_thenReturnItems() {
         assertEquals(1, itemService.getClassShop("none").size());
     }
 
     @Test
-    void getClassShopNotFound() {
+    void givenClassNames_whenGetClassShop_thenReturnNotFound() {
         assertThrows(NotFound.class, () -> itemService.getClassShop("test"));
     }
 
     @Test
-    void saveItem() throws Conflict {
+    void givenItemDTO_whenSaveItem_thenReturnItem() throws Conflict {
         ItemDTO itemDTO = new ItemDTO(
                 "testitem2", "armor", 1,
                 "none", 1,
@@ -69,6 +69,4 @@ class ItemServiceTest {
                 () -> assertEquals(1, itemRepository.findAll().get(1).getLuck())
         );
     }
-
-
 }

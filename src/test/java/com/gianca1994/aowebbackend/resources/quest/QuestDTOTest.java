@@ -11,14 +11,15 @@ class QuestDTOTest {
 
     @BeforeEach
     void setUp() {
-        questDTO = new QuestDTO(
-                "name", "description",
-                "nameNpcKill", 1,
-                1,
-                1L,
-                1L,
-                (short) 1
-        );
+        questDTO = new QuestDTO();
+        questDTO.setName("name");
+        questDTO.setDescription("description");
+        questDTO.setNameNpcKill("nameNpcKill");
+        questDTO.setNpcKillAmountNeeded(1);
+        questDTO.setUserKillAmountNeeded(1);
+        questDTO.setGiveExp(1L);
+        questDTO.setGiveGold(1L);
+        questDTO.setGiveDiamonds((short) 1);
     }
 
     @Test
@@ -76,54 +77,6 @@ class QuestDTOTest {
     @Test
     void givenQuestDTO_whenGetGiveDiamonds_thenReturnGiveDiamonds() {
         assertThat(questDTO.getGiveDiamonds()).isEqualTo((short) 1);
-    }
-
-    @Test
-    void givenQuestDTO_whenSetName_thenReturnName() {
-        questDTO.setName("name2");
-        assertThat(questDTO.getName()).isEqualTo("name2");
-    }
-
-    @Test
-    void givenQuestDTO_whenSetDescription_thenReturnDescription() {
-        questDTO.setDescription("description2");
-        assertThat(questDTO.getDescription()).isEqualTo("description2");
-    }
-
-    @Test
-    void givenQuestDTO_whenSetNameNpcKill_thenReturnNameNpcKill() {
-        questDTO.setNameNpcKill("nameNpcKill2");
-        assertThat(questDTO.getNameNpcKill()).isEqualTo("nameNpcKill2");
-    }
-
-    @Test
-    void givenQuestDTO_whenSetNpcKillAmountNeeded_thenReturnNpcKillAmountNeeded() {
-        questDTO.setNpcKillAmountNeeded(2);
-        assertThat(questDTO.getNpcKillAmountNeeded()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuestDTO_whenSetUserKillAmountNeeded_thenReturnUserKillAmountNeeded() {
-        questDTO.setUserKillAmountNeeded(2);
-        assertThat(questDTO.getUserKillAmountNeeded()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuestDTO_whenSetGiveExp_thenReturnGiveExp() {
-        questDTO.setGiveExp(2L);
-        assertThat(questDTO.getGiveExp()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenQuestDTO_whenSetGiveGold_thenReturnGiveGold() {
-        questDTO.setGiveGold(2L);
-        assertThat(questDTO.getGiveGold()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenQuestDTO_whenSetGiveDiamonds_thenReturnGiveDiamonds() {
-        questDTO.setGiveDiamonds((short) 2);
-        assertThat(questDTO.getGiveDiamonds()).isEqualTo((short) 2);
     }
 
     @Test

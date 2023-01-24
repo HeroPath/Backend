@@ -30,10 +30,4 @@ class RequestGuildNameDTOTest {
     void givenRequestGuildNameDTO_whenGetName_thenReturnName() {
         assertEquals("test", requestGuildNameDTO.getName());
     }
-
-    @Test
-    void givenRequestGuildNameDTO_whenSetName_thenReturnName() {
-        requestGuildNameDTO.setName("test2");
-        assertEquals("test2", requestGuildNameDTO.getName());
-    }
 }

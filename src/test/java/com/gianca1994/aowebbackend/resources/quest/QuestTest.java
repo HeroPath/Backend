@@ -11,17 +11,18 @@ class QuestTest {
 
     @BeforeEach
     void setUp() {
-        quest = new Quest(
-                1L,
-                "name", "description",
-                "nameNpcKill", 1,
-                1,
-                1,
-                1,
-                1L,
-                1L,
-                (short) 1
-        );
+        quest = new Quest();
+        quest.setId(1L);
+        quest.setName("name");
+        quest.setDescription("description");
+        quest.setNameNpcKill("nameNpcKill");
+        quest.setNpcKillAmount(1);
+        quest.setNpcKillAmountNeeded(1);
+        quest.setUserKillAmount(1);
+        quest.setUserKillAmountNeeded(1);
+        quest.setGiveExp(1L);
+        quest.setGiveGold(1L);
+        quest.setGiveDiamonds((short) 1);
     }
 
     @Test
@@ -107,72 +108,6 @@ class QuestTest {
     @Test
     void givenQuest_whenGetGiveDiamonds_thenReturnGiveDiamonds() {
         assertThat(quest.getGiveDiamonds()).isEqualTo((short) 1);
-    }
-
-    @Test
-    void givenQuest_whenSetId_thenSetId() {
-        quest.setId(2L);
-        assertThat(quest.getId()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenQuest_whenSetName_thenSetName() {
-        quest.setName("name2");
-        assertThat(quest.getName()).isEqualTo("name2");
-    }
-
-    @Test
-    void givenQuest_whenSetDescription_thenSetDescription() {
-        quest.setDescription("description2");
-        assertThat(quest.getDescription()).isEqualTo("description2");
-    }
-
-    @Test
-    void givenQuest_whenSetNameNpcKill_thenSetNameNpcKill() {
-        quest.setNameNpcKill("nameNpcKill2");
-        assertThat(quest.getNameNpcKill()).isEqualTo("nameNpcKill2");
-    }
-
-    @Test
-    void givenQuest_whenSetNpcKillAmount_thenSetNpcKillAmount() {
-        quest.setNpcKillAmount(2);
-        assertThat(quest.getNpcKillAmount()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuest_whenSetNpcKillAmountNeeded_thenSetNpcKillAmountNeeded() {
-        quest.setNpcKillAmountNeeded(2);
-        assertThat(quest.getNpcKillAmountNeeded()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuest_whenSetUserKillAmount_thenSetUserKillAmount() {
-        quest.setUserKillAmount(2);
-        assertThat(quest.getUserKillAmount()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuest_whenSetUserKillAmountNeeded_thenSetUserKillAmountNeeded() {
-        quest.setUserKillAmountNeeded(2);
-        assertThat(quest.getUserKillAmountNeeded()).isEqualTo(2);
-    }
-
-    @Test
-    void givenQuest_whenSetGiveExp_thenSetGiveExp() {
-        quest.setGiveExp(2L);
-        assertThat(quest.getGiveExp()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenQuest_whenSetGiveGold_thenSetGiveGold() {
-        quest.setGiveGold(2L);
-        assertThat(quest.getGiveGold()).isEqualTo(2L);
-    }
-
-    @Test
-    void givenQuest_whenSetGiveDiamonds_thenSetGiveDiamonds() {
-        quest.setGiveDiamonds((short) 2);
-        assertThat(quest.getGiveDiamonds()).isEqualTo((short) 2);
     }
 
     @Test

@@ -41,18 +41,6 @@ class InventoryTest {
     }
 
     @Test
-    public void givenInventory_whenSetId_thenSetId() {
-        inventoryTest.setId(2L);
-        assertThat(inventoryTest.getId()).isEqualTo(2L);
-    }
-
-    @Test
-    public void givenInventory_whenSetItems_thenSetItems() {
-        inventoryTest.setItems(new ArrayList<>());
-        assertThat(inventoryTest.getItems()).isEqualTo(new ArrayList<>());
-    }
-
-    @Test
     public void givenInventory_whenRemoveItem_thenRemoveItem() {
         inventoryTest.setItems(new ArrayList<>());
         assertThat(inventoryTest.getItems().size()).isEqualTo(0);
