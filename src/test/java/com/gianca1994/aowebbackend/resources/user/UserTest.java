@@ -4,9 +4,11 @@ import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
+import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
+import com.gianca1994.aowebbackend.resources.title.TitleRepository;
+import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -317,5 +319,172 @@ class UserTest {
         user.calculateStats(true);
 
         assertEquals(user.getHp(), ModifConfig.ARCHER_START_VIT * ModifConfig.MAX_HP_ARCHER);
+    }
+
+    @Test
+    void givenItemAndEquip_whenRecalculatedStats_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        Item item = new Item(
+                "Test",
+                "Test",
+                1,
+                "Test",
+                1,
+                99,
+                99,
+                99,
+                99,
+                99
+        );
+
+        user.setStrength(1);
+        user.setDexterity(1);
+        user.setIntelligence(1);
+        user.setVitality(1);
+        user.setLuck(1);
+
+        user.swapItemToEquipmentOrInventory(item, true);
+
+        assertEquals(100, user.getStrength());
+        assertEquals(100, user.getDexterity());
+        assertEquals(100, user.getIntelligence());
+        assertEquals(100, user.getVitality());
+        assertEquals(100, user.getLuck());
+    }
+
+    @Test
+    void givenItemAndUnequip_whenRecalculatedStats_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        Item item = new Item(
+                "Test",
+                "Test",
+                1,
+                "Test",
+                1,
+                99,
+                99,
+                99,
+                99,
+                99
+        );
+
+        user.setStrength(100);
+        user.setDexterity(100);
+        user.setIntelligence(100);
+        user.setVitality(100);
+        user.setLuck(100);
+
+        user.swapItemToEquipmentOrInventory(item, false);
+
+        assertEquals(1, user.getStrength());
+        assertEquals(1, user.getDexterity());
+        assertEquals(1, user.getIntelligence());
+        assertEquals(1, user.getVitality());
+        assertEquals(1, user.getLuck());
+
+    }
+
+    @Test
+    void givenFreeSkillPointDTOStrength_whenAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("strength");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setStrength(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(2, user.getStrength());
+    }
+
+    @Test
+    void givenFreeSkillPointDTODexterity_whenAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("dexterity");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setDexterity(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(2, user.getDexterity());
+    }
+
+    @Test
+    void givenFreeSkillPointDTOIntelligence_whenAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("intelligence");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setIntelligence(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(2, user.getIntelligence());
+    }
+
+    @Test
+    void givenFreeSkillPointDTOVitality_whenAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("vitality");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setVitality(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(2, user.getVitality());
+    }
+
+    @Test
+    void givenFreeSkillPointDTOLuck_whenAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("luck");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setLuck(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(2, user.getLuck());
+    }
+
+    @Test
+    void givenFreeSkillPointDTOOther_whenNotAddFreeSkillPoint_thenReturnUserUpdated() {
+        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
+
+        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
+        freeSkillPointDTO.setSkillPointName("test");
+        freeSkillPointDTO.setAmount(1);
+
+        user.setLuck(1);
+        user.addFreeSkillPoints(freeSkillPointDTO);
+
+        assertEquals(1, user.getLuck());
+    }
+
+    @Test
+    void givenAmount_whenAddTitlePoints_thenReturnUserUpdated() {
+        user.setTitlePoints(0);
+        user.addTitlePoints(10);
+
+        assertEquals(10, user.getTitlePoints());
+    }
+
+    @Test
+    void givenAmount_whenRemoveTitlePoints_thenReturnUserUpdated() {
+        user.setTitlePoints(10);
+        user.removeTitlePoints(10);
+        assertEquals(0, user.getTitlePoints());
+
+        user.removeTitlePoints(50);
+        assertEquals(0, user.getTitlePoints());
     }
 }
