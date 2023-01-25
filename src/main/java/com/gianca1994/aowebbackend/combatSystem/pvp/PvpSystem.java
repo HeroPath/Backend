@@ -86,7 +86,7 @@ public class PvpSystem {
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
                     for (UserQuest quest : attacker.getUserQuests()) {
-                        if (Objects.equals(quest.getQuest().getName(), "player")  &&
+                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player")  &&
                                 quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
                             quest.setAmountUserKill(quest.getAmountUserKill() + 1);
                             attacker.getUserQuests().add(quest);

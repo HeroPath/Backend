@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.quest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.user.*;
@@ -110,7 +111,7 @@ public class QuestService {
         if (user == null) throw new NotFound("User not found");
 
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
-        if (userQuests.size() >= 3) throw new Conflict("You can't accept more than 3 quests");
+        if (userQuests.size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
 
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
         if (quest == null) throw new NotFound("Quest not found");
