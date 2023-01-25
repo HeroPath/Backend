@@ -22,7 +22,7 @@ class PvpModelTest {
     @BeforeEach
     void setUp() {
         pvpModelUnderTest = new PvpModel();
-        pvpModelUnderTest.setAttacker(attacker);
+        pvpModelUnderTest.setUser(attacker);
         pvpModelUnderTest.setDefender(defender);
         pvpModelUnderTest.setHistoryCombat(historyCombat);
     }
@@ -35,13 +35,13 @@ class PvpModelTest {
 
     @Test
     public void constructorAllArgsTest() {
-        pvpModelUnderTest = new PvpModel(attacker, defender, historyCombat);
+        pvpModelUnderTest = new PvpModel(historyCombat, attacker, defender);
         assertThat(pvpModelUnderTest).isNotNull();
     }
 
     @Test
     void getAttacker() {
-        assertThat(pvpModelUnderTest.getAttacker()).isEqualTo(attacker);
+        assertThat(pvpModelUnderTest.getUser()).isEqualTo(attacker);
     }
 
     @Test
@@ -57,8 +57,8 @@ class PvpModelTest {
     @Test
     void setAttacker() {
         final User attacker2 = new User();
-        pvpModelUnderTest.setAttacker(attacker2);
-        assertThat(pvpModelUnderTest.getAttacker()).isEqualTo(attacker2);
+        pvpModelUnderTest.setUser(attacker2);
+        assertThat(pvpModelUnderTest.getUser()).isEqualTo(attacker2);
     }
 
     @Test
