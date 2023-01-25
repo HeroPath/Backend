@@ -1,18 +1,18 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.UserService;
+import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestService {
@@ -21,26 +21,40 @@ public class QuestService {
     private QuestRepository questRepository;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserQuestRepository userQuestRepository;
 
     public List<Quest> getAllQuests(String username) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get all the quests.
-         * @param none
+         * Explanation: This function is in charge of getting all the quests.
+         * @param String username
          * @return List<Quest>
          */
-        ArrayList<Quest> quests = (ArrayList<Quest>) questRepository.findAll();
-        User user = userRepository.findByUsername(username);
-        ArrayList<Quest> questsList = new ArrayList<>();
+        List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
+        return questRepository.findAll().stream().filter(quest -> {
+            return userQuests.stream().noneMatch(userQuest -> Objects.equals(userQuest.getQuest().getName(), quest.getName()));
+        }).collect(Collectors.toList());
+    }
 
-        for (Quest quest : quests) {
-            if (!user.getQuests().contains(quest)) questsList.add(quest);
-        }
-        return questsList;
+    public List<ObjectNode> getQuestAccepted(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get all the quests accepted.
+         * @param String username
+         * @return List<ObjectNode>
+         */
+        List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
+
+        return userQuests.stream().map(userQuest -> {
+            ObjectNode questON = new ObjectMapper().createObjectNode();
+            questON.putPOJO("quest", userQuest.getQuest());
+            questON.put("npcKillAmount", userQuest.getAmountNpcKill());
+            questON.put("userKillAmount", userQuest.getAmountUserKill());
+            return questON;
+        }).collect(Collectors.toList());
     }
 
     public Quest getQuestByName(String name) {
@@ -93,19 +107,60 @@ public class QuestService {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
-
         User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFound("User not found");
 
-        if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
-        if (user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
-        if (user.getQuests().size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(QuestConst.QUEST_MAX_ACCEPTED);
+        List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
+        if (userQuests.size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
 
-        quest.setNpcKillAmount(0);
-        quest.setUserKillAmount(0);
+        Quest quest = questRepository.findByName(nameRequestDTO.getName());
+        if (quest == null) throw new NotFound("Quest not found");
 
-        user.getQuests().add(quest);
+        for (UserQuest userQuest : userQuests) {
+            if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
+                throw new Conflict("You already accepted this quest");
+            }
+        }
+
+        UserQuest userQuest = new UserQuest();
+        userQuest.setUser(user);
+        userQuest.setQuest(quest);
+        userQuest.setAmountNpcKill(0);
+        userQuest.setAmountUserKill(0);
+
+        userQuestRepository.save(userQuest);
+
+    }
+
+    public void completeQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of completing a quest.
+         * @param String username
+         * @param NameRequestDTO nameRequestDTO
+         * @return none
+         */
+        User user = userRepository.findByUsername(username);
+        if (user == null) throw new NotFound("User not found");
+
+        Quest quest = questRepository.findByName(nameRequestDTO.getName());
+        if (quest == null) throw new NotFound("Quest not found");
+
+        UserQuest userQuest = userQuestRepository.findByUserUsernameAndQuestName(username, quest.getName());
+        if (userQuest == null) throw new NotFound("You don't have this quest");
+
+        if (userQuest.getAmountNpcKill() < quest.getNpcKillAmountNeeded())
+            throw new Conflict("You didn't kill enough npcs");
+        if (userQuest.getAmountUserKill() < quest.getUserKillAmountNeeded())
+            throw new Conflict("You didn't kill enough users");
+
+        user.setExperience(user.getExperience() + quest.getGiveExp());
+        user.setGold(user.getGold() + quest.getGiveGold());
+        user.setDiamond(user.getDiamond() + quest.getGiveDiamonds());
+
+        user.userLevelUp();
+
+        userQuestRepository.delete(userQuest);
         userRepository.save(user);
     }
 
@@ -117,14 +172,9 @@ public class QuestService {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (Objects.isNull(quest)) throw new NotFound(QuestConst.QUEST_NOT_FOUND);
+        UserQuest userQuest = userQuestRepository.findByUserUsernameAndQuestName(username, nameRequestDTO.getName());
+        if (userQuest == null) throw new NotFound("You don't have this quest");
 
-        User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(QuestConst.USER_NOT_FOUND);
-        if (!user.getQuests().contains(quest)) throw new Conflict(QuestConst.QUEST_NOT_ACCEPTED);
-
-        user.getQuests().remove(quest);
-        userRepository.save(user);
+        userQuestRepository.delete(userQuest);
     }
 }

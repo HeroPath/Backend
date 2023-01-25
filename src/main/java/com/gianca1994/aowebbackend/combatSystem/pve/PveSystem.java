@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -49,44 +50,22 @@ public class PveSystem {
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
-                    for (Quest quest : user.getQuests()) {
-                        if (Objects.equals(quest.getNameNpcKill(), npc.getName()) &&
-                                !Objects.equals(quest.getNameNpcKill(), "player")) {
-                            quest.setNpcKillAmount(quest.getNpcKillAmount() + 1);
-                            user.getQuests().add(quest);
-
-                            if (quest.getNpcKillAmount() >= quest.getNpcKillAmountNeeded()) {
-                                experienceQuestGain = quest.getGiveExp();
-                                goldQuestGain = quest.getGiveGold();
-                                user.getQuests().remove(quest);
-                            }
+                    for (UserQuest quest : user.getUserQuests()) {
+                        if (Objects.equals(quest.getQuest().getNameNpcKill(), npc.getName()) &&
+                                !Objects.equals(quest.getQuest().getNameNpcKill(), "player") &&
+                                quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
+                            quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
+                            user.getUserQuests().add(quest);
                         }
                     }
 
-                    if (user.getLevel() < SvConfig.LEVEL_MAX) {
-                        experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                        user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
-                    }
+                    experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
+                    user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
+
                     goldGain = pveFunctions.calculateUserGoldGain(npc);
                     user.setGold(user.getGold() + goldGain + goldQuestGain);
 
-                    // Check if the user has enough experience to level up.
-                    if (pveFunctions.checkUserLevelUp(user)) {
-                        do {
-                            user.setHp(user.getMaxHp());
-                            user.setLevel(pveFunctions.userLevelUp(user));
-                            user.setFreeSkillPoints(pveFunctions.freeSkillPointsAdd(user));
-                            levelUp = true;
-
-                            if (user.getLevel() < SvConfig.LEVEL_MAX) {
-                                user.setExperience(user.getExperience() - user.getExperienceToNextLevel());
-                                user.setExperienceToNextLevel(pveFunctions.userLevelUpNewNextExpToLevel(user));
-                            } else {
-                                user.setExperience(0);
-                                user.setExperienceToNextLevel(0);
-                            }
-                        } while (pveFunctions.checkUserLevelUp(user));
-                    }
+                    levelUp = user.userLevelUp();
                     stopPvP = true;
                 } else {
                     // Check if the user has died.

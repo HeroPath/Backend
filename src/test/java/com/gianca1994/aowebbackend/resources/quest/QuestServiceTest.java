@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
+import com.gianca1994.aowebbackend.resources.jwt.JWTAuthController;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.Title;
@@ -14,6 +15,7 @@ import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,20 +35,6 @@ class QuestServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private ClassRepository classRepository;
-
-    @Autowired
-    private TitleRepository titleRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private InventoryRepository inventoryRepository;
-
-    @Autowired
-    private EquipmentRepository equipmentRepository;
 
     @Autowired
     private QuestRepository questRepository;
@@ -54,32 +42,27 @@ class QuestServiceTest {
     @Autowired
     private QuestService questService;
 
+    @Autowired
+    private JWTAuthController jwtAuthController;
+
     private User userTest;
 
     private final NameRequestDTO questRequestDTO = new NameRequestDTO("testquest");
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Conflict {
         questRepository.deleteAll();
 
         if (userRepository.findAll().size() >= 1) {
             userTest = userRepository.findAll().get(0);
         } else {
-            Class testClass = classRepository.findById(1L).get();
-            Title testTitle = titleRepository.findById(1L).get();
-            Role testRole = roleRepository.findById(1L).get();
-            Inventory inventory = new Inventory();
-            Equipment equipment = new Equipment();
+            UserDTO userDTO = new UserDTO();
+            userDTO.setUsername("testusername");
+            userDTO.setPassword("test");
+            userDTO.setEmail("test@test.com");
+            userDTO.setClassId(1);
 
-            inventoryRepository.save(inventory);
-            equipmentRepository.save(equipment);
-
-            userTest = new User(
-                    "testusername", "testpassword", "testusername@test.com",
-                    testRole, testClass, testTitle, inventory, equipment,
-                    1, 1, 1, 1, 1
-            );
-            userRepository.save(userTest);
+            jwtAuthController.saveUser(userDTO);
             userTest = userRepository.findByUsername("testusername");
         }
 
@@ -138,12 +121,12 @@ class QuestServiceTest {
     @Test
     @Order(5)
     void givenUsernameAndNameRequestDTO_whenAcceptQuest_thenReturnAddQuestInUser() throws Conflict {
-        assertEquals(0, userTest.getQuests().size());
+        assertEquals(0, userTest.getUserQuests().size());
 
         questService.acceptQuest(userTest.getUsername(), questRequestDTO);
         User userBefore = userRepository.findByUsername(userTest.getUsername());
 
-        assertEquals(1, userBefore.getQuests().size());
-        assertEquals("testquest", Objects.requireNonNull(userBefore.getQuests().stream().findFirst().orElse(null)).getName());
+        assertEquals(1, userBefore.getUserQuests().size());
+        assertEquals("testquest", Objects.requireNonNull(userBefore.getUserQuests().stream().findFirst().orElse(null)).getQuest().getName());
     }
 }

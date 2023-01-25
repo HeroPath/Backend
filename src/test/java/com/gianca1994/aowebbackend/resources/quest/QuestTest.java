@@ -3,6 +3,8 @@ package com.gianca1994.aowebbackend.resources.quest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class QuestTest {
@@ -16,9 +18,7 @@ class QuestTest {
         quest.setName("name");
         quest.setDescription("description");
         quest.setNameNpcKill("nameNpcKill");
-        quest.setNpcKillAmount(1);
         quest.setNpcKillAmountNeeded(1);
-        quest.setUserKillAmount(1);
         quest.setUserKillAmountNeeded(1);
         quest.setGiveExp(1L);
         quest.setGiveGold(1L);
@@ -36,9 +36,8 @@ class QuestTest {
         Quest quest = new Quest(
                 1L, "name", "description", "nameNpcKill",
                 1, 1,
-                1, 1,
-                1L, 1L, (short) 1);
-
+                1L, 1L, (short) 1, new HashSet<>()
+        );
         assertThat(quest).isNotNull();
     }
 
@@ -76,18 +75,8 @@ class QuestTest {
     }
 
     @Test
-    void givenQuest_whenGetNpcKillAmount_thenReturnNpcKillAmount() {
-        assertThat(quest.getNpcKillAmount()).isEqualTo(1);
-    }
-
-    @Test
     void givenQuest_whenGetNpcKillAmountNeeded_thenReturnNpcKillAmountNeeded() {
         assertThat(quest.getNpcKillAmountNeeded()).isEqualTo(1);
-    }
-
-    @Test
-    void givenQuest_whenGetUserKillAmount_thenReturnUserKillAmount() {
-        assertThat(quest.getUserKillAmount()).isEqualTo(1);
     }
 
     @Test
@@ -113,15 +102,11 @@ class QuestTest {
     @Test
     void givenQuest_whenNotEquals_thenNotEquals() {
         Quest quest2 = new Quest(
-                2L,
-                "name2", "description2",
-                "nameNpcKill2", 2,
-                2,
-                2,
-                2,
-                2L,
-                2L,
-                (short) 2
+                2L, "name2", "description2", "nameNpcKill2",
+
+                2, 2,
+                2L, 2L, (short) 2,
+                new HashSet<>()
         );
         assertThat(quest).isNotEqualTo(quest2);
     }

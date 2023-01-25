@@ -1,11 +1,14 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 
 /**
@@ -20,37 +23,44 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Quest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true)
     private String name;
+
     @Column
     private String description;
+
     @Column
     private String nameNpcKill;
-    @Column
-    private int npcKillAmount;
+
     @Column
     private int npcKillAmountNeeded;
-    @Column
-    private int userKillAmount;
+
     @Column
     private int userKillAmountNeeded;
+
     @Column
     private long giveExp;
+
     @Column
     private long giveGold;
+
     @Column
     private short giveDiamonds;
+
+    @OneToMany(mappedBy = "quest", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<UserQuest> userQuests;
 
     public Quest(String name, String description, String nameNpcKill, int npcKillAmountNeeded, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
         this.name = name;
         this.description = description;
         this.nameNpcKill = nameNpcKill;
-        this.npcKillAmount = 0;
         this.npcKillAmountNeeded = npcKillAmountNeeded;
-        this.userKillAmount = 0;
         this.userKillAmountNeeded = userKillAmountNeeded;
         this.giveExp = giveExp;
         this.giveGold = giveGold;

@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -84,19 +85,14 @@ public class PvpSystem {
                     defender.setPvpLosses(defender.getPvpLosses() + 1);
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
-                    for (Quest quest : attacker.getQuests()) {
-                        if (Objects.equals(quest.getNameNpcKill(), "player")) {
-                            quest.setUserKillAmount(quest.getUserKillAmount() + 1);
-                            attacker.getQuests().add(quest);
-
-                            if (quest.getUserKillAmount() >= quest.getUserKillAmountNeeded()) {
-                                goldQuestGain = quest.getGiveGold();
-                                diamondsQuestGain = (short) (Math.random() * 6);
-                                attacker.getQuests().remove(quest);
-                            }
+                    for (UserQuest quest : attacker.getUserQuests()) {
+                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player")  &&
+                                quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
+                            quest.setAmountUserKill(quest.getAmountUserKill() + 1);
+                            attacker.getUserQuests().add(quest);
                         }
-
                     }
+
                     attacker.setDiamond(attacker.getDiamond() + diamondsQuestGain);
 
                     goldAmountWin = pvpUserVsUser.getUserGoldAmountWin(defender) + goldQuestGain;
