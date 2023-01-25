@@ -25,6 +25,7 @@ public class CombatModel {
     private User user;
 
     public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
+
     }
 
     public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
@@ -33,6 +34,13 @@ public class CombatModel {
     }
 
     protected ObjectNode createBasicRoundNode(int roundCounter, int attackerDmg) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round node.
+         * @param int roundCounter
+         * @param int attackerDmg
+         * @return ObjectNode
+         */
         ObjectNode round = new ObjectMapper().createObjectNode();
         round.put("round", roundCounter);
         round.put("attackerLife", user.getHp());
@@ -43,7 +51,17 @@ public class CombatModel {
     protected ObjectNode createBasicRoundFinishNode(long experienceGain, long goldGain,
                                                     int diamondsGain, boolean levelUp,
                                                     long goldAmountWin, long goldAmountLoseCombat) {
-
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round finish node.
+         * @param long experienceGain
+         * @param long goldGain
+         * @param int diamondsGain
+         * @param boolean levelUp
+         * @param long goldAmountWin
+         * @param long goldAmountLoseCombat
+         * @return ObjectNode
+         */
         ObjectNode round = new ObjectMapper().createObjectNode();
 
         if (goldAmountWin > 0) round.put("goldAmountWin", goldAmountWin);

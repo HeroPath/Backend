@@ -29,6 +29,14 @@ public class PveModel extends CombatModel {
 
     @Override
     public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round node.
+         * @param int roundCounter
+         * @param int attackerDmg
+         * @param int defenderDmg
+         * @return none
+         */
         ObjectNode round = createBasicRoundNode(roundCounter, attackerDmg);
         round.put("NpcLife", npc.getHp());
         round.put("NpcDmg", defenderDmg);
@@ -39,7 +47,18 @@ public class PveModel extends CombatModel {
     public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
                                          int amountPointsTitleWinOrLose, long experienceGain,
                                          long goldGain, int diamondsGain, boolean levelUp) {
-
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round finish node.
+         * @param long goldAmountWin
+         * @param long goldAmountLoseCombat
+         * @param int amountPointsTitleWinOrLose
+         * @param long experienceGain
+         * @param long goldGain
+         * @param int diamondsGain
+         * @param boolean levelUp
+         * @return none
+         */
         ObjectNode round = createBasicRoundFinishNode(
                 experienceGain, goldGain, diamondsGain, levelUp,
                 0, 0);
