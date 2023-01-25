@@ -1,10 +1,7 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
-import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.UserQuest;
@@ -18,7 +15,9 @@ import java.util.Objects;
  */
 public class PveSystem {
 
-    public static PveModel PveUserVsNpc(User user, Npc npc, TitleRepository titleRepository) {
+    public static PveModel PveUserVsNpc(User user,
+                                        Npc npc,
+                                        TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of starting a combat between a user and a npc.
@@ -28,7 +27,8 @@ public class PveSystem {
          */
         GenericFunctions genericFunctions = new GenericFunctions();
         PveFunctions pveFunctions = new PveFunctions();
-        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+
+        PveModel pveModel = new PveModel(new ArrayList<>(), user, npc);
 
         long experienceGain = 0, goldGain = 0, experienceQuestGain = 0, goldQuestGain = 0;
         int diamondsGain = 0, roundCounter = 0;
@@ -77,9 +77,8 @@ public class PveSystem {
                     }
                 }
             }
-            historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpc(
-                    user, npc, roundCounter, userDmg, npcDmg)
-            );
+            pveModel.roundJsonGenerator(roundCounter, userDmg, npcDmg);
+
         } while (pveFunctions.checkUserAndNpcAlive(user, npc));
 
         if (pveFunctions.chanceDropDiamonds()) {
@@ -89,11 +88,12 @@ public class PveSystem {
 
         user.checkStatusTitlePoints(titleRepository);
 
-        historyCombat.add(pveFunctions.roundJsonGeneratorUserVsNpcFinish(
-                user, npc, experienceGain, goldGain, diamondsGain, levelUp));
+        pveModel.roundJsonGeneratorFinish(
+                0,0,0,
+                experienceGain, goldGain, diamondsGain, levelUp);
 
         npc.setHp(npc.getMaxHp());
-        return new PveModel(user, historyCombat);
+        return pveModel;
     }
 
 }

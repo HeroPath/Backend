@@ -1,7 +1,5 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -81,65 +79,5 @@ public class PveFunctions {
          * @return int
          */
         return (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
-    }
-
-    public ObjectNode roundJsonGeneratorUserVsNpc(
-            User user,
-            Npc npc,
-            int roundCounter,
-            int userDmg,
-            int npcDmg) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
-         * @param User user
-         * @param Npc npc
-         * @param int roundCounter
-         * @param int userDmg
-         * @param int npcDmg
-         * @return ObjectNode
-         */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-        round.put("round", roundCounter);
-        round.put("userLife", user.getHp());
-        round.put("NpcLife", npc.getHp());
-        round.put("userDmg", userDmg);
-        round.put("NpcDmg", npcDmg);
-        return round;
-    }
-
-    public ObjectNode roundJsonGeneratorUserVsNpcFinish(
-            User user,
-            Npc npc,
-            long userExperienceGain,
-            long userGoldGain,
-            int diamondsGain,
-            boolean userLevelUp) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
-         * @param User user
-         * @param Npc npc
-         * @param long userExperienceGain
-         * @param long userGoldGain
-         * @param int diamondsGain
-         * @param boolean userLevelUp
-         * @return ObjectNode
-         */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-
-        if (user.getHp() > 0) {
-            round.put("win", user.getUsername());
-            round.put("lose", npc.getName());
-        } else {
-            round.put("win", npc.getName());
-            round.put("lose", user.getUsername());
-        }
-        if (userExperienceGain > 0) round.put("userExperienceGain", userExperienceGain);
-        if (userGoldGain > 0) round.put("goldAmountWin", userGoldGain);
-        if (diamondsGain > 0) round.put("diamondsAmountWin", diamondsGain);
-        if (userLevelUp) round.put("levelUp", true);
-
-        return round;
     }
 }

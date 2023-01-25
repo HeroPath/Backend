@@ -1,10 +1,8 @@
 package com.gianca1994.aowebbackend.combatSystem.pvp;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.UserQuest;
@@ -32,7 +30,8 @@ public class PvpSystem {
          */
         GenericFunctions genericFunctions = new GenericFunctions();
         PvpFunctions pvpUserVsUser = new PvpFunctions();
-        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+
+        PvpModel pvpModel = new PvpModel(new ArrayList<>(), attacker, defender);
 
         Guild guildAttacker, guildDefender;
         long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
@@ -119,14 +118,13 @@ public class PvpSystem {
                     }
                 }
             }
-            historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
-                    attacker, defender, roundCounter, attackerDmg, defenderDmg));
+            pvpModel.roundJsonGenerator(roundCounter, attackerDmg, defenderDmg);
 
         } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
 
-        historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUserFinish(
-                attacker, defender, goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose));
+        pvpModel.roundJsonGeneratorFinish(goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose,
+                0, 0, 0, false);
 
-        return new PvpModel(attacker, defender, historyCombat);
+        return pvpModel;
     }
 }

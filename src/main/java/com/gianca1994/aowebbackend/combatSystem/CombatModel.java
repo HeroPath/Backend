@@ -1,0 +1,59 @@
+package com.gianca1994.aowebbackend.combatSystem;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.gianca1994.aowebbackend.resources.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to represent a combat.
+ */
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class CombatModel {
+
+    private ArrayList<ObjectNode> historyCombat;
+    private User user;
+
+    public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
+    }
+
+    public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
+                                         int amountPointsTitleWinOrLose, long experienceGain,
+                                         long goldGain, int diamondsGain, boolean levelUp) {
+    }
+
+    protected ObjectNode createBasicRoundNode(int roundCounter, int attackerDmg) {
+        ObjectNode round = new ObjectMapper().createObjectNode();
+        round.put("round", roundCounter);
+        round.put("attackerLife", user.getHp());
+        round.put("attackerDmg", attackerDmg);
+        return round;
+    }
+
+    protected ObjectNode createBasicRoundFinishNode(long experienceGain, long goldGain,
+                                                    int diamondsGain, boolean levelUp,
+                                                    long goldAmountWin, long goldAmountLoseCombat) {
+
+        ObjectNode round = new ObjectMapper().createObjectNode();
+
+        if (goldAmountWin > 0) round.put("goldAmountWin", goldAmountWin);
+        if (goldAmountLoseCombat > 0) round.put("goldAmountLoseCombat", goldAmountLoseCombat);
+
+        if (experienceGain > 0) round.put("userExperienceGain", experienceGain);
+        if (goldGain > 0) round.put("goldAmountWin", goldGain);
+        if (diamondsGain > 0) round.put("diamondsAmountWin", diamondsGain);
+        if (levelUp) round.put("levelUp", true);
+
+        return round;
+    }
+}
