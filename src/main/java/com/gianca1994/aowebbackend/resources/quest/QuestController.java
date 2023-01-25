@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
@@ -20,16 +21,28 @@ public class QuestController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @GetMapping
+    @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public List<Quest> getAllQuests(@RequestHeader(value = "Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
-         * @param none
+         * @param String token
          * @return List<Quest>
          */
         return questService.getAllQuests(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+    }
+
+    @GetMapping("/accepted")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public List<ObjectNode> getQuestAccepted(@RequestHeader(value = "Authorization") String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of getting all the quests accepted.
+         * @param String token
+         * @return List<ObjectNode>
+         */
+        return questService.getQuestAccepted(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
     }
 
     @GetMapping("/{name}")
@@ -49,8 +62,8 @@ public class QuestController {
     public void saveQuest(@RequestBody QuestDTO quest) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving a quest.
-         * @param Quest quest
+         * Explanation: This method is used to save a quest.
+         * @param QuestDTO quest
          * @return none
          */
         questService.saveQuest(quest);
@@ -76,16 +89,30 @@ public class QuestController {
          * @Author: Gianca1994
          * Explanation: This method is used to accept a quest.
          * @param String token
-         * @param AcceptedQuestDTO acceptedQuestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return none
          */
         questService.acceptQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
     }
 
+    @PostMapping("/complete")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void completeQuest(@RequestHeader(value = "Authorization") String token,
+                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to complete a quest.
+         * @param String token
+         * @param NameRequestDTO nameRequestDTO
+         * @return none
+         */
+        questService.completeQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+    }
+
     @PostMapping("/cancel")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void cancelQuest(@RequestHeader(value = "Authorization") String token,
-                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to cancel a quest.

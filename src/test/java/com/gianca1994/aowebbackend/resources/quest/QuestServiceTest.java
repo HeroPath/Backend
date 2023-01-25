@@ -121,12 +121,12 @@ class QuestServiceTest {
     @Test
     @Order(5)
     void givenUsernameAndNameRequestDTO_whenAcceptQuest_thenReturnAddQuestInUser() throws Conflict {
-        assertEquals(0, userTest.getQuests().size());
+        assertEquals(0, userTest.getUserQuests().size());
 
         questService.acceptQuest(userTest.getUsername(), questRequestDTO);
         User userBefore = userRepository.findByUsername(userTest.getUsername());
 
-        assertEquals(1, userBefore.getQuests().size());
-        assertEquals("testquest", Objects.requireNonNull(userBefore.getQuests().stream().findFirst().orElse(null)).getName());
+        assertEquals(1, userBefore.getUserQuests().size());
+        assertEquals("testquest", Objects.requireNonNull(userBefore.getUserQuests().stream().findFirst().orElse(null)).getQuest().getName());
     }
 }

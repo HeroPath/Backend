@@ -30,7 +30,6 @@ class UserTest {
         user.setRole(new Role());
         user.setAClass(new Class());
         user.setTitle(new Title());
-        user.setQuests(new HashSet<>());
         user.setInventory(new Inventory());
         user.setEquipment(new Equipment());
         user.setLevel((short) 1);
@@ -117,11 +116,6 @@ class UserTest {
     @Test
     void givenUser_whenGetTitle_thenReturnTitle() {
         assertNotNull(user.getTitle());
-    }
-
-    @Test
-    void givenUser_whenGetQuests_thenReturnQuests() {
-        assertNotNull(user.getQuests());
     }
 
     @Test

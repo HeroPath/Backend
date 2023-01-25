@@ -1,7 +1,11 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -30,13 +34,15 @@ class QuestDTOTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Quest quest = new Quest(
-                1L, "name", "description", "nameNpcKill",
-                1, 1,
-                1, 1,
-                1L, 1L, (short) 1);
-
-        assertThat(quest).isNotNull();
+       QuestDTO questDTO = new QuestDTO(
+                "name", "description",
+                "nameNpcKill", 1,
+                1,
+                1L,
+                1L,
+                (short) 1
+        );
+        assertThat(questDTO).isNotNull();
     }
 
     @Test

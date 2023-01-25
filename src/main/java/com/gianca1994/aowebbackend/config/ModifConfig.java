@@ -5,6 +5,18 @@ public class ModifConfig {
      * @Author: Gianca1994
      * Explanation: This class is used to modify the configuration of the application.
      */
+
+    /////////////////////////// USER ///////////////////////////
+    public static final short START_LVL = 1;
+    public static final long START_EXP = 0;
+    public static final long START_EXP_TO_NEXT_LVL = 5;
+    public static final long START_GOLD = 0;
+    public static final int START_DIAMOND = 0;
+    public static final int START_FREE_SKILL_POINTS = 5;
+    public static final int FREE_SKILL_POINTS_PER_LEVEL = 2;
+    public static final int MAX_CRITICAL_PERCENTAGE = 50;
+    /////////////////////////// USER ///////////////////////////
+
     /////////////////////////// TITLE ///////////////////////////
     // TITLE 1
     public static final String TITLE1_NAME = "iron";
@@ -76,17 +88,6 @@ public class ModifConfig {
     public static final int TITLE7_VIT = 200;
     public static final int TITLE7_LUK = 200;
     /////////////////////////// TITLE ///////////////////////////
-
-    /////////////////////////// USER ///////////////////////////
-    public static final short START_LVL = 1;
-    public static final long START_EXP = 0;
-    public static final long START_EXP_TO_NEXT_LVL = 5;
-    public static final long START_GOLD = 1000000;
-    public static final int START_DIAMOND = 100000;
-    public static final int START_FREE_SKILL_POINTS = 5000;
-    public static final int FREE_SKILL_POINTS_PER_LEVEL = 2;
-    public static final int MAX_CRITICAL_PERCENTAGE = 50;
-    /////////////////////////// USER ///////////////////////////
 
     /////////////////////////// INITIAL CLASS ///////////////////////////
     // MAGE

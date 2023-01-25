@@ -64,8 +64,7 @@ public class PveFunctions {
          * @return long
          */
         if (user.getLevel() < 10) return (long) Math.ceil(user.getExperienceToNextLevel() * 1.25);
-        else if (user.getLevel() >= 10 && user.getLevel() < 150)
-            return (long) Math.ceil(user.getExperienceToNextLevel() * 1.125);
+        else if (user.getLevel() < 150) return (long) Math.ceil(user.getExperienceToNextLevel() * 1.125);
         return (long) Math.ceil(user.getExperienceToNextLevel() * 1.025);
 
     }
