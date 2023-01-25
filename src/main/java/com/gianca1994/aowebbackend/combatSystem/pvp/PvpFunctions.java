@@ -60,13 +60,15 @@ public class PvpFunctions {
         return attacker.getHp() > 0 && defender.getHp() > 0;
     }
 
-    public int calculatePointsTitleWinOrLose() {
+    public int calculatePointsTitleWinOrLose(User user) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the points that the attacker.
          * @param none
          * @return int
          */
-        return (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
+        int pointsWinOrLose = (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
+        if (user.getTitlePoints() >= pointsWinOrLose) return pointsWinOrLose;
+        else return user.getTitlePoints();
     }
 }

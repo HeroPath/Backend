@@ -38,7 +38,7 @@ public class PvpSystem {
         short diamondsQuestGain = 0;
         int roundCounter = 0, attackerDmg = 0, defenderDmg = 0;
         boolean stopPvP = false;
-        int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
+        int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose(defender);
 
         do {
             roundCounter++;
@@ -71,8 +71,13 @@ public class PvpSystem {
                     if (defender.getGuildName() != null) {
                         guildDefender = guildRepository.findByName(defender.getGuildName());
                         if (guildDefender != null) {
-                            guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
-                            guildRepository.save(guildDefender);
+                            if (defender.getTitlePoints() >= mmrWinAndLose) {
+                                guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
+                                guildRepository.save(guildDefender);
+                            } else {
+                                guildDefender.setTitlePoints(0);
+                                guildRepository.save(guildDefender);
+                            }
                         }
                     }
 
