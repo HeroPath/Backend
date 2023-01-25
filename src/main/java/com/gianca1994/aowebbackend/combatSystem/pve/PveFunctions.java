@@ -2,7 +2,6 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -34,41 +33,6 @@ public class PveFunctions {
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * SvConfig.EXPERIENCE_MULTIPLIER;
     }
 
-    public boolean checkUserLevelUp(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user has leveled up.
-         * @param User user
-         * @return boolean
-         */
-        if (user.getLevel() >= SvConfig.LEVEL_MAX) return false;
-        return user.getExperience() >= user.getExperienceToNextLevel();
-    }
-
-    public short userLevelUp(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of leveling up the user.
-         * @param User user
-         * @return short
-         */
-        return (short) (user.getLevel() + 1);
-    }
-
-    public long userLevelUpNewNextExpToLevel(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the new experience
-         * to next level.
-         * @param User user
-         * @return long
-         */
-        if (user.getLevel() < 10) return (long) Math.ceil(user.getExperienceToNextLevel() * 1.25);
-        else if (user.getLevel() < 150) return (long) Math.ceil(user.getExperienceToNextLevel() * 1.125);
-        return (long) Math.ceil(user.getExperienceToNextLevel() * 1.025);
-
-    }
-
     public boolean checkIfNpcDied(Npc npc) {
         /**
          * @Author: Gianca1994
@@ -88,16 +52,6 @@ public class PveFunctions {
          * @return long
          */
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * SvConfig.GOLD_MULTIPLIER;
-    }
-
-    public int freeSkillPointsAdd(User user) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of adding the free skill points.
-         * @param User user
-         * @return int
-         */
-        return user.getFreeSkillPoints() + ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
     }
 
     public boolean checkUserAndNpcAlive(User user, Npc npc) {

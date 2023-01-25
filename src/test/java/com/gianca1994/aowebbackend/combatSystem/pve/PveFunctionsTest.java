@@ -53,23 +53,6 @@ class PveFunctionsTest {
     }
 
     @Test
-    void givenUser_whenCheckUserLevelUp_thenReturnUserLevelUp() {
-        assertThat(pveFunctionsTest.checkUserLevelUp(userTest)).isEqualTo(false);
-        userTest.setExperience(10L);
-        assertThat(pveFunctionsTest.checkUserLevelUp(userTest)).isEqualTo(true);
-    }
-
-    @Test
-    void givenUser_whenUserLevelUp_thenReturnUserLevelUp() {
-        assertThat(pveFunctionsTest.userLevelUp(userTest)).isEqualTo((short) 2);
-    }
-
-    @Test
-    void givenUser_whenUserLevelUpNewNextExpToLevel_thenReturnUserLevelUpNewNextExpToLevel() {
-        assertThat(pveFunctionsTest.userLevelUpNewNextExpToLevel(userTest)).isEqualTo(7L);
-    }
-
-    @Test
     void givenNPC_whenCheckIfNpcDied_thenReturnNpcDied() {
         assertThat(pveFunctionsTest.checkIfNpcDied(npcTest)).isEqualTo(false);
         npcTest.setHp(0);
@@ -79,11 +62,6 @@ class PveFunctionsTest {
     @Test
     void givenUser_whenCalculateUserGoldGain_thenReturnUserGoldGain() {
         assertThat(pveFunctionsTest.calculateUserGoldGain(npcTest)).isEqualTo(10L * SvConfig.GOLD_MULTIPLIER);
-    }
-
-    @Test
-    void givenUser_whenCalculateUserSkillPointsGain_thenReturnUserSkillPointsGain() {
-        assertThat(pveFunctionsTest.freeSkillPointsAdd(userTest)).isEqualTo(userTest.getFreeSkillPoints() + ModifConfig.FREE_SKILL_POINTS_PER_LEVEL);
     }
 
     @Test
