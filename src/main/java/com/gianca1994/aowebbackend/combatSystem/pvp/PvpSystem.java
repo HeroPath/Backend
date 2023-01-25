@@ -38,7 +38,9 @@ public class PvpSystem {
         short diamondsQuestGain = 0;
         int roundCounter = 0, attackerDmg = 0, defenderDmg = 0;
         boolean stopPvP = false;
+
         int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose(defender);
+        int mmrWinAndLoseGuild = defender.getTitlePoints() > 0 ? mmrWinAndLose : 0;
 
         do {
             roundCounter++;
@@ -71,13 +73,8 @@ public class PvpSystem {
                     if (defender.getGuildName() != null) {
                         guildDefender = guildRepository.findByName(defender.getGuildName());
                         if (guildDefender != null) {
-                            if (defender.getTitlePoints() >= mmrWinAndLose) {
-                                guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
-                                guildRepository.save(guildDefender);
-                            } else {
-                                guildDefender.setTitlePoints(0);
-                                guildRepository.save(guildDefender);
-                            }
+                            guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLoseGuild);
+                            guildRepository.save(guildDefender);
                         }
                     }
 
@@ -90,7 +87,7 @@ public class PvpSystem {
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
                     for (UserQuest quest : attacker.getUserQuests()) {
-                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player")  &&
+                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player") &&
                                 quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
                             quest.setAmountUserKill(quest.getAmountUserKill() + 1);
                             attacker.getUserQuests().add(quest);

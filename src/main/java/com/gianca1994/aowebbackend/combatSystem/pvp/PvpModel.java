@@ -45,10 +45,13 @@ public class PvpModel extends CombatModel {
 
         if (this.getUser().getHp() > 0) {
             round.put("win", this.getUser().getUsername());
+            round.put("titlePointsWin", amountPointsTitleWinOrLose);
             round.put("lose", defender.getUsername());
+            round.put("titlePointsLose", amountPointsTitleWinOrLose);
         } else {
             round.put("win", defender.getUsername());
             round.put("lose", this.getUser().getUsername());
+            round.put("titlePointsLose", amountPointsTitleWinOrLose);
         }
 
         this.getHistoryCombat().add(round);

@@ -69,6 +69,7 @@ public class PvpFunctions {
          */
         int pointsWinOrLose = (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
         if (user.getTitlePoints() >= pointsWinOrLose) return pointsWinOrLose;
-        else return user.getTitlePoints();
+        else if (user.getTitlePoints() > 0) return user.getTitlePoints();
+        else return pointsWinOrLose / 2;
     }
 }
