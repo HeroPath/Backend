@@ -109,7 +109,12 @@ public class PveFunctions {
 
     public void updateExpGldNpcsKilled(User user, long experienceGain, long goldGain) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the experience, gold and npcs killed.
+         * @param User user
+         * @param long experienceGain
+         * @param long goldGain
+         * @return none
          */
         user.setExperience(user.getExperience() + experienceGain);
         user.setGold(user.getGold() + goldGain);
