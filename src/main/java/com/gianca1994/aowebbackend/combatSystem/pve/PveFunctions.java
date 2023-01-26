@@ -3,6 +3,10 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: Gianca1994
@@ -52,15 +56,15 @@ public class PveFunctions {
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * SvConfig.GOLD_MULTIPLIER;
     }
 
-    public boolean checkUserAndNpcAlive(User user, Npc npc) {
+    public boolean checkUserAndNpcAlive(boolean userAlive, boolean npcAlive) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of verifying if the user and the npc are alive.
-         * @param User user
-         * @param Npc npc
+         * @param boolean userAlive
+         * @param boolean npcAlive
          * @return boolean
          */
-        return user.getHp() > 0 && npc.getHp() > 0;
+        return userAlive && npcAlive;
     }
 
     public boolean chanceDropDiamonds() {
@@ -72,12 +76,44 @@ public class PveFunctions {
         return ((Math.random() * 100) + 1) > (100 - SvConfig.DIAMOND_DROP_CHANCE_PERCENTAGE);
     }
 
-    public int amountOfDiamondsDrop() {
+    public int amountDiamondsDrop(User user) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
          * @return int
          */
-        return (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        int diamondsDrop = (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        user.setDiamond(user.getDiamond() + diamondsDrop);
+        return diamondsDrop;
     }
+
+    public void updateQuestProgress(User user, Npc npc) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the quest progress.
+         * @param User user
+         * @param Npc npc
+         * @return none
+         */
+        Map<String, UserQuest> userQuests = new HashMap<>();
+        for (UserQuest quest : user.getUserQuests()) {
+            userQuests.put(quest.getQuest().getNameNpcKill(), quest);
+        }
+
+        UserQuest quest = userQuests.get(npc.getName());
+        if (quest != null && !npc.getName().equals("player") &&
+                quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
+            quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
+        }
+    }
+
+    public void updateExpGldNpcsKilled(User user, long experienceGain, long goldGain) {
+        /**
+         *
+         */
+        user.setExperience(user.getExperience() + experienceGain);
+        user.setGold(user.getGold() + goldGain);
+        user.setNpcKills(user.getNpcKills() + 1);
+    }
+
 }

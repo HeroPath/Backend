@@ -22,9 +22,10 @@ public class PveSystem {
                                         TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of starting a combat between a user and a npc.
+         * Explanation: This function is in charge of the combat between the user and the npc.
          * @param User user
          * @param Npc npc
+         * @param TitleRepository titleRepository
          * @return PveModel
          */
         GenericFunctions genericFunctions = new GenericFunctions();
@@ -32,71 +33,51 @@ public class PveSystem {
 
         PveModel pveModel = new PveModel(new ArrayList<>(), user, npc);
 
-        long experienceGain = 0, goldGain = 0, experienceQuestGain = 0, goldQuestGain = 0;
+        long experienceGain = 0, goldGain = 0;
         int diamondsGain = 0, roundCounter = 0;
-        boolean levelUp = false, stopPvP = false;
+        boolean levelUp = false, userAlive = true, npcAlive = true;
 
         do {
             roundCounter++;
             int userDmg = genericFunctions.getUserDmg(user, npc.getDefense());
             int npcDmg = pveFunctions.calculateNpcDmg(npc, user.getDefense());
 
-            // Check if the finish combat.
-            if (!stopPvP) {
+            if (userAlive && npcAlive) {
                 npc.setHp(npc.getHp() - userDmg);
 
-                // Check if the npc has died.
                 if (pveFunctions.checkIfNpcDied(npc)) {
-                    npc.setHp(0);
-                    npcDmg = 0;
-                    // Add the history of the combat.
-                    user.setNpcKills(user.getNpcKills() + 1);
-
-                    Map<String, UserQuest> userQuests = new HashMap<>();
-                    for (UserQuest quest : user.getUserQuests()) {
-                        userQuests.put(quest.getQuest().getNameNpcKill(), quest);
-                    }
-
-                    UserQuest quest = userQuests.get(npc.getName());
-                    if (quest != null && !npc.getName().equals("player") && quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
-                        quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
-                    }
-
                     experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                    user.setExperience(user.getExperience() + experienceGain + experienceQuestGain);
-
                     goldGain = pveFunctions.calculateUserGoldGain(npc);
-                    user.setGold(user.getGold() + goldGain + goldQuestGain);
+
+                    pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
+                    pveFunctions.updateQuestProgress(user, npc);
 
                     levelUp = user.userLevelUp();
-                    stopPvP = true;
+
+                    npc.setHp(0);
+                    npcDmg = 0;
+                    npcAlive = false;
                 } else {
-                    // Check if the user has died.
                     user.setHp(genericFunctions.userReceiveDmg(user, npcDmg));
+
                     if (genericFunctions.checkIfUserDied(user)) {
                         user.setHp(0);
                         userDmg = 0;
-                        stopPvP = true;
+                        userAlive = false;
                     }
                 }
             }
             pveModel.roundJsonGenerator(roundCounter, userDmg, npcDmg);
+        } while (pveFunctions.checkUserAndNpcAlive(userAlive, npcAlive));
 
-        } while (pveFunctions.checkUserAndNpcAlive(user, npc));
-
-        if (pveFunctions.chanceDropDiamonds()) {
-            diamondsGain = pveFunctions.amountOfDiamondsDrop();
-            user.setDiamond(user.getDiamond() + diamondsGain);
-        }
+        if (pveFunctions.chanceDropDiamonds()) diamondsGain = pveFunctions.amountDiamondsDrop(user);
 
         user.checkStatusTitlePoints(titleRepository);
-
         pveModel.roundJsonGeneratorFinish(
-                0,0,0,
+                0, 0, 0,
                 experienceGain, goldGain, diamondsGain, levelUp);
 
         npc.setHp(npc.getMaxHp());
         return pveModel;
     }
-
 }
