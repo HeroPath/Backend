@@ -27,7 +27,8 @@ public class PvpModel extends CombatModel {
     }
 
     @Override
-    public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
+    public void roundJsonGenerator(int roundCounter, int attackerHp, int attackerDmg,
+                                   int defenderHp, int defenderDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round node.
@@ -36,8 +37,8 @@ public class PvpModel extends CombatModel {
          * @param int defenderDmg
          * @return none
          */
-        ObjectNode round = createBasicRoundNode(roundCounter, attackerDmg);
-        round.put("defenderLife", defender.getHp());
+        ObjectNode round = createBasicRoundNode(roundCounter, attackerHp, attackerDmg);
+        round.put("defenderLife", defenderHp);
         round.put("defenderDmg", defenderDmg);
         this.getHistoryCombat().add(round);
     }
@@ -74,5 +75,19 @@ public class PvpModel extends CombatModel {
         }
 
         this.getHistoryCombat().add(round);
+    }
+
+    public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
+                                         int amountPointsTitleWinOrLose) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round finish node.
+         * @param long goldAmountWin
+         * @param long goldAmountLoseCombat
+         * @param int amountPointsTitleWinOrLose
+         * @return none
+         */
+        super.roundJsonGeneratorFinish(goldAmountWin, goldAmountLoseCombat, amountPointsTitleWinOrLose
+                , 0, 0, 0, false);
     }
 }

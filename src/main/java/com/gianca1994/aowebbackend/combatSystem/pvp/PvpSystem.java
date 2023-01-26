@@ -54,7 +54,7 @@ public class PvpSystem {
                 defender.setHp(genericFunctions.userReceiveDmg(defender, attackerDmg));
 
                 // Check if the defender has died.
-                if (genericFunctions.checkIfUserDied(defender)) {
+                if (genericFunctions.checkIfUserDied(defender.getHp())) {
                     defender.setHp(0);
                     defenderDmg = 0;
                     stopPvP = true;
@@ -104,7 +104,7 @@ public class PvpSystem {
                     attacker.setHp(genericFunctions.userReceiveDmg(attacker, defenderDmg));
 
                     // Check if the attacker has died.
-                    if (genericFunctions.checkIfUserDied(attacker)) {
+                    if (genericFunctions.checkIfUserDied(attacker.getHp())) {
                         attacker.setHp(0);
                         attackerDmg = 0;
                         stopPvP = true;
@@ -120,12 +120,12 @@ public class PvpSystem {
                     }
                 }
             }
-            pvpModel.roundJsonGenerator(roundCounter, attackerDmg, defenderDmg);
+            pvpModel.roundJsonGenerator(roundCounter, attacker.getHp(), attackerDmg,
+                    defender.getHp(), defenderDmg);
 
         } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
 
-        pvpModel.roundJsonGeneratorFinish(goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose,
-                0, 0, 0, false);
+        pvpModel.roundJsonGeneratorFinish(goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose);
 
         return pvpModel;
     }

@@ -1,21 +1,21 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.UserQuest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @Author: Gianca1994
  * Explanation: PveSystem
  */
 public class PveSystem {
+
+    private static final GenericFunctions genericFunctions = new GenericFunctions();
+    private static final PveFunctions pveFunctions = new PveFunctions();
 
     public static PveModel PveUserVsNpc(User user,
                                         Npc npc,
@@ -28,56 +28,41 @@ public class PveSystem {
          * @param TitleRepository titleRepository
          * @return PveModel
          */
-        GenericFunctions genericFunctions = new GenericFunctions();
-        PveFunctions pveFunctions = new PveFunctions();
-
         PveModel pveModel = new PveModel(new ArrayList<>(), user, npc);
 
+        int roundCounter = 0, diamondsGain = 0;
         long experienceGain = 0, goldGain = 0;
-        int diamondsGain = 0, roundCounter = 0;
-        boolean levelUp = false, userAlive = true, npcAlive = true;
+        boolean levelUp = false, stopPve = false;
 
-        do {
+        boolean chanceDropDiamonds = pveFunctions.chanceDropDiamonds();
+        int userHp = user.getHp(), npcHp = npc.getHp(), userDefense = user.getDefense(),
+                npcDefense = npc.getDefense(), npcMaxHp = npc.getMaxHp();
+
+        while (!stopPve) {
             roundCounter++;
-            int userDmg = genericFunctions.getUserDmg(user, npc.getDefense());
-            int npcDmg = pveFunctions.calculateNpcDmg(npc, user.getDefense());
+            int userDmg = genericFunctions.getUserDmg(user, npcDefense);
+            int npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);
+            npcHp -= userDmg;
 
-            if (userAlive && npcAlive) {
-                npc.setHp(npc.getHp() - userDmg);
+            if (pveFunctions.checkIfNpcDied(npcHp)) {
+                experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
+                goldGain = pveFunctions.calculateUserGoldGain(npc);
+                if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
 
-                if (pveFunctions.checkIfNpcDied(npc)) {
-                    experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                    goldGain = pveFunctions.calculateUserGoldGain(npc);
-
-                    pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
-                    pveFunctions.updateQuestProgress(user, npc);
-
-                    levelUp = user.userLevelUp();
-
-                    npc.setHp(0);
-                    npcDmg = 0;
-                    npcAlive = false;
-                } else {
-                    user.setHp(genericFunctions.userReceiveDmg(user, npcDmg));
-
-                    if (genericFunctions.checkIfUserDied(user)) {
-                        user.setHp(0);
-                        userDmg = 0;
-                        userAlive = false;
-                    }
-                }
+                pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
+                pveFunctions.updateQuestProgress(user, npc);
+                levelUp = user.userLevelUp();
+                stopPve = true;
+            } else {
+                userHp = genericFunctions.userReceiveDmg(user, npcDmg);
+                if (genericFunctions.checkIfUserDied(userHp)) stopPve = true;
             }
-            pveModel.roundJsonGenerator(roundCounter, userDmg, npcDmg);
-        } while (pveFunctions.checkUserAndNpcAlive(userAlive, npcAlive));
-
-        if (pveFunctions.chanceDropDiamonds()) diamondsGain = pveFunctions.amountDiamondsDrop(user);
+            pveModel.roundJsonGenerator(roundCounter, userHp, userDmg, npcHp, npcDmg);
+        }
+        pveModel.roundJsonGeneratorFinish(experienceGain, goldGain, diamondsGain, levelUp);
 
         user.checkStatusTitlePoints(titleRepository);
-        pveModel.roundJsonGeneratorFinish(
-                0, 0, 0,
-                experienceGain, goldGain, diamondsGain, levelUp);
-
-        npc.setHp(npc.getMaxHp());
+        npc.setHp(npcMaxHp);
         return pveModel;
     }
 }

@@ -19,21 +19,20 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CombatModel {
+public abstract class CombatModel {
 
     private ArrayList<ObjectNode> historyCombat;
     private User user;
 
-    public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
-
-    }
+    public abstract void roundJsonGenerator(int roundCounter, int userHp, int userDmg,
+                                            int npcHp, int npcDmg);
 
     public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
                                          int amountPointsTitleWinOrLose, long experienceGain,
                                          long goldGain, int diamondsGain, boolean levelUp) {
     }
 
-    protected ObjectNode createBasicRoundNode(int roundCounter, int attackerDmg) {
+    protected ObjectNode createBasicRoundNode(int roundCounter, int attackerHp, int attackerDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round node.
@@ -43,7 +42,7 @@ public class CombatModel {
          */
         ObjectNode round = new ObjectMapper().createObjectNode();
         round.put("round", roundCounter);
-        round.put("attackerLife", user.getHp());
+        round.put("attackerLife", attackerHp);
         round.put("attackerDmg", attackerDmg);
         return round;
     }
@@ -74,4 +73,5 @@ public class CombatModel {
 
         return round;
     }
+
 }

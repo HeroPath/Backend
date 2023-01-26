@@ -35,14 +35,14 @@ public class PveFunctions {
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * SvConfig.EXPERIENCE_MULTIPLIER;
     }
 
-    public boolean checkIfNpcDied(Npc npc) {
+    public boolean checkIfNpcDied(int npcHp) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of verifying if the npc has died.
          * @param Npc npc
          * @return boolean
          */
-        return npc.getHp() <= 0;
+        return npcHp <= 0;
     }
 
     public long calculateUserGoldGain(Npc npc) {

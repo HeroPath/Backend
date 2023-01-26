@@ -46,13 +46,13 @@ public class GenericFunctions {
         return user.getHp() - dmg;
     }
 
-    public boolean checkIfUserDied(User user) {
+    public boolean checkIfUserDied(int userHp) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of verifying if the user has died.
          * @param User user
          * @return boolean
          */
-        return user.getHp() <= 0;
+        return userHp <= 0;
     }
 }

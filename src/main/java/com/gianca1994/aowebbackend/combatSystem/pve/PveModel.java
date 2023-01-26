@@ -28,7 +28,8 @@ public class PveModel extends CombatModel {
     }
 
     @Override
-    public void roundJsonGenerator(int roundCounter, int attackerDmg, int defenderDmg) {
+    public void roundJsonGenerator(int roundCounter, int userHp, int userDmg,
+                                   int npcHp, int npcDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round node.
@@ -37,16 +38,20 @@ public class PveModel extends CombatModel {
          * @param int defenderDmg
          * @return none
          */
-        ObjectNode round = createBasicRoundNode(roundCounter, attackerDmg);
-        round.put("NpcLife", npc.getHp());
-        round.put("NpcDmg", defenderDmg);
+        ObjectNode round = createBasicRoundNode(roundCounter, userHp, userDmg);
+        round.put("NpcLife", npcHp);
+        round.put("NpcDmg", npcDmg);
         this.getHistoryCombat().add(round);
     }
 
     @Override
-    public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
-                                         int amountPointsTitleWinOrLose, long experienceGain,
-                                         long goldGain, int diamondsGain, boolean levelUp) {
+    public void roundJsonGeneratorFinish(long goldAmountWin,
+                                         long goldAmountLoseCombat,
+                                         int amountPointsTitleWinOrLose,
+                                         long experienceGain,
+                                         long goldGain,
+                                         int diamondsGain,
+                                         boolean levelUp) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round finish node.
@@ -71,5 +76,22 @@ public class PveModel extends CombatModel {
             round.put("lose", this.getUser().getUsername());
         }
         this.getHistoryCombat().add(round);
+    }
+
+
+
+    public void roundJsonGeneratorFinish(long experienceGain, long goldGain,
+                                         int diamondsGain, boolean levelUp) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round finish node.
+         * @param long experienceGain
+         * @param long goldGain
+         * @param int diamondsGain
+         * @param boolean levelUp
+         * @return none
+         */
+       roundJsonGeneratorFinish(0, 0, 0,
+                experienceGain, goldGain, diamondsGain, levelUp);
     }
 }
