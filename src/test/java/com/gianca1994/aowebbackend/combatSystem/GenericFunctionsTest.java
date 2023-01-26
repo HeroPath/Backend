@@ -56,12 +56,12 @@ class GenericFunctionsTest {
     @Test
     void givenUser_whenCheckIfUserDied_thenReturnTrue() {
         userTest.setHp(0);
-        assertTrue(genericFunctionsTest.checkIfUserDied(userTest));
+        assertTrue(genericFunctionsTest.checkIfUserDied(userTest.getHp()));
     }
 
     @Test
     void givenUser_whenCheckIfUserDied_thenReturnFalse() {
         userTest.setHp(100);
-        assertFalse(genericFunctionsTest.checkIfUserDied(userTest));
+        assertFalse(genericFunctionsTest.checkIfUserDied(userTest.getHp()));
     }
 }

@@ -54,9 +54,9 @@ class PveFunctionsTest {
 
     @Test
     void givenNPC_whenCheckIfNpcDied_thenReturnNpcDied() {
-        assertThat(pveFunctionsTest.checkIfNpcDied(npcTest)).isEqualTo(false);
+        assertThat(pveFunctionsTest.checkIfNpcDied(npcTest.getHp())).isEqualTo(false);
         npcTest.setHp(0);
-        assertThat(pveFunctionsTest.checkIfNpcDied(npcTest)).isEqualTo(true);
+        assertThat(pveFunctionsTest.checkIfNpcDied(npcTest.getHp())).isEqualTo(true);
     }
 
     @Test
@@ -67,15 +67,15 @@ class PveFunctionsTest {
     @Test
     void givenUserAndNpc_whenCheckUserAndNpcAlive_thenReturnUserAndNpcAlive() {
         userTest.setHp(1);
-        assertThat(pveFunctionsTest.checkUserAndNpcAlive(userTest, npcTest)).isEqualTo(true);
+        assertThat(pveFunctionsTest.checkUserAndNpcAlive(true, true)).isEqualTo(true);
         userTest.setHp(0);
-        assertThat(pveFunctionsTest.checkUserAndNpcAlive(userTest, npcTest)).isEqualTo(false);
+        assertThat(pveFunctionsTest.checkUserAndNpcAlive(false, true)).isEqualTo(false);
         npcTest.setHp(0);
-        assertThat(pveFunctionsTest.checkUserAndNpcAlive(userTest, npcTest)).isEqualTo(false);
+        assertThat(pveFunctionsTest.checkUserAndNpcAlive(false, false)).isEqualTo(false);
     }
 
     @Test
     void givenNpc_whenAmountOfDiamondsDrop_thenReturnAmountOfDiamondsDrop() {
-        assertThat(pveFunctionsTest.amountOfDiamondsDrop()).isBetween(1, SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP);
+        assertThat(pveFunctionsTest.amountDiamondsDrop(userTest)).isBetween(1, SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP);
     }
 }

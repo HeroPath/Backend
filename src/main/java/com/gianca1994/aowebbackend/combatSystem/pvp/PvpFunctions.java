@@ -1,32 +1,29 @@
 package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.gianca1994.aowebbackend.config.SvConfig;
+import com.gianca1994.aowebbackend.resources.guild.Guild;
+import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
+import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author: Gianca1994
  * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
  */
 public class PvpFunctions {
-    private long getUserGoldThief(User user) {
+    public long getUserGoldThief(long userGold) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the gold theft.
          * @param User user
          * @return long
          */
-        return (long) (user.getGold() * SvConfig.PVP_GOLD_WIN_RATE);
-    }
-
-    public long getUserGoldAmountWin(User defender) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the gold that the attacker.
-         * @param User attacker
-         * @param User defender
-         * @return long
-         */
-        return getUserGoldThief(defender);
+        return (long) (userGold * SvConfig.PVP_GOLD_WIN_RATE);
     }
 
     public long getUserGoldAmountLose(User user) {
@@ -36,7 +33,7 @@ public class PvpFunctions {
          * @param User user
          * @return long
          */
-        return user.getGold() - getUserGoldThief(user);
+        return user.getGold() - getUserGoldThief(user.getGold());
     }
 
     public long getUserGoldLoseForLoseCombat(User user) {
@@ -71,5 +68,74 @@ public class PvpFunctions {
         if (user.getTitlePoints() >= pointsWinOrLose) return pointsWinOrLose;
         else if (user.getTitlePoints() > 0) return user.getTitlePoints();
         else return pointsWinOrLose / 2;
+    }
+
+    public void updateGuilds(User attacker, User defender,
+                             GuildRepository guildRepository, int mmrWinAndLose) {
+        /**
+         *
+         */
+        String attackGuildName = attacker.getGuildName();
+        String defGuildName = defender.getGuildName();
+        Map<String, Guild> guilds = new HashMap<>();
+
+        if (!Objects.equals(attackGuildName, "")) {
+            guilds.put(attackGuildName, guildRepository.findByName(attackGuildName));
+            Guild guildAttack = guilds.get(attackGuildName);
+            if (guildAttack != null) guildAttack.setTitlePoints(guildAttack.getTitlePoints() + mmrWinAndLose);
+        }
+
+        if (!Objects.equals(defGuildName, "")) {
+            guilds.put(defGuildName, guildRepository.findByName(defGuildName));
+            Guild guildDef = guilds.get(defGuildName);
+            if (guildDef != null)
+                if (guildDef.getTitlePoints() - mmrWinAndLose >= 0)
+                    guildDef.setTitlePoints(guildDef.getTitlePoints() - mmrWinAndLose);
+        }
+        guildRepository.saveAll(guilds.values());
+    }
+
+    public void updateQuests(User user) {
+        /**
+         *
+         */
+        Map<String, UserQuest> userQuests = new HashMap<>();
+        for (UserQuest quest : user.getUserQuests()) {
+            userQuests.put(quest.getQuest().getName().toLowerCase(), quest);
+        }
+        UserQuest playerQuest = userQuests.get("player");
+        if (playerQuest != null && playerQuest.getAmountUserKill() < playerQuest.getQuest().getUserKillAmountNeeded()) {
+            playerQuest.setAmountUserKill(playerQuest.getAmountUserKill() + 1);
+        }
+    }
+
+
+    public void updateStatsUserWin(User user, User attacked, long goldAmountWin,
+                                   int mmrWinAndLose, TitleRepository titleRepository) {
+        /**
+         *
+         */
+        attacked.setHp(0);
+        user.setGold(user.getGold() + goldAmountWin);
+        attacked.setGold(attacked.getGold() - goldAmountWin);
+        attacked.setPvpLosses(attacked.getPvpLosses() + 1);
+        user.setPvpWins(user.getPvpWins() + 1);
+        user.addTitlePoints(mmrWinAndLose);
+        attacked.removeTitlePoints(mmrWinAndLose);
+        user.checkStatusTitlePoints(titleRepository);
+        attacked.checkStatusTitlePoints(titleRepository);
+    }
+
+    public void updateStatsUserLose(User user, User attacked, long goldLoseForLoseCombat,
+                                    int mmrWinAndLose, TitleRepository titleRepository) {
+        /**
+         *
+         */
+        user.setHp(0);
+        user.setGold(user.getGold() - goldLoseForLoseCombat);
+        user.removeTitlePoints(mmrWinAndLose);
+        user.checkStatusTitlePoints(titleRepository);
+        user.setPvpLosses(attacked.getPvpLosses() + 1);
+        attacked.setPvpWins(user.getPvpWins() + 1);
     }
 }
