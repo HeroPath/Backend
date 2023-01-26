@@ -90,8 +90,8 @@ public class ItemService {
         if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
         if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY &&
-                !user.getInventory().getItems().contains(itemBuy)) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+
+        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());

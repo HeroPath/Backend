@@ -1,7 +1,5 @@
 package com.gianca1994.aowebbackend.combatSystem.pvp;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.user.User;
 
@@ -62,72 +60,16 @@ public class PvpFunctions {
         return attacker.getHp() > 0 && defender.getHp() > 0;
     }
 
-    public int calculatePointsTitleWinOrLose() {
+    public int calculatePointsTitleWinOrLose(User user) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the points that the attacker.
          * @param none
          * @return int
          */
-        return (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
-    }
-
-    public ObjectNode roundJsonGeneratorUserVsUser(
-            User attacker,
-            User defender,
-            int roundCounter,
-            int attackerDmg,
-            int defenderDmg) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
-         * @param User attacker
-         * @param User defender
-         * @param int roundCounter
-         * @param int attackerDmg
-         * @param int defenderDmg
-         * @return ObjectNode
-         */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-        round.put("round", roundCounter);
-        round.put("attackerLife", attacker.getHp());
-        round.put("defenderLife", defender.getHp());
-        round.put("attackerDmg", attackerDmg);
-        round.put("defenderDmg", defenderDmg);
-        return round;
-    }
-
-    public ObjectNode roundJsonGeneratorUserVsUserFinish(
-            User attacker,
-            User defender,
-            long goldAmountWin,
-            long goldAmountLoseForLoseCombat,
-            int amountPointsTitleWinOrLose) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
-         * @param User attacker
-         * @param User defender
-         * @param long goldAmountWin
-         * @param long goldAmountLoseForLoseCombat
-         * @return ObjectNode
-         */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-
-        if (attacker.getHp() > 0) {
-            round.put("win", attacker.getUsername());
-            round.put("titlePointsWin: ", amountPointsTitleWinOrLose);
-            round.put("lose", defender.getUsername());
-            round.put("titlePointsLose: ", amountPointsTitleWinOrLose);
-        } else {
-            round.put("win", defender.getUsername());
-            round.put("lose", attacker.getUsername());
-            round.put("titlePointsLose: ", amountPointsTitleWinOrLose);
-        }
-
-        if (goldAmountWin > 0) round.put("goldAmountWin", goldAmountWin);
-        if (goldAmountLoseForLoseCombat > 0) round.put("goldAmountLoseForLoseCombat", goldAmountLoseForLoseCombat);
-
-        return round;
+        int pointsWinOrLose = (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
+        if (user.getTitlePoints() >= pointsWinOrLose) return pointsWinOrLose;
+        else if (user.getTitlePoints() > 0) return user.getTitlePoints();
+        else return pointsWinOrLose / 2;
     }
 }

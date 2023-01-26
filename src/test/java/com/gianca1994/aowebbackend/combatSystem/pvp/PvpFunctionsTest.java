@@ -81,7 +81,8 @@ class PvpFunctionsTest {
 
     @Test
     void whenCalculatePointsTitleWin_thenReturnPointsTitleWin() {
-        assertThat(pvpFunctionsTest.calculatePointsTitleWinOrLose()).isBetween(
+        userTest2.setTitlePoints(150);
+        assertThat(pvpFunctionsTest.calculatePointsTitleWinOrLose(userTest2)).isBetween(
                 SvConfig.PVP_MIN_RATE_POINT_TITLE, SvConfig.PVP_MAX_RATE_POINT_TITLE
                 );
     }

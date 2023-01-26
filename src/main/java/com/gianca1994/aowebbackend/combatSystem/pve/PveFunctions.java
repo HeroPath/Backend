@@ -1,10 +1,12 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
+import com.gianca1994.aowebbackend.resources.user.UserQuest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: Gianca1994
@@ -33,14 +35,14 @@ public class PveFunctions {
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * SvConfig.EXPERIENCE_MULTIPLIER;
     }
 
-    public boolean checkIfNpcDied(Npc npc) {
+    public boolean checkIfNpcDied(int npcHp) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of verifying if the npc has died.
          * @param Npc npc
          * @return boolean
          */
-        return npc.getHp() <= 0;
+        return npcHp <= 0;
     }
 
     public long calculateUserGoldGain(Npc npc) {
@@ -54,15 +56,15 @@ public class PveFunctions {
         return (long) (Math.floor(Math.random() * (npc.getGiveMaxGold() - npc.getGiveMinGold() + 1) + npc.getGiveMinGold())) * SvConfig.GOLD_MULTIPLIER;
     }
 
-    public boolean checkUserAndNpcAlive(User user, Npc npc) {
+    public boolean checkUserAndNpcAlive(boolean userAlive, boolean npcAlive) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of verifying if the user and the npc are alive.
-         * @param User user
-         * @param Npc npc
+         * @param boolean userAlive
+         * @param boolean npcAlive
          * @return boolean
          */
-        return user.getHp() > 0 && npc.getHp() > 0;
+        return userAlive && npcAlive;
     }
 
     public boolean chanceDropDiamonds() {
@@ -74,72 +76,49 @@ public class PveFunctions {
         return ((Math.random() * 100) + 1) > (100 - SvConfig.DIAMOND_DROP_CHANCE_PERCENTAGE);
     }
 
-    public int amountOfDiamondsDrop() {
+    public int amountDiamondsDrop(User user) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
          * @return int
          */
-        return (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        int diamondsDrop = (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        user.setDiamond(user.getDiamond() + diamondsDrop);
+        return diamondsDrop;
     }
 
-    public ObjectNode roundJsonGeneratorUserVsNpc(
-            User user,
-            Npc npc,
-            int roundCounter,
-            int userDmg,
-            int npcDmg) {
+    public void updateQuestProgress(User user, Npc npc) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
+         * Explanation: This function is in charge of updating the quest progress.
          * @param User user
          * @param Npc npc
-         * @param int roundCounter
-         * @param int userDmg
-         * @param int npcDmg
-         * @return ObjectNode
+         * @return none
          */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-        round.put("round", roundCounter);
-        round.put("userLife", user.getHp());
-        round.put("NpcLife", npc.getHp());
-        round.put("userDmg", userDmg);
-        round.put("NpcDmg", npcDmg);
-        return round;
-    }
-
-    public ObjectNode roundJsonGeneratorUserVsNpcFinish(
-            User user,
-            Npc npc,
-            long userExperienceGain,
-            long userGoldGain,
-            int diamondsGain,
-            boolean userLevelUp) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of generating the json for the round.
-         * @param User user
-         * @param Npc npc
-         * @param long userExperienceGain
-         * @param long userGoldGain
-         * @param int diamondsGain
-         * @param boolean userLevelUp
-         * @return ObjectNode
-         */
-        ObjectNode round = new ObjectMapper().createObjectNode();
-
-        if (user.getHp() > 0) {
-            round.put("win", user.getUsername());
-            round.put("lose", npc.getName());
-        } else {
-            round.put("win", npc.getName());
-            round.put("lose", user.getUsername());
+        Map<String, UserQuest> userQuests = new HashMap<>();
+        for (UserQuest quest : user.getUserQuests()) {
+            userQuests.put(quest.getQuest().getNameNpcKill(), quest);
         }
-        if (userExperienceGain > 0) round.put("userExperienceGain", userExperienceGain);
-        if (userGoldGain > 0) round.put("goldAmountWin", userGoldGain);
-        if (diamondsGain > 0) round.put("diamondsAmountWin", diamondsGain);
-        if (userLevelUp) round.put("levelUp", true);
 
-        return round;
+        UserQuest quest = userQuests.get(npc.getName());
+        if (quest != null && !npc.getName().equals("player") &&
+                quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
+            quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
+        }
     }
+
+    public void updateExpGldNpcsKilled(User user, long experienceGain, long goldGain) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the experience, gold and npcs killed.
+         * @param User user
+         * @param long experienceGain
+         * @param long goldGain
+         * @return none
+         */
+        user.setExperience(user.getExperience() + experienceGain);
+        user.setGold(user.getGold() + goldGain);
+        user.setNpcKills(user.getNpcKills() + 1);
+    }
+
 }

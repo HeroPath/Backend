@@ -1,10 +1,8 @@
 package com.gianca1994.aowebbackend.combatSystem.pvp;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.UserQuest;
@@ -18,6 +16,9 @@ import java.util.Objects;
  */
 public class PvpSystem {
 
+    private static final GenericFunctions genericFunctions = new GenericFunctions();
+    private static final PvpFunctions pvpFunctions = new PvpFunctions();
+
     public static PvpModel PvpUserVsUser(User attacker,
                                          User defender,
                                          TitleRepository titleRepository,
@@ -30,16 +31,15 @@ public class PvpSystem {
          * @param TitleRepository titleRepository
          * @return PvpModel
          */
-        GenericFunctions genericFunctions = new GenericFunctions();
-        PvpFunctions pvpUserVsUser = new PvpFunctions();
-        ArrayList<ObjectNode> historyCombat = new ArrayList<>();
+        PvpModel pvpModel = new PvpModel(new ArrayList<>(), attacker, defender);
 
         Guild guildAttacker, guildDefender;
-        long goldAmountWin = 0, goldQuestGain = 0, goldLoseForLoseCombat = 0;
-        short diamondsQuestGain = 0;
+        long goldAmountWin = 0, goldLoseForLoseCombat = 0;
         int roundCounter = 0, attackerDmg = 0, defenderDmg = 0;
         boolean stopPvP = false;
-        int mmrWinAndLose = pvpUserVsUser.calculatePointsTitleWinOrLose();
+
+        int mmrWinAndLose = pvpFunctions.calculatePointsTitleWinOrLose(defender);
+        int mmrWinAndLoseGuild = defender.getTitlePoints() > 0 ? mmrWinAndLose : 0;
 
         do {
             roundCounter++;
@@ -53,7 +53,7 @@ public class PvpSystem {
                 defender.setHp(genericFunctions.userReceiveDmg(defender, attackerDmg));
 
                 // Check if the defender has died.
-                if (genericFunctions.checkIfUserDied(defender)) {
+                if (genericFunctions.checkIfUserDied(defender.getHp())) {
                     defender.setHp(0);
                     defenderDmg = 0;
                     stopPvP = true;
@@ -72,7 +72,7 @@ public class PvpSystem {
                     if (defender.getGuildName() != null) {
                         guildDefender = guildRepository.findByName(defender.getGuildName());
                         if (guildDefender != null) {
-                            guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLose);
+                            guildDefender.setTitlePoints(guildDefender.getTitlePoints() - mmrWinAndLoseGuild);
                             guildRepository.save(guildDefender);
                         }
                     }
@@ -86,24 +86,23 @@ public class PvpSystem {
                     attacker.setPvpWins(attacker.getPvpWins() + 1);
 
                     for (UserQuest quest : attacker.getUserQuests()) {
-                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player")  &&
+                        if (Objects.equals(quest.getQuest().getName().toLowerCase(), "player") &&
                                 quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
                             quest.setAmountUserKill(quest.getAmountUserKill() + 1);
                             attacker.getUserQuests().add(quest);
                         }
                     }
+                    attacker.setDiamond(attacker.getDiamond());
 
-                    attacker.setDiamond(attacker.getDiamond() + diamondsQuestGain);
-
-                    goldAmountWin = pvpUserVsUser.getUserGoldAmountWin(defender) + goldQuestGain;
+                    goldAmountWin = pvpFunctions.getUserGoldAmountWin(defender);
                     attacker.setGold(attacker.getGold() + goldAmountWin);
-                    defender.setGold(pvpUserVsUser.getUserGoldAmountLose(defender));
+                    defender.setGold(pvpFunctions.getUserGoldAmountLose(defender));
 
                 } else {
                     attacker.setHp(genericFunctions.userReceiveDmg(attacker, defenderDmg));
 
                     // Check if the attacker has died.
-                    if (genericFunctions.checkIfUserDied(attacker)) {
+                    if (genericFunctions.checkIfUserDied(attacker.getHp())) {
                         attacker.setHp(0);
                         attackerDmg = 0;
                         stopPvP = true;
@@ -114,19 +113,18 @@ public class PvpSystem {
                         // Add the history of the combat.
                         attacker.setPvpLosses(defender.getPvpLosses() + 1);
                         defender.setPvpWins(attacker.getPvpWins() + 1);
-                        goldLoseForLoseCombat = pvpUserVsUser.getUserGoldLoseForLoseCombat(attacker);
+                        goldLoseForLoseCombat = pvpFunctions.getUserGoldLoseForLoseCombat(attacker);
                         attacker.setGold(attacker.getGold() - goldLoseForLoseCombat);
                     }
                 }
             }
-            historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUser(
-                    attacker, defender, roundCounter, attackerDmg, defenderDmg));
+            pvpModel.roundJsonGenerator(roundCounter, attacker.getHp(), attackerDmg,
+                    defender.getHp(), defenderDmg);
 
-        } while (pvpUserVsUser.checkBothUsersAlive(attacker, defender));
+        } while (pvpFunctions.checkBothUsersAlive(attacker, defender));
 
-        historyCombat.add(pvpUserVsUser.roundJsonGeneratorUserVsUserFinish(
-                attacker, defender, goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose));
+        pvpModel.roundJsonGeneratorFinish(goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose);
 
-        return new PvpModel(attacker, defender, historyCombat);
+        return pvpModel;
     }
 }

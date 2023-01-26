@@ -145,9 +145,10 @@ public class UserService {
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
         if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
 
-        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(attacker, defender, titleRepository, guildRepository);
+        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
+                attacker, defender, titleRepository, guildRepository);
 
-        userRepository.save(pvpUserVsUserModel.getAttacker());
+        userRepository.save(pvpUserVsUserModel.getUser());
         if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
             pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
         }
