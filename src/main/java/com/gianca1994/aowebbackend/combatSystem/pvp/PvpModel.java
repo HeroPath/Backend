@@ -87,7 +87,7 @@ public class PvpModel extends CombatModel {
          * @param int amountPointsTitleWinOrLose
          * @return none
          */
-        super.roundJsonGeneratorFinish(goldAmountWin, goldAmountLoseCombat, amountPointsTitleWinOrLose
+        roundJsonGeneratorFinish(goldAmountWin, goldAmountLoseCombat, amountPointsTitleWinOrLose
                 , 0, 0, 0, false);
     }
 }
