@@ -160,9 +160,11 @@ public class QuestService {
 
         user.userLevelUp();
 
-        if (userQuest.getId() != null) userQuestRepository.delete(userQuest);
+        if (userQuest.getId() == null) throw new Conflict("You already completed this quest");
 
+        userQuestRepository.delete(userQuest);
         user.getUserQuests().remove(userQuest);
+
         userRepository.save(user);
     }
 
