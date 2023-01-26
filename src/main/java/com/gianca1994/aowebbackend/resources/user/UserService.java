@@ -57,7 +57,7 @@ public class UserService {
     GuildRepository guildRepository;
 
     GenericFunctions genericFunctions = new GenericFunctions();
-
+    UserServiceValidator validator = new UserServiceValidator();
 
     public User getProfile(String username) {
         /**
@@ -134,24 +134,15 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(username);
-        if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-        if (attacker.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
-        if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
-        if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-        if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
-        if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
+
+        validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
                 attacker, defender, titleRepository, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
-        if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
-            pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
-        }
+        if (defender.getUsername().equals("test")) pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
         userRepository.save(pvpUserVsUserModel.getDefender());
 
         return pvpUserVsUserModel.getHistoryCombat();

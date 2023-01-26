@@ -10,6 +10,7 @@ import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,35 +27,29 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
-    public List<Quest> getAllQuests(String username) {
+    public List<ObjectNode> getQuests(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String username
-         * @return List<Quest>
-         */
-        List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
-        return questRepository.findAll().stream().filter(quest -> {
-            return userQuests.stream().noneMatch(userQuest -> Objects.equals(userQuest.getQuest().getName(), quest.getName()));
-        }).collect(Collectors.toList());
-    }
-
-    public List<ObjectNode> getQuestAccepted(String username) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to get all the quests accepted.
-         * @param String username
          * @return List<ObjectNode>
          */
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
+        List<ObjectNode> result = new ArrayList<>();
 
-        return userQuests.stream().map(userQuest -> {
+        for (Quest quest : questRepository.findAll()) {
             ObjectNode questON = new ObjectMapper().createObjectNode();
-            questON.putPOJO("quest", userQuest.getQuest());
-            questON.put("npcKillAmount", userQuest.getAmountNpcKill());
-            questON.put("userKillAmount", userQuest.getAmountUserKill());
-            return questON;
-        }).collect(Collectors.toList());
+            questON.putPOJO("quest", quest);
+            for (UserQuest userQuest : userQuests) {
+                if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
+                    questON.put("npcKillAmount", userQuest.getAmountNpcKill());
+                    questON.put("userKillAmount", userQuest.getAmountUserKill());
+                    break;
+                }
+            }
+            result.add(questON);
+        }
+        return result;
     }
 
     public Quest getQuestByName(String name) {

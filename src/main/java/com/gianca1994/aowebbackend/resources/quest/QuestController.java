@@ -23,26 +23,16 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Quest> getAllQuests(@RequestHeader(value = "Authorization") String token) {
+    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String token
-         * @return List<Quest>
-         */
-        return questService.getAllQuests(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
-    }
-
-    @GetMapping("/accepted")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getQuestAccepted(@RequestHeader(value = "Authorization") String token) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests accepted.
-         * @param String token
          * @return List<ObjectNode>
          */
-        return questService.getQuestAccepted(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        return questService.getQuests(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
     }
 
     @GetMapping("/{name}")
@@ -112,7 +102,7 @@ public class QuestController {
     @PostMapping("/cancel")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void cancelQuest(@RequestHeader(value = "Authorization") String token,
-                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to cancel a quest.
