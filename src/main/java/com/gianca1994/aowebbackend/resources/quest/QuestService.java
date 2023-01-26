@@ -160,7 +160,9 @@ public class QuestService {
 
         user.userLevelUp();
 
-        userQuestRepository.delete(userQuest);
+        if (userQuest.getId() != null) userQuestRepository.delete(userQuest);
+
+        user.getUserQuests().remove(userQuest);
         userRepository.save(user);
     }
 

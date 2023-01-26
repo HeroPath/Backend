@@ -7,6 +7,8 @@ import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.UserQuest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -50,13 +52,14 @@ public class PveSystem {
                     // Add the history of the combat.
                     user.setNpcKills(user.getNpcKills() + 1);
 
+                    Map<String, UserQuest> userQuests = new HashMap<>();
                     for (UserQuest quest : user.getUserQuests()) {
-                        if (Objects.equals(quest.getQuest().getNameNpcKill(), npc.getName()) &&
-                                !Objects.equals(quest.getQuest().getNameNpcKill(), "player") &&
-                                quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
-                            quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
-                            user.getUserQuests().add(quest);
-                        }
+                        userQuests.put(quest.getQuest().getNameNpcKill(), quest);
+                    }
+
+                    UserQuest quest = userQuests.get(npc.getName());
+                    if (quest != null && !npc.getName().equals("player") && quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
+                        quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
                     }
 
                     experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
