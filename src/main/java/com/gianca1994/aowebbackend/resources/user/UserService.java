@@ -109,15 +109,7 @@ public class UserService {
          * @return User
          */
         User user = userRepository.findByUsername(username);
-
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
-        if (user.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
-        if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
-            throw new Conflict(UserConst.DONT_HAVE_ENOUGH_SKILL_POINTS);
-
-        if (!UserConst.SKILLS_ENABLED.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
-            throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
+        validator.setFreeSkillPoint(user, freeSkillPointDTO);
 
         user.addFreeSkillPoints(freeSkillPointDTO);
         userRepository.save(user);

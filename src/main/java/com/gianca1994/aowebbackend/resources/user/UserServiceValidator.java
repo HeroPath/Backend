@@ -7,12 +7,27 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
 
 
 public class UserServiceValidator {
 
     GenericFunctions genericFunctions = new GenericFunctions();
 
+
+    public void setFreeSkillPoint(User user, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
+        /**
+         *
+         */
+        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
+        if (user.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
+        if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
+            throw new Conflict(UserConst.DONT_HAVE_ENOUGH_SKILL_POINTS);
+
+        if (!UserConst.SKILLS_ENABLED.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
+            throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
+    }
 
     public void userVsUserCombatSystem(User attacker, User defender) throws Conflict {
         /**
