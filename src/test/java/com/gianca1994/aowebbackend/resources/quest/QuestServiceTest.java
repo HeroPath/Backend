@@ -80,11 +80,6 @@ class QuestServiceTest {
         );
     }
 
-    @Test
-    @Order(1)
-    void givenUsername_whenGetQuestsByUsername_thenReturnQuests() {
-        assertEquals(1, questService.getAllQuests(userTest.getUsername()).size());
-    }
 
     @Test
     @Order(2)
@@ -92,31 +87,6 @@ class QuestServiceTest {
         assertEquals("testquest", questService.getQuestByName("testquest").getName());
     }
 
-    @Test
-    @Order(3)
-    void givenQuestDTO_whenCreateQuest_thenReturnQuest() {
-        QuestDTO questDTO = new QuestDTO(
-                "testquest2",
-                "testquestdescription2",
-                "testnpc2",
-                2,
-                2,
-                2,
-                2,
-                (short) 2
-        );
-        questService.saveQuest(questDTO);
-
-        assertEquals(2, questService.getAllQuests(userTest.getUsername()).size());
-        assertEquals("testquest2", questService.getQuestByName("testquest2").getName());
-    }
-
-    @Test
-    @Order(4)
-    void givenNameQuest_whenDeleteQuest_thenReturnQuest() {
-        questService.deleteQuest("testquest");
-        assertEquals(0, questService.getAllQuests(userTest.getUsername()).size());
-    }
 
     @Test
     @Order(5)

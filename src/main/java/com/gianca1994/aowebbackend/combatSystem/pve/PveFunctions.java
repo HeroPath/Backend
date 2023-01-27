@@ -28,7 +28,6 @@ public class PveFunctions {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the experience gain.
-         * @param User user
          * @param Npc npc
          * @return long
          */
