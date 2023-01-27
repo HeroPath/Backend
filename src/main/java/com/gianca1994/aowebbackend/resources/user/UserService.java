@@ -158,23 +158,9 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User user = userRepository.findByUsername(username);
-
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
 
-        if (npc.getLevel() > user.getLevel() + SvConfig.MAX_LEVEL_DIFFERENCE)
-            throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
-
-        boolean enabledSea = false, enabledHell = false;
-        for (Item item : user.getEquipment().getItems()) {
-            if (item.getType().equals("ship")) enabledSea = true;
-            if (item.getType().equals("wings")) enabledHell = true;
-        }
-        if (npc.getZone().equals("sea") && !enabledSea) throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
-        if (npc.getZone().equals("hell") && !enabledHell) throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
+        validator.userVsNpcCombatSystem(user, npc);
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
 

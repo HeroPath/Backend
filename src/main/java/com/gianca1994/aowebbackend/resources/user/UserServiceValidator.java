@@ -5,6 +5,8 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.item.Item;
+import com.gianca1994.aowebbackend.resources.npc.Npc;
 
 
 public class UserServiceValidator {
@@ -24,5 +26,25 @@ public class UserServiceValidator {
         if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
         if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
         if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
+    }
+
+    public void userVsNpcCombatSystem(User user, Npc npc) throws Conflict {
+        /**
+         *
+         */
+        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
+        if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
+        if (npc.getLevel() > user.getLevel() + SvConfig.MAX_LEVEL_DIFFERENCE)
+            throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
+
+        String userEquipmentType = "none";
+        for (Item item : user.getEquipment().getItems()) {
+            if (item.getType().equals("ship")) userEquipmentType = "ship";
+            if (item.getType().equals("wings")) userEquipmentType = "wings";
+        }
+        if (npc.getZone().equals("sea") && !userEquipmentType.equals("ship")) throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
+        if (npc.getZone().equals("hell") && !userEquipmentType.equals("wings")) throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
+
     }
 }
