@@ -14,6 +14,12 @@ public class UserServiceValidator {
 
     GenericFunctions genericFunctions = new GenericFunctions();
 
+    public void getUserForGuild(User user) throws NotFound {
+        /**
+         *
+         */
+        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+    }
 
     public void setFreeSkillPoint(User user, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**

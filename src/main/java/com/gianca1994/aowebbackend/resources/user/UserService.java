@@ -3,13 +3,10 @@ package com.gianca1994.aowebbackend.resources.user;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.*;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
-import com.gianca1994.aowebbackend.config.SvConfig;
-import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
@@ -55,7 +52,6 @@ public class UserService {
     @Autowired
     GuildRepository guildRepository;
 
-    GenericFunctions genericFunctions = new GenericFunctions();
     UserServiceValidator validator = new UserServiceValidator();
 
     public User getProfile(String username) {
@@ -76,7 +72,7 @@ public class UserService {
          * @return UserGuildDTO
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound("User not found");
+        validator.getUserForGuild(user);
 
         UserGuildDTO userGuildDTO = new UserGuildDTO();
         userGuildDTO.setUsername(user.getUsername());

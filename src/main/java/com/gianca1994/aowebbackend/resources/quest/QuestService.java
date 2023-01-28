@@ -27,6 +27,8 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
+    private QuestServiceValidator validator = new QuestServiceValidator();
+
     public List<ObjectNode> getQuests(String username) {
         /**
          * @Author: Gianca1994
@@ -103,19 +105,10 @@ public class QuestService {
          * @return none
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound("User not found");
-
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
-        if (userQuests.size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
-
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (quest == null) throw new NotFound("Quest not found");
 
-        for (UserQuest userQuest : userQuests) {
-            if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
-                throw new Conflict("You already accepted this quest");
-            }
-        }
+        validator.acceptQuest(user, userQuests, quest);
 
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
@@ -136,34 +129,24 @@ public class QuestService {
          * @return none
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound("User not found");
-
         Quest quest = questRepository.findByName(nameRequestDTO.getName());
-        if (quest == null) throw new NotFound("Quest not found");
-
         UserQuest userQuest = userQuestRepository.findByUserUsernameAndQuestName(username, quest.getName());
-        if (userQuest == null) throw new NotFound("You don't have this quest");
 
-        if (userQuest.getAmountNpcKill() < quest.getNpcKillAmountNeeded())
-            throw new Conflict("You didn't kill enough npcs");
-        if (userQuest.getAmountUserKill() < quest.getUserKillAmountNeeded())
-            throw new Conflict("You didn't kill enough users");
+        validator.completeQuest(user, userQuest, quest);
 
         user.setExperience(user.getExperience() + quest.getGiveExp());
         user.setGold(user.getGold() + quest.getGiveGold());
         user.setDiamond(user.getDiamond() + quest.getGiveDiamonds());
-
         user.userLevelUp();
 
         if (userQuest.getId() == null) throw new Conflict("You already completed this quest");
 
         userQuestRepository.delete(userQuest);
         user.getUserQuests().remove(userQuest);
-
         userRepository.save(user);
     }
 
-    public void cancelQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void cancelQuest(String username, NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of canceling a quest.
@@ -172,8 +155,7 @@ public class QuestService {
          * @return none
          */
         UserQuest userQuest = userQuestRepository.findByUserUsernameAndQuestName(username, nameRequestDTO.getName());
-        if (userQuest == null) throw new NotFound("You don't have this quest");
-
+        validator.cancelQuest(userQuest);
         userQuestRepository.delete(userQuest);
     }
 }
