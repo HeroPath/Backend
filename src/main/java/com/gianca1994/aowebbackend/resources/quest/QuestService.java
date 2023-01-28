@@ -2,9 +2,7 @@ package com.gianca1994.aowebbackend.resources.quest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class QuestService {
@@ -27,7 +24,7 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
-    private QuestServiceValidator validator = new QuestServiceValidator();
+    QuestServiceValidator validator = new QuestServiceValidator();
 
     public List<ObjectNode> getQuests(String username) {
         /**
