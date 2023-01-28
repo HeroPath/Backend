@@ -40,7 +40,7 @@ public class PvpSystem {
 
         while (!stopPvp) {
             roundCounter++;
-            if (user.getRole().getRoleName().equals("ADMIN")) userDmg = 9999999;
+            if (user.getRole().getRoleName().equals("ADMIN")) userDmg = 999999999;
             else userDmg = genericFunctions.getUserDmg(user, attackedDef);
 
             attackedDmg = genericFunctions.getUserDmg(attacked, userDef);
