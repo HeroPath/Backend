@@ -48,7 +48,7 @@ public class NpcController {
 
     @GetMapping("/zone/{zone}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Set<Npc> filterNpcByZone(@PathVariable String zone) {
+    public Set<Npc> filterNpcByZone(@PathVariable String zone) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
