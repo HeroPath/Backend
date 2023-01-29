@@ -117,7 +117,7 @@ public class QuestService {
 
     }
 
-    public void completeQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public Quest completeQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of completing a quest.
@@ -141,6 +141,7 @@ public class QuestService {
         userQuestRepository.delete(userQuest);
         user.getUserQuests().remove(userQuest);
         userRepository.save(user);
+        return userQuest.getQuest();
     }
 
     public void cancelQuest(String username, NameRequestDTO nameRequestDTO) {

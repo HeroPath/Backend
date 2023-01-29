@@ -82,12 +82,15 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.acceptQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        questService.acceptQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/complete")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void completeQuest(@RequestHeader(value = "Authorization") String token,
+    public Quest completeQuest(@RequestHeader(value = "Authorization") String token,
                               @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -96,7 +99,10 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.completeQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        return questService.completeQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/cancel")
