@@ -55,16 +55,21 @@ public class PveSystem {
                 pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
                 pveFunctions.updateQuestProgress(user, npc);
                 levelUp = user.userLevelUp();
+                if (levelUp) userHp = user.getMaxHp();
                 stopPve = true;
             } else {
-                userHp = genericFunctions.userReceiveDmg(user, npcDmg);
-                if (genericFunctions.checkIfUserDied(userHp)) stopPve = true;
+                userHp = genericFunctions.userReceiveDmg(user, userHp, npcDmg);
+                if (genericFunctions.checkIfUserDied(userHp)) {
+                    userHp = 0;
+                    stopPve = true;
+                }
             }
             pveModel.roundJsonGenerator(roundCounter, userHp, userDmg, npcHp, npcDmg);
         }
         pveModel.roundJsonGeneratorFinish(experienceGain, goldGain, diamondsGain, levelUp);
 
         user.checkStatusTitlePoints(titleRepository);
+        user.setHp(userHp);
         npc.setHp(npcMaxHp);
         return pveModel;
     }

@@ -105,6 +105,9 @@ public class JWTUserDetailsService implements UserDetailsService {
         if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
         if (userRepository.findByUsername(username) != null) throw new Conflict(JWTConst.USERNAME_EXISTS);
 
+        //TODO: ARREGLAR ESTO
+        // if (userRepository.findByEmail(user.getEmail().toLowerCase()) != null) throw new Conflict(JWTConst.EMAIL_EXISTS);
+
         if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
             throw new BadRequest(JWTConst.PASSWORD_LENGTH);

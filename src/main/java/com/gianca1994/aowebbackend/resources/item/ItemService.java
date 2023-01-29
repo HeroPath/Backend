@@ -20,9 +20,6 @@ public class ItemService {
     private ItemRepository itemRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private UserRepository userRepository;
 
     public List<Item> getClassShop(String aClass) {

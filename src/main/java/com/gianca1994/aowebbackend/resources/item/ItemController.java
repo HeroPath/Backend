@@ -57,7 +57,10 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.buyItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        itemService.buyItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/sell")
@@ -71,7 +74,10 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.sellItem(token, nameRequestDTO);
+        itemService.sellItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/equip")
@@ -85,7 +91,10 @@ public class ItemController {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.equipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
+        return itemService.equipItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO
+        );
     }
 
     @PostMapping("/unequip")
@@ -99,6 +108,9 @@ public class ItemController {
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.unequipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
+        return itemService.unequipItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO
+        );
     }
 }

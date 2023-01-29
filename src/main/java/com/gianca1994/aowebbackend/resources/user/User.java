@@ -278,7 +278,6 @@ public class User extends Account {
         do {
             if (this.level < SvConfig.LEVEL_MAX && this.experience >= this.experienceToNextLevel) {
                 levelUp = true;
-                this.hp = this.maxHp;
                 this.level++;
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
