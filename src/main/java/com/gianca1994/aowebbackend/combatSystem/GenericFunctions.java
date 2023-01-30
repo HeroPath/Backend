@@ -34,7 +34,7 @@ public class GenericFunctions {
         else return dmg;
     }
 
-    public int userReceiveDmg(User user, int dmg) {
+    public int userReceiveDmg(User user, int userHp, int dmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the damage that the user.
@@ -43,7 +43,7 @@ public class GenericFunctions {
          * @return int
          */
         if (user.getRole().getRoleName().equals("ADMIN")) dmg = 0;
-        return user.getHp() - dmg;
+        return userHp - dmg;
     }
 
     public boolean checkIfUserDied(int userHp) {

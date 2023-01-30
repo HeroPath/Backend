@@ -8,6 +8,7 @@ public class JWTConst {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
+    // TODO: ARREGLAR EL PATTERN DEL EMAIL
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
     public static final String USER_DISABLED = "USER_DISABLED";
@@ -21,6 +22,7 @@ public class JWTConst {
     public static final String USERNAME_NOT_VALID = "Username must be alphanumeric";
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9]*$";
     public static final String USERNAME_EXISTS = "Username already exists";
+    public static final String EMAIL_EXISTS = "Email already exists";
     public static final String USERNAME_LENGTH = "Username must be between 3 and 20 characters";
     public static final String PASSWORD_LENGTH = "Password must be between 3 and 20 characters";
     public static final String CLASS_NOT_FOUND = "Class not found";

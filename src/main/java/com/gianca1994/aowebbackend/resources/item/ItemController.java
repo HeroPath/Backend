@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.item;
 
 
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
@@ -48,8 +49,8 @@ public class ItemController {
 
     @PostMapping("/buy")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void buyItem(@RequestHeader(value = "Authorization") String token,
-                        @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+    public Inventory buyItem(@RequestHeader(value = "Authorization") String token,
+                             @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -57,7 +58,10 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.buyItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        return itemService.buyItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/sell")
@@ -71,7 +75,10 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.sellItem(token, nameRequestDTO);
+        itemService.sellItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/equip")
@@ -85,7 +92,10 @@ public class ItemController {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.equipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
+        return itemService.equipItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO
+        );
     }
 
     @PostMapping("/unequip")
@@ -99,6 +109,9 @@ public class ItemController {
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.unequipItem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), equipUnequipItemDTO);
+        return itemService.unequipItem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO
+        );
     }
 }

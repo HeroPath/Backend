@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
+import java.util.*;
 
 
 /**
@@ -19,6 +19,8 @@ public class NpcService {
 
     @Autowired
     private NpcRepository npcRepository;
+
+    NpcServiceValidator validator = new NpcServiceValidator();
 
     public ArrayList<Npc> getAllNpcs() {
         /**
@@ -41,16 +43,29 @@ public class NpcService {
         return npcRepository.findByName(name.toLowerCase());
     }
 
-    public ArrayList<Npc> filterNpcByZone(String zone) {
+    public Set<Npc> filterNpcByZone(String zone) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
-         * @return ArrayList<Npc>
+         * @return Set<Npc>
          */
-        if (npcRepository.findByZone(zone.toLowerCase()).isEmpty())
-            throw new NotFound(NpcConst.NPC_NOT_FOUND_ZONE);
-        return npcRepository.findByZone(zone);
+        Set<Npc> npcs = new TreeSet<>(new NpcLevelComparator());
+        npcs.addAll(npcRepository.findByZone(zone.toLowerCase()));
+        validator.filterNpcByZone(npcs);
+        return npcs;
+    }
+
+    static class NpcLevelComparator implements Comparator<Npc> {
+        /**
+         * @return int
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of comparing the npcs by level.
+         */
+        @Override
+        public int compare(Npc npc1, Npc npc2) {
+            return Integer.compare(npc1.getLevel(), npc2.getLevel());
+        }
     }
 
     public Npc saveNpc(NpcDTO npc) throws Conflict {
@@ -60,18 +75,7 @@ public class NpcService {
          * @param NpcDTO npc
          * @return Npc
          */
-        if (npc.getName().isEmpty()) throw new Conflict(NpcConst.NAME_EMPTY);
-        if (npc.getLevel() < 1) throw new Conflict(NpcConst.LEVEL_LESS_THAN_ONE);
-        if (npc.getGiveMinExp() < 0) throw new Conflict(NpcConst.GIVE_MIN_EXP_LESS_THAN_ZERO);
-        if (npc.getGiveMaxExp() < 0) throw new Conflict(NpcConst.GIVE_MAX_EXP_LESS_THAN_ZERO);
-        if (npc.getGiveMinGold() < 0) throw new Conflict(NpcConst.GIVE_MIN_GOLD_LESS_THAN_ZERO);
-        if (npc.getGiveMaxGold() < 0) throw new Conflict(NpcConst.GIVE_MAX_GOLD_LESS_THAN_ZERO);
-        if (npc.getHp() < 0) throw new Conflict(NpcConst.HP_LESS_THAN_ZERO);
-        if (npc.getMaxHp() < 0) throw new Conflict(NpcConst.MAX_HP_LESS_THAN_ZERO);
-        if (npc.getMinDmg() < 0) throw new Conflict(NpcConst.MIN_DMG_LESS_THAN_ZERO);
-        if (npc.getMaxDmg() < 0) throw new Conflict(NpcConst.MAX_DMG_LESS_THAN_ZERO);
-        if (npc.getDefense() < 0) throw new Conflict(NpcConst.DEFENSE_LESS_THAN_ZERO);
-        if (npc.getZone().isEmpty()) throw new Conflict(NpcConst.ZONE_EMPTY);
+        validator.saveNpc(npc);
 
         Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
 

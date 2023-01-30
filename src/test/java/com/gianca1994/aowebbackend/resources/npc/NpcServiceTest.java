@@ -49,7 +49,7 @@ class NpcServiceTest {
     }
 
     @Test
-    void givenNameZone_whenGetNpcByZone_thenReturnListNpcsByZone() {
+    void givenNameZone_whenGetNpcByZone_thenReturnListNpcsByZone() throws Conflict {
         assertEquals(1, npcService.filterNpcByZone("test").size());
     }
 

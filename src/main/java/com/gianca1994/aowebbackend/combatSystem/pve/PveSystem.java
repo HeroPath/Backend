@@ -30,7 +30,7 @@ public class PveSystem {
          */
         PveModel pveModel = new PveModel(new ArrayList<>(), user, npc);
 
-        int roundCounter = 0, diamondsGain = 0;
+        int roundCounter = 0, diamondsGain = 0, userDmg, npcDmg;
         long experienceGain = 0, goldGain = 0;
         boolean levelUp = false, stopPve = false;
 
@@ -40,8 +40,11 @@ public class PveSystem {
 
         while (!stopPve) {
             roundCounter++;
-            int userDmg = genericFunctions.getUserDmg(user, npcDefense);
-            int npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);
+
+            if (user.getRole().getRoleName().equals("ADMIN")) userDmg = 999999999;
+            else userDmg = genericFunctions.getUserDmg(user, npcDefense);
+
+            npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);
             npcHp -= userDmg;
 
             if (pveFunctions.checkIfNpcDied(npcHp)) {
@@ -52,16 +55,21 @@ public class PveSystem {
                 pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
                 pveFunctions.updateQuestProgress(user, npc);
                 levelUp = user.userLevelUp();
+                if (levelUp) userHp = user.getMaxHp();
                 stopPve = true;
             } else {
-                userHp = genericFunctions.userReceiveDmg(user, npcDmg);
-                if (genericFunctions.checkIfUserDied(userHp)) stopPve = true;
+                userHp = genericFunctions.userReceiveDmg(user, userHp, npcDmg);
+                if (genericFunctions.checkIfUserDied(userHp)) {
+                    userHp = 0;
+                    stopPve = true;
+                }
             }
             pveModel.roundJsonGenerator(roundCounter, userHp, userDmg, npcHp, npcDmg);
         }
         pveModel.roundJsonGeneratorFinish(experienceGain, goldGain, diamondsGain, levelUp);
 
         user.checkStatusTitlePoints(titleRepository);
+        user.setHp(userHp);
         npc.setHp(npcMaxHp);
         return pveModel;
     }

@@ -3,19 +3,15 @@ package com.gianca1994.aowebbackend.resources.user;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.*;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
-import com.gianca1994.aowebbackend.config.SvConfig;
-import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
-import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
@@ -56,8 +52,7 @@ public class UserService {
     @Autowired
     GuildRepository guildRepository;
 
-    GenericFunctions genericFunctions = new GenericFunctions();
-
+    UserServiceValidator validator = new UserServiceValidator();
 
     public User getProfile(String username) {
         /**
@@ -77,7 +72,7 @@ public class UserService {
          * @return UserGuildDTO
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound("User not found");
+        validator.getUserForGuild(user);
 
         UserGuildDTO userGuildDTO = new UserGuildDTO();
         userGuildDTO.setUsername(user.getUsername());
@@ -109,15 +104,7 @@ public class UserService {
          * @return User
          */
         User user = userRepository.findByUsername(username);
-
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
-        if (user.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
-        if (user.getFreeSkillPoints() < freeSkillPointDTO.getAmount())
-            throw new Conflict(UserConst.DONT_HAVE_ENOUGH_SKILL_POINTS);
-
-        if (!UserConst.SKILLS_ENABLED.contains(freeSkillPointDTO.getSkillPointName().toLowerCase()))
-            throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
+        validator.setFreeSkillPoint(user, freeSkillPointDTO);
 
         user.addFreeSkillPoints(freeSkillPointDTO);
         userRepository.save(user);
@@ -134,24 +121,15 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(username);
-        if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-        if (attacker.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
-        if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
-        if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-        if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
-        if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
+
+        validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
                 attacker, defender, titleRepository, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
-        if (pvpUserVsUserModel.getDefender().getUsername().equals("test")) {
-            pvpUserVsUserModel.getDefender().setHp(pvpUserVsUserModel.getDefender().getMaxHp());
-        }
+        if (defender.getUsername().equals("test")) pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
         userRepository.save(pvpUserVsUserModel.getDefender());
 
         return pvpUserVsUserModel.getHistoryCombat();
@@ -167,23 +145,9 @@ public class UserService {
          * @return ArrayList<ObjectNode>
          */
         User user = userRepository.findByUsername(username);
-
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
 
-        if (npc.getLevel() > user.getLevel() + SvConfig.MAX_LEVEL_DIFFERENCE)
-            throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
-
-        boolean enabledSea = false, enabledHell = false;
-        for (Item item : user.getEquipment().getItems()) {
-            if (item.getType().equals("ship")) enabledSea = true;
-            if (item.getType().equals("wings")) enabledHell = true;
-        }
-        if (npc.getZone().equals("sea") && !enabledSea) throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
-        if (npc.getZone().equals("hell") && !enabledHell) throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
+        validator.userVsNpcCombatSystem(user, npc);
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
 

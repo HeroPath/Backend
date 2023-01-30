@@ -47,21 +47,20 @@ class GenericFunctionsTest {
     }
 
     @Test
-    void givenUserAndDmg_whenUserReceiveDmg_thenReturnHp() {
-        userTest.setHp(100);
-        int hp = genericFunctionsTest.userReceiveDmg(userTest, 10);
+    void givenUserAndDmg_whenUserReceiveDmg_thenReturnHp() {;
+        int hp = genericFunctionsTest.userReceiveDmg(userTest, 100, 10);
         assertEquals(90, hp);
     }
 
     @Test
     void givenUser_whenCheckIfUserDied_thenReturnTrue() {
         userTest.setHp(0);
-        assertTrue(genericFunctionsTest.checkIfUserDied(userTest));
+        assertTrue(genericFunctionsTest.checkIfUserDied(userTest.getHp()));
     }
 
     @Test
     void givenUser_whenCheckIfUserDied_thenReturnFalse() {
         userTest.setHp(100);
-        assertFalse(genericFunctionsTest.checkIfUserDied(userTest));
+        assertFalse(genericFunctionsTest.checkIfUserDied(userTest.getHp()));
     }
 }
