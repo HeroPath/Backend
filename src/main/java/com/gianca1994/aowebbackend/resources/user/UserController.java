@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: Gianca1994
@@ -40,7 +41,7 @@ public class UserController {
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<User> getRankingAll() {
+    public List<User> getRankingAll() {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.

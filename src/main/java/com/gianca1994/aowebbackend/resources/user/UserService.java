@@ -8,7 +8,6 @@ import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
@@ -18,6 +17,7 @@ import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,17 +83,16 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public ArrayList<User> getRankingAll() {
+    public List<User> getRankingAll() {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
          * @param none
          * @return ArrayList<User>
          */
-        ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        users.sort(Comparator.comparing(User::getLevel).thenComparing(User::getTitlePoints).thenComparing(User::getExperience).reversed());
-        return users;
+        return userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc();
     }
+
 
     public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**
