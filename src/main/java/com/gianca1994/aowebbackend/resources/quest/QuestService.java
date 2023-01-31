@@ -51,23 +51,27 @@ public class QuestService {
         return result;
     }
 
-    public Quest getQuestByName(String name) {
+    public Quest getQuestByName(String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting a quest by name.
          * @param String name
          * @return Quest
          */
-        return questRepository.findByName(name);
+        Quest quest = questRepository.findByName(name);
+        validator.getQuestByName(quest);
+        return quest;
     }
 
-    public void saveQuest(QuestDTO quest) {
+    public void saveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
          * @param Quest quest
          * @return none
          */
+        Quest checkQuest = questRepository.findByName(quest.getName());
+        validator.saveQuest(checkQuest, quest);
         questRepository.save(
                 new Quest(
                         quest.getName(),
@@ -90,6 +94,7 @@ public class QuestService {
          * @return none
          */
         Quest quest = questRepository.findByName(name);
+        validator.deleteQuest(quest);
         questRepository.delete(quest);
     }
 
