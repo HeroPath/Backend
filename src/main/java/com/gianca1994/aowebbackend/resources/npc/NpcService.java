@@ -76,7 +76,6 @@ public class NpcService {
          * @return Npc
          */
         validator.saveNpc(npc);
-
         Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
 
         if (checkNpcSave == null) {

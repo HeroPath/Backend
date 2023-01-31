@@ -13,5 +13,6 @@ import java.util.ArrayList;
 @Repository
 public interface NpcRepository extends JpaRepository<Npc, Long> {
     Npc findByName(String name);
+
     ArrayList<Npc> findByZone(String zone);
 }
