@@ -41,13 +41,13 @@ public class UserController {
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<User> getRankingAll() {
+    public List<UserRankingDTO> getRankingAll(@RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
          * @return ArrayList<User> users
          */
-        return userService.getRankingAll();
+        return userService.getRankingAll(page);
     }
 
     @PostMapping("/add-skill-points")

@@ -1,6 +1,8 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
@@ -17,7 +19,8 @@ import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.*;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,14 +86,28 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public List<User> getRankingAll() {
+    public List<UserRankingDTO> getRankingAll(int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
          * @param none
-         * @return ArrayList<User>
+         * @return ArrayList<UserData>
          */
-        return userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc();
+
+        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, 10));
+        List<User> users = usersPage.getContent();
+        AtomicInteger pos = new AtomicInteger(1);
+
+        return users.stream().map(user -> new UserRankingDTO(
+                pos.getAndIncrement(),
+                user.getUsername(),
+                !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
+                user.getAClass().getName(),
+                user.getLevel(),
+                user.getTitle().getName(), user.getTitlePoints(),
+                user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
+                user.getPvpWins(), user.getPvpLosses()
+        )).collect(Collectors.toList());
     }
 
 

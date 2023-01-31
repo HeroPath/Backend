@@ -83,7 +83,7 @@ class QuestServiceTest {
 
     @Test
     @Order(2)
-    void givenNameQuest_whenGetQuestByName_thenReturnQuest() {
+    void givenNameQuest_whenGetQuestByName_thenReturnQuest() throws Conflict {
         assertEquals("testquest", questService.getQuestByName("testquest").getName());
     }
 
