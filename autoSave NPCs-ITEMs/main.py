@@ -4,11 +4,11 @@ import requests
 local = "http://localhost:8000"
 heroku = "https://ao-web.herokuapp.com"
 
-url_register = "http://localhost:8000/api/v1/auth/register"
-url_login = "http://localhost:8000/api/v1/auth/login"
-url_save_ncs = "http://localhost:8000/api/v1/npcs"
-url_save_items = "http://localhost:8000/api/v1/items"
-url_save_quests = "http://localhost:8000/api/v1/quests"
+url_register = "http://192.168.18.43:8000/api/v1/auth/register"
+url_login = "http://192.168.18.43:8000/api/v1/auth/login"
+url_save_ncs = "http://192.168.18.43:8000/api/v1/npcs"
+url_save_items = "http://192.168.18.43:8000/api/v1/items"
+url_save_quests = "http://192.168.18.43:8000/api/v1/quests"
 
 data_register_gianca = {
     "username": "gianca",

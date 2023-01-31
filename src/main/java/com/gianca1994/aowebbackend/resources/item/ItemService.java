@@ -88,7 +88,8 @@ public class ItemService {
 
         if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
 
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
+            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
@@ -97,7 +98,7 @@ public class ItemService {
 
     }
 
-    public void sellItem(String username, NameRequestDTO nameRequestDTO) {
+    public User sellItem(String username, NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -117,6 +118,7 @@ public class ItemService {
         user.setGold(user.getGold() + (itemBuy.getPrice() / 2));
         user.getInventory().getItems().remove(itemBuy);
         userRepository.save(user);
+        return user;
     }
 
     public User equipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {

@@ -66,7 +66,7 @@ public class ItemController {
 
     @PostMapping("/sell")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void sellItem(@RequestHeader(value = "Authorization") String token,
+    public User sellItem(@RequestHeader(value = "Authorization") String token,
                          @RequestBody NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
@@ -75,7 +75,7 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.sellItem(
+        return itemService.sellItem(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 nameRequestDTO
         );

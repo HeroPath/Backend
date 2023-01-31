@@ -48,6 +48,9 @@ public class PveSystem {
             npcHp -= userDmg;
 
             if (pveFunctions.checkIfNpcDied(npcHp)) {
+                npcDmg = 0;
+                npcHp = 0;
+
                 experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
                 goldGain = pveFunctions.calculateUserGoldGain(npc);
                 if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
@@ -61,6 +64,7 @@ public class PveSystem {
                 userHp = genericFunctions.userReceiveDmg(user, userHp, npcDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
                     userHp = 0;
+                    userDmg = 0;
                     stopPve = true;
                 }
             }
