@@ -6,21 +6,9 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.user.User;
 
-import java.util.List;
 import java.util.Objects;
 
 public class ItemServiceValidator {
-
-    public void getClassShop(List<Item> items, String aClass) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to get the items of a specific class
-         * @param List<Item> items
-         * @param String aClass
-         * @return void
-         */
-        if (items.isEmpty()) throw new NotFound("No items found for class " + aClass);
-    }
 
     public void saveItem(Item item, ItemDTO newItem) throws Conflict, BadRequest {
         /**

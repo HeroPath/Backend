@@ -36,7 +36,9 @@ public class UserController {
          * @param String token
          * @return User user
          */
-        return userService.getProfile(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        return userService.getProfile(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
     }
 
     @GetMapping("/ranking")

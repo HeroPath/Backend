@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
+import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
@@ -13,13 +14,16 @@ import java.util.*;
 @Service
 public class ItemService {
 
+    ItemServiceValidator validator = new ItemServiceValidator();
+
     @Autowired
     private ItemRepository itemRepository;
 
     @Autowired
     private UserRepository userRepository;
 
-    ItemServiceValidator validator = new ItemServiceValidator();
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
     public List<Item> getClassShop(String aClass) {
         /**
@@ -28,12 +32,7 @@ public class ItemService {
          * @param String aClass
          * @return List<Item>
          */
-        List<Item> items = itemRepository.findAll();
-        items.removeIf(item -> !item.getClassRequired().equals(aClass));
-        validator.getClassShop(items, aClass);
-
-        items.sort(Comparator.comparing(Item::getLvlMin));
-        return items;
+        return itemRepository.findByClassRequiredOrderByLvlMinAsc(aClass);
     }
 
     public Item saveItem(ItemDTO newItem) throws Conflict {
@@ -46,12 +45,13 @@ public class ItemService {
         Item item = itemRepository.findByName(newItem.getName().toLowerCase());
         validator.saveItem(item, newItem);
 
-        if (Objects.equals(newItem.getClassRequired(), "")) newItem.setClassRequired("none");
+        String classRequired = newItem.getClassRequired();
+        if (Objects.equals(classRequired, "")) classRequired = "none";
         return itemRepository.save(new Item(
                 newItem.getName().toLowerCase(),
                 newItem.getType(),
                 newItem.getLvlMin(),
-                newItem.getClassRequired(),
+                classRequired,
                 newItem.getPrice(),
                 newItem.getStrength(),
                 newItem.getDexterity(),
@@ -77,7 +77,6 @@ public class ItemService {
         user.setGold(user.getGold() - itemBuy.getPrice());
         userRepository.save(user);
         return user.getInventory();
-
     }
 
     public User sellItem(String username, NameRequestDTO nameRequestDTO) {

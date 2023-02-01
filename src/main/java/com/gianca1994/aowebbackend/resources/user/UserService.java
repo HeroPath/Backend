@@ -25,6 +25,9 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 
 /**
  * @Author: Gianca1994
@@ -67,7 +70,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public UserGuildDTO getUserForGuild(String username) {
+        public UserGuildDTO getUserForGuild(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
