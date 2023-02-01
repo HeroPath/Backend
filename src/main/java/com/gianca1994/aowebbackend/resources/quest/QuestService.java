@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.user.*;
-import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,23 +53,27 @@ public class QuestService {
         return result;
     }
 
-    public Quest getQuestByName(String name) {
+    public Quest getQuestByName(String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting a quest by name.
          * @param String name
          * @return Quest
          */
-        return questRepository.findByName(name);
+        Quest quest = questRepository.findByName(name);
+        validator.getQuestByName(quest);
+        return quest;
     }
 
-    public void saveQuest(QuestDTO quest) {
+    public void saveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
          * @param Quest quest
          * @return none
          */
+        Quest checkQuest = questRepository.findByName(quest.getName());
+        validator.saveQuest(checkQuest, quest);
         questRepository.save(
                 new Quest(
                         quest.getName(),
@@ -90,6 +96,7 @@ public class QuestService {
          * @return none
          */
         Quest quest = questRepository.findByName(name);
+        validator.deleteQuest(quest);
         questRepository.delete(quest);
     }
 

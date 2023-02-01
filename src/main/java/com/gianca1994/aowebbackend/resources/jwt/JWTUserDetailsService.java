@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 
 
 /**
@@ -91,7 +91,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public User saveUser(UserDTO user) throws Conflict {
+    public User saveUser(UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to save a new user in the database.

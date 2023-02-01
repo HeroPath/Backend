@@ -3,12 +3,15 @@ package com.gianca1994.aowebbackend.resources.user;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.user.dto.*;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: Gianca1994
@@ -35,18 +38,20 @@ public class UserController {
          * @param String token
          * @return User user
          */
-        return userService.getProfile(jwtTokenUtil.getUsernameFromToken(token.substring(7)));
+        return userService.getProfile(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
     }
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<User> getRankingAll() {
+    public List<UserRankingDTO> getRankingAll(@RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
          * @return ArrayList<User> users
          */
-        return userService.getRankingAll();
+        return userService.getRankingAll(page);
     }
 
     @PostMapping("/add-skill-points")
@@ -60,34 +65,40 @@ public class UserController {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User user
          */
-        return userService.setFreeSkillPoint(jwtTokenUtil.getUsernameFromToken(token.substring(7)), freeSkillPointDTO);
+        return userService.setFreeSkillPoint(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), freeSkillPointDTO
+        );
     }
 
     @PostMapping("/attack-user")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody UserAttackUserDTO nameRequestDTO) throws Conflict {
+                                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack another user.
          * @param String token
-         * @param UserAttackUserDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsUserCombatSystem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        return userService.userVsUserCombatSystem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        );
     }
 
     @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<ObjectNode> attackUser(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody UserAttackNpcDTO nameRequestDTO) throws Conflict {
+    public ArrayList<ObjectNode> attackNpc(@RequestHeader(value = "Authorization") String token,
+                                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a npc.
          * @param String token
-         * @param UserAttackNpcDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsNpcCombatSystem(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        return userService.userVsNpcCombatSystem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        );
     }
 }

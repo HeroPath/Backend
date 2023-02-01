@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
-import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 
 
 public class UserServiceValidator {
@@ -16,14 +16,21 @@ public class UserServiceValidator {
 
     public void getUserForGuild(User user) throws NotFound {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user for guild.
+         * @param User user
+         * @return void
          */
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
     }
 
     public void setFreeSkillPoint(User user, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the free skill point.
+         * @param User user
+         * @param FreeSkillPointDTO freeSkillPointDTO
+         * @return void
          */
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (freeSkillPointDTO.getAmount() <= 0) throw new BadRequest(UserConst.AMOUNT_MUST_GREATER_THAN_0);
@@ -37,7 +44,11 @@ public class UserServiceValidator {
 
     public void userVsUserCombatSystem(User attacker, User defender) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user vs user combat system.
+         * @param User attacker
+         * @param User defender
+         * @return void
          */
         if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
@@ -51,7 +62,11 @@ public class UserServiceValidator {
 
     public void userVsNpcCombatSystem(User user, Npc npc) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user vs npc combat system.
+         * @param User user
+         * @param Npc npc
+         * @return void
          */
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);

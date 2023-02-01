@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user.dto;
+package com.gianca1994.aowebbackend.resources.user.dto.request;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserRegisterDTO {
     private String username;
     private String password;
     private String email;

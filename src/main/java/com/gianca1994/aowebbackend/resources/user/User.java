@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
+import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +32,30 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends Account {
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    private Long id;
+
+    @Column(unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    @JsonIgnore
+    private String password;
+
+    @Column(nullable = false)
+    private String email;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",
+                    referencedColumnName = "id"))
+    private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_class",
@@ -50,11 +73,7 @@ public class User extends Account {
                     referencedColumnName = "id"))
     private Title title;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<UserQuest> userQuests;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_inventory",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -62,13 +81,17 @@ public class User extends Account {
                     referencedColumnName = "id"))
     private Inventory inventory;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_equipment",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id",
                     referencedColumnName = "id"))
     private Equipment equipment;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<UserQuest> userQuests;
 
     @Column
     private short level;
@@ -118,7 +141,10 @@ public class User extends Account {
     private String guildName;
 
     public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
-        super(username, password, email, role);
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
         this.aClass = aClass;
         this.title = title;
         this.inventory = inventory;

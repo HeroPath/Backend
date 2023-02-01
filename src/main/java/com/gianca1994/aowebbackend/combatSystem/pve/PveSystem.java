@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -48,6 +47,9 @@ public class PveSystem {
             npcHp -= userDmg;
 
             if (pveFunctions.checkIfNpcDied(npcHp)) {
+                npcDmg = 0;
+                npcHp = 0;
+
                 experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
                 goldGain = pveFunctions.calculateUserGoldGain(npc);
                 if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
@@ -61,6 +63,7 @@ public class PveSystem {
                 userHp = genericFunctions.userReceiveDmg(user, userHp, npcDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
                     userHp = 0;
+                    userDmg = 0;
                     stopPve = true;
                 }
             }

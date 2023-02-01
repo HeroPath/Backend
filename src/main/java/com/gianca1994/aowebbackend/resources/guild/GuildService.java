@@ -12,7 +12,6 @@ import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,6 +29,8 @@ public class GuildService {
     private UserService userService;
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    GuildServiceValidator validator = new GuildServiceValidator();
 
     private ObjectNode guildToObjectNode(Guild guild) {
         /**
@@ -56,9 +57,7 @@ public class GuildService {
          * Explanation: This method returns a list of all guilds
          * @return List<ObjectNode>
          */
-        List<Guild> guilds = guildRepository.findAll();
-        return guilds.stream()
-                .sorted(Comparator.comparingInt(Guild::getTitlePoints).reversed())
+        return guildRepository.findAllByOrderByTitlePointsDesc().stream()
                 .map(this::guildToObjectNode)
                 .collect(Collectors.toList());
     }
@@ -77,7 +76,6 @@ public class GuildService {
         guildNode.put("userInGuild", !Objects.equals(userInGuild.getGuildName(), ""));
 
         Guild guild = guildRepository.findByName(userInGuild.getGuildName());
-
         if (guild == null) return guildNode;
 
         guildNode.put("username", userInGuild.getUsername());
@@ -104,9 +102,7 @@ public class GuildService {
                             else return -1 * Integer.compare(user1.getTitlePoints(), user2.getTitlePoints());
                         }).collect(Collectors.toList())
         );
-
         guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
-
         return guildNode;
     }
 
@@ -119,22 +115,8 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
-
-        if (user.getLevel() < SvConfig.LEVEL_TO_CREATE_GUILD)
-            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_CREATE_GUILD + " to create a guild");
-        if (user.getGold() < SvConfig.GOLD_TO_CREATE_GUILD)
-            throw new Conflict("You need " + SvConfig.GOLD_TO_CREATE_GUILD + " gold to create a guild");
-        if (user.getDiamond() < SvConfig.DIAMOND_TO_CREATE_GUILD)
-            throw new Conflict("You need " + SvConfig.DIAMOND_TO_CREATE_GUILD + " diamonds to create a guild");
-
-        if (guildDTO.getName() == null) throw new Conflict("Name is required");
-        if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
-        if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
-
         Guild checkGuild = guildRepository.findByName(guildDTO.getName());
-        if (checkGuild != null) throw new Conflict("Guild already exists");
+        validator.saveGuild(user, guildDTO, checkGuild);
 
         Guild guild = new Guild(
                 guildDTO.getName(), guildDTO.getDescription(), guildDTO.getTag(),
@@ -161,15 +143,8 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
-        if (user.getLevel() < SvConfig.LEVEL_TO_JOIN_GUILD)
-            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_JOIN_GUILD + " to join a guild");
-
         Guild guild = guildRepository.findByName(guildName);
-        if (guild == null) throw new NotFound("Guild not found");
-        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
-            throw new Conflict("Guild is full");
+        validator.requestUserGuild(user, guild);
 
         guild.getRequests().add(user);
         guildRepository.save(guild);
@@ -184,34 +159,17 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-
-        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
-
         Guild guild = guildRepository.findByName(user.getGuildName());
-        if (guild == null) throw new NotFound("Guild not found");
-
-        if (!Objects.equals(user.getUsername(), guild.getLeader()) && !Objects.equals(user.getUsername(), guild.getSubLeader()))
-            throw new Conflict("You are not the leader or subleader of the guild");
-
-        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
-            throw new Conflict("Guild is full");
-
         User userAccept = userRepository.findByUsername(nameAccept);
-        if (userAccept == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-
-        if (!Objects.equals(userAccept.getGuildName(), "")) throw new Conflict("User is already in a guild");
-        if (!guild.getRequests().contains(userAccept)) throw new Conflict("User is not in the guild requests");
+        validator.acceptUserGuild(user, guild, userAccept);
 
         guild.getRequests().remove(userAccept);
         guild.getMembers().add(userAccept);
         guild.setTitlePoints(guild.getTitlePoints() + userAccept.getTitlePoints());
-
         userAccept.setGuildName(guild.getName());
 
         userRepository.save(userAccept);
         guildRepository.save(guild);
-
     }
 
     public void removeUserGuild(String username, String nameRemove) throws Conflict {
@@ -223,35 +181,11 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-
-        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
-
         Guild guild = guildRepository.findByName(user.getGuildName());
-        if (guild == null) throw new NotFound("Guild not found");
-
-        if (!Objects.equals(nameRemove, user.getUsername())) {
-            if (!Objects.equals(nameRemove, user.getUsername()) &&
-                    !Objects.equals(user.getUsername(), guild.getLeader()) &&
-                    !Objects.equals(user.getUsername(), guild.getSubLeader())
-            ) throw new Conflict("You do not have the permissions to delete another member");
-
-            if (Objects.equals(nameRemove, guild.getLeader())) throw new Conflict("You cannot remove the guild leader");
-
-            if (Objects.equals(nameRemove, guild.getSubLeader()) && !Objects.equals(user.getUsername(), guild.getLeader())
-            ) throw new Conflict("You cannot remove the guild subleader");
-        }
-
-        if (nameRemove.equals(guild.getLeader()) &&
-                guild.getSubLeader().equals("") &&
-                guild.getMembers().size() > 1
-        ) throw new Conflict("You cannot leave the clan because there is no sub-leader to take command");
-
         User userRemove = userRepository.findByUsername(nameRemove);
-        if (userRemove == null) throw new NotFound("User not found");
+        validator.removeUserGuild(user, guild, userRemove, nameRemove);
 
         if (userRemove.getUsername().equals(guild.getSubLeader())) guild.setSubLeader("");
-
         if (Objects.equals(userRemove.getUsername(), guild.getLeader())) {
             guild.setLeader(guild.getSubLeader());
             guild.setSubLeader("");
@@ -259,9 +193,7 @@ public class GuildService {
 
         guild.getMembers().remove(userRemove);
         guild.setTitlePoints(guild.getTitlePoints() - userRemove.getTitlePoints());
-
         userRemove.setGuildName("");
-
         userRepository.save(userRemove);
 
         if (guild.getMembers().size() == 0) guildRepository.delete(guild);
@@ -277,21 +209,9 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-
-        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
-
         Guild guild = guildRepository.findByName(user.getGuildName());
-        if (guild == null) throw new NotFound("Guild not found");
-
-        if (!Objects.equals(user.getUsername(), guild.getLeader()))
-            throw new Conflict("You do not have the permissions to make a subleader");
-
         User userSubLeader = userRepository.findByUsername(nameSubLeader);
-        if (userSubLeader == null) throw new NotFound("User not found");
-
-        if (Objects.equals(userSubLeader.getUsername(), guild.getLeader()))
-            throw new Conflict("User is already leader");
+        validator.makeUserSubLeader(user, guild, userSubLeader);
 
         if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
         else guild.setSubLeader(userSubLeader.getUsername());

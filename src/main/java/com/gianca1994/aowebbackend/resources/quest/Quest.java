@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.aowebbackend.resources.user.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

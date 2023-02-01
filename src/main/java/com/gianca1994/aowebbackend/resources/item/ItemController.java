@@ -5,7 +5,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +66,7 @@ public class ItemController {
 
     @PostMapping("/sell")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void sellItem(@RequestHeader(value = "Authorization") String token,
+    public User sellItem(@RequestHeader(value = "Authorization") String token,
                          @RequestBody NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
@@ -75,7 +75,7 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        itemService.sellItem(
+        return itemService.sellItem(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 nameRequestDTO
         );

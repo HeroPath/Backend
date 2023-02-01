@@ -3,7 +3,7 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class QuestController {
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Quest getQuestByName(@PathVariable String name) {
+    public Quest getQuestByName(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting a quest by name.
@@ -49,7 +49,7 @@ public class QuestController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void saveQuest(@RequestBody QuestDTO quest) {
+    public void saveQuest(@RequestBody QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to save a quest.

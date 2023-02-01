@@ -7,12 +7,9 @@ import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 

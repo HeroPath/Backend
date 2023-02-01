@@ -1,5 +1,7 @@
 package com.gianca1994.aowebbackend.resources.user;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
-    User findByEmail(String email);
+
+    // Page List ordered by level, title, points and experience
+    Page<User> findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest of);
 }

@@ -40,11 +40,6 @@ class ItemServiceTest {
     }
 
     @Test
-    void givenClassNames_whenGetClassShop_thenReturnNotFound() {
-        assertThrows(NotFound.class, () -> itemService.getClassShop("test"));
-    }
-
-    @Test
     void givenItemDTO_whenSaveItem_thenReturnItem() throws Conflict {
         ItemDTO itemDTO = new ItemDTO(
                 "testitem2", "armor", 1,

@@ -1,6 +1,8 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
@@ -8,7 +10,6 @@ import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
@@ -17,7 +18,11 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.*;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +69,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public UserGuildDTO getUserForGuild(String username) {
+        public UserGuildDTO getUserForGuild(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
@@ -83,17 +88,30 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public ArrayList<User> getRankingAll() {
+    public List<UserRankingDTO> getRankingAll(int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
          * @param none
-         * @return ArrayList<User>
+         * @return ArrayList<UserData>
          */
-        ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
-        users.sort(Comparator.comparing(User::getLevel).thenComparing(User::getTitlePoints).thenComparing(User::getExperience).reversed());
-        return users;
+
+        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, 10));
+        List<User> users = usersPage.getContent();
+        AtomicInteger pos = new AtomicInteger(1);
+
+        return users.stream().map(user -> new UserRankingDTO(
+                pos.getAndIncrement(),
+                user.getUsername(),
+                !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
+                user.getAClass().getName(),
+                user.getLevel(),
+                user.getTitle().getName(), user.getTitlePoints(),
+                user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
+                user.getPvpWins(), user.getPvpLosses()
+        )).collect(Collectors.toList());
     }
+
 
     public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
         /**
@@ -112,12 +130,12 @@ public class UserService {
     }
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String username,
-                                                        UserAttackUserDTO nameRequestDTO) throws Conflict {
+                                                        NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users.
          * @param String username
-         * @param UserAttackUserDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(username);
@@ -136,12 +154,12 @@ public class UserService {
     }
 
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String username,
-                                                       UserAttackNpcDTO nameRequestDTO) throws Conflict {
+                                                       NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users and npcs.
          * @param String username
-         * @param UserAttackNpcDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
         User user = userRepository.findByUsername(username);
