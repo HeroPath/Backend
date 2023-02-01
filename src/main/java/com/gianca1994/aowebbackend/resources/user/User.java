@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
@@ -73,11 +73,7 @@ public class User {
                     referencedColumnName = "id"))
     private Title title;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Set<UserQuest> userQuests;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_inventory",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -85,13 +81,17 @@ public class User {
                     referencedColumnName = "id"))
     private Inventory inventory;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_equipment",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id",
                     referencedColumnName = "id"))
     private Equipment equipment;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<UserQuest> userQuests;
 
     @Column
     private short level;

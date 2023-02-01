@@ -39,6 +39,4 @@ public class UserQuest {
 
     @Column(name = "amount_user_kill")
     private Integer amountUserKill;
-
 }
-

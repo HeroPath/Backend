@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
-import com.gianca1994.aowebbackend.resources.user.dto.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 
 
 public class UserServiceValidator {

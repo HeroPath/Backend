@@ -1,21 +1,11 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.classes.ClassRepository;
-import com.gianca1994.aowebbackend.resources.equipment.Equipment;
-import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
-import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.jwt.JWTAuthController;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -56,7 +46,7 @@ class QuestServiceTest {
         if (userRepository.findAll().size() >= 1) {
             userTest = userRepository.findAll().get(0);
         } else {
-            UserDTO userDTO = new UserDTO();
+            UserRegisterDTO userDTO = new UserRegisterDTO();
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");

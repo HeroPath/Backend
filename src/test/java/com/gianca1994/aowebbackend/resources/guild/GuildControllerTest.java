@@ -1,13 +1,12 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.jwt.JWTAuthController;
 import com.gianca1994.aowebbackend.resources.jwt.JwtRequestDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtResponseDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import io.swagger.v3.core.util.Json;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
@@ -20,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -47,7 +45,7 @@ class GuildControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         if (userRepository.findAll().size() == 0) {
-            UserDTO userDTO = new UserDTO();
+            UserRegisterDTO userDTO = new UserRegisterDTO();
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");
@@ -151,7 +149,7 @@ class GuildControllerTest {
     void testRequestGuild_Success() throws Exception {
 
         if (userRepository.findAll().size() == 1) {
-            UserDTO userDTO = new UserDTO();
+            UserRegisterDTO userDTO = new UserRegisterDTO();
             userDTO.setUsername("testusername2");
             userDTO.setPassword("test");
             userDTO.setEmail("test2@test.com");

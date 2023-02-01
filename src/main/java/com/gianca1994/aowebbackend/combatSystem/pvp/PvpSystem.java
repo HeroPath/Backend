@@ -61,7 +61,6 @@ public class PvpSystem {
                     userDmg = 0;
                     userHp = 0;
                     goldLoseForLoseCombat = pvpFunctions.getUserGoldLoseForLoseCombat(user);
-
                     pvpFunctions.updateStatsUserLose(user, attacked, goldLoseForLoseCombat, mmrWinAndLose, titleRepository);
                     stopPvp = true;
                 }

@@ -1,6 +1,5 @@
-package com.gianca1994.aowebbackend.resources.user;
+package com.gianca1994.aowebbackend.resources.user.userRelations;
 
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

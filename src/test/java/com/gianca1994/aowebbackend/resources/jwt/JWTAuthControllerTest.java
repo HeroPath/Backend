@@ -1,9 +1,8 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ class JWTAuthControllerTest {
     @BeforeEach
     void setUp() throws Conflict {
         if (userRepository.findAll().size() == 0) {
-            UserDTO userDTO = new UserDTO();
+            UserRegisterDTO userDTO = new UserRegisterDTO();
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");

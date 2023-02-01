@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.user.dto;
 
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserDTOTest {
 
-    UserDTO userDTO;
+    UserRegisterDTO userDTO;
 
     @BeforeEach
     void setUp() {
-        userDTO = new UserDTO();
+        userDTO = new UserRegisterDTO();
         userDTO.setUsername("test");
         userDTO.setPassword("test");
         userDTO.setEmail("test");
@@ -20,7 +21,7 @@ class UserDTOTest {
 
     @Test
     void constructorAllArgs(){
-        UserDTO userDTO = new UserDTO("test", "test", "test", 1);
+        UserRegisterDTO userDTO = new UserRegisterDTO("test", "test", "test", 1);
         assertEquals("test", userDTO.getUsername());
         assertEquals("test", userDTO.getPassword());
         assertEquals("test", userDTO.getEmail());
@@ -29,7 +30,7 @@ class UserDTOTest {
 
     @Test
     void constructorNotArgs(){
-        UserDTO userDTO = new UserDTO();
+        UserRegisterDTO userDTO = new UserRegisterDTO();
         assertNull(userDTO.getUsername());
         assertNull(userDTO.getPassword());
         assertNull(userDTO.getEmail());

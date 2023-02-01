@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user.dto;
+package com.gianca1994.aowebbackend.resources.user.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,13 +7,13 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcDTO
+ * Explanation: NameDTO
  */
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserAttackUserDTO {
+public class NameRequestDTO {
     private String name;
 }

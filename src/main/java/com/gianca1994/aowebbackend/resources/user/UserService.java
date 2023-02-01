@@ -18,15 +18,14 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.*;
+import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 
 /**
@@ -131,12 +130,12 @@ public class UserService {
     }
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String username,
-                                                        UserAttackUserDTO nameRequestDTO) throws Conflict {
+                                                        NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users.
          * @param String username
-         * @param UserAttackUserDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
         User attacker = userRepository.findByUsername(username);
@@ -155,12 +154,12 @@ public class UserService {
     }
 
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String username,
-                                                       UserAttackNpcDTO nameRequestDTO) throws Conflict {
+                                                       NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat system between users and npcs.
          * @param String username
-         * @param UserAttackNpcDTO nameRequestDTO
+         * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
         User user = userRepository.findByUsername(username);

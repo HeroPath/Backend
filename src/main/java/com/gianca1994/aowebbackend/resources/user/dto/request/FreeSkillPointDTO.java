@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user.dto;
+package com.gianca1994.aowebbackend.resources.user.dto.request;
 
 import lombok.Data;
 

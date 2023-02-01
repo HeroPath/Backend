@@ -5,7 +5,7 @@ import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +21,6 @@ public class ItemService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private InventoryRepository inventoryRepository;
 
     public List<Item> getClassShop(String aClass) {
         /**

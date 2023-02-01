@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
-import com.gianca1994.aowebbackend.resources.user.dto.UserDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class JWTAuthController {
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Conflict {
+    public ResponseEntity<?> saveUser(@RequestBody UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to register a new user.
