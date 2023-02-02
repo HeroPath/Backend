@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,9 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.secret.key}")
     private String SECRET_KEY;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public String getUsernameFromToken(String token) {
         /**
          * @Author: Gianca1994
@@ -38,6 +43,16 @@ public class JwtTokenUtil implements Serializable {
          * @return String
          */
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public long getIdFromToken(String token) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to get the id from the token.
+         * @param String token
+         * @return long
+         */
+        return getAllClaimsFromToken(token).get("userId", Long.class);
     }
 
     public Date getExpirationDateFromToken(String token) {
@@ -91,6 +106,8 @@ public class JwtTokenUtil implements Serializable {
          * @return String
          */
         Map<String, Object> claims = new HashMap<>();
+        long userId = userRepository.findByUsername(userDetails.getUsername()).getId();
+        claims.put("userId", userId);
         return doGenerateToken(claims, userDetails.getUsername());
     }
 

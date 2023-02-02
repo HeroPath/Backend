@@ -17,4 +17,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Page List ordered by level, title, points and experience
     Page<User> findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest of);
+
 }
