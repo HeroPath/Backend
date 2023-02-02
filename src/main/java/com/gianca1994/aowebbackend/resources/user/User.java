@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.config.ExpPerLvlConfig;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
@@ -151,7 +152,7 @@ public class User {
         this.equipment = equipment;
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ModifConfig.START_EXP_TO_NEXT_LVL;
+        this.experienceToNextLevel = ExpPerLvlConfig.getExpInitial();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
@@ -298,30 +299,22 @@ public class User {
          * Explanation: This method is used to level up the user.
          * @return boolean
          */
-
         boolean userLevelUp = false;
         boolean levelUp;
         do {
             if (this.level < SvConfig.LEVEL_MAX && this.experience >= this.experienceToNextLevel) {
                 levelUp = true;
-                this.level++;
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
                 this.experience -= this.experienceToNextLevel;
-
-                if (this.level < 10) this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.25);
-                else if (this.level < 150)
-                    this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.125);
-                else this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.025);
-
+                this.experienceToNextLevel = ExpPerLvlConfig.getExpNextLevel(this.level);
+                this.level++;
             } else levelUp = false;
         } while (levelUp);
-
         if (this.level >= SvConfig.LEVEL_MAX) {
             this.experience = 0;
             this.experienceToNextLevel = 0;
         }
-
         return userLevelUp;
     }
 }

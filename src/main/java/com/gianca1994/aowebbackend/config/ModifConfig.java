@@ -9,7 +9,6 @@ public class ModifConfig {
     /////////////////////////// USER ///////////////////////////
     public static final short START_LVL = 1;
     public static final long START_EXP = 0;
-    public static final long START_EXP_TO_NEXT_LVL = 5;
     public static final long START_GOLD = 0;
     public static final int START_DIAMOND = 1000;
     public static final int START_FREE_SKILL_POINTS = 5;
