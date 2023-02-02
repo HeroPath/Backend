@@ -18,6 +18,7 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
+import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.transaction.Transactional;
 
 
 /**
@@ -111,8 +114,8 @@ public class UserService {
         )).collect(Collectors.toList());
     }
 
-
-    public User setFreeSkillPoint(String username, String skillName) throws Conflict {
+    @Transactional
+    public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of adding skill points to the user.
@@ -120,12 +123,19 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
-        User user = userRepository.findByUsername(username);
-        validator.setFreeSkillPoint(user, skillName);
-
-        user.addFreeSkillPoints(skillName);
-        userRepository.save(user);
-        return user;
+        UserAttributes uAttr = userRepository.findAttributesByUserId(userId);
+        uAttr.addStat(skillName);
+        uAttr.updateStats();
+        userRepository.updateUserStats(
+                uAttr.getStrength(), uAttr.getDexterity(), uAttr.getVitality(),
+                uAttr.getIntelligence(), uAttr.getLuck(),
+                uAttr.getFreeSkillPoints(),
+                uAttr.getMaxDmg(), uAttr.getMinDmg(),
+                uAttr.getMaxHp(), uAttr.getHp(),
+                uAttr.getDefense(), uAttr.getEvasion(), uAttr.getCriticalChance(),
+                userId
+        );
+        return uAttr;
     }
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String username,

@@ -1,5 +1,8 @@
 package com.gianca1994.aowebbackend.resources.user.dto.queyModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.config.ModifConfig;
+import com.gianca1994.aowebbackend.resources.classes.Class;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAttributes {
+    @JsonIgnore
+    private String aClass;
     private int strength;
     private int dexterity;
     private int vitality;
@@ -23,5 +28,46 @@ public class UserAttributes {
     private int defense;
     private int evasion;
     private float criticalChance;
+
+    public void addStat(String stat) {
+        stat = stat.toLowerCase();
+        if (stat.equals("strength")) this.strength++;
+        else if (stat.equals("dexterity")) this.dexterity++;
+        else if (stat.equals("vitality")) this.vitality++;
+        else if (stat.equals("intelligence")) this.intelligence++;
+        else if (stat.equals("luck")) this.luck++;
+        else throw new IllegalArgumentException("Invalid stat name");
+
+        this.freeSkillPoints--;
+    }
+
+    public void updateStats() {
+        Class aClass;
+        if (this.getAClass().equals(ModifConfig.MAGE.getName())) {
+            aClass = ModifConfig.MAGE;
+            this.minDmg = this.intelligence * aClass.getMinDmgModifier();
+            this.maxDmg = this.intelligence * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.strength * aClass.getDefenseModifier();
+            this.evasion = this.dexterity * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
+        } else if (this.getAClass().equals(ModifConfig.WARRIOR.getName())) {
+            aClass = ModifConfig.WARRIOR;
+            this.minDmg = this.strength * aClass.getMinDmgModifier();
+            this.maxDmg = this.strength * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.intelligence * aClass.getDefenseModifier();
+            this.evasion = this.dexterity * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
+        } else if (this.getAClass().equals(ModifConfig.ARCHER.getName())) {
+            aClass = ModifConfig.ARCHER;
+            this.minDmg = this.dexterity * aClass.getMinDmgModifier();
+            this.maxDmg = this.dexterity * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.intelligence * aClass.getDefenseModifier();
+            this.evasion = this.strength * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
+        }
+    }
 }
 
