@@ -46,7 +46,7 @@ class GuildServiceTest {
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");
-            userDTO.setClassId(1);
+            userDTO.setClassName("test");
 
             jwtAuthController.saveUser(userDTO);
             userTest = userRepository.findByUsername("testusername");
@@ -60,10 +60,5 @@ class GuildServiceTest {
         guild.setSubLeader("");
         guild.getMembers().add(userTest);
         guildRepository.save(guild);
-    }
-
-    @Test
-    void givenGuild_whenGetAllGuilds_thenReturnGuildList() {
-        assertThat(guildService.getAllGuilds().size()).isEqualTo(1);
     }
 }

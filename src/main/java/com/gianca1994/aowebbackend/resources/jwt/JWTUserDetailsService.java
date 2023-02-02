@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
-import com.gianca1994.aowebbackend.resources.classes.ClassRepository;
+import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -41,14 +41,16 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private ClassRepository classRepository;
+
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private TitleRepository titleRepository;
+
     @Autowired
     private InventoryRepository inventoryRepository;
+
     @Autowired
     private EquipmentRepository equipmentRepository;
 
@@ -99,7 +101,6 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return User
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
-
         String username = user.getUsername().toLowerCase();
 
         if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
@@ -113,24 +114,28 @@ public class JWTUserDetailsService implements UserDetailsService {
             throw new BadRequest(JWTConst.PASSWORD_LENGTH);
 
         Role standardRole = roleRepository.findById(1L).get();
-        Class aClass = classRepository.findById(user.getClassId()).get();
         Title standardTitle = titleRepository.findById(1L).get();
-        if (aClass.getName() == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
-
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
 
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
 
+        String aClassSelected = user.getClassName().toLowerCase();
+        Class aClass;
+        if (aClassSelected.equals(ModifConfig.MAGE.getName())) aClass = ModifConfig.MAGE;
+        else if (aClassSelected.equals(ModifConfig.WARRIOR.getName())) aClass = ModifConfig.WARRIOR;
+        else if (aClassSelected.equals(ModifConfig.ARCHER.getName())) aClass = ModifConfig.ARCHER;
+        else throw new BadRequest("Class not valid");
+
         User newUser = new User(
                 username, encryptPassword(user.getPassword()),
                 user.getEmail().toLowerCase(),
                 standardRole,
-                aClass,
                 standardTitle,
                 inventory,
                 equipment,
+                aClass.getName(),
                 aClass.getStrength(),
                 aClass.getDexterity(),
                 aClass.getIntelligence(),

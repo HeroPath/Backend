@@ -58,14 +58,6 @@ public class User {
     private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_class",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "a_class_id",
-                    referencedColumnName = "id"))
-    private Class aClass;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_title",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -93,6 +85,8 @@ public class User {
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
+    @Column
+    private String aClass;
     @Column
     private short level;
     @Column
@@ -140,15 +134,15 @@ public class User {
     @Column
     private String guildName;
 
-    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public User(String username, String password, String email, Role role, Title title, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.aClass = aClass;
         this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
+        this.aClass = aClass;
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
         this.experienceToNextLevel = ExpPerLvlConfig.getExpInitial();
@@ -178,31 +172,31 @@ public class User {
          * @param boolean fullMinHp
          * @return void
          */
-        switch (this.getAClass().getName()) {
-            case ModifConfig.MAGE_NAME:
-                this.minDmg = this.intelligence * ModifConfig.MIN_DMG_MAGE;
-                this.maxDmg = this.intelligence * ModifConfig.MAX_DMG_MAGE;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_MAGE;
-                this.defense = this.strength * ModifConfig.DEFENSE_MAGE;
-                this.evasion = this.dexterity * ModifConfig.EVASION_MAGE;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_MAGE > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_MAGE;
-                break;
-            case ModifConfig.WARRIOR_NAME:
-                this.minDmg = this.strength * ModifConfig.MIN_DMG_WARRIOR;
-                this.maxDmg = this.strength * ModifConfig.MAX_DMG_WARRIOR;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_WARRIOR;
-                this.defense = this.intelligence * ModifConfig.DEFENSE_WARRIOR;
-                this.evasion = this.dexterity * ModifConfig.EVASION_WARRIOR;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_WARRIOR > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_WARRIOR;
-                break;
-            case ModifConfig.ARCHER_NAME:
-                this.minDmg = this.dexterity * ModifConfig.MIN_DMG_ARCHER;
-                this.maxDmg = this.dexterity * ModifConfig.MAX_DMG_ARCHER;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_ARCHER;
-                this.defense = this.intelligence * ModifConfig.DEFENSE_ARCHER;
-                this.evasion = this.strength * ModifConfig.EVASION_ARCHER;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_ARCHER > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_ARCHER;
-                break;
+        Class aClass;
+        if (this.getAClass().equals(ModifConfig.MAGE.getName())) {
+            aClass = ModifConfig.MAGE;
+            this.minDmg = this.intelligence * aClass.getMinDmgModifier();
+            this.maxDmg = this.intelligence * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.strength * aClass.getDefenseModifier();
+            this.evasion = this.dexterity * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
+        } else if (this.getAClass().equals(ModifConfig.WARRIOR.getName())) {
+            aClass = ModifConfig.WARRIOR;
+            this.minDmg = this.strength * aClass.getMinDmgModifier();
+            this.maxDmg = this.strength * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.intelligence * aClass.getDefenseModifier();
+            this.evasion = this.dexterity * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
+        } else if (this.getAClass().equals(ModifConfig.ARCHER.getName())) {
+            aClass = ModifConfig.ARCHER;
+            this.minDmg = this.dexterity * aClass.getMinDmgModifier();
+            this.maxDmg = this.dexterity * aClass.getMaxDmgModifier();
+            this.maxHp = this.vitality * aClass.getMaxHpModifier();
+            this.defense = this.intelligence * aClass.getDefenseModifier();
+            this.evasion = this.strength * aClass.getEvasionModifier();
+            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
         }
         if (fullMinHp) this.hp = this.maxHp;
     }

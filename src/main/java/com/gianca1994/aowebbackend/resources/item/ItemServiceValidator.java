@@ -72,7 +72,7 @@ public class ItemServiceValidator {
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!user.getInventory().getItems().contains(itemEquip))
             throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
-        if (!Objects.equals(user.getAClass().getName(), itemEquip.getClassRequired()) && !Objects.equals(itemEquip.getClassRequired(), "none"))
+        if (!Objects.equals(user.getAClass(), itemEquip.getClassRequired()) && !Objects.equals(itemEquip.getClassRequired(), "none"))
             throw new Conflict(ItemConst.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {

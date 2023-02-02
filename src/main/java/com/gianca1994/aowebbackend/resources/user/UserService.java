@@ -82,7 +82,7 @@ public class UserService {
         userGuildDTO.setUsername(user.getUsername());
         userGuildDTO.setLevel(user.getLevel());
         userGuildDTO.setTitlePoints(user.getTitlePoints());
-        userGuildDTO.setClassName(user.getAClass().getName());
+        userGuildDTO.setClassName(user.getAClass());
         userGuildDTO.setTitleName(user.getTitle().getName());
         return userGuildDTO;
     }
@@ -103,7 +103,7 @@ public class UserService {
                 pos.getAndIncrement(),
                 user.getUsername(),
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
-                user.getAClass().getName(),
+                user.getAClass(),
                 user.getLevel(),
                 user.getTitle().getName(), user.getTitlePoints(),
                 user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
