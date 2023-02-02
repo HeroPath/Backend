@@ -18,7 +18,6 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
@@ -69,7 +68,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-        public UserGuildDTO getUserForGuild(String username) {
+    public UserGuildDTO getUserForGuild(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
@@ -113,7 +112,7 @@ public class UserService {
     }
 
 
-    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
+    public User setFreeSkillPoint(String username, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of adding skill points to the user.
@@ -122,9 +121,9 @@ public class UserService {
          * @return User
          */
         User user = userRepository.findByUsername(username);
-        validator.setFreeSkillPoint(user, freeSkillPointDTO);
+        validator.setFreeSkillPoint(user, skillName);
 
-        user.addFreeSkillPoints(freeSkillPointDTO);
+        user.addFreeSkillPoints(skillName);
         userRepository.save(user);
         return user;
     }

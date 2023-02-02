@@ -9,10 +9,10 @@ public class ModifConfig {
     /////////////////////////// USER ///////////////////////////
     public static final short START_LVL = 1;
     public static final long START_EXP = 0;
-    public static final long START_GOLD = 0;
-    public static final int START_DIAMOND = 1000;
-    public static final int START_FREE_SKILL_POINTS = 5;
-    public static final int FREE_SKILL_POINTS_PER_LEVEL = 2;
+    public static final long START_GOLD = 1000;
+    public static final int START_DIAMOND = 100;
+    public static final int START_FREE_SKILL_POINTS = 3;
+    public static final int FREE_SKILL_POINTS_PER_LEVEL = 1;
     public static final int MAX_CRITICAL_PERCENTAGE = 50;
     /////////////////////////// USER ///////////////////////////
 

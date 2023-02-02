@@ -5,7 +5,6 @@ import com.gianca1994.aowebbackend.config.ExpPerLvlConfig;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
@@ -227,7 +226,7 @@ public class User {
         calculateStats(false);
     }
 
-    public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
+    public void addFreeSkillPoints(String skillName) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to add free skill points to the user.
@@ -235,16 +234,16 @@ public class User {
          * @return none
          */
         boolean isAdded = true;
-        String skillName = freeSkillPointDTO.getSkillPointName().toLowerCase();
+        String skName = skillName.toLowerCase();
 
-        if (skillName.equals("strength")) this.strength += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("dexterity")) this.dexterity += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("intelligence")) this.intelligence += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("vitality")) this.vitality += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("luck")) this.luck += freeSkillPointDTO.getAmount();
+        if (skName.equals("strength")) this.strength += 1;
+        else if (skName.equals("dexterity")) this.dexterity += 1;
+        else if (skName.equals("intelligence")) this.intelligence += 1;
+        else if (skName.equals("vitality")) this.vitality += 1;
+        else if (skName.equals("luck")) this.luck += 1;
         else isAdded = false;
 
-        if (isAdded) this.freeSkillPoints -= freeSkillPointDTO.getAmount();
+        if (isAdded) this.freeSkillPoints -= 1;
         calculateStats(false);
     }
 

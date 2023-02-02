@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.user.dto;
 
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
