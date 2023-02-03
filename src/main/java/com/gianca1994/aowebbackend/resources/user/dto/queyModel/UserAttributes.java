@@ -29,6 +29,7 @@ public class UserAttributes {
     private int evasion;
     private float criticalChance;
 
+
     public void addStat(String stat) {
         stat = stat.toLowerCase();
         switch (stat) {
@@ -51,6 +52,7 @@ public class UserAttributes {
                 throw new IllegalArgumentException("Invalid stat name");
         }
         this.freeSkillPoints--;
+        updateStats();
     }
 
     //********** START CALCULATE STATS **********//

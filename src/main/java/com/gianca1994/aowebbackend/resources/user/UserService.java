@@ -127,7 +127,6 @@ public class UserService {
         validator.setFreeSkillPoint(uAttr, skillName);
 
         uAttr.addStat(skillName);
-        uAttr.updateStats();
         userRepository.updateUserStats(
                 uAttr.getStrength(), uAttr.getDexterity(), uAttr.getVitality(),
                 uAttr.getIntelligence(), uAttr.getLuck(),

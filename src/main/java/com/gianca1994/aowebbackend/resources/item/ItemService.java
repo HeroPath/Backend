@@ -108,11 +108,7 @@ public class ItemService {
         user.swapItemToEquipmentOrInventory(itemEquip, true);
         userRepository.save(user);
 
-        return new UserEquipOrUnequipDTO(user.getInventory(),user.getEquipment(),
-                user.getStrength(), user.getDexterity(), user.getIntelligence(), user.getVitality(), user.getLuck(),
-                user.getFreeSkillPoints(), user.getMaxDmg(), user.getMinDmg(), user.getMaxHp(), user.getHp(),
-                user.getDefense(), user.getEvasion(), user.getCriticalChance()
-        );
+        return new UserEquipOrUnequipDTO(user);
     }
 
     public UserEquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
@@ -133,10 +129,7 @@ public class ItemService {
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
 
-        return new UserEquipOrUnequipDTO(user.getInventory(),user.getEquipment(),
-                user.getStrength(), user.getDexterity(), user.getIntelligence(), user.getVitality(), user.getLuck(),
-                user.getFreeSkillPoints(), user.getMaxDmg(), user.getMinDmg(), user.getMaxHp(), user.getHp(),
-                user.getDefense(), user.getEvasion(), user.getCriticalChance()
-        );
+        return new UserEquipOrUnequipDTO(user);
     }
+
 }
