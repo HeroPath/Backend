@@ -14,6 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/classes")
 public class ClassController {
+
     @Autowired
     private ClassService classService;
 

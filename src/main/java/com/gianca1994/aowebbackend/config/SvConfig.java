@@ -6,8 +6,8 @@ public class SvConfig {
      * Explanation: This class is used to modify the configuration of the application.
      */
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 1500;
-    public static final int GOLD_MULTIPLIER = 100;
+    public static final int EXPERIENCE_MULTIPLIER = 5000;
+    public static final int GOLD_MULTIPLIER = 1000;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 

@@ -3,7 +3,7 @@ package com.gianca1994.aowebbackend.resources.user;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +54,10 @@ public class UserController {
         return userService.getRankingAll(page);
     }
 
-    @PostMapping("/add-skill-points")
+    @PostMapping("/add-skill-points/{skillName}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
-                                  @RequestBody FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
+    public UserAttributes setFreeSkillPoint(@RequestHeader(value = "Authorization") String token,
+                                            @PathVariable String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to add skill points to the user.
@@ -66,7 +66,7 @@ public class UserController {
          * @return User user
          */
         return userService.setFreeSkillPoint(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), freeSkillPointDTO
+                jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
         );
     }
 

@@ -49,7 +49,7 @@ public class ItemController {
 
     @PostMapping("/buy")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Inventory buyItem(@RequestHeader(value = "Authorization") String token,
+    public User buyItem(@RequestHeader(value = "Authorization") String token,
                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994

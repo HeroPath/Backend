@@ -16,16 +16,16 @@ class UserDTOTest {
         userDTO.setUsername("test");
         userDTO.setPassword("test");
         userDTO.setEmail("test");
-        userDTO.setClassId(1);
+        userDTO.setClassName("test");
     }
 
     @Test
     void constructorAllArgs(){
-        UserRegisterDTO userDTO = new UserRegisterDTO("test", "test", "test", 1);
+        UserRegisterDTO userDTO = new UserRegisterDTO("test", "test", "test", "test");
         assertEquals("test", userDTO.getUsername());
         assertEquals("test", userDTO.getPassword());
         assertEquals("test", userDTO.getEmail());
-        assertEquals(1, userDTO.getClassId());
+        assertEquals("test", userDTO.getClassName());
     }
 
     @Test
@@ -34,7 +34,7 @@ class UserDTOTest {
         assertNull(userDTO.getUsername());
         assertNull(userDTO.getPassword());
         assertNull(userDTO.getEmail());
-        assertEquals(0, userDTO.getClassId());
+        assertNull(userDTO.getClassName());
     }
 
     @Test
@@ -54,6 +54,6 @@ class UserDTOTest {
 
     @Test
     void givenUserDTO_whenGetClassId_thenReturnClassId() {
-        assertEquals(1, userDTO.getClassId());
+        assertEquals("test", userDTO.getClassName());
     }
 }

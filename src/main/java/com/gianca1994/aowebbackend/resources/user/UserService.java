@@ -18,7 +18,7 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.transaction.Transactional;
 
 
 /**
@@ -69,7 +71,7 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-        public UserGuildDTO getUserForGuild(String username) {
+    public UserGuildDTO getUserForGuild(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
@@ -83,7 +85,7 @@ public class UserService {
         userGuildDTO.setUsername(user.getUsername());
         userGuildDTO.setLevel(user.getLevel());
         userGuildDTO.setTitlePoints(user.getTitlePoints());
-        userGuildDTO.setClassName(user.getAClass().getName());
+        userGuildDTO.setClassName(user.getAClass());
         userGuildDTO.setTitleName(user.getTitle().getName());
         return userGuildDTO;
     }
@@ -104,7 +106,7 @@ public class UserService {
                 pos.getAndIncrement(),
                 user.getUsername(),
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
-                user.getAClass().getName(),
+                user.getAClass(),
                 user.getLevel(),
                 user.getTitle().getName(), user.getTitlePoints(),
                 user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
@@ -112,8 +114,8 @@ public class UserService {
         )).collect(Collectors.toList());
     }
 
-
-    public User setFreeSkillPoint(String username, FreeSkillPointDTO freeSkillPointDTO) throws Conflict {
+    @Transactional
+    public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of adding skill points to the user.
@@ -121,12 +123,21 @@ public class UserService {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User
          */
-        User user = userRepository.findByUsername(username);
-        validator.setFreeSkillPoint(user, freeSkillPointDTO);
+        UserAttributes uAttr = userRepository.findAttributesByUserId(userId);
+        validator.setFreeSkillPoint(uAttr, skillName);
 
-        user.addFreeSkillPoints(freeSkillPointDTO);
-        userRepository.save(user);
-        return user;
+        uAttr.addStat(skillName);
+        uAttr.updateStats();
+        userRepository.updateUserStats(
+                uAttr.getStrength(), uAttr.getDexterity(), uAttr.getVitality(),
+                uAttr.getIntelligence(), uAttr.getLuck(),
+                uAttr.getFreeSkillPoints(),
+                uAttr.getMaxDmg(), uAttr.getMinDmg(),
+                uAttr.getMaxHp(), uAttr.getHp(),
+                uAttr.getDefense(), uAttr.getEvasion(), uAttr.getCriticalChance(),
+                userId
+        );
+        return uAttr;
     }
 
     public ArrayList<ObjectNode> userVsUserCombatSystem(String username,
@@ -140,16 +151,17 @@ public class UserService {
          */
         User attacker = userRepository.findByUsername(username);
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
-
         validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
                 attacker, defender, titleRepository, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
-        if (defender.getUsername().equals("test")) pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
-        userRepository.save(pvpUserVsUserModel.getDefender());
 
+        if (defender.getUsername().equals("test"))
+            pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
+
+        userRepository.save(pvpUserVsUserModel.getDefender());
         return pvpUserVsUserModel.getHistoryCombat();
     }
 
@@ -164,11 +176,9 @@ public class UserService {
          */
         User user = userRepository.findByUsername(username);
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
-
         validator.userVsNpcCombatSystem(user, npc);
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
-
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }

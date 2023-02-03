@@ -1,10 +1,10 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.config.ExpPerLvlConfig;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
@@ -58,14 +58,6 @@ public class User {
     private Role role;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_class",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "a_class_id",
-                    referencedColumnName = "id"))
-    private Class aClass;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "user_title",
             joinColumns = @JoinColumn(name = "user_id",
                     referencedColumnName = "id"),
@@ -93,6 +85,8 @@ public class User {
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
+    @Column
+    private String aClass;
     @Column
     private short level;
     @Column
@@ -140,18 +134,18 @@ public class User {
     @Column
     private String guildName;
 
-    public User(String username, String password, String email, Role role, Class aClass, Title title, Inventory inventory, Equipment equipment, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public User(String username, String password, String email, Role role, Title title, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.aClass = aClass;
         this.title = title;
         this.inventory = inventory;
         this.equipment = equipment;
+        this.aClass = aClass;
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ModifConfig.START_EXP_TO_NEXT_LVL;
+        this.experienceToNextLevel = ExpPerLvlConfig.getExpInitial();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
@@ -171,42 +165,7 @@ public class User {
         this.guildName = "";
     }
 
-    public void calculateStats(boolean fullMinHp) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: Calculate status method
-         * @param boolean fullMinHp
-         * @return void
-         */
-        switch (this.getAClass().getName()) {
-            case ModifConfig.MAGE_NAME:
-                this.minDmg = this.intelligence * ModifConfig.MIN_DMG_MAGE;
-                this.maxDmg = this.intelligence * ModifConfig.MAX_DMG_MAGE;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_MAGE;
-                this.defense = this.strength * ModifConfig.DEFENSE_MAGE;
-                this.evasion = this.dexterity * ModifConfig.EVASION_MAGE;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_MAGE > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_MAGE;
-                break;
-            case ModifConfig.WARRIOR_NAME:
-                this.minDmg = this.strength * ModifConfig.MIN_DMG_WARRIOR;
-                this.maxDmg = this.strength * ModifConfig.MAX_DMG_WARRIOR;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_WARRIOR;
-                this.defense = this.intelligence * ModifConfig.DEFENSE_WARRIOR;
-                this.evasion = this.dexterity * ModifConfig.EVASION_WARRIOR;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_WARRIOR > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_WARRIOR;
-                break;
-            case ModifConfig.ARCHER_NAME:
-                this.minDmg = this.dexterity * ModifConfig.MIN_DMG_ARCHER;
-                this.maxDmg = this.dexterity * ModifConfig.MAX_DMG_ARCHER;
-                this.maxHp = this.vitality * ModifConfig.MAX_HP_ARCHER;
-                this.defense = this.intelligence * ModifConfig.DEFENSE_ARCHER;
-                this.evasion = this.strength * ModifConfig.EVASION_ARCHER;
-                this.criticalChance = this.luck * ModifConfig.CRITICAL_ARCHER > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * ModifConfig.CRITICAL_ARCHER;
-                break;
-        }
-        if (fullMinHp) this.hp = this.maxHp;
-    }
-
+    //********** START SWAP ITEM METHODS **********//
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
         /**
          * @Author: Gianca1994
@@ -215,59 +174,19 @@ public class User {
          * @param boolean toEquip
          * @return none
          */
-        int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
+        int multiplier = toEquip ? 1 : -1;
 
-        this.strength += item.getStrength() * multiplierToEquipOrUnequip;
-        this.dexterity += item.getDexterity() * multiplierToEquipOrUnequip;
-        this.intelligence += item.getIntelligence() * multiplierToEquipOrUnequip;
-        this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
-        this.luck += item.getLuck() * multiplierToEquipOrUnequip;
+        this.strength += item.getStrength() * multiplier;
+        this.dexterity += item.getDexterity() * multiplier;
+        this.intelligence += item.getIntelligence() * multiplier;
+        this.vitality += item.getVitality() * multiplier;
+        this.luck += item.getLuck() * multiplier;
 
         calculateStats(false);
     }
+    //********** END SWAP ITEM METHODS **********//
 
-    public void addFreeSkillPoints(FreeSkillPointDTO freeSkillPointDTO) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to add free skill points to the user.
-         * @param freeSkillPointDTO freeSkillPointDTO
-         * @return none
-         */
-        boolean isAdded = true;
-        String skillName = freeSkillPointDTO.getSkillPointName().toLowerCase();
-
-        if (skillName.equals("strength")) this.strength += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("dexterity")) this.dexterity += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("intelligence")) this.intelligence += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("vitality")) this.vitality += freeSkillPointDTO.getAmount();
-        else if (skillName.equals("luck")) this.luck += freeSkillPointDTO.getAmount();
-        else isAdded = false;
-
-        if (isAdded) this.freeSkillPoints -= freeSkillPointDTO.getAmount();
-        calculateStats(false);
-    }
-
-    public void addTitlePoints(int amount) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to add title points to the user.
-         * @param int amount
-         * @return none
-         */
-        this.titlePoints += amount;
-    }
-
-    public void removeTitlePoints(int amount) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to remove title points from the user.
-         * @param int amount
-         * @return none
-         */
-        if (this.titlePoints >= amount) this.titlePoints -= amount;
-        else this.titlePoints = 0;
-    }
-
+    //********** START TITLE UPDATE METHODS **********//
     public void checkStatusTitlePoints(TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
@@ -292,36 +211,104 @@ public class User {
         calculateStats(false);
     }
 
+    public void addTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add title points to the user.
+         * @param int amount
+         * @return none
+         */
+        this.titlePoints += amount;
+    }
+
+    public void removeTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to remove title points from the user.
+         * @param int amount
+         * @return none
+         */
+        if (this.titlePoints >= amount) this.titlePoints -= amount;
+        else this.titlePoints = 0;
+    }
+    //********** END TITLE UPDATE METHODS **********//
+
+    //********** START CHECK LEVEL UP **********//
     public boolean userLevelUp() {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to level up the user.
          * @return boolean
          */
-
         boolean userLevelUp = false;
         boolean levelUp;
         do {
             if (this.level < SvConfig.LEVEL_MAX && this.experience >= this.experienceToNextLevel) {
                 levelUp = true;
-                this.level++;
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
                 this.experience -= this.experienceToNextLevel;
-
-                if (this.level < 10) this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.25);
-                else if (this.level < 150)
-                    this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.125);
-                else this.experienceToNextLevel = (long) Math.ceil(this.experienceToNextLevel * 1.025);
-
+                this.experienceToNextLevel = ExpPerLvlConfig.getExpNextLevel(this.level);
+                this.level++;
             } else levelUp = false;
         } while (levelUp);
-
         if (this.level >= SvConfig.LEVEL_MAX) {
             this.experience = 0;
             this.experienceToNextLevel = 0;
         }
-
         return userLevelUp;
     }
+    //********** END CHECK LEVEL UP **********//
+
+    //********** START CALCULATE STATS **********//
+    public void calculateStats(boolean fullMinHp) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Calculates the stats of the user
+         * @param boolean fullMinHp
+         * @return void
+         */
+        Class aClass = ModifConfig.CLASSES.stream()
+                .filter(c -> c.getName().equals(this.getAClass()))
+                .findFirst().orElse(null);
+        if (aClass == null) return;
+
+        if (aClass.getName().equals("mage")) setStats(this.intelligence, this.strength, this.dexterity);
+        else if (aClass.getName().equals("warrior")) setStats(this.strength, this.intelligence, this.dexterity);
+        else if (aClass.getName().equals("archer")) setStats(this.dexterity, this.intelligence, this.strength);
+
+        applyModifiers(aClass);
+        if (fullMinHp) this.hp = this.maxHp;
+    }
+
+    private void setStats(int minMaxDmg, int defense, int evasion) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Sets the stats of the user
+         * @param int minMaxDmg
+         * @param int defense
+         * @param int evasion
+         * @return void
+         */
+        this.minDmg = minMaxDmg;
+        this.maxDmg = minMaxDmg;
+        this.defense = defense;
+        this.evasion = evasion;
+    }
+
+    private void applyModifiers(Class aClass) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Applies the modifiers of the class to the stats of the user
+         * @param Class aClass
+         * @return void
+         */
+        this.minDmg *= aClass.getMinDmgModifier();
+        this.maxDmg *= aClass.getMaxDmgModifier();
+        this.defense *= aClass.getDefenseModifier();
+        this.evasion *= aClass.getEvasionModifier();
+        this.maxHp = this.vitality * aClass.getMaxHpModifier();
+        this.criticalChance = Math.min(this.luck * aClass.getCriticalModifier(), ModifConfig.MAX_CRITICAL_PERCENTAGE);
+    }
+    //********** END CALCULATE STATS **********//
 }

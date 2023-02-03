@@ -14,7 +14,7 @@ data_register_gianca = {
     "username": "gianca",
     "password": "test",
     "email": "gianca9405@gmail.com",
-    "classId": 1
+    "className": "mage"
 }
 
 data_login_gianca = {
@@ -26,7 +26,7 @@ data_register_lucho = {
     "username": "lucho",
     "password": "test",
     "email": "lucho@gmail.com",
-    "classId": 1
+    "className": "archer"
 }
 
 data_login_lucho = {
@@ -38,7 +38,7 @@ data_register_test = {
     "username": "test",
     "password": "test",
     "email": "test@gmail.com",
-    "classId": 2
+    "className": "warrior"
 }
 
 data_login_test = {

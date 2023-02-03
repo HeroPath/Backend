@@ -7,7 +7,6 @@ import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.user.dto.request.FreeSkillPointDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +24,7 @@ class UserTest {
         user.setPassword("test");
         user.setEmail("test@test.com");
         user.setRole(new Role());
-        user.setAClass(new Class());
+        user.setAClass("test");
         user.setTitle(new Title());
         user.setInventory(new Inventory());
         user.setEquipment(new Equipment());
@@ -67,10 +66,10 @@ class UserTest {
                 "test",
                 "test@test.com",
                 new Role(),
-                new Class(),
                 new Title(),
                 new Inventory(),
                 new Equipment(),
+                "test",
                 0,
                 0,
                 0,
@@ -240,226 +239,6 @@ class UserTest {
         assertEquals(user.getGuildName(), "test");
     }
 
-    @Test
-    void givenUser_whenUpdateStatsMage_thenReturnMageStatsUpdate() {
-        user.setAClass(new Class(1L, ModifConfig.MAGE_NAME, ModifConfig.MAGE_START_STR, ModifConfig.MAGE_START_DEX, ModifConfig.MAGE_START_INT, ModifConfig.MAGE_START_VIT, ModifConfig.MAGE_START_LUK));
-
-        user.setStrength(ModifConfig.MAGE_START_STR);
-        user.setDexterity(ModifConfig.MAGE_START_DEX);
-        user.setIntelligence(ModifConfig.MAGE_START_INT);
-        user.setVitality(ModifConfig.MAGE_START_VIT);
-        user.setLuck(ModifConfig.MAGE_START_LUK);
-
-        user.calculateStats(false);
-
-        assertEquals(user.getMinDmg(), ModifConfig.MAGE_START_INT * ModifConfig.MIN_DMG_MAGE);
-        assertEquals(user.getMaxDmg(), ModifConfig.MAGE_START_INT * ModifConfig.MAX_DMG_MAGE);
-        assertEquals(user.getMaxHp(), ModifConfig.MAGE_START_VIT * ModifConfig.MAX_HP_MAGE);
-        assertEquals(user.getDefense(), ModifConfig.MAGE_START_STR * ModifConfig.DEFENSE_MAGE);
-        assertEquals(user.getEvasion(), ModifConfig.MAGE_START_DEX * ModifConfig.EVASION_MAGE);
-        assertEquals(user.getCriticalChance(), ModifConfig.MAGE_START_LUK * ModifConfig.CRITICAL_MAGE > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : ModifConfig.MAGE_START_LUK * ModifConfig.CRITICAL_MAGE);
-
-        user.calculateStats(true);
-
-        assertEquals(user.getHp(), ModifConfig.MAGE_START_VIT * ModifConfig.MAX_HP_MAGE);
-    }
-
-    @Test
-    void givenUser_whenUpdateStatsWarrior_thenReturnWarriorStatsUpdate() {
-        user.setAClass(new Class(1L, ModifConfig.WARRIOR_NAME, ModifConfig.WARRIOR_START_STR, ModifConfig.WARRIOR_START_DEX, ModifConfig.WARRIOR_START_INT, ModifConfig.WARRIOR_START_VIT, ModifConfig.WARRIOR_START_LUK));
-
-        user.setStrength(ModifConfig.WARRIOR_START_STR);
-        user.setDexterity(ModifConfig.WARRIOR_START_DEX);
-        user.setIntelligence(ModifConfig.WARRIOR_START_INT);
-        user.setVitality(ModifConfig.WARRIOR_START_VIT);
-        user.setLuck(ModifConfig.WARRIOR_START_LUK);
-
-        user.calculateStats(false);
-
-        assertEquals(user.getMinDmg(), ModifConfig.WARRIOR_START_STR * ModifConfig.MIN_DMG_WARRIOR);
-        assertEquals(user.getMaxDmg(), ModifConfig.WARRIOR_START_STR * ModifConfig.MAX_DMG_WARRIOR);
-        assertEquals(user.getMaxHp(), ModifConfig.WARRIOR_START_VIT * ModifConfig.MAX_HP_WARRIOR);
-        assertEquals(user.getDefense(), ModifConfig.WARRIOR_START_INT * ModifConfig.DEFENSE_WARRIOR);
-        assertEquals(user.getEvasion(), ModifConfig.WARRIOR_START_DEX * ModifConfig.EVASION_WARRIOR);
-        assertEquals(user.getCriticalChance(), ModifConfig.WARRIOR_START_LUK * ModifConfig.CRITICAL_WARRIOR > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : ModifConfig.WARRIOR_START_LUK * ModifConfig.CRITICAL_WARRIOR);
-
-        user.calculateStats(true);
-
-        assertEquals(user.getHp(), ModifConfig.WARRIOR_START_VIT * ModifConfig.MAX_HP_WARRIOR);
-    }
-
-    @Test
-    void givenUser_whenUpdateStatsArcher_thenReturnArcherStatsUpdate() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        user.setStrength(ModifConfig.ARCHER_START_STR);
-        user.setDexterity(ModifConfig.ARCHER_START_DEX);
-        user.setIntelligence(ModifConfig.ARCHER_START_INT);
-        user.setVitality(ModifConfig.ARCHER_START_VIT);
-        user.setLuck(ModifConfig.ARCHER_START_LUK);
-
-        user.calculateStats(false);
-
-        assertEquals(user.getMinDmg(), ModifConfig.ARCHER_START_DEX * ModifConfig.MIN_DMG_ARCHER);
-        assertEquals(user.getMaxDmg(), ModifConfig.ARCHER_START_DEX * ModifConfig.MAX_DMG_ARCHER);
-        assertEquals(user.getMaxHp(), ModifConfig.ARCHER_START_VIT * ModifConfig.MAX_HP_ARCHER);
-        assertEquals(user.getDefense(), ModifConfig.ARCHER_START_STR * ModifConfig.DEFENSE_ARCHER);
-        assertEquals(user.getEvasion(), ModifConfig.ARCHER_START_INT * ModifConfig.EVASION_ARCHER);
-        assertEquals(user.getCriticalChance(), ModifConfig.ARCHER_START_LUK * ModifConfig.CRITICAL_ARCHER > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : ModifConfig.ARCHER_START_LUK * ModifConfig.CRITICAL_ARCHER);
-
-        user.calculateStats(true);
-
-        assertEquals(user.getHp(), ModifConfig.ARCHER_START_VIT * ModifConfig.MAX_HP_ARCHER);
-    }
-
-    @Test
-    void givenItemAndEquip_whenRecalculatedStats_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        Item item = new Item(
-                "Test",
-                "Test",
-                1,
-                "Test",
-                1,
-                99,
-                99,
-                99,
-                99,
-                99
-        );
-
-        user.setStrength(1);
-        user.setDexterity(1);
-        user.setIntelligence(1);
-        user.setVitality(1);
-        user.setLuck(1);
-
-        user.swapItemToEquipmentOrInventory(item, true);
-
-        assertEquals(100, user.getStrength());
-        assertEquals(100, user.getDexterity());
-        assertEquals(100, user.getIntelligence());
-        assertEquals(100, user.getVitality());
-        assertEquals(100, user.getLuck());
-    }
-
-    @Test
-    void givenItemAndUnequip_whenRecalculatedStats_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        Item item = new Item(
-                "Test",
-                "Test",
-                1,
-                "Test",
-                1,
-                99,
-                99,
-                99,
-                99,
-                99
-        );
-
-        user.setStrength(100);
-        user.setDexterity(100);
-        user.setIntelligence(100);
-        user.setVitality(100);
-        user.setLuck(100);
-
-        user.swapItemToEquipmentOrInventory(item, false);
-
-        assertEquals(1, user.getStrength());
-        assertEquals(1, user.getDexterity());
-        assertEquals(1, user.getIntelligence());
-        assertEquals(1, user.getVitality());
-        assertEquals(1, user.getLuck());
-
-    }
-
-    @Test
-    void givenFreeSkillPointDTOStrength_whenAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("strength");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setStrength(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(2, user.getStrength());
-    }
-
-    @Test
-    void givenFreeSkillPointDTODexterity_whenAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("dexterity");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setDexterity(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(2, user.getDexterity());
-    }
-
-    @Test
-    void givenFreeSkillPointDTOIntelligence_whenAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("intelligence");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setIntelligence(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(2, user.getIntelligence());
-    }
-
-    @Test
-    void givenFreeSkillPointDTOVitality_whenAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("vitality");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setVitality(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(2, user.getVitality());
-    }
-
-    @Test
-    void givenFreeSkillPointDTOLuck_whenAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("luck");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setLuck(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(2, user.getLuck());
-    }
-
-    @Test
-    void givenFreeSkillPointDTOOther_whenNotAddFreeSkillPoint_thenReturnUserUpdated() {
-        user.setAClass(new Class(1L, ModifConfig.ARCHER_NAME, ModifConfig.ARCHER_START_STR, ModifConfig.ARCHER_START_DEX, ModifConfig.ARCHER_START_INT, ModifConfig.ARCHER_START_VIT, ModifConfig.ARCHER_START_LUK));
-
-        FreeSkillPointDTO freeSkillPointDTO = new FreeSkillPointDTO();
-        freeSkillPointDTO.setSkillPointName("test");
-        freeSkillPointDTO.setAmount(1);
-
-        user.setLuck(1);
-        user.addFreeSkillPoints(freeSkillPointDTO);
-
-        assertEquals(1, user.getLuck());
-    }
 
     @Test
     void givenAmount_whenAddTitlePoints_thenReturnUserUpdated() {

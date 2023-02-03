@@ -58,7 +58,7 @@ public class ItemService {
         );
     }
 
-    public Inventory buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public User buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -73,7 +73,7 @@ public class ItemService {
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
         userRepository.save(user);
-        return user.getInventory();
+        return user;
     }
 
     public User sellItem(String username, NameRequestDTO nameRequestDTO) {

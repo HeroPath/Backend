@@ -31,10 +31,10 @@ class PveFunctionsTest {
     );
     private User userTest = new User(
             "testusername", "testpassword", "testusername@test.com", new Role(),
-            new Class(),
             new Title(),
             new Inventory(),
             new Equipment(),
+            "mage",
             1, 1, 1, 1, 1
     );
 

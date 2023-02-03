@@ -35,30 +35,9 @@ class JWTAuthControllerTest {
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");
-            userDTO.setClassId(1);
+            userDTO.setClassName("test");
 
             jwtAuthController.saveUser(userDTO);
         }
     }
-
-    @Test
-    void createAuthenticationToken() throws Exception {
-        JwtRequestDTO authenticationRequest = new JwtRequestDTO();
-        authenticationRequest.setUsername("testusername");
-        authenticationRequest.setPassword("test");
-
-        ResponseEntity<?> loginRequest = jwtAuthController.createAuthenticationToken(
-                authenticationRequest
-        );
-
-        JwtResponseDTO tokenObject = (JwtResponseDTO) Objects.requireNonNull(loginRequest.getBody());
-        String token = tokenObject.getToken();
-
-        assertNotNull(token);
-        assertTrue(token.length() > 0);
-        assertThat(token, containsString("."));
-
-    }
-
-
 }

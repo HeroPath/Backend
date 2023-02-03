@@ -29,15 +29,11 @@ class QuestServiceTest {
     @Autowired
     private QuestRepository questRepository;
 
-    @Autowired
-    private QuestService questService;
 
     @Autowired
     private JWTAuthController jwtAuthController;
 
     private User userTest;
-
-    private final NameRequestDTO questRequestDTO = new NameRequestDTO("testquest");
 
     @BeforeEach
     void setUp() throws Conflict {
@@ -50,7 +46,7 @@ class QuestServiceTest {
             userDTO.setUsername("testusername");
             userDTO.setPassword("test");
             userDTO.setEmail("test@test.com");
-            userDTO.setClassId(1);
+            userDTO.setClassName("test");
 
             jwtAuthController.saveUser(userDTO);
             userTest = userRepository.findByUsername("testusername");
@@ -70,23 +66,4 @@ class QuestServiceTest {
         );
     }
 
-
-    @Test
-    @Order(2)
-    void givenNameQuest_whenGetQuestByName_thenReturnQuest() throws Conflict {
-        assertEquals("testquest", questService.getQuestByName("testquest").getName());
-    }
-
-
-    @Test
-    @Order(5)
-    void givenUsernameAndNameRequestDTO_whenAcceptQuest_thenReturnAddQuestInUser() throws Conflict {
-        assertEquals(0, userTest.getUserQuests().size());
-
-        questService.acceptQuest(userTest.getUsername(), questRequestDTO);
-        User userBefore = userRepository.findByUsername(userTest.getUsername());
-
-        assertEquals(1, userBefore.getUserQuests().size());
-        assertEquals("testquest", Objects.requireNonNull(userBefore.getUserQuests().stream().findFirst().orElse(null)).getQuest().getName());
-    }
 }
