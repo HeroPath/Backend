@@ -23,6 +23,6 @@ public class ClassService {
          * @param none
          * @return List<Class>
          */
-        return Arrays.asList(ModifConfig.MAGE, ModifConfig.WARRIOR, ModifConfig.ARCHER);
+        return ModifConfig.CLASSES;
     }
 }

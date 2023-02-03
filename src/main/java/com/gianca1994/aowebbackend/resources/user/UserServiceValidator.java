@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 
 
 public class UserServiceValidator {
@@ -23,7 +24,7 @@ public class UserServiceValidator {
         if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
     }
 
-    public void setFreeSkillPoint(User user, String skillName) throws Conflict {
+    public void setFreeSkillPoint(UserAttributes uAttr, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of validating the free skill point.
@@ -31,8 +32,8 @@ public class UserServiceValidator {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return void
          */
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (user.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
+        if (uAttr == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
         if (!UserConst.SKILLS_ENABLED.contains(skillName.toLowerCase()))
             throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
     }

@@ -31,13 +31,25 @@ public class UserAttributes {
 
     public void addStat(String stat) {
         stat = stat.toLowerCase();
-        if (stat.equals("strength")) this.strength++;
-        else if (stat.equals("dexterity")) this.dexterity++;
-        else if (stat.equals("vitality")) this.vitality++;
-        else if (stat.equals("intelligence")) this.intelligence++;
-        else if (stat.equals("luck")) this.luck++;
-        else throw new IllegalArgumentException("Invalid stat name");
-
+        switch (stat) {
+            case "strength":
+                this.strength++;
+                break;
+            case "dexterity":
+                this.dexterity++;
+                break;
+            case "vitality":
+                this.vitality++;
+                break;
+            case "intelligence":
+                this.intelligence++;
+                break;
+            case "luck":
+                this.luck++;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid stat name");
+        }
         this.freeSkillPoints--;
     }
 

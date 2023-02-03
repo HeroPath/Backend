@@ -2,6 +2,9 @@ package com.gianca1994.aowebbackend.config;
 
 import com.gianca1994.aowebbackend.resources.classes.Class;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ModifConfig {
     /**
      * @Author: Gianca1994
@@ -91,6 +94,12 @@ public class ModifConfig {
     /////////////////////////// TITLE ///////////////////////////
 
     /////////////////////////// CLASS ////////////////////////////
+    public static final List<Class> CLASSES = Arrays.asList(
+            new Class("mage", 1, 1, 3, 2, 2, 5, 7, 10, 2, 2, 0.15f),
+            new Class("warrior", 3, 1, 1, 3, 1, 3, 5, 20, 5, 2, 0.1f),
+            new Class("archer", 1, 3, 1, 2, 2, 4, 6, 15, 3, 4, 0.125f)
+    );
+
     public static final Class MAGE = new Class(
             "mage", 1, 1, 3, 2, 2,
             5, 7, 10, 2,

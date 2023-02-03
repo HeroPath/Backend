@@ -124,6 +124,8 @@ public class UserService {
          * @return User
          */
         UserAttributes uAttr = userRepository.findAttributesByUserId(userId);
+        validator.setFreeSkillPoint(uAttr, skillName);
+
         uAttr.addStat(skillName);
         uAttr.updateStats();
         userRepository.updateUserStats(
@@ -149,16 +151,17 @@ public class UserService {
          */
         User attacker = userRepository.findByUsername(username);
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
-
         validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
                 attacker, defender, titleRepository, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
-        if (defender.getUsername().equals("test")) pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
-        userRepository.save(pvpUserVsUserModel.getDefender());
 
+        if (defender.getUsername().equals("test"))
+            pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
+
+        userRepository.save(pvpUserVsUserModel.getDefender());
         return pvpUserVsUserModel.getHistoryCombat();
     }
 
@@ -173,11 +176,9 @@ public class UserService {
          */
         User user = userRepository.findByUsername(username);
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
-
         validator.userVsNpcCombatSystem(user, npc);
 
         PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
-
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }
