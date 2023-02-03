@@ -113,6 +113,11 @@ public class JWTUserDetailsService implements UserDetailsService {
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
             throw new BadRequest(JWTConst.PASSWORD_LENGTH);
 
+        Class aClass = ModifConfig.CLASSES.stream().filter(
+                        c -> c.getName().equalsIgnoreCase(user.getClassName()))
+                .findFirst().orElse(null);
+        if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
+
         Role standardRole = roleRepository.findById(1L).get();
         Title standardTitle = titleRepository.findById(1L).get();
         Inventory inventory = new Inventory();
@@ -120,13 +125,6 @@ public class JWTUserDetailsService implements UserDetailsService {
 
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
-
-        String aClassSelected = user.getClassName().toLowerCase();
-        Class aClass;
-        if (aClassSelected.equals(ModifConfig.MAGE.getName())) aClass = ModifConfig.MAGE;
-        else if (aClassSelected.equals(ModifConfig.WARRIOR.getName())) aClass = ModifConfig.WARRIOR;
-        else if (aClassSelected.equals(ModifConfig.ARCHER.getName())) aClass = ModifConfig.ARCHER;
-        else throw new BadRequest("Class not valid");
 
         User newUser = new User(
                 username, encryptPassword(user.getPassword()),

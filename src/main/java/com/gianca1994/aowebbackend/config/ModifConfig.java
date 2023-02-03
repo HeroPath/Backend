@@ -99,22 +99,6 @@ public class ModifConfig {
             new Class("warrior", 3, 1, 1, 3, 1, 3, 5, 20, 5, 2, 0.1f),
             new Class("archer", 1, 3, 1, 2, 2, 4, 6, 15, 3, 4, 0.125f)
     );
-
-    public static final Class MAGE = new Class(
-            "mage", 1, 1, 3, 2, 2,
-            5, 7, 10, 2,
-            2, 0.15f
-    );
-    public static final Class WARRIOR = new Class(
-            "warrior", 3, 1, 1, 3, 1,
-            3, 5, 20, 5,
-            2, 0.1f
-    );
-    public static final Class ARCHER = new Class(
-            "archer", 1, 3, 1, 2, 2,
-            4, 6, 15, 3,
-            4, 0.125f
-    );
     /////////////////////////// CLASS ////////////////////////////
 
 }

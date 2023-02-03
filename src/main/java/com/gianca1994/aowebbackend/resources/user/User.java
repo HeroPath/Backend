@@ -165,42 +165,7 @@ public class User {
         this.guildName = "";
     }
 
-    public void calculateStats(boolean fullMinHp) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: Calculate status method
-         * @param boolean fullMinHp
-         * @return void
-         */
-        Class aClass;
-        if (this.getAClass().equals(ModifConfig.MAGE.getName())) {
-            aClass = ModifConfig.MAGE;
-            this.minDmg = this.intelligence * aClass.getMinDmgModifier();
-            this.maxDmg = this.intelligence * aClass.getMaxDmgModifier();
-            this.maxHp = this.vitality * aClass.getMaxHpModifier();
-            this.defense = this.strength * aClass.getDefenseModifier();
-            this.evasion = this.dexterity * aClass.getEvasionModifier();
-            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
-        } else if (this.getAClass().equals(ModifConfig.WARRIOR.getName())) {
-            aClass = ModifConfig.WARRIOR;
-            this.minDmg = this.strength * aClass.getMinDmgModifier();
-            this.maxDmg = this.strength * aClass.getMaxDmgModifier();
-            this.maxHp = this.vitality * aClass.getMaxHpModifier();
-            this.defense = this.intelligence * aClass.getDefenseModifier();
-            this.evasion = this.dexterity * aClass.getEvasionModifier();
-            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
-        } else if (this.getAClass().equals(ModifConfig.ARCHER.getName())) {
-            aClass = ModifConfig.ARCHER;
-            this.minDmg = this.dexterity * aClass.getMinDmgModifier();
-            this.maxDmg = this.dexterity * aClass.getMaxDmgModifier();
-            this.maxHp = this.vitality * aClass.getMaxHpModifier();
-            this.defense = this.intelligence * aClass.getDefenseModifier();
-            this.evasion = this.strength * aClass.getEvasionModifier();
-            this.criticalChance = this.luck * aClass.getCriticalModifier() > ModifConfig.MAX_CRITICAL_PERCENTAGE ? ModifConfig.MAX_CRITICAL_PERCENTAGE : this.luck * aClass.getCriticalModifier();
-        }
-        if (fullMinHp) this.hp = this.maxHp;
-    }
-
+    //********** START SWAP ITEM METHODS **********//
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
         /**
          * @Author: Gianca1994
@@ -209,59 +174,19 @@ public class User {
          * @param boolean toEquip
          * @return none
          */
-        int multiplierToEquipOrUnequip = toEquip ? 1 : -1;
+        int multiplier = toEquip ? 1 : -1;
 
-        this.strength += item.getStrength() * multiplierToEquipOrUnequip;
-        this.dexterity += item.getDexterity() * multiplierToEquipOrUnequip;
-        this.intelligence += item.getIntelligence() * multiplierToEquipOrUnequip;
-        this.vitality += item.getVitality() * multiplierToEquipOrUnequip;
-        this.luck += item.getLuck() * multiplierToEquipOrUnequip;
+        this.strength += item.getStrength() * multiplier;
+        this.dexterity += item.getDexterity() * multiplier;
+        this.intelligence += item.getIntelligence() * multiplier;
+        this.vitality += item.getVitality() * multiplier;
+        this.luck += item.getLuck() * multiplier;
 
         calculateStats(false);
     }
+    //********** END SWAP ITEM METHODS **********//
 
-    public void addFreeSkillPoints(String skillName) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to add free skill points to the user.
-         * @param freeSkillPointDTO freeSkillPointDTO
-         * @return none
-         */
-        boolean isAdded = true;
-        String skName = skillName.toLowerCase();
-
-        if (skName.equals("strength")) this.strength += 1;
-        else if (skName.equals("dexterity")) this.dexterity += 1;
-        else if (skName.equals("intelligence")) this.intelligence += 1;
-        else if (skName.equals("vitality")) this.vitality += 1;
-        else if (skName.equals("luck")) this.luck += 1;
-        else isAdded = false;
-
-        if (isAdded) this.freeSkillPoints -= 1;
-        calculateStats(false);
-    }
-
-    public void addTitlePoints(int amount) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to add title points to the user.
-         * @param int amount
-         * @return none
-         */
-        this.titlePoints += amount;
-    }
-
-    public void removeTitlePoints(int amount) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to remove title points from the user.
-         * @param int amount
-         * @return none
-         */
-        if (this.titlePoints >= amount) this.titlePoints -= amount;
-        else this.titlePoints = 0;
-    }
-
+    //********** START TITLE UPDATE METHODS **********//
     public void checkStatusTitlePoints(TitleRepository titleRepository) {
         /**
          * @Author: Gianca1994
@@ -286,6 +211,29 @@ public class User {
         calculateStats(false);
     }
 
+    public void addTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to add title points to the user.
+         * @param int amount
+         * @return none
+         */
+        this.titlePoints += amount;
+    }
+
+    public void removeTitlePoints(int amount) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to remove title points from the user.
+         * @param int amount
+         * @return none
+         */
+        if (this.titlePoints >= amount) this.titlePoints -= amount;
+        else this.titlePoints = 0;
+    }
+    //********** END TITLE UPDATE METHODS **********//
+
+    //********** START CHECK LEVEL UP **********//
     public boolean userLevelUp() {
         /**
          * @Author: Gianca1994
@@ -310,4 +258,57 @@ public class User {
         }
         return userLevelUp;
     }
+    //********** END CHECK LEVEL UP **********//
+
+    //********** START CALCULATE STATS **********//
+    public void calculateStats(boolean fullMinHp) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Calculates the stats of the user
+         * @param boolean fullMinHp
+         * @return void
+         */
+        Class aClass = ModifConfig.CLASSES.stream()
+                .filter(c -> c.getName().equals(this.getAClass()))
+                .findFirst().orElse(null);
+        if (aClass == null) return;
+
+        if (aClass.getName().equals("mage")) setStats(this.intelligence, this.strength, this.dexterity);
+        else if (aClass.getName().equals("warrior")) setStats(this.strength, this.intelligence, this.dexterity);
+        else if (aClass.getName().equals("archer")) setStats(this.dexterity, this.intelligence, this.strength);
+
+        applyModifiers(aClass);
+        if (fullMinHp) this.hp = this.maxHp;
+    }
+
+    private void setStats(int minMaxDmg, int defense, int evasion) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Sets the stats of the user
+         * @param int minMaxDmg
+         * @param int defense
+         * @param int evasion
+         * @return void
+         */
+        this.minDmg = minMaxDmg;
+        this.maxDmg = minMaxDmg;
+        this.defense = defense;
+        this.evasion = evasion;
+    }
+
+    private void applyModifiers(Class aClass) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: Applies the modifiers of the class to the stats of the user
+         * @param Class aClass
+         * @return void
+         */
+        this.minDmg *= aClass.getMinDmgModifier();
+        this.maxDmg *= aClass.getMaxDmgModifier();
+        this.defense *= aClass.getDefenseModifier();
+        this.evasion *= aClass.getEvasionModifier();
+        this.maxHp = this.vitality * aClass.getMaxHpModifier();
+        this.criticalChance = Math.min(this.luck * aClass.getCriticalModifier(), ModifConfig.MAX_CRITICAL_PERCENTAGE);
+    }
+    //********** END CALCULATE STATS **********//
 }
