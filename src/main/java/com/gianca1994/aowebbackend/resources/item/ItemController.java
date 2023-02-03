@@ -2,10 +2,10 @@ package com.gianca1994.aowebbackend.resources.item;
 
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserEquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -83,8 +83,8 @@ public class ItemController {
 
     @PostMapping("/equip")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User equipItem(@RequestHeader(value = "Authorization") String token,
-                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public UserEquipOrUnequipDTO equipItem(@RequestHeader(value = "Authorization") String token,
+                                           @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
@@ -100,8 +100,8 @@ public class ItemController {
 
     @PostMapping("/unequip")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User unequipItem(@RequestHeader(value = "Authorization") String token,
-                            @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public UserEquipOrUnequipDTO unequipItem(@RequestHeader(value = "Authorization") String token,
+                                             @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item to the user.

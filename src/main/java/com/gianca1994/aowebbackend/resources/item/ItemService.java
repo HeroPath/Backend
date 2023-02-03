@@ -1,11 +1,10 @@
 package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
-import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserEquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,16 +44,11 @@ public class ItemService {
         String classRequired = newItem.getClassRequired();
         if (Objects.equals(classRequired, "")) classRequired = "none";
         return itemRepository.save(new Item(
-                newItem.getName().toLowerCase(),
-                newItem.getType(),
-                newItem.getLvlMin(),
+                newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(),
                 classRequired,
                 newItem.getPrice(),
-                newItem.getStrength(),
-                newItem.getDexterity(),
-                newItem.getIntelligence(),
-                newItem.getVitality(),
-                newItem.getLuck())
+                newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(),
+                newItem.getVitality(), newItem.getLuck())
         );
     }
 
@@ -94,7 +88,8 @@ public class ItemService {
         return user;
     }
 
-    public User equipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public UserEquipOrUnequipDTO equipItem(String username,
+                                           EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -107,16 +102,20 @@ public class ItemService {
         validator.equipItem(user, itemEquip);
 
         if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) user.setHp(user.getMaxHp());
-        else {
-            user.getEquipment().getItems().add(itemEquip);
-            user.swapItemToEquipmentOrInventory(itemEquip, true);
-        }
+
+        user.getEquipment().getItems().add(itemEquip);
         user.getInventory().getItems().remove(itemEquip);
+        user.swapItemToEquipmentOrInventory(itemEquip, true);
         userRepository.save(user);
-        return user;
+
+        return new UserEquipOrUnequipDTO(user.getInventory(),user.getEquipment(),
+                user.getStrength(), user.getDexterity(), user.getIntelligence(), user.getVitality(), user.getLuck(),
+                user.getFreeSkillPoints(), user.getMaxDmg(), user.getMinDmg(), user.getMaxHp(), user.getHp(),
+                user.getDefense(), user.getEvasion(), user.getCriticalChance()
+        );
     }
 
-    public User unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public UserEquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -130,10 +129,14 @@ public class ItemService {
 
         user.getEquipment().getItems().remove(itemUnequip);
         user.getInventory().getItems().add(itemUnequip);
-
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
-        return user;
+
+        return new UserEquipOrUnequipDTO(user.getInventory(),user.getEquipment(),
+                user.getStrength(), user.getDexterity(), user.getIntelligence(), user.getVitality(), user.getLuck(),
+                user.getFreeSkillPoints(), user.getMaxDmg(), user.getMinDmg(), user.getMaxHp(), user.getHp(),
+                user.getDefense(), user.getEvasion(), user.getCriticalChance()
+        );
     }
 }
