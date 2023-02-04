@@ -18,6 +18,7 @@ import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,19 +83,20 @@ public class UserService {
         return userGuildDTO;
     }
 
-    public List<UserRankingDTO> getRankingAll(int page) {
+    public RankingResponseDTO getRankingAll(int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
          * @param none
          * @return ArrayList<UserData>
          */
-
-        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, 10));
+        int userPerPage = 2;
+        int totalPages = (int) Math.ceil((double) userRepository.count() / userPerPage);
+        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, userPerPage));
         List<User> users = usersPage.getContent();
-        AtomicInteger pos = new AtomicInteger(1);
+        AtomicInteger pos = new AtomicInteger((page * userPerPage) + 1);
 
-        return users.stream().map(user -> new UserRankingDTO(
+        List<UserRankingDTO> ranking = users.stream().map(user -> new UserRankingDTO(
                 pos.getAndIncrement(),
                 user.getUsername(),
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
@@ -104,7 +106,10 @@ public class UserService {
                 user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
                 user.getPvpWins(), user.getPvpLosses()
         )).collect(Collectors.toList());
+
+        return new RankingResponseDTO(ranking, totalPages);
     }
+
 
     @Transactional
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {

@@ -5,13 +5,12 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: Gianca1994
@@ -45,7 +44,7 @@ public class UserController {
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<UserRankingDTO> getRankingAll(@RequestParam("page") int page) {
+    public RankingResponseDTO getRankingAll(@RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
