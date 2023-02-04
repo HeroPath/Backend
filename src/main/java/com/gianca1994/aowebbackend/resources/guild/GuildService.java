@@ -174,9 +174,12 @@ public class GuildService {
 
     public void rejectUserGuild(String username, String nameReject) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method rejects a user to a guild
+         * @param String username
+         * @param String nameReject
+         * @return void
          */
-
     }
 
     public void removeUserGuild(String username, String nameRemove) throws Conflict {
