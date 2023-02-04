@@ -12,7 +12,6 @@ class RoleTest {
     @BeforeEach
     void setUp() {
         roleTest = new Role();
-        roleTest.setId(1L);
         roleTest.setRoleName("ROLE_TEST");
     }
 
@@ -24,13 +23,8 @@ class RoleTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Role roleTest2 = new Role(2L, "ROLE_TEST2");
+        Role roleTest2 = new Role("ROLE_TEST2");
         assertThat(roleTest2).isNotNull();
-    }
-
-    @Test
-    void givenRole_whenGetId_thenReturnId() {
-        assertThat(roleTest.getId()).isEqualTo(1L);
     }
 
     @Test

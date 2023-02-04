@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ class UserGuildDTOTest {
         userGuildDTO.setUsername("test");
         userGuildDTO.setLevel((short) 1);
         userGuildDTO.setTitlePoints(1);
-        userGuildDTO.setClassName("test");
+        userGuildDTO.setAClass("test");
         userGuildDTO.setTitleName("test");
     }
 
@@ -25,7 +26,7 @@ class UserGuildDTOTest {
         assertEquals("test", userGuildDTOTest.getUsername());
         assertEquals(1, userGuildDTOTest.getLevel());
         assertEquals(1, userGuildDTOTest.getTitlePoints());
-        assertEquals("test", userGuildDTOTest.getClassName());
+        assertEquals("test", userGuildDTOTest.getAClass());
         assertEquals("test", userGuildDTOTest.getTitleName());
     }
 
@@ -52,7 +53,7 @@ class UserGuildDTOTest {
 
     @Test
     void givenUserGuildDTO_whenGetClassName_thenReturnClassName() {
-        assertEquals("test", userGuildDTO.getClassName());
+        assertEquals("test", userGuildDTO.getAClass());
     }
 
     @Test

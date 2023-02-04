@@ -30,8 +30,7 @@ class PveFunctionsTest {
             "test"
     );
     private User userTest = new User(
-            "testusername", "testpassword", "testusername@test.com", new Role(),
-            new Title(),
+            "testusername", "testpassword", "testusername@test.com",
             new Inventory(),
             new Equipment(),
             "mage",
@@ -48,20 +47,10 @@ class PveFunctionsTest {
     }
 
     @Test
-    void givenNpc_whenCalculateUserExperienceGain_thenReturnUserExperienceGain() {
-        assertThat(pveFunctionsTest.CalculateUserExperienceGain(npcTest)).isEqualTo(10L * SvConfig.EXPERIENCE_MULTIPLIER);
-    }
-
-    @Test
     void givenNPC_whenCheckIfNpcDied_thenReturnNpcDied() {
         assertThat(pveFunctionsTest.checkIfNpcDied(npcTest.getHp())).isEqualTo(false);
         npcTest.setHp(0);
         assertThat(pveFunctionsTest.checkIfNpcDied(npcTest.getHp())).isEqualTo(true);
-    }
-
-    @Test
-    void givenUser_whenCalculateUserGoldGain_thenReturnUserGoldGain() {
-        assertThat(pveFunctionsTest.calculateUserGoldGain(npcTest)).isEqualTo(10L * SvConfig.GOLD_MULTIPLIER);
     }
 
     @Test
