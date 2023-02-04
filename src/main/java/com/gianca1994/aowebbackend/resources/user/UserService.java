@@ -11,7 +11,6 @@ import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
@@ -19,6 +18,7 @@ import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,22 +64,15 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public UserGuildDTO getUserForGuild(String username) {
+    public UserGuildDTO getUserForGuild(long userId) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
          * @param String username
          * @return UserGuildDTO
          */
-        User user = userRepository.findByUsername(username);
-        validator.getUserForGuild(user);
-
-        UserGuildDTO userGuildDTO = new UserGuildDTO();
-        userGuildDTO.setUsername(user.getUsername());
-        userGuildDTO.setLevel(user.getLevel());
-        userGuildDTO.setTitlePoints(user.getTitlePoints());
-        userGuildDTO.setClassName(user.getAClass());
-        userGuildDTO.setTitleName(user.getTitleName());
+        UserGuildDTO userGuildDTO = userRepository.getUserForGuild(userId);
+        validator.getUserForGuild(userGuildDTO);
         return userGuildDTO;
     }
 
@@ -90,7 +83,7 @@ public class UserService {
          * @param none
          * @return ArrayList<UserData>
          */
-        int userPerPage = 2;
+        int userPerPage = 10;
         int totalPages = (int) Math.ceil((double) userRepository.count() / userPerPage);
         Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, userPerPage));
         List<User> users = usersPage.getContent();

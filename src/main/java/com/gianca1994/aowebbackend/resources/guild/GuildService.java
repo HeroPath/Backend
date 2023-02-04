@@ -91,7 +91,7 @@ public class GuildService {
         guildNode.put("maxMembers", SvConfig.MAX_MEMBERS_IN_GUILD);
         guildNode.putPOJO("members",
                 guild.getMembers().stream()
-                        .map(user -> userService.getUserForGuild(user.getUsername()))
+                        .map(user -> userService.getUserForGuild(user.getId()))
                         .sorted((user1, user2) -> {
                             if (user1.getUsername().equals(guild.getLeader())) return -1;
                             else if (user2.getUsername().equals(guild.getLeader())) return 1;
@@ -102,7 +102,7 @@ public class GuildService {
                             else return -1 * Integer.compare(user1.getTitlePoints(), user2.getTitlePoints());
                         }).collect(Collectors.toList())
         );
-        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getId())).collect(Collectors.toList()));
         return guildNode;
     }
 

@@ -1,4 +1,5 @@
-package com.gianca1994.aowebbackend.resources.guild;
+package com.gianca1994.aowebbackend.resources.user.dto.response;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +19,6 @@ public class UserGuildDTO {
     private String username;
     private short level;
     private int titlePoints;
-    private String className;
+    private String aClass;
     private String titleName;
 }
