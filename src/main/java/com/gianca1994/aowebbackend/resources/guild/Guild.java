@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: This is the Guild class.
+ * Explanation: This class is the model of the Guild table in the database.
  */
 
 @Entity

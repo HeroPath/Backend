@@ -31,11 +31,13 @@ import javax.transaction.Transactional;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcService
+ * Explanation: UserService
  */
 
 @Service
 public class UserService {
+
+    UserServiceValidator validator = new UserServiceValidator();
 
     @Autowired
     UserRepository userRepository;
@@ -52,8 +54,6 @@ public class UserService {
     @Autowired
     GuildRepository guildRepository;
 
-    UserServiceValidator validator = new UserServiceValidator();
-
     public User getProfile(String username) {
         /**
          * @Author: Gianca1994
@@ -68,7 +68,7 @@ public class UserService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
-         * @param String username
+         * @param long userId
          * @return UserGuildDTO
          */
         UserGuildDTO userGuildDTO = userRepository.getUserForGuild(userId);
@@ -80,8 +80,8 @@ public class UserService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
-         * @param none
-         * @return ArrayList<UserData>
+         * @param int page
+         * @return RankingResponseDTO
          */
         int userPerPage = 10;
         int totalPages = (int) Math.ceil((double) userRepository.count() / userPerPage);
@@ -108,10 +108,10 @@ public class UserService {
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of adding skill points to the user.
-         * @param String username
-         * @param FreeSkillPointDTO freeSkillPointDTO
-         * @return User
+         * Explanation: This function is in charge of setting the free skill point of the user.
+         * @param long userId
+         * @param String skillName
+         * @return UserAttributes
          */
         UserAttributes uAttr = userRepository.findAttributesByUserId(userId);
         validator.setFreeSkillPoint(uAttr, skillName);
@@ -133,7 +133,7 @@ public class UserService {
                                                         NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat system between users.
+         * Explanation: This function is in charge of the combat between two users.
          * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
@@ -158,7 +158,7 @@ public class UserService {
                                                        NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat system between users and npcs.
+         * Explanation: This function is in charge of the combat between a user and a npc.
          * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>

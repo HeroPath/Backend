@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the model of the item table in the database.
  */
 
 @Entity

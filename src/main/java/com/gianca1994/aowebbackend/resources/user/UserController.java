@@ -30,27 +30,35 @@ public class UserController {
 
     @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User getProfile(@RequestHeader(value = "Authorization") String token) {
+    public User getProfile(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
          * @param String token
          * @return User user
          */
-        return userService.getProfile(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
-        );
+        try {
+            return userService.getProfile(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in getting the profile");
+        }
     }
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public RankingResponseDTO getRankingAll(@RequestParam("page") int page) {
+    public RankingResponseDTO getRankingAll(@RequestParam("page") int page) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
          * @return ArrayList<User> users
          */
-        return userService.getRankingAll(page);
+        try {
+            return userService.getRankingAll(page);
+        } catch (Exception e) {
+            throw new Conflict("Error in getting the ranking");
+        }
     }
 
     @PostMapping("/add-skill-points/{skillName}")
@@ -64,9 +72,13 @@ public class UserController {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User user
          */
-        return userService.setFreeSkillPoint(
-                jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
-        );
+        try {
+            return userService.setFreeSkillPoint(
+                    jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in adding skill points");
+        }
     }
 
     @PostMapping("/attack-user")
@@ -80,15 +92,19 @@ public class UserController {
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsUserCombatSystem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
-        );
+        try {
+            return userService.userVsUserCombatSystem(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in attacking the user");
+        }
     }
 
     @PostMapping("/attack-npc")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public ArrayList<ObjectNode> attackNpc(@RequestHeader(value = "Authorization") String token,
-                                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                                           @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to attack a npc.
@@ -96,8 +112,12 @@ public class UserController {
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        return userService.userVsNpcCombatSystem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
-        );
+        try {
+            return userService.userVsNpcCombatSystem(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in attacking the npc");
+        }
     }
 }

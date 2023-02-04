@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the Role entity, it is used to store the roles of the users
  */
 
 @Getter

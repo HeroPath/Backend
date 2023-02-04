@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the model of the equipment table in the database.
  */
 
 @Entity

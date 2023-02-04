@@ -8,7 +8,6 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
-import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the User entity.
  */
 
 @Entity

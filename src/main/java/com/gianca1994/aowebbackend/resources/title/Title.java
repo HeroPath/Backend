@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-
 /**
  * @Author: Gianca1994
- * Explanation: This class is the Title entity, it is used to store the titles of the users
+ * Explanation: This class is used to store the information of a title.
  */
 
 @Getter
