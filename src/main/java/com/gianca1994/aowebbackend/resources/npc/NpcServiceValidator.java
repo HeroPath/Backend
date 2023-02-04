@@ -7,16 +7,22 @@ import java.util.Set;
 
 public class NpcServiceValidator {
 
-    public void filterNpcByZone(Set<Npc> npcs) throws Conflict {
+    public void filterNpcByZone(Set<Npc> npcs) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to filter the npcs by zone
+         * @param Set<Npc> npcs
+         * @return void
          */
         if (npcs.isEmpty()) throw new NotFound(NpcConst.NPC_NOT_FOUND_ZONE);
     }
 
     public void saveNpc(NpcDTO npc) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to validate the npc before saving it
+         * @param NpcDTO npc
+         * @return void
          */
         if (npc.getName().isEmpty()) throw new Conflict(NpcConst.NAME_EMPTY);
         if (npc.getLevel() < 1) throw new Conflict(NpcConst.LEVEL_LESS_THAN_ONE);

@@ -5,9 +5,7 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.*;
-
 
 /**
  * @Author: Gianca1994
@@ -17,10 +15,10 @@ import java.util.*;
 @Service
 public class NpcService {
 
+    NpcServiceValidator validator = new NpcServiceValidator();
+
     @Autowired
     private NpcRepository npcRepository;
-
-    NpcServiceValidator validator = new NpcServiceValidator();
 
     public ArrayList<Npc> getAllNpcs() {
         /**

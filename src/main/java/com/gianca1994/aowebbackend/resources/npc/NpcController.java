@@ -23,19 +23,23 @@ public class NpcController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<Npc> getAllNpcs() {
+    public ArrayList<Npc> getAllNpcs() throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all npcs.
          * @param String token
          * @return ArrayList<Npc>
          */
-        return npcService.getAllNpcs();
+        try {
+            return npcService.getAllNpcs();
+        } catch (Exception e) {
+            throw new Conflict("Error in getting all npcs");
+        }
     }
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Npc getNpcByName(@PathVariable String name) {
+    public Npc getNpcByName(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the npc by name.
@@ -43,7 +47,11 @@ public class NpcController {
          * @param String name
          * @return Npc
          */
-        return npcService.getNpcByName(name);
+        try {
+            return npcService.getNpcByName(name);
+        } catch (Exception e) {
+            throw new Conflict("Error in getting npc by name");
+        }
     }
 
     @GetMapping("/zone/{zone}")
@@ -55,7 +63,11 @@ public class NpcController {
          * @param String zone
          * @return ArrayList<Npc>
          */
-        return npcService.filterNpcByZone(zone);
+        try {
+            return npcService.filterNpcByZone(zone);
+        } catch (Exception e) {
+            throw new Conflict("Error in getting npcs by zone");
+        }
     }
 
     @PostMapping()
@@ -68,6 +80,10 @@ public class NpcController {
          * @param Npc npc
          * @return Npc
          */
-        return npcService.saveNpc(npc);
+        try {
+            return npcService.saveNpc(npc);
+        } catch (Exception e) {
+            throw new Conflict("Error in saving npc");
+        }
     }
 }
