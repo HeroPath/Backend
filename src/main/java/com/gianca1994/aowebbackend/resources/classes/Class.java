@@ -22,7 +22,6 @@ public class Class {
     private int intelligence;
     private int vitality;
     private int luck;
-    // Modifiers
     private int minDmgModifier;
     private int maxDmgModifier;
     private int maxHpModifier;

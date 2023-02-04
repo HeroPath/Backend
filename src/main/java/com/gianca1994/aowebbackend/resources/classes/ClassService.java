@@ -1,10 +1,8 @@
 package com.gianca1994.aowebbackend.resources.classes;
 
 import com.gianca1994.aowebbackend.config.ModifConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +12,6 @@ import java.util.List;
 
 @Service
 public class ClassService {
-
 
     public List<Class> getAllClasses() {
         /**

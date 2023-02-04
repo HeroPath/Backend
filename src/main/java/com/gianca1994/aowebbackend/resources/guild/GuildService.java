@@ -172,6 +172,13 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
+    public void rejectUserGuild(String username, String nameReject) throws Conflict {
+        /**
+         *
+         */
+
+    }
+
     public void removeUserGuild(String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994

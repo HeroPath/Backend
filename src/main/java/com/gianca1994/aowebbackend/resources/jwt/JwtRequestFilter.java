@@ -57,8 +57,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (MalformedJwtException e){
                 System.out.println(JWTConst.TOKEN_ADULTERATED);
             }
-        } else {
-            logger.warn(JWTConst.TOKEN_NOT_BEARER);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

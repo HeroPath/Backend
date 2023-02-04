@@ -20,7 +20,6 @@ public class Title {
     private String name;
     private int minLvl;
     private int minPts;
-
     private int strength;
     private int dexterity;
     private int intelligence;

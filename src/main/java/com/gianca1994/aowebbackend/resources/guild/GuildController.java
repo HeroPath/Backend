@@ -28,7 +28,11 @@ public class GuildController {
          * Explanation: This method returns all the guilds in the database
          * @return List<ObjectNode> - List of all the guilds in the database
          */
-        return guildService.getAllGuilds();
+        try {
+            return guildService.getAllGuilds();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/in-guild")
@@ -40,9 +44,13 @@ public class GuildController {
          * @param token - Token of the user that is trying to get the guild
          * @return ObjectNode - Guild of the user
          */
-        return guildService.getUserGuild(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
-        );
+        try {
+            return guildService.getUserGuild(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -138,8 +146,12 @@ public class GuildController {
          * @param name - Name of the user to be made subleader
          * @return void
          */
-        guildService.makeUserSubLeader(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+        try {
+            guildService.makeUserSubLeader(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+        } catch (Conflict e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

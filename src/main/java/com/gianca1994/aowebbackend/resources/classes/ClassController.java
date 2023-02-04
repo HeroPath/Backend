@@ -26,6 +26,10 @@ public class ClassController {
          * @param none
          * @return List<Class>
          */
-        return classService.getAllClasses();
+        try {
+            return classService.getAllClasses();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

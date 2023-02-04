@@ -8,7 +8,6 @@ public class JWTConst {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
-    // TODO: ARREGLAR EL PATTERN DEL EMAIL
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
     public static final String USER_DISABLED = "USER_DISABLED";
@@ -17,7 +16,6 @@ public class JWTConst {
     public static final String UNABLE_GET_TOKEN = "Unable to get JWT Token";
     public static final String TOKEN_EXPIRED = "JWT Token has expired";
     public static final String TOKEN_ADULTERATED = "JWT adulterated";
-    public static final String TOKEN_NOT_BEARER = "JWT Token does not begin with Bearer String";
     public static final String EMAIL_NOT_VALID = "Invalid email address";
     public static final String USERNAME_NOT_VALID = "Username must be alphanumeric";
     public static final String USERNAME_PATTERN = "^[a-zA-Z0-9]*$";
