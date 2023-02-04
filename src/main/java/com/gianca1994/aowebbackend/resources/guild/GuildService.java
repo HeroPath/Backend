@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class GuildService {
 
+    GuildServiceValidator validator = new GuildServiceValidator();
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
     private GuildRepository guildRepository;
 
@@ -27,10 +30,6 @@ public class GuildService {
 
     @Autowired
     private UserService userService;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    GuildServiceValidator validator = new GuildServiceValidator();
 
     private ObjectNode guildToObjectNode(Guild guild) {
         /**

@@ -26,6 +26,7 @@ public class QuestServiceValidator {
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
          * @param Quest checkQuest
+         * @param QuestDTO quest
          * @return void
          */
         if (checkQuest != null) throw new Conflict("Quest already exists");

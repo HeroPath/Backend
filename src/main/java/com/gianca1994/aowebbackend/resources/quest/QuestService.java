@@ -17,6 +17,8 @@ import java.util.Objects;
 @Service
 public class QuestService {
 
+    QuestServiceValidator validator = new QuestServiceValidator();
+
     @Autowired
     private QuestRepository questRepository;
 
@@ -25,8 +27,6 @@ public class QuestService {
 
     @Autowired
     private UserQuestRepository userQuestRepository;
-
-    QuestServiceValidator validator = new QuestServiceValidator();
 
     public List<ObjectNode> getQuests(String username) {
         /**
@@ -119,9 +119,7 @@ public class QuestService {
         userQuest.setQuest(quest);
         userQuest.setAmountNpcKill(0);
         userQuest.setAmountUserKill(0);
-
         userQuestRepository.save(userQuest);
-
     }
 
     public Quest completeQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
