@@ -12,6 +12,10 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +37,7 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
  */
 
 @Service
-public class JWTUserDetailsService implements UserDetailsService {
+public class AuthService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -44,6 +48,9 @@ public class JWTUserDetailsService implements UserDetailsService {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
         /**
@@ -53,32 +60,9 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return UserDetails
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(JWTConst.USER_NOT_FOUND);
         GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole());
         return new org.springframework.security.core.userdetails.
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
-    }
-
-    private boolean validateEmail(String email) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the email address.
-         * @param String email
-         * @return boolean
-         */
-        Pattern pattern = Pattern.compile(JWTConst.EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private String encryptPassword(String password) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method encrypts the password using BCrypt.
-         * @param String password
-         * @return String
-         */
-        return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
     public User saveUser(UserRegisterDTO user) throws Conflict {
@@ -125,5 +109,46 @@ public class JWTUserDetailsService implements UserDetailsService {
             newUser.setRole("ADMIN");
 
         return userRepository.save(newUser);
+    }
+
+    private boolean validateEmail(String email) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to validate the email address.
+         * @param String email
+         * @return boolean
+         */
+        Pattern pattern = Pattern.compile(JWTConst.EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private String encryptPassword(String password) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method encrypts the password using BCrypt.
+         * @param String password
+         * @return String
+         */
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    public void authenticate(String username, String password) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to authenticate the user.
+         * @param String username: The username of the user.
+         * @param String password: The password of the user.
+         * @return void
+         */
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        } catch (BadCredentialsException e) {
+            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+        } catch (DisabledException e) {
+            throw new Exception(JWTConst.USER_DISABLED, e);
+        }
     }
 }

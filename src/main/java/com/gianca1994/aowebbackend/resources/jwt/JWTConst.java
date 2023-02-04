@@ -6,6 +6,7 @@ public class JWTConst {
      * Explanation: This class contains all the constants used in the JWT
      */
     public static final String USER_NOT_FOUND = "User not found";
+    public static final String PASSWORD_INCORRECT = "Password incorrect";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
