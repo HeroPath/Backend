@@ -97,12 +97,11 @@ public class JWTUserDetailsService implements UserDetailsService {
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
         String username = user.getUsername().toLowerCase();
+        String email = user.getEmail().toLowerCase();
 
         if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
-        if (userRepository.findByUsername(username) != null) throw new Conflict(JWTConst.USERNAME_EXISTS);
-
-        //TODO: ARREGLAR ESTO
-        // if (userRepository.findByEmail(user.getEmail().toLowerCase()) != null) throw new Conflict(JWTConst.EMAIL_EXISTS);
+        if (userRepository.existsByUsername(username)) throw new Conflict(JWTConst.USERNAME_EXISTS);
+        if (userRepository.existsByEmail(email)) throw new Conflict(JWTConst.EMAIL_EXISTS);
 
         if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
         if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
@@ -121,17 +120,12 @@ public class JWTUserDetailsService implements UserDetailsService {
         equipmentRepository.save(equipment);
 
         User newUser = new User(
-                username, encryptPassword(user.getPassword()),
-                user.getEmail().toLowerCase(),
+                username, encryptPassword(user.getPassword()), email,
                 standardRole,
-                inventory,
-                equipment,
+                inventory, equipment,
                 aClass.getName(),
-                aClass.getStrength(),
-                aClass.getDexterity(),
-                aClass.getIntelligence(),
-                aClass.getVitality(),
-                aClass.getLuck()
+                aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
+                aClass.getVitality(), aClass.getLuck()
         );
 
         newUser.calculateStats(true);
