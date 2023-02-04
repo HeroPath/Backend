@@ -17,7 +17,6 @@ import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
@@ -46,9 +45,6 @@ public class UserService {
 
     @Autowired
     RoleRepository roleRepository;
-
-    @Autowired
-    TitleRepository titleRepository;
 
     @Autowired
     NpcRepository npcRepository;
@@ -86,7 +82,7 @@ public class UserService {
         userGuildDTO.setLevel(user.getLevel());
         userGuildDTO.setTitlePoints(user.getTitlePoints());
         userGuildDTO.setClassName(user.getAClass());
-        userGuildDTO.setTitleName(user.getTitle().getName());
+        userGuildDTO.setTitleName(user.getTitleName());
         return userGuildDTO;
     }
 
@@ -108,7 +104,7 @@ public class UserService {
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
                 user.getAClass(),
                 user.getLevel(),
-                user.getTitle().getName(), user.getTitlePoints(),
+                user.getTitleName(), user.getTitlePoints(),
                 user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
                 user.getPvpWins(), user.getPvpLosses()
         )).collect(Collectors.toList());
@@ -153,7 +149,7 @@ public class UserService {
         validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
-                attacker, defender, titleRepository, guildRepository);
+                attacker, defender, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
 
@@ -177,7 +173,7 @@ public class UserService {
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
         validator.userVsNpcCombatSystem(user, npc);
 
-        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
+        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }

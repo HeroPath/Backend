@@ -11,8 +11,6 @@ import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +42,6 @@ public class JWTUserDetailsService implements UserDetailsService {
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private TitleRepository titleRepository;
 
     @Autowired
     private InventoryRepository inventoryRepository;
@@ -119,7 +114,6 @@ public class JWTUserDetailsService implements UserDetailsService {
         if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
 
         Role standardRole = roleRepository.findById(1L).get();
-        Title standardTitle = titleRepository.findById(1L).get();
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
 
@@ -130,7 +124,6 @@ public class JWTUserDetailsService implements UserDetailsService {
                 username, encryptPassword(user.getPassword()),
                 user.getEmail().toLowerCase(),
                 standardRole,
-                standardTitle,
                 inventory,
                 equipment,
                 aClass.getName(),

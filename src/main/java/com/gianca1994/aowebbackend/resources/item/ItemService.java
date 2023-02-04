@@ -101,13 +101,14 @@ public class ItemService {
         Item itemEquip = itemRepository.findById(equipUnequipItemDTO.getId()).get();
         validator.equipItem(user, itemEquip);
 
-        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) user.setHp(user.getMaxHp());
-
-        user.getEquipment().getItems().add(itemEquip);
         user.getInventory().getItems().remove(itemEquip);
-        user.swapItemToEquipmentOrInventory(itemEquip, true);
+        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
+            user.setHp(user.getMaxHp());
+        } else{
+            user.getEquipment().getItems().add(itemEquip);
+            user.swapItemToEquipmentOrInventory(itemEquip, true);
+        }
         userRepository.save(user);
-
         return new UserEquipOrUnequipDTO(user);
     }
 
