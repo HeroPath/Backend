@@ -9,8 +9,6 @@ import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +39,6 @@ public class JWTUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private InventoryRepository inventoryRepository;
 
     @Autowired
@@ -59,9 +54,7 @@ public class JWTUserDetailsService implements UserDetailsService {
          */
         User user = userRepository.findByUsername(username);
         if (user == null) throw new NotFound(JWTConst.USER_NOT_FOUND);
-
-        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getRoleName());
-
+        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole());
         return new org.springframework.security.core.userdetails.
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
     }
@@ -112,7 +105,6 @@ public class JWTUserDetailsService implements UserDetailsService {
                 .findFirst().orElse(null);
         if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
 
-        Role standardRole = roleRepository.findById(1L).get();
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
 
@@ -121,7 +113,6 @@ public class JWTUserDetailsService implements UserDetailsService {
 
         User newUser = new User(
                 username, encryptPassword(user.getPassword()), email,
-                standardRole,
                 inventory, equipment,
                 aClass.getName(),
                 aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
@@ -131,7 +122,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         newUser.calculateStats(true);
 
         if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
-            newUser.setRole(roleRepository.findById(2L).get());
+            newUser.setRole("ADMIN");
 
         return userRepository.save(newUser);
     }

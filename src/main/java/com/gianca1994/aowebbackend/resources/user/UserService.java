@@ -16,7 +16,6 @@ import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
@@ -42,9 +41,6 @@ public class UserService {
 
     @Autowired
     ItemRepository itemRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     NpcRepository npcRepository;

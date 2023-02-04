@@ -1,12 +1,10 @@
 package com.gianca1994.aowebbackend.resources.role;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 
 
 /**
@@ -14,21 +12,10 @@ import javax.persistence.*;
  * Explanation: Class
  */
 
-@Entity
-@Table(name = "role")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long id;
-
-    @Column(name = "role_name", unique = true)
     private String roleName;
 }

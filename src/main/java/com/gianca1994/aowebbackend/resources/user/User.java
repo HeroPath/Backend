@@ -49,13 +49,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    private Role role;
+    private String role;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_inventory",
@@ -128,11 +122,11 @@ public class User {
     @Column
     private String guildName;
 
-    public User(String username, String password, String email, Role role, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
+        this.role = "STANDARD";
         this.inventory = inventory;
         this.equipment = equipment;
         this.aClass = aClass;
@@ -192,19 +186,13 @@ public class User {
                 title -> title.getName().equals(this.titleName)).findFirst().orElse(null);
         if (currentTitle == null) return;
 
-        List<Title> filteredTitles = ModifConfig.TITLES
-                .stream()
+        List<Title> filteredTitles = ModifConfig.TITLES.stream()
                 .filter(title -> title.getMinPts() <= this.titlePoints && title.getMinLvl() <= this.level)
                 .collect(Collectors.toList());
 
-        Title newTitle = filteredTitles
-                .stream()
+        Title newTitle = filteredTitles.stream()
                 .reduce((t1, t2) -> t1.getMinPts() > t2.getMinPts() ? t1 : t2)
                 .orElse(currentTitle);
-
-        System.out.println("Current title: " + currentTitle.getName());
-        System.out.println("New title: " + newTitle.getName());
-
         if (currentTitle.equals(newTitle)) return;
 
         this.strength += newTitle.getStrength() - currentTitle.getStrength();

@@ -52,7 +52,7 @@ public class UserServiceValidator {
         if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
         if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-        if (defender.getRole().getRoleName().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
+        if (defender.getRole().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
         if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
     }
 
