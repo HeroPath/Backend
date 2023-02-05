@@ -1,12 +1,11 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.jwt.JWTAuthController;
+import com.gianca1994.aowebbackend.resources.jwt.AuthController;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +30,7 @@ class GuildServiceTest {
     private GuildService guildService;
 
     @Autowired
-    private JWTAuthController jwtAuthController;
+    private AuthController authController;
 
     private User userTest;
 
@@ -48,7 +47,7 @@ class GuildServiceTest {
             userDTO.setEmail("test@test.com");
             userDTO.setClassName("test");
 
-            jwtAuthController.saveUser(userDTO);
+            authController.register(userDTO);
             userTest = userRepository.findByUsername("testusername");
         }
 

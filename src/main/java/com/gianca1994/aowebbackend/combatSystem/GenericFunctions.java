@@ -42,7 +42,7 @@ public class GenericFunctions {
          * @param int dmg
          * @return int
          */
-        if (user.getRole().getRoleName().equals("ADMIN")) dmg = 0;
+        if (user.getRole().equals("ADMIN")) dmg = 0;
         return userHp - dmg;
     }
 

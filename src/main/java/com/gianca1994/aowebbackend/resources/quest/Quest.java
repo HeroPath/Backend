@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the Quest entity, it is used to create the Quest table in the database.
  */
 
 @Entity
@@ -30,9 +30,6 @@ public class Quest {
 
     @Column(unique = true)
     private String name;
-
-    @Column
-    private String description;
 
     @Column
     private String nameNpcKill;
@@ -56,9 +53,8 @@ public class Quest {
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
-    public Quest(String name, String description, String nameNpcKill, int npcKillAmountNeeded, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
+    public Quest(String name, String nameNpcKill, int npcKillAmountNeeded, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
         this.name = name;
-        this.description = description;
         this.nameNpcKill = nameNpcKill;
         this.npcKillAmountNeeded = npcKillAmountNeeded;
         this.userKillAmountNeeded = userKillAmountNeeded;

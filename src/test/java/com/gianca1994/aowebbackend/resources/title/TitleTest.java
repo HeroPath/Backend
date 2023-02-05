@@ -13,7 +13,6 @@ class TitleTest {
     @BeforeEach
     void setUp() {
         titleTest = new Title();
-        titleTest.setId(1L);
         titleTest.setName("Test");
         titleTest.setMinLvl(1);
         titleTest.setMinPts(1);
@@ -32,7 +31,7 @@ class TitleTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Title titleTest2 = new Title(1L, "Test", 1, 1, 1, 1, 1, 1, 1);
+        Title titleTest2 = new Title("Test", 1, 1, 1, 1, 1, 1, 1);
         assertThat(titleTest2).isNotNull();
     }
 
@@ -40,11 +39,6 @@ class TitleTest {
     public void constructorNotAllArgsTest(){
         Title titleTest2 = new Title("Test", 1, 1, 1, 1, 1, 1, 1);
         assertThat(titleTest2).isNotNull();
-    }
-
-    @Test
-    void givenTitle_whenGetId_thenReturnId() {
-        assertThat(titleTest.getId()).isEqualTo(1L);
     }
 
     @Test

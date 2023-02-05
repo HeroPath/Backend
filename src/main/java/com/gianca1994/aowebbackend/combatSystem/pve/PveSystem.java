@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 
 import java.util.ArrayList;
 
@@ -17,8 +16,7 @@ public class PveSystem {
     private static final PveFunctions pveFunctions = new PveFunctions();
 
     public static PveModel PveUserVsNpc(User user,
-                                        Npc npc,
-                                        TitleRepository titleRepository) {
+                                        Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -40,7 +38,7 @@ public class PveSystem {
         while (!stopPve) {
             roundCounter++;
 
-            if (user.getRole().getRoleName().equals("ADMIN")) userDmg = 999999999;
+            if (user.getRole().equals("ADMIN")) userDmg = 999999999;
             else userDmg = genericFunctions.getUserDmg(user, npcDefense);
 
             npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);
@@ -49,7 +47,6 @@ public class PveSystem {
             if (pveFunctions.checkIfNpcDied(npcHp)) {
                 npcDmg = 0;
                 npcHp = 0;
-
                 experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
                 goldGain = pveFunctions.calculateUserGoldGain(npc);
                 if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
@@ -71,7 +68,7 @@ public class PveSystem {
         }
         pveModel.roundJsonGeneratorFinish(experienceGain, goldGain, diamondsGain, levelUp);
 
-        user.checkStatusTitlePoints(titleRepository);
+        user.updateTitle();
         user.setHp(userHp);
         npc.setHp(npcMaxHp);
         return pveModel;

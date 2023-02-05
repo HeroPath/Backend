@@ -8,8 +8,6 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
-import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import lombok.AllArgsConstructor;
@@ -19,11 +17,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is the User entity.
  */
 
 @Entity
@@ -49,21 +48,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    private Role role;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_title",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "title_id",
-                    referencedColumnName = "id"))
-    private Title title;
+    private String role;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_inventory",
@@ -130,16 +115,17 @@ public class User {
     @Column
     private int pvpLosses;
     @Column
+    private String titleName;
+    @Column
     private int titlePoints;
     @Column
     private String guildName;
 
-    public User(String username, String password, String email, Role role, Title title, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.role = role;
-        this.title = title;
+        this.role = "STANDARD";
         this.inventory = inventory;
         this.equipment = equipment;
         this.aClass = aClass;
@@ -161,6 +147,7 @@ public class User {
         this.npcKills = 0;
         this.pvpWins = 0;
         this.pvpLosses = 0;
+        this.titleName = ModifConfig.TITLES.get(0).getName();
         this.titlePoints = 0;
         this.guildName = "";
     }
@@ -187,27 +174,32 @@ public class User {
     //********** END SWAP ITEM METHODS **********//
 
     //********** START TITLE UPDATE METHODS **********//
-    public void checkStatusTitlePoints(TitleRepository titleRepository) {
+    public void updateTitle() {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to check the status of the title points.
-         * @param TitleRepository titleRepository
+         * Explanation: Checks if the user has enough points to change title
+         * @param none
          * @return none
          */
-        Title currentTitle = titleRepository.findById(this.title.getId()).get();
+        Title currentTitle = ModifConfig.TITLES.stream().filter(
+                title -> title.getName().equals(this.titleName)).findFirst().orElse(null);
+        if (currentTitle == null) return;
 
-        for (Title t : titleRepository.findAll()) {
-            if (this.titlePoints >= t.getMinPts() && this.level >= t.getMinLvl()) {
-                this.title = t;
-            }
-        }
-        if (!Objects.equals(this.title.getId(), currentTitle.getId())) {
-            this.strength += this.title.getStrength() - currentTitle.getStrength();
-            this.dexterity += this.title.getDexterity() - currentTitle.getDexterity();
-            this.intelligence += this.title.getIntelligence() - currentTitle.getIntelligence();
-            this.vitality += this.title.getVitality() - currentTitle.getVitality();
-            this.luck += this.title.getLuck() - currentTitle.getLuck();
-        }
+        List<Title> filteredTitles = ModifConfig.TITLES.stream()
+                .filter(title -> title.getMinPts() <= this.titlePoints && title.getMinLvl() <= this.level)
+                .collect(Collectors.toList());
+
+        Title newTitle = filteredTitles.stream()
+                .reduce((t1, t2) -> t1.getMinPts() > t2.getMinPts() ? t1 : t2)
+                .orElse(currentTitle);
+        if (currentTitle.equals(newTitle)) return;
+
+        this.strength += newTitle.getStrength() - currentTitle.getStrength();
+        this.dexterity += newTitle.getDexterity() - currentTitle.getDexterity();
+        this.intelligence += newTitle.getIntelligence() - currentTitle.getIntelligence();
+        this.vitality += newTitle.getVitality() - currentTitle.getVitality();
+        this.luck += newTitle.getLuck() - currentTitle.getLuck();
+        this.titleName = newTitle.getName();
         calculateStats(false);
     }
 
@@ -219,6 +211,7 @@ public class User {
          * @return none
          */
         this.titlePoints += amount;
+        updateTitle();
     }
 
     public void removeTitlePoints(int amount) {
@@ -230,6 +223,7 @@ public class User {
          */
         if (this.titlePoints >= amount) this.titlePoints -= amount;
         else this.titlePoints = 0;
+        updateTitle();
     }
     //********** END TITLE UPDATE METHODS **********//
 

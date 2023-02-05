@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 
 import java.util.ArrayList;
 
@@ -19,7 +18,6 @@ public class PvpSystem {
 
     public static PvpModel PvpUserVsUser(User user,
                                          User attacked,
-                                         TitleRepository titleRepository,
                                          GuildRepository guildRepository) {
         /**
          * @Author: Gianca1994
@@ -40,7 +38,7 @@ public class PvpSystem {
 
         while (!stopPvp) {
             roundCounter++;
-            if (user.getRole().getRoleName().equals("ADMIN")) userDmg = 999999999;
+            if (user.getRole().equals("ADMIN")) userDmg = 999999999;
             else userDmg = genericFunctions.getUserDmg(user, attackedDef);
 
             attackedDmg = genericFunctions.getUserDmg(attacked, userDef);
@@ -50,8 +48,7 @@ public class PvpSystem {
                 attackedDmg = 0;
                 attackedHp = 0;
                 goldAmountWin = pvpFunctions.getUserGoldThief(attacked.getGold());
-
-                pvpFunctions.updateStatsUserWin(user, attacked, goldAmountWin, mmrWinAndLose, titleRepository);
+                pvpFunctions.updateStatsUserWin(user, attacked, goldAmountWin, mmrWinAndLose);
                 pvpFunctions.updateGuilds(user, attacked, guildRepository, mmrWinAndLose);
                 pvpFunctions.updateQuests(user);
                 stopPvp = true;
@@ -61,7 +58,7 @@ public class PvpSystem {
                     userDmg = 0;
                     userHp = 0;
                     goldLoseForLoseCombat = pvpFunctions.getUserGoldLoseForLoseCombat(user);
-                    pvpFunctions.updateStatsUserLose(user, attacked, goldLoseForLoseCombat, mmrWinAndLose, titleRepository);
+                    pvpFunctions.updateStatsUserLose(user, attacked, goldLoseForLoseCombat, mmrWinAndLose);
                     stopPvp = true;
                 }
             }

@@ -9,13 +9,13 @@ import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.Title;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,22 +37,21 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
  */
 
 @Service
-public class JWTUserDetailsService implements UserDetailsService {
+public class AuthService implements UserDetailsService {
+
+    AuthServiceValidator validator = new AuthServiceValidator();
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private TitleRepository titleRepository;
 
     @Autowired
     private InventoryRepository inventoryRepository;
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
@@ -63,12 +62,47 @@ public class JWTUserDetailsService implements UserDetailsService {
          * @return UserDetails
          */
         User user = userRepository.findByUsername(username);
-        if (user == null) throw new NotFound(JWTConst.USER_NOT_FOUND);
-
-        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole().getRoleName());
-
+        GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole());
         return new org.springframework.security.core.userdetails.
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
+    }
+
+    public User saveUser(UserRegisterDTO user) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to save a new user in the database.
+         * @param UserDTO user
+         * @return User
+         */
+        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
+        String username = user.getUsername().toLowerCase();
+        String password = user.getPassword();
+        String email = user.getEmail().toLowerCase();
+        Class aClass = ModifConfig.CLASSES.stream().filter(
+                        c -> c.getName().equalsIgnoreCase(user.getClassName()))
+                .findFirst().orElse(null);
+
+        validator.saveUser(username, password, email, aClass, userRepository);
+
+        Inventory inventory = new Inventory();
+        Equipment equipment = new Equipment();
+        inventoryRepository.save(inventory);
+        equipmentRepository.save(equipment);
+
+        User newUser = new User(
+                username, encryptPassword(user.getPassword()), email,
+                inventory, equipment,
+                aClass.getName(),
+                aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
+                aClass.getVitality(), aClass.getLuck()
+        );
+
+        newUser.calculateStats(true);
+
+        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
+            newUser.setRole("ADMIN");
+
+        return userRepository.save(newUser);
     }
 
     private boolean validateEmail(String email) {
@@ -93,59 +127,22 @@ public class JWTUserDetailsService implements UserDetailsService {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public User saveUser(UserRegisterDTO user) throws Conflict {
+    public void authenticate(String username, String password) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save a new user in the database.
-         * @param UserDTO user
-         * @return User
+         * Explanation: This method is used to authenticate the user.
+         * @param String username: The username of the user.
+         * @param String password: The password of the user.
+         * @return void
          */
-        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
-        String username = user.getUsername().toLowerCase();
-
-        if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
-        if (userRepository.findByUsername(username) != null) throw new Conflict(JWTConst.USERNAME_EXISTS);
-
-        //TODO: ARREGLAR ESTO
-        // if (userRepository.findByEmail(user.getEmail().toLowerCase()) != null) throw new Conflict(JWTConst.EMAIL_EXISTS);
-
-        if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
-        if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
-            throw new BadRequest(JWTConst.PASSWORD_LENGTH);
-
-        Class aClass = ModifConfig.CLASSES.stream().filter(
-                        c -> c.getName().equalsIgnoreCase(user.getClassName()))
-                .findFirst().orElse(null);
-        if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
-
-        Role standardRole = roleRepository.findById(1L).get();
-        Title standardTitle = titleRepository.findById(1L).get();
-        Inventory inventory = new Inventory();
-        Equipment equipment = new Equipment();
-
-        inventoryRepository.save(inventory);
-        equipmentRepository.save(equipment);
-
-        User newUser = new User(
-                username, encryptPassword(user.getPassword()),
-                user.getEmail().toLowerCase(),
-                standardRole,
-                standardTitle,
-                inventory,
-                equipment,
-                aClass.getName(),
-                aClass.getStrength(),
-                aClass.getDexterity(),
-                aClass.getIntelligence(),
-                aClass.getVitality(),
-                aClass.getLuck()
-        );
-
-        newUser.calculateStats(true);
-
-        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
-            newUser.setRole(roleRepository.findById(2L).get());
-
-        return userRepository.save(newUser);
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        } catch (BadCredentialsException e) {
+            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+        } catch (DisabledException e) {
+            throw new Exception(JWTConst.USER_DISABLED, e);
+        }
     }
 }

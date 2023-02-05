@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 
@@ -73,7 +72,12 @@ public class PvpFunctions {
     public void updateGuilds(User attacker, User defender,
                              GuildRepository guildRepository, int mmrWinAndLose) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the guilds.
+         * @param User attacker
+         * @param User defender
+         * @param GuildRepository guildRepository
+         * @return void
          */
         String attackGuildName = attacker.getGuildName();
         String defGuildName = defender.getGuildName();
@@ -97,7 +101,10 @@ public class PvpFunctions {
 
     public void updateQuests(User user) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the quests.
+         * @param User user
+         * @return void
          */
         Map<String, UserQuest> userQuests = new HashMap<>();
         for (UserQuest quest : user.getUserQuests()) {
@@ -109,11 +116,16 @@ public class PvpFunctions {
         }
     }
 
-
     public void updateStatsUserWin(User user, User attacked, long goldAmountWin,
-                                   int mmrWinAndLose, TitleRepository titleRepository) {
+                                   int mmrWinAndLose) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the stats of the winner.
+         * @param User user
+         * @param User attacked
+         * @param long goldAmountWin
+         * @param int mmrWinAndLose
+         * @return void
          */
         attacked.setHp(0);
         user.setGold(user.getGold() + goldAmountWin);
@@ -122,19 +134,22 @@ public class PvpFunctions {
         user.setPvpWins(user.getPvpWins() + 1);
         user.addTitlePoints(mmrWinAndLose);
         attacked.removeTitlePoints(mmrWinAndLose);
-        user.checkStatusTitlePoints(titleRepository);
-        attacked.checkStatusTitlePoints(titleRepository);
     }
 
     public void updateStatsUserLose(User user, User attacked, long goldLoseForLoseCombat,
-                                    int mmrWinAndLose, TitleRepository titleRepository) {
+                                    int mmrWinAndLose) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of updating the stats of the loser.
+         * @param User user
+         * @param User attacked
+         * @param long goldLoseForLoseCombat
+         * @param int mmrWinAndLose
+         * @return void
          */
         user.setHp(0);
         user.setGold(user.getGold() - goldLoseForLoseCombat);
         user.removeTitlePoints(mmrWinAndLose);
-        user.checkStatusTitlePoints(titleRepository);
         user.setPvpLosses(attacked.getPvpLosses() + 1);
         attacked.setPvpWins(user.getPvpWins() + 1);
     }

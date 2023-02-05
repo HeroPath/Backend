@@ -16,8 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PvpFunctionsTest {
 
     private User userTest1 = new User(
-            "testusername", "testpassword", "testusername@test.com", new Role(),
-            new Title(),
+            "testusername", "testpassword", "testusername@test.com",
             new Inventory(),
             new Equipment(),
             "mage",
@@ -25,8 +24,7 @@ class PvpFunctionsTest {
     );
 
     private User userTest2 = new User(
-            "testusername2", "testpassword2", "testusername2@test.com", new Role(),
-            new Title(),
+            "testusername2", "testpassword2", "testusername2@test.com",
             new Inventory(),
             new Equipment(),
             "mage",

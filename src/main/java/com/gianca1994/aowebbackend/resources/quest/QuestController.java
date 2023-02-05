@@ -23,16 +23,20 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token) {
+    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String token
          * @return List<ObjectNode>
          */
-        return questService.getQuests(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
-        );
+        try {
+            return questService.getQuests(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in getting quests");
+        }
     }
 
     @GetMapping("/{name}")
@@ -44,7 +48,11 @@ public class QuestController {
          * @param String name
          * @return Quest
          */
-        return questService.getQuestByName(name);
+        try {
+            return questService.getQuestByName(name);
+        } catch (Exception e) {
+            throw new Conflict("Error in getting quest by name");
+        }
     }
 
     @PostMapping
@@ -56,19 +64,27 @@ public class QuestController {
          * @param QuestDTO quest
          * @return none
          */
-        questService.saveQuest(quest);
+        try {
+            questService.saveQuest(quest);
+        } catch (Exception e) {
+            throw new Conflict("Error in saving quest");
+        }
     }
 
     @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteQuest(@PathVariable String name) {
+    public void deleteQuest(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of deleting a quest.
          * @param String name
          * @return none
          */
-        questService.deleteQuest(name);
+        try {
+            questService.deleteQuest(name);
+        } catch (Exception e) {
+            throw new Conflict("Error in deleting quest");
+        }
     }
 
     @PostMapping("/accept")
@@ -82,16 +98,20 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.acceptQuest(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
-        );
+        try {
+            questService.acceptQuest(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    nameRequestDTO
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in accepting quest");
+        }
     }
 
     @PostMapping("/complete")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public Quest completeQuest(@RequestHeader(value = "Authorization") String token,
-                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                               @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to complete a quest.
@@ -99,10 +119,14 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        return questService.completeQuest(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
-        );
+        try {
+            return questService.completeQuest(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    nameRequestDTO
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in completing quest");
+        }
     }
 
     @PostMapping("/cancel")
@@ -116,7 +140,14 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.cancelQuest(jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO);
+        try {
+            questService.cancelQuest(
+                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                    nameRequestDTO
+            );
+        } catch (Exception e) {
+            throw new Conflict("Error in canceling quest");
+        }
     }
 
 }

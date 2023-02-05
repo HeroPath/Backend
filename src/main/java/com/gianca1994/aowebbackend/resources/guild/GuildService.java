@@ -19,6 +19,9 @@ import java.util.stream.Collectors;
 @Service
 public class GuildService {
 
+    GuildServiceValidator validator = new GuildServiceValidator();
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
     private GuildRepository guildRepository;
 
@@ -27,10 +30,6 @@ public class GuildService {
 
     @Autowired
     private UserService userService;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    GuildServiceValidator validator = new GuildServiceValidator();
 
     private ObjectNode guildToObjectNode(Guild guild) {
         /**
@@ -91,7 +90,7 @@ public class GuildService {
         guildNode.put("maxMembers", SvConfig.MAX_MEMBERS_IN_GUILD);
         guildNode.putPOJO("members",
                 guild.getMembers().stream()
-                        .map(user -> userService.getUserForGuild(user.getUsername()))
+                        .map(user -> userService.getUserForGuild(user.getId()))
                         .sorted((user1, user2) -> {
                             if (user1.getUsername().equals(guild.getLeader())) return -1;
                             else if (user2.getUsername().equals(guild.getLeader())) return 1;
@@ -102,7 +101,7 @@ public class GuildService {
                             else return -1 * Integer.compare(user1.getTitlePoints(), user2.getTitlePoints());
                         }).collect(Collectors.toList())
         );
-        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getUsername())).collect(Collectors.toList()));
+        guildNode.putPOJO("requests", guild.getRequests().stream().map(user -> userService.getUserForGuild(user.getId())).collect(Collectors.toList()));
         return guildNode;
     }
 
@@ -170,6 +169,16 @@ public class GuildService {
 
         userRepository.save(userAccept);
         guildRepository.save(guild);
+    }
+
+    public void rejectUserGuild(String username, String nameReject) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method rejects a user to a guild
+         * @param String username
+         * @param String nameReject
+         * @return void
+         */
     }
 
     public void removeUserGuild(String username, String nameRemove) throws Conflict {

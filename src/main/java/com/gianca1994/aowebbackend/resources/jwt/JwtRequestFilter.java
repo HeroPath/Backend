@@ -28,7 +28,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JWTUserDetailsService jwtUserDetailsService;
+    private AuthService authService;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -52,17 +52,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println(JWTConst.UNABLE_GET_TOKEN);
+                throw new ServletException(JWTConst.UNABLE_GET_TOKEN);
             } catch (ExpiredJwtException e) {
                 System.out.println(JWTConst.TOKEN_EXPIRED);
+                throw new ServletException(JWTConst.TOKEN_EXPIRED);
             } catch (MalformedJwtException e){
                 System.out.println(JWTConst.TOKEN_ADULTERATED);
+                throw new ServletException(JWTConst.TOKEN_ADULTERATED);
             }
-        } else {
-            logger.warn(JWTConst.TOKEN_NOT_BEARER);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.authService.loadUserByUsername(username);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

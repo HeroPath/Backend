@@ -23,9 +23,9 @@ class UserTest {
         user.setUsername("test");
         user.setPassword("test");
         user.setEmail("test@test.com");
-        user.setRole(new Role());
+        user.setRole("ROLE_TEST");
         user.setAClass("test");
-        user.setTitle(new Title());
+        user.setTitleName("test");
         user.setInventory(new Inventory());
         user.setEquipment(new Equipment());
         user.setLevel((short) 1);
@@ -65,8 +65,6 @@ class UserTest {
                 "test",
                 "test",
                 "test@test.com",
-                new Role(),
-                new Title(),
                 new Inventory(),
                 new Equipment(),
                 "test",
@@ -111,7 +109,7 @@ class UserTest {
 
     @Test
     void givenUser_whenGetTitle_thenReturnTitle() {
-        assertNotNull(user.getTitle());
+        assertNotNull(user.getTitleName());
     }
 
     @Test

@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is used to store the data of the classes
  */
 
 @Getter
@@ -22,7 +22,6 @@ public class Class {
     private int intelligence;
     private int vitality;
     private int luck;
-    // Modifiers
     private int minDmgModifier;
     private int maxDmgModifier;
     private int maxHpModifier;

@@ -11,15 +11,14 @@ import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
-import com.gianca1994.aowebbackend.resources.guild.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
-import com.gianca1994.aowebbackend.resources.role.RoleRepository;
-import com.gianca1994.aowebbackend.resources.title.TitleRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
+import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,23 +31,19 @@ import javax.transaction.Transactional;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcService
+ * Explanation: UserService
  */
 
 @Service
 public class UserService {
+
+    UserServiceValidator validator = new UserServiceValidator();
 
     @Autowired
     UserRepository userRepository;
 
     @Autowired
     ItemRepository itemRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
-
-    @Autowired
-    TitleRepository titleRepository;
 
     @Autowired
     NpcRepository npcRepository;
@@ -58,8 +53,6 @@ public class UserService {
 
     @Autowired
     GuildRepository guildRepository;
-
-    UserServiceValidator validator = new UserServiceValidator();
 
     public User getProfile(String username) {
         /**
@@ -71,63 +64,59 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public UserGuildDTO getUserForGuild(String username) {
+    public UserGuildDTO getUserForGuild(long userId) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
-         * @param String username
+         * @param long userId
          * @return UserGuildDTO
          */
-        User user = userRepository.findByUsername(username);
-        validator.getUserForGuild(user);
-
-        UserGuildDTO userGuildDTO = new UserGuildDTO();
-        userGuildDTO.setUsername(user.getUsername());
-        userGuildDTO.setLevel(user.getLevel());
-        userGuildDTO.setTitlePoints(user.getTitlePoints());
-        userGuildDTO.setClassName(user.getAClass());
-        userGuildDTO.setTitleName(user.getTitle().getName());
+        UserGuildDTO userGuildDTO = userRepository.getUserForGuild(userId);
+        validator.getUserForGuild(userGuildDTO);
         return userGuildDTO;
     }
 
-    public List<UserRankingDTO> getRankingAll(int page) {
+    public RankingResponseDTO getRankingAll(int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the ranking of all users.
-         * @param none
-         * @return ArrayList<UserData>
+         * @param int page
+         * @return RankingResponseDTO
          */
-
-        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, 10));
+        int userPerPage = 10;
+        int totalPages = (int) Math.ceil((double) userRepository.count() / userPerPage);
+        Page<User> usersPage = userRepository.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, userPerPage));
         List<User> users = usersPage.getContent();
-        AtomicInteger pos = new AtomicInteger(1);
+        AtomicInteger pos = new AtomicInteger((page * userPerPage) + 1);
 
-        return users.stream().map(user -> new UserRankingDTO(
+        List<UserRankingDTO> ranking = users.stream().map(user -> new UserRankingDTO(
                 pos.getAndIncrement(),
                 user.getUsername(),
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
                 user.getAClass(),
                 user.getLevel(),
-                user.getTitle().getName(), user.getTitlePoints(),
+                user.getTitleName(), user.getTitlePoints(),
                 user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
                 user.getPvpWins(), user.getPvpLosses()
         )).collect(Collectors.toList());
+
+        return new RankingResponseDTO(ranking, totalPages);
     }
+
 
     @Transactional
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of adding skill points to the user.
-         * @param String username
-         * @param FreeSkillPointDTO freeSkillPointDTO
-         * @return User
+         * Explanation: This function is in charge of setting the free skill point of the user.
+         * @param long userId
+         * @param String skillName
+         * @return UserAttributes
          */
         UserAttributes uAttr = userRepository.findAttributesByUserId(userId);
         validator.setFreeSkillPoint(uAttr, skillName);
 
         uAttr.addStat(skillName);
-        uAttr.updateStats();
         userRepository.updateUserStats(
                 uAttr.getStrength(), uAttr.getDexterity(), uAttr.getVitality(),
                 uAttr.getIntelligence(), uAttr.getLuck(),
@@ -144,7 +133,7 @@ public class UserService {
                                                         NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat system between users.
+         * Explanation: This function is in charge of the combat between two users.
          * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
@@ -154,7 +143,7 @@ public class UserService {
         validator.userVsUserCombatSystem(attacker, defender);
 
         PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
-                attacker, defender, titleRepository, guildRepository);
+                attacker, defender, guildRepository);
 
         userRepository.save(pvpUserVsUserModel.getUser());
 
@@ -169,7 +158,7 @@ public class UserService {
                                                        NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat system between users and npcs.
+         * Explanation: This function is in charge of the combat between a user and a npc.
          * @param String username
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
@@ -178,7 +167,7 @@ public class UserService {
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
         validator.userVsNpcCombatSystem(user, npc);
 
-        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc, titleRepository);
+        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
         userRepository.save(pveSystem.getUser());
         return pveSystem.getHistoryCombat();
     }

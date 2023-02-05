@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: Class
+ * Explanation: This class is used to represent the inventory of a character.
  */
 
 @Entity

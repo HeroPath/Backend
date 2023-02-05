@@ -30,12 +30,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService jwtUserDetailsService;
+
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
     @Value("${jwt.authorizeRequests.patterns.auth}")
     private String AUTHORIZE_PATTERNS_AUTHORIZATION;
+
     @Value("${jwt.authorizeRequests.patterns.classes}")
     private String AUTHORIZE_PATTERNS_CLASSES;
+
     @Value("${jwt.authorizeRequests.patterns.swagger.docs}")
     private String AUTHORIZE_PATTERNS_SWAGGER_DOCS;
 

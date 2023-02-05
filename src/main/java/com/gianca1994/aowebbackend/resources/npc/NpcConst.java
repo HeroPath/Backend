@@ -19,6 +19,4 @@ public class NpcConst {
     public static final String MAX_DMG_LESS_THAN_ZERO = "MaxDmg cannot be less than 0";
     public static final String DEFENSE_LESS_THAN_ZERO = "MinDefense cannot be less than 0";
     public static final String ZONE_EMPTY = "Zone cannot be empty";
-
-
 }

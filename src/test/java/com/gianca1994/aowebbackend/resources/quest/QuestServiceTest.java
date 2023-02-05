@@ -1,18 +1,15 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.jwt.JWTAuthController;
+import com.gianca1994.aowebbackend.resources.jwt.AuthController;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,7 +28,7 @@ class QuestServiceTest {
 
 
     @Autowired
-    private JWTAuthController jwtAuthController;
+    private AuthController authController;
 
     private User userTest;
 
@@ -48,7 +45,7 @@ class QuestServiceTest {
             userDTO.setEmail("test@test.com");
             userDTO.setClassName("test");
 
-            jwtAuthController.saveUser(userDTO);
+            authController.saveUser(userDTO);
             userTest = userRepository.findByUsername("testusername");
         }
 
