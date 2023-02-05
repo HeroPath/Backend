@@ -12,7 +12,6 @@ public class JWTConst {
     public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$";
     public static final String USER_DISABLED = "USER_DISABLED";
-    public static final String INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
     public static final String UNAUTHORIZED = "Unauthorized";
     public static final String UNABLE_GET_TOKEN = "Unable to get JWT Token";
     public static final String TOKEN_EXPIRED = "JWT Token has expired";

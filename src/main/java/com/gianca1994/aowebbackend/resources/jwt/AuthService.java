@@ -39,6 +39,8 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 @Service
 public class AuthService implements UserDetailsService {
 
+    AuthServiceValidator validator = new AuthServiceValidator();
+
     @Autowired
     private UserRepository userRepository;
 
@@ -74,24 +76,16 @@ public class AuthService implements UserDetailsService {
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
         String username = user.getUsername().toLowerCase();
+        String password = user.getPassword();
         String email = user.getEmail().toLowerCase();
-
-        if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);
-        if (userRepository.existsByUsername(username)) throw new Conflict(JWTConst.USERNAME_EXISTS);
-        if (userRepository.existsByEmail(email)) throw new Conflict(JWTConst.EMAIL_EXISTS);
-
-        if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
-        if (user.getPassword().length() < 3 || user.getPassword().length() > 20)
-            throw new BadRequest(JWTConst.PASSWORD_LENGTH);
-
         Class aClass = ModifConfig.CLASSES.stream().filter(
                         c -> c.getName().equalsIgnoreCase(user.getClassName()))
                 .findFirst().orElse(null);
-        if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
+
+        validator.saveUser(username, password, email, aClass, userRepository);
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
-
         inventoryRepository.save(inventory);
         equipmentRepository.save(equipment);
 

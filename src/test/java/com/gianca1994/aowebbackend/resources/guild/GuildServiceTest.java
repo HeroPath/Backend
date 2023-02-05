@@ -47,7 +47,7 @@ class GuildServiceTest {
             userDTO.setEmail("test@test.com");
             userDTO.setClassName("test");
 
-            authController.saveUser(userDTO);
+            authController.register(userDTO);
             userTest = userRepository.findByUsername("testusername");
         }
 

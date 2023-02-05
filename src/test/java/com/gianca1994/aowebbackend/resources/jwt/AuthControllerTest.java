@@ -31,7 +31,7 @@ class AuthControllerTest {
             userDTO.setEmail("test@test.com");
             userDTO.setClassName("test");
 
-            authController.saveUser(userDTO);
+            authController.register(userDTO);
         }
     }
 }
