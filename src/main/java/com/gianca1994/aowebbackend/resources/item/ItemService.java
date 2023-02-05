@@ -31,7 +31,7 @@ public class ItemService {
         return itemRepository.findByClassRequiredOrderByLvlMinAsc(aClass);
     }
 
-    public Item saveItem(ItemDTO newItem) throws Conflict {
+    public void saveItem(ItemDTO newItem) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
@@ -41,15 +41,13 @@ public class ItemService {
         Item item = itemRepository.findByName(newItem.getName().toLowerCase());
         validator.saveItem(item, newItem);
 
-        String classRequired = newItem.getClassRequired();
-        if (Objects.equals(classRequired, "")) classRequired = "none";
-        return itemRepository.save(new Item(
+        String classRequired = newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired();
+        itemRepository.save(new Item(
                 newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(),
-                classRequired,
-                newItem.getPrice(),
+                classRequired, newItem.getPrice(),
                 newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(),
-                newItem.getVitality(), newItem.getLuck())
-        );
+                newItem.getVitality(), newItem.getLuck()
+        ));
     }
 
     public User buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
@@ -104,7 +102,7 @@ public class ItemService {
         user.getInventory().getItems().remove(itemEquip);
         if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
             user.setHp(user.getMaxHp());
-        } else{
+        } else {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }

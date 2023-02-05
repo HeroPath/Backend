@@ -25,7 +25,7 @@ public class ItemController {
 
     @GetMapping("/shop/{aClass}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Item> getClassShop(@PathVariable String aClass) throws Conflict {
+    public List<Item> getClassShop(@PathVariable String aClass) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the items of a specific class.
@@ -37,14 +37,14 @@ public class ItemController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Item saveItem(@RequestBody ItemDTO newItem) throws Conflict {
+    public void saveItem(@RequestBody ItemDTO newItem) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
          * @param Item item
          * @return Item
          */
-        return itemService.saveItem(newItem);
+        itemService.saveItem(newItem);
     }
 
     @PostMapping("/buy")
