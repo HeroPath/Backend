@@ -3,6 +3,7 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +24,8 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token) throws Conflict {
+    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token,
+                                      @RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
@@ -31,7 +33,8 @@ public class QuestController {
          * @return List<ObjectNode>
          */
         return questService.getQuests(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                page
         );
     }
 
@@ -61,7 +64,7 @@ public class QuestController {
 
     @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteQuest(@PathVariable String name) throws Conflict {
+    public void deleteQuest(@PathVariable String name) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of deleting a quest.

@@ -3,11 +3,14 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
 import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,18 +31,26 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
-    public List<ObjectNode> getQuests(String username) {
+    public List<ObjectNode> getQuests(String username, int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String username
+         * @param int page
          * @return List<ObjectNode>
          */
+        int questPerPage = 5;
+        int totalPages = (int) Math.ceil((double) questRepository.count() / questPerPage);
+
+        Page<Quest> questsPage = questRepository.findAllQuests(PageRequest.of(page, questPerPage));
+        List<Quest> quests = questsPage.getContent();
+
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
         List<ObjectNode> result = new ArrayList<>();
 
-        for (Quest quest : questRepository.findAll()) {
+        for (Quest quest : quests) {
             ObjectNode questON = new ObjectMapper().createObjectNode();
+            questON.put("totalPages", totalPages);
             questON.putPOJO("quest", quest);
             for (UserQuest userQuest : userQuests) {
                 if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
@@ -52,6 +63,7 @@ public class QuestService {
         }
         return result;
     }
+
 
     public Quest getQuestByName(String name) throws Conflict {
         /**
