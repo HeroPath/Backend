@@ -1,15 +1,13 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,8 +22,8 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token,
-                                      @RequestParam("page") int page) {
+    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token,
+                                  @RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.

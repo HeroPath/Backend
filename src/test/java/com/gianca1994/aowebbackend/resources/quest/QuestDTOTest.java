@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
-import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

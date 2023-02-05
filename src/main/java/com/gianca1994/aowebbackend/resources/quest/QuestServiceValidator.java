@@ -3,7 +3,7 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
 

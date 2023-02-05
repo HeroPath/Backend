@@ -3,7 +3,8 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.quest.dto.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestService {
@@ -31,7 +34,7 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
-    public List<ObjectNode> getQuests(String username, int page) {
+    public QuestListDTO getQuests(String username, int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
@@ -41,27 +44,24 @@ public class QuestService {
          */
         int questPerPage = 5;
         int totalPages = (int) Math.ceil((double) questRepository.count() / questPerPage);
-
         Page<Quest> questsPage = questRepository.findAllQuests(PageRequest.of(page, questPerPage));
         List<Quest> quests = questsPage.getContent();
-
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
-        List<ObjectNode> result = new ArrayList<>();
 
-        for (Quest quest : quests) {
-            ObjectNode questON = new ObjectMapper().createObjectNode();
-            questON.put("totalPages", totalPages);
-            questON.putPOJO("quest", quest);
-            for (UserQuest userQuest : userQuests) {
-                if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
-                    questON.put("npcKillAmount", userQuest.getAmountNpcKill());
-                    questON.put("userKillAmount", userQuest.getAmountUserKill());
-                    break;
-                }
-            }
-            result.add(questON);
-        }
-        return result;
+        Map<String, UserQuest> userQuestMap = userQuests.stream().collect(Collectors.toMap(userQuest -> userQuest.getQuest().getName(), userQuest -> userQuest));
+
+        List<ObjectNode> result = quests.stream()
+                .map(quest -> {
+                    ObjectNode questON = new ObjectMapper().createObjectNode();
+                    questON.putPOJO("quest", quest);
+                    UserQuest userQuest = userQuestMap.get(quest.getName());
+                    if (userQuest != null) {
+                        questON.put("npcKillAmount", userQuest.getAmountNpcKill());
+                        questON.put("userKillAmount", userQuest.getAmountUserKill());
+                    }
+                    return questON;
+                }).collect(Collectors.toList());
+        return new QuestListDTO(result, totalPages);
     }
 
 
