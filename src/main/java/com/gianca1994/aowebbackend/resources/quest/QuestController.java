@@ -30,13 +30,9 @@ public class QuestController {
          * @param String token
          * @return List<ObjectNode>
          */
-        try {
-            return questService.getQuests(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in getting quests");
-        }
+        return questService.getQuests(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
     }
 
     @GetMapping("/{name}")
@@ -48,11 +44,7 @@ public class QuestController {
          * @param String name
          * @return Quest
          */
-        try {
-            return questService.getQuestByName(name);
-        } catch (Exception e) {
-            throw new Conflict("Error in getting quest by name");
-        }
+        return questService.getQuestByName(name);
     }
 
     @PostMapping
@@ -64,11 +56,7 @@ public class QuestController {
          * @param QuestDTO quest
          * @return none
          */
-        try {
-            questService.saveQuest(quest);
-        } catch (Exception e) {
-            throw new Conflict("Error in saving quest");
-        }
+        questService.saveQuest(quest);
     }
 
     @DeleteMapping("/{name}")
@@ -80,11 +68,7 @@ public class QuestController {
          * @param String name
          * @return none
          */
-        try {
-            questService.deleteQuest(name);
-        } catch (Exception e) {
-            throw new Conflict("Error in deleting quest");
-        }
+        questService.deleteQuest(name);
     }
 
     @PostMapping("/accept")
@@ -98,14 +82,10 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            questService.acceptQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in accepting quest");
-        }
+        questService.acceptQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/complete")
@@ -119,14 +99,10 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            return questService.completeQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in completing quest");
-        }
+        return questService.completeQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/cancel")
@@ -140,14 +116,9 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            questService.cancelQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in canceling quest");
-        }
+        questService.cancelQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
-
 }
