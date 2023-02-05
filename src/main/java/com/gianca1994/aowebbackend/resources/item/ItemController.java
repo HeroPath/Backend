@@ -2,10 +2,12 @@ package com.gianca1994.aowebbackend.resources.item;
 
 
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.dto.response.UserEquipOrUnequipDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +51,8 @@ public class ItemController {
 
     @PostMapping("/buy")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User buyItem(@RequestHeader(value = "Authorization") String token,
-                        @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+    public BuySellDTO buyItem(@RequestHeader(value = "Authorization") String token,
+                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -66,8 +68,8 @@ public class ItemController {
 
     @PostMapping("/sell")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public User sellItem(@RequestHeader(value = "Authorization") String token,
-                         @RequestBody NameRequestDTO nameRequestDTO) {
+    public BuySellDTO sellItem(@RequestHeader(value = "Authorization") String token,
+                               @RequestBody NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -83,8 +85,8 @@ public class ItemController {
 
     @PostMapping("/equip")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public UserEquipOrUnequipDTO equipItem(@RequestHeader(value = "Authorization") String token,
-                                           @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO equipItem(@RequestHeader(value = "Authorization") String token,
+                                       @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
@@ -100,8 +102,8 @@ public class ItemController {
 
     @PostMapping("/unequip")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public UserEquipOrUnequipDTO unequipItem(@RequestHeader(value = "Authorization") String token,
-                                             @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO unequipItem(@RequestHeader(value = "Authorization") String token,
+                                         @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item to the user.

@@ -1,10 +1,13 @@
 package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.dto.response.UserEquipOrUnequipDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +53,7 @@ public class ItemService {
         ));
     }
 
-    public User buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public BuySellDTO buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -65,10 +68,11 @@ public class ItemService {
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
         userRepository.save(user);
-        return user;
+
+        return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public User sellItem(String username, NameRequestDTO nameRequestDTO) {
+    public BuySellDTO sellItem(String username, NameRequestDTO nameRequestDTO) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -83,11 +87,12 @@ public class ItemService {
         user.setGold(user.getGold() + (itemSell.getPrice() / 2));
         user.getInventory().getItems().remove(itemSell);
         userRepository.save(user);
-        return user;
+
+        return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public UserEquipOrUnequipDTO equipItem(String username,
-                                           EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO equipItem(String username,
+                                       EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -107,10 +112,10 @@ public class ItemService {
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }
         userRepository.save(user);
-        return new UserEquipOrUnequipDTO(user);
+        return new EquipOrUnequipDTO(user);
     }
 
-    public UserEquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -128,7 +133,7 @@ public class ItemService {
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userRepository.save(user);
 
-        return new UserEquipOrUnequipDTO(user);
+        return new EquipOrUnequipDTO(user);
     }
 
 }
