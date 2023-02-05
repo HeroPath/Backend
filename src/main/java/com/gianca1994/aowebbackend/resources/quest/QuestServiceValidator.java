@@ -31,7 +31,6 @@ public class QuestServiceValidator {
          */
         if (checkQuest != null) throw new Conflict("Quest already exists");
         if (Objects.equals(quest.getName(), "")) throw new Conflict("Name cannot be empty");
-        if (Objects.equals(quest.getDescription(), "")) throw new Conflict("Description cannot be empty");
         if (Objects.equals(quest.getNameNpcKill(), "")) throw new Conflict("Name NPC Kill cannot be empty");
         if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");
         if (quest.getUserKillAmountNeeded() < 0) throw new Conflict("User Kill Amount Needed cannot be negative");

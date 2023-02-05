@@ -66,7 +66,6 @@ def main():
 
     questsDataFrame = pd.DataFrame(quests, columns=[
         "name",
-        "description",
         "nameNpcKill",
         "npcKillAmountNeeded",
         "userKillAmountNeeded",

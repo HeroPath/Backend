@@ -77,7 +77,6 @@ public class QuestService {
         questRepository.save(
                 new Quest(
                         quest.getName(),
-                        quest.getDescription(),
                         quest.getNameNpcKill().toLowerCase(),
                         quest.getNpcKillAmountNeeded(),
                         quest.getUserKillAmountNeeded(),
