@@ -5,7 +5,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.List;
 import java.util.Objects;

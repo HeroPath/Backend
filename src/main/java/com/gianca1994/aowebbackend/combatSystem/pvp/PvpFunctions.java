@@ -4,7 +4,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.HashMap;
 import java.util.Map;

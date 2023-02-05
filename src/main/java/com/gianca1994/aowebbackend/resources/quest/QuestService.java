@@ -7,17 +7,15 @@ import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuestRepository;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service

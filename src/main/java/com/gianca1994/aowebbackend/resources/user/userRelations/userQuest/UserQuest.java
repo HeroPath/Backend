@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user.userRelations;
+package com.gianca1994.aowebbackend.resources.user.userRelations.userQuest;
 
 import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.user.User;
