@@ -96,7 +96,6 @@ public class AuthService implements UserDetailsService {
                 aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
                 aClass.getVitality(), aClass.getLuck()
         );
-
         newUser.calculateStats(true);
 
         if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
