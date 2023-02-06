@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.classes;
 
+import com.gianca1994.aowebbackend.exception.Conflict;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,8 +22,7 @@ class ClassControllerTest {
     private ClassController classController;
 
     @Test
-    void givenClasses_whenGetAllClasses_thenReturnAllClasses() throws UnsupportedEncodingException {
-
+    void givenClasses_whenGetAllClasses_thenReturnAllClasses() throws Conflict {
         assertEquals(3, classController.getAllClasses().size());
     }
 }
