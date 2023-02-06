@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestListDTO {
+    private List<ObjectNode> acceptedQuests;
     private List<ObjectNode> quests;
     private int totalPages;
 }

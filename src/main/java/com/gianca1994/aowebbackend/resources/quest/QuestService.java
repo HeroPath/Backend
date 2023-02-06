@@ -41,27 +41,42 @@ public class QuestService {
          * @return List<ObjectNode>
          */
         int questPerPage = 5;
-        int totalPages = (int) Math.ceil((double) questRepository.count() / questPerPage);
-        Page<Quest> questsPage = questRepository.findAllQuests(PageRequest.of(page, questPerPage));
-        List<Quest> quests = questsPage.getContent();
+        List<Quest> allQuests = questRepository.findAll();
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
 
-        Map<String, UserQuest> userQuestMap = userQuests.stream().collect(Collectors.toMap(userQuest -> userQuest.getQuest().getName(), userQuest -> userQuest));
+        List<Quest> unacceptedQuests = allQuests.stream()
+                .filter(quest -> {
+                    for (UserQuest userQuest : userQuests) {
+                        if (userQuest.getQuest().getName().equals(quest.getName())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }).collect(Collectors.toList());
 
-        List<ObjectNode> result = quests.stream()
+        int totalPages = (int) Math.ceil((double) unacceptedQuests.size() / questPerPage);
+        int fromIndex = page * questPerPage;
+        int toIndex = Math.min(fromIndex + questPerPage, unacceptedQuests.size());
+        List<Quest> unacceptedQuestsPage = unacceptedQuests.subList(fromIndex, toIndex);
+
+        List<ObjectNode> unacceptedResult = unacceptedQuestsPage.stream()
                 .map(quest -> {
                     ObjectNode questON = new ObjectMapper().createObjectNode();
                     questON.putPOJO("quest", quest);
-                    UserQuest userQuest = userQuestMap.get(quest.getName());
-                    if (userQuest != null) {
-                        questON.put("npcKillAmount", userQuest.getAmountNpcKill());
-                        questON.put("userKillAmount", userQuest.getAmountUserKill());
-                    }
                     return questON;
                 }).collect(Collectors.toList());
-        return new QuestListDTO(result, totalPages);
-    }
 
+        List<ObjectNode> acceptedResult = userQuests.stream()
+                .map(userQuest -> {
+                    ObjectNode questON = new ObjectMapper().createObjectNode();
+                    questON.putPOJO("quest", userQuest.getQuest());
+                    questON.put("npcKillAmount", userQuest.getAmountNpcKill());
+                    questON.put("userKillAmount", userQuest.getAmountUserKill());
+                    return questON;
+                }).collect(Collectors.toList());
+
+        return new QuestListDTO(acceptedResult, unacceptedResult, totalPages);
+    }
 
     public Quest getQuestByName(String name) throws Conflict {
         /**
