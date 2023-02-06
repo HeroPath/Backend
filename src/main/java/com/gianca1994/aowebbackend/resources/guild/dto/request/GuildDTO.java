@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.guild;
+package com.gianca1994.aowebbackend.resources.guild.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
