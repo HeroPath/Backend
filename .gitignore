@@ -5,6 +5,9 @@ out/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .env
+__pycache__/
+.idea/
+.mvn
 
 ### STS ###
 .apt_generated
