@@ -48,17 +48,13 @@ public class UserController {
 
     @GetMapping("/ranking")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public RankingResponseDTO getRankingAll(@RequestParam("page") int page) throws Conflict {
+    public RankingResponseDTO getRankingAll(@RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
          * @return ArrayList<User> users
          */
-        try {
-            return userService.getRankingAll(page);
-        } catch (Exception e) {
-            throw new Conflict("Error in getting the ranking");
-        }
+        return userService.getRankingAll(page);
     }
 
     @PostMapping("/add-skill-points/{skillName}")
@@ -72,13 +68,9 @@ public class UserController {
          * @param FreeSkillPointDTO freeSkillPointDTO
          * @return User user
          */
-        try {
-            return userService.setFreeSkillPoint(
-                    jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in adding skill points");
-        }
+        return userService.setFreeSkillPoint(
+                jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
+        );
     }
 
     @PostMapping("/attack-user")
@@ -92,13 +84,9 @@ public class UserController {
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        try {
-            return userService.userVsUserCombatSystem(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in attacking the user");
-        }
+        return userService.userVsUserCombatSystem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        );
     }
 
     @PostMapping("/attack-npc")
@@ -112,12 +100,8 @@ public class UserController {
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode> objectNodes
          */
-        try {
-            return userService.userVsNpcCombatSystem(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in attacking the npc");
-        }
+        return userService.userVsNpcCombatSystem(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        );
     }
 }

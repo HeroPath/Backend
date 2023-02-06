@@ -47,11 +47,7 @@ public class NpcController {
          * @param String name
          * @return Npc
          */
-        try {
-            return npcService.getNpcByName(name);
-        } catch (Exception e) {
-            throw new Conflict("Error in getting npc by name");
-        }
+        return npcService.getNpcByName(name);
     }
 
     @GetMapping("/zone/{zone}")
@@ -63,11 +59,7 @@ public class NpcController {
          * @param String zone
          * @return ArrayList<Npc>
          */
-        try {
-            return npcService.filterNpcByZone(zone);
-        } catch (Exception e) {
-            throw new Conflict("Error in getting npcs by zone");
-        }
+        return npcService.filterNpcByZone(zone);
     }
 
     @PostMapping()
@@ -80,10 +72,6 @@ public class NpcController {
          * @param Npc npc
          * @return Npc
          */
-        try {
-            return npcService.saveNpc(npc);
-        } catch (Exception e) {
-            throw new Conflict("Error in saving npc");
-        }
+        return npcService.saveNpc(npc);
     }
 }

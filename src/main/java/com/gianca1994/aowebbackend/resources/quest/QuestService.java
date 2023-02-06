@@ -3,16 +3,20 @@ package com.gianca1994.aowebbackend.resources.quest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.*;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuest;
-import com.gianca1994.aowebbackend.resources.user.userRelations.UserQuestRepository;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestService {
@@ -28,29 +32,50 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestRepository;
 
-    public List<ObjectNode> getQuests(String username) {
+    public QuestListDTO getQuests(String username, int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String username
+         * @param int page
          * @return List<ObjectNode>
          */
+        int questPerPage = 5;
+        List<Quest> allQuests = questRepository.findAll();
         List<UserQuest> userQuests = userQuestRepository.findByUserUsername(username);
-        List<ObjectNode> result = new ArrayList<>();
 
-        for (Quest quest : questRepository.findAll()) {
-            ObjectNode questON = new ObjectMapper().createObjectNode();
-            questON.putPOJO("quest", quest);
-            for (UserQuest userQuest : userQuests) {
-                if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
+        List<Quest> unacceptedQuests = allQuests.stream()
+                .filter(quest -> {
+                    for (UserQuest userQuest : userQuests) {
+                        if (userQuest.getQuest().getName().equals(quest.getName())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }).collect(Collectors.toList());
+
+        int totalPages = (int) Math.ceil((double) unacceptedQuests.size() / questPerPage);
+        int fromIndex = page * questPerPage;
+        int toIndex = Math.min(fromIndex + questPerPage, unacceptedQuests.size());
+        List<Quest> unacceptedQuestsPage = unacceptedQuests.subList(fromIndex, toIndex);
+
+        List<ObjectNode> unacceptedResult = unacceptedQuestsPage.stream()
+                .map(quest -> {
+                    ObjectNode questON = new ObjectMapper().createObjectNode();
+                    questON.putPOJO("quest", quest);
+                    return questON;
+                }).collect(Collectors.toList());
+
+        List<ObjectNode> acceptedResult = userQuests.stream()
+                .map(userQuest -> {
+                    ObjectNode questON = new ObjectMapper().createObjectNode();
+                    questON.putPOJO("quest", userQuest.getQuest());
                     questON.put("npcKillAmount", userQuest.getAmountNpcKill());
                     questON.put("userKillAmount", userQuest.getAmountUserKill());
-                    break;
-                }
-            }
-            result.add(questON);
-        }
-        return result;
+                    return questON;
+                }).collect(Collectors.toList());
+
+        return new QuestListDTO(acceptedResult, unacceptedResult, totalPages);
     }
 
     public Quest getQuestByName(String name) throws Conflict {

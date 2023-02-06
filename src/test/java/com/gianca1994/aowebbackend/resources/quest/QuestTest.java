@@ -16,7 +16,6 @@ class QuestTest {
         quest = new Quest();
         quest.setId(1L);
         quest.setName("name");
-        quest.setDescription("description");
         quest.setNameNpcKill("nameNpcKill");
         quest.setNpcKillAmountNeeded(1);
         quest.setUserKillAmountNeeded(1);
@@ -34,7 +33,7 @@ class QuestTest {
     @Test
     public void constructorAllArgsTest() {
         Quest quest = new Quest(
-                1L, "name", "description", "nameNpcKill",
+                1L, "name", "nameNpcKill",
                 1, 1,
                 1L, 1L, (short) 1, new HashSet<>()
         );
@@ -44,7 +43,7 @@ class QuestTest {
     @Test
     public void constructorAllArgsWithoutIdTest() {
         Quest quest = new Quest(
-                "name", "description",
+                "name",
                 "nameNpcKill", 1,
                 1,
                 1,
@@ -62,11 +61,6 @@ class QuestTest {
     @Test
     void givenQuest_whenGetName_thenReturnName() {
         assertThat(quest.getName()).isEqualTo("name");
-    }
-
-    @Test
-    void givenQuest_whenGetDescription_thenReturnDescription() {
-        assertThat(quest.getDescription()).isEqualTo("description");
     }
 
     @Test
@@ -102,7 +96,7 @@ class QuestTest {
     @Test
     void givenQuest_whenNotEquals_thenNotEquals() {
         Quest quest2 = new Quest(
-                2L, "name2", "description2", "nameNpcKill2",
+                2L, "name2", "nameNpcKill2",
 
                 2, 2,
                 2L, 2L, (short) 2,

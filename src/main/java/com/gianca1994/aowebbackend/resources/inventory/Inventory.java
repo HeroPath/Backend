@@ -17,7 +17,7 @@ import java.util.*;
  */
 
 @Entity
-@Table(name = "inventories")
+@Table(name = "inventory")
 @Getter
 @Setter
 @AllArgsConstructor

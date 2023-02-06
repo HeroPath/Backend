@@ -45,14 +45,13 @@ class QuestServiceTest {
             userDTO.setEmail("test@test.com");
             userDTO.setClassName("test");
 
-            authController.saveUser(userDTO);
+            authController.register(userDTO);
             userTest = userRepository.findByUsername("testusername");
         }
 
         questRepository.save(
                 new Quest(
                         "testquest",
-                        "testquestdescription",
                         "testnpc",
                         1,
                         1,

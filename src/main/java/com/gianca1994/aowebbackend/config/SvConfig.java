@@ -7,7 +7,7 @@ public class SvConfig {
      */
     /////////////////////////// BASIC STATICS ///////////////////////////
     public static final int EXPERIENCE_MULTIPLIER = 50000;
-    public static final int GOLD_MULTIPLIER = 10000;
+    public static final int GOLD_MULTIPLIER = 1000;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 

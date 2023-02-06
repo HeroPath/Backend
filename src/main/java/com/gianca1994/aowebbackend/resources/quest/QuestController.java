@@ -1,14 +1,13 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
+import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -23,20 +22,18 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getQuests(@RequestHeader(value = "Authorization") String token) throws Conflict {
+    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token,
+                                  @RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String token
          * @return List<ObjectNode>
          */
-        try {
-            return questService.getQuests(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in getting quests");
-        }
+        return questService.getQuests(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                page
+        );
     }
 
     @GetMapping("/{name}")
@@ -48,11 +45,7 @@ public class QuestController {
          * @param String name
          * @return Quest
          */
-        try {
-            return questService.getQuestByName(name);
-        } catch (Exception e) {
-            throw new Conflict("Error in getting quest by name");
-        }
+        return questService.getQuestByName(name);
     }
 
     @PostMapping
@@ -64,27 +57,19 @@ public class QuestController {
          * @param QuestDTO quest
          * @return none
          */
-        try {
-            questService.saveQuest(quest);
-        } catch (Exception e) {
-            throw new Conflict("Error in saving quest");
-        }
+        questService.saveQuest(quest);
     }
 
     @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteQuest(@PathVariable String name) throws Conflict {
+    public void deleteQuest(@PathVariable String name) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of deleting a quest.
          * @param String name
          * @return none
          */
-        try {
-            questService.deleteQuest(name);
-        } catch (Exception e) {
-            throw new Conflict("Error in deleting quest");
-        }
+        questService.deleteQuest(name);
     }
 
     @PostMapping("/accept")
@@ -98,14 +83,10 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            questService.acceptQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in accepting quest");
-        }
+        questService.acceptQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/complete")
@@ -119,14 +100,10 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            return questService.completeQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in completing quest");
-        }
+        return questService.completeQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
 
     @PostMapping("/cancel")
@@ -140,14 +117,9 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        try {
-            questService.cancelQuest(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                    nameRequestDTO
-            );
-        } catch (Exception e) {
-            throw new Conflict("Error in canceling quest");
-        }
+        questService.cancelQuest(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO
+        );
     }
-
 }

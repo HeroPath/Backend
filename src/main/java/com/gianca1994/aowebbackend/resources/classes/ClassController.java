@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.classes;
 
+import com.gianca1994.aowebbackend.exception.Conflict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ClassController {
     private ClassService classService;
 
     @GetMapping()
-    public List<Class> getAllClasses() {
+    public List<Class> getAllClasses() throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get all the classes from the database.
@@ -29,7 +30,7 @@ public class ClassController {
         try {
             return classService.getAllClasses();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new Conflict("Error while getting all classes");
         }
     }
 }

@@ -4,6 +4,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 
 import java.util.Objects;

@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
+import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,6 @@ class QuestDTOTest {
     void setUp() {
         questDTO = new QuestDTO();
         questDTO.setName("name");
-        questDTO.setDescription("description");
         questDTO.setNameNpcKill("nameNpcKill");
         questDTO.setNpcKillAmountNeeded(1);
         questDTO.setUserKillAmountNeeded(1);
@@ -31,7 +31,7 @@ class QuestDTOTest {
     @Test
     public void constructorAllArgsTest() {
        QuestDTO questDTO = new QuestDTO(
-                "name", "description",
+                "name",
                 "nameNpcKill", 1,
                 1,
                 1L,
@@ -46,10 +46,6 @@ class QuestDTOTest {
         assertThat(questDTO.getName()).isEqualTo("name");
     }
 
-    @Test
-    void givenQuestDTO_whenGetDescription_thenReturnDescription() {
-        assertThat(questDTO.getDescription()).isEqualTo("description");
-    }
 
     @Test
     void givenQuestDTO_whenGetNameNpcKill_thenReturnNameNpcKill() {
@@ -84,7 +80,7 @@ class QuestDTOTest {
     @Test
     void givenQuestDTO_whenNotEquals_thenReturnFalse() {
         QuestDTO questDTO2 = new QuestDTO(
-                "name", "description",
+                "name",
                 "nameNpcKill", 1,
                 1,
                 1L,

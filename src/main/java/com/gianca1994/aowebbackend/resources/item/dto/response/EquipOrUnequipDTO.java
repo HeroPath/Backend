@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user.dto.response;
+package com.gianca1994.aowebbackend.resources.item.dto.response;
 
 
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEquipOrUnequipDTO {
+public class EquipOrUnequipDTO {
     Inventory inventory;
     Equipment equipment;
     private int strength;
@@ -30,7 +30,7 @@ public class UserEquipOrUnequipDTO {
     private int evasion;
     private float criticalChance;
 
-    public UserEquipOrUnequipDTO(User user) {
+    public EquipOrUnequipDTO(User user) {
         this.inventory = user.getInventory();
         this.equipment = user.getEquipment();
         this.strength = user.getStrength();

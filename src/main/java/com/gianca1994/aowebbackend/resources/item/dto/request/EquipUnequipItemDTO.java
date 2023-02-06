@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.item;
+package com.gianca1994.aowebbackend.resources.item.dto.request;
 
 
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

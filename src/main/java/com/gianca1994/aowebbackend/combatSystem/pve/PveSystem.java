@@ -38,7 +38,7 @@ public class PveSystem {
         while (!stopPve) {
             roundCounter++;
 
-            if (user.getRole().equals("ADMIN")) userDmg = 999999999;
+            if (user.getRole().equals("ADMIN")) userDmg = 9999999;
             else userDmg = genericFunctions.getUserDmg(user, npcDefense);
 
             npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);

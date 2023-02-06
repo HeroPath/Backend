@@ -25,14 +25,39 @@ public class GenericFunctions {
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the damage that the user.
          * @param User user
+         * @param int defense
          * @return int
          */
+        int maxDifference = user.getMaxDmg() - user.getMinDmg() + 1;
+        int randomNum = (int) Math.floor(Math.random() * maxDifference) + user.getMinDmg();
+        int dmg = defense >= randomNum ? 0 : randomNum - defense;
+        return calculateCriticalDmg(user, dmg);
+    }
+
+    private int calculateCriticalDmg(User user, int dmg) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the critical damage.
+         * @param User user
+         * @param int dmg
+         * @return int
+         */
+        double randomNum = Math.random() * 100 + 1;
+        if (randomNum <= user.getCriticalChance())
+            return dmg * SvConfig.CRITICAL_DAMAGE_MULTIPLIER;
+        else return dmg;
+    }
+
+    /*
+    public int getUserDmg(User user, int defense) {
+
         int dmg = (int) Math.floor(Math.random() * (user.getMaxDmg() - user.getMinDmg() + 1) + user.getMinDmg());
         dmg = defense >= dmg ? 0 : dmg - defense;
         if (Math.floor(Math.random() * 100) + 1 <= user.getCriticalChance())
             return dmg * SvConfig.CRITICAL_DAMAGE_MULTIPLIER;
         else return dmg;
     }
+     */
 
     public int userReceiveDmg(User user, int userHp, int dmg) {
         /**

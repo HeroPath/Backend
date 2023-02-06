@@ -21,7 +21,7 @@ public class AuthServiceValidator {
         if (userRepository.existsByUsername(username)) throw new Conflict(JWTConst.USERNAME_EXISTS);
         if (userRepository.existsByEmail(email)) throw new Conflict(JWTConst.EMAIL_EXISTS);
         if (username.length() < 3 || username.length() > 20) throw new BadRequest(JWTConst.USERNAME_LENGTH);
-        if (password.length() < 3 || password.length() > 20) throw new BadRequest(JWTConst.PASSWORD_LENGTH);
+        if (password.length() < 4 || password.length() > 20) throw new BadRequest(JWTConst.PASSWORD_LENGTH);
         if (aClass == null) throw new BadRequest(JWTConst.CLASS_NOT_FOUND);
     }
 }
