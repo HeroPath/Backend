@@ -17,21 +17,17 @@ public class PvpSystem {
     private static final GenericFunctions genericFunctions = new GenericFunctions();
     private static final PvpFunctions pvpFunctions = new PvpFunctions();
 
-    public static CombatModel PvpUserVsUser(User user,
-                                            User attacked,
-                                            GuildRepository guildRepository) {
+    public static CombatModel PvpUserVsUser(User user, User attacked, GuildRepository guildRepository) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of starting a combat between two users.
+         * Explanation: This function is in charge of the combat between two users.
          * @param User user
          * @param User attacked
-         * @param TitleRepository titleRepository
          * @param GuildRepository guildRepository
          * @return PvpModel
          */
         CombatModel pvpModel = new CombatModel(new ArrayList<>(), user, attacked);
         int mmrWinAndLose = pvpFunctions.calculatePointsTitleWinOrLose(attacked);
-        String attackerName = user.getUsername(), defenderName = attacked.getUsername();
 
         long goldAmountWin = 0, goldLoseForLoseCombat = 0;
         int roundCounter = 0, userDmg, attackedDmg, userHp = user.getHp(), attackedHp = attacked.getHp(),

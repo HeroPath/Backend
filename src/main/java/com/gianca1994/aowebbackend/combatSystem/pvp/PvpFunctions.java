@@ -6,9 +6,8 @@ import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
@@ -106,13 +105,13 @@ public class PvpFunctions {
          * @param User user
          * @return void
          */
-        Map<String, UserQuest> userQuests = new HashMap<>();
-        for (UserQuest quest : user.getUserQuests()) {
-            userQuests.put(quest.getQuest().getName().toLowerCase(), quest);
-        }
-        UserQuest playerQuest = userQuests.get("player");
-        if (playerQuest != null && playerQuest.getAmountUserKill() < playerQuest.getQuest().getUserKillAmountNeeded()) {
-            playerQuest.setAmountUserKill(playerQuest.getAmountUserKill() + 1);
+        Set<UserQuest> userQuests = user.getUserQuests();
+        for (UserQuest quest : userQuests) {
+            if (quest.getQuest().getNameNpcKill().equalsIgnoreCase("player")
+                    && quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
+                quest.setAmountUserKill(quest.getAmountUserKill() + 1);
+                break;
+            }
         }
     }
 

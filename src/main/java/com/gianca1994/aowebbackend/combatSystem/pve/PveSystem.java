@@ -16,8 +16,7 @@ public class PveSystem {
     private static final GenericFunctions genericFunctions = new GenericFunctions();
     private static final PveFunctions pveFunctions = new PveFunctions();
 
-    public static CombatModel PveUserVsNpc(User user,
-                                           Npc npc) {
+    public static CombatModel PveUserVsNpc(User user, Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -27,7 +26,6 @@ public class PveSystem {
          * @return PveModel
          */
         CombatModel pveModel = new CombatModel(new ArrayList<>(), user, npc);
-
         int roundCounter = 0, diamondsGain = 0, userDmg, npcDmg;
         long experienceGain = 0, goldGain = 0;
         boolean levelUp = false, stopPve = false;
@@ -38,7 +36,6 @@ public class PveSystem {
 
         while (!stopPve) {
             roundCounter++;
-
             if (user.getRole().equals("ADMIN")) userDmg = 9999999;
             else userDmg = genericFunctions.getUserDmg(user, npcDefense);
 
@@ -70,7 +67,6 @@ public class PveSystem {
         pveModel.roundJsonGeneratorFinish(
                 userHp, experienceGain, goldGain, diamondsGain, 0, 0, 0, levelUp
         );
-
         user.updateTitle();
         user.setHp(userHp);
         npc.setHp(npcMaxHp);
