@@ -30,6 +30,7 @@ public class PvpSystem {
          */
         PvpModel pvpModel = new PvpModel(new ArrayList<>(), user, attacked);
         int mmrWinAndLose = pvpFunctions.calculatePointsTitleWinOrLose(attacked);
+        String attackerName = user.getUsername(), defenderName = attacked.getUsername();
 
         long goldAmountWin = 0, goldLoseForLoseCombat = 0;
         int roundCounter = 0, userDmg, attackedDmg, userHp = user.getHp(), attackedHp = attacked.getHp(),
@@ -64,7 +65,9 @@ public class PvpSystem {
             }
             pvpModel.roundJsonGenerator(roundCounter, userHp, userDmg, attackedHp, attackedDmg);
         }
-        pvpModel.roundJsonGeneratorFinish(goldAmountWin, goldLoseForLoseCombat, mmrWinAndLose);
+        pvpModel.roundJsonGeneratorFinish(userHp, attackerName, defenderName,
+                mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat
+        );
         user.setHp(userHp);
         attacked.setHp(attackedHp);
         return pvpModel;

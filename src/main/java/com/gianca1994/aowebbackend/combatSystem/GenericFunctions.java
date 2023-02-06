@@ -1,5 +1,7 @@
 package com.gianca1994.aowebbackend.combatSystem;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.user.User;
 
@@ -48,17 +50,6 @@ public class GenericFunctions {
         else return dmg;
     }
 
-    /*
-    public int getUserDmg(User user, int defense) {
-
-        int dmg = (int) Math.floor(Math.random() * (user.getMaxDmg() - user.getMinDmg() + 1) + user.getMinDmg());
-        dmg = defense >= dmg ? 0 : dmg - defense;
-        if (Math.floor(Math.random() * 100) + 1 <= user.getCriticalChance())
-            return dmg * SvConfig.CRITICAL_DAMAGE_MULTIPLIER;
-        else return dmg;
-    }
-     */
-
     public int userReceiveDmg(User user, int userHp, int dmg) {
         /**
          * @Author: Gianca1994
@@ -80,4 +71,62 @@ public class GenericFunctions {
          */
         return userHp <= 0;
     }
+
+    public ObjectNode roundJsonGenerator(int roundCounter, String attacker, int attackerHp, int attackerDmg,
+                                         String defender, int defenderHp, int defenderDmg) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round node.
+         * @param int roundCounter
+         * @param int attackerDmg
+         * @param int defenderDmg
+         * @param int defenderHp
+         * @param int attackerHp
+         * @return none
+         */
+        ObjectNode round = new ObjectMapper().createObjectNode();
+        round.put("round", roundCounter);
+        round.put(attacker + "Life", attackerHp);
+        round.put(attacker + "Dmg", attackerDmg);
+        round.put(defender + "Life", defenderHp);
+        round.put(defender + "Dmg", defenderDmg);
+        return round;
+    }
+
+    public ObjectNode roundJsonGeneratorFinish(int userHp, String attackerName, String defenderName,
+                                               int mmrWinAndLose, long goldAmountWin,
+                                               long goldLoseCombat, long experienceGain,
+                                               long goldGain, int diamondsGain, boolean levelUp) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a basic round finish node.
+         * @param long goldAmountWin
+         * @param long goldAmountLoseCombat
+         * @param int amountPointsTitleWinOrLose
+         * @return none
+         */
+        ObjectNode finalRound = new ObjectMapper().createObjectNode();
+
+        if (userHp > 0) {
+            finalRound.put("Win", attackerName);
+            if (mmrWinAndLose > 0) finalRound.put("TitlePtsWin", mmrWinAndLose);
+            finalRound.put("Lose", defenderName);
+        } else {
+            finalRound.put("Win", defenderName);
+            finalRound.put("Lose", attackerName);
+        }
+        // If PVP Combat
+        if (mmrWinAndLose > 0) finalRound.put("TitlePtsLose", mmrWinAndLose);
+        if (goldAmountWin > 0) finalRound.put("GoldWin", goldAmountWin);
+        if (goldLoseCombat > 0) finalRound.put("GoldLose", goldLoseCombat);
+
+        // If PVE Combat
+        if (experienceGain > 0) finalRound.put("ExperienceWin", experienceGain);
+        if (goldGain > 0) finalRound.put("GoldWin", goldGain);
+        if (diamondsGain > 0) finalRound.put("DiamondsWin", diamondsGain);
+        if (levelUp) finalRound.put("LevelUP", true);
+
+        return finalRound;
+    }
+
 }

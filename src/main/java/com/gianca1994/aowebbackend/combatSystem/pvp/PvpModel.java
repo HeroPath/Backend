@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.CombatModel;
+import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.*;
 
@@ -17,16 +17,14 @@ import java.util.ArrayList;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PvpModel extends CombatModel {
+public class PvpModel {
 
+    private static final GenericFunctions genericFunctions = new GenericFunctions();
+
+    private ArrayList<ObjectNode> historyCombat;
+    private User user;
     private User defender;
 
-    public PvpModel(ArrayList<ObjectNode> historyCombat, User user, User defender) {
-        super(historyCombat, user);
-        this.defender = defender;
-    }
-
-    @Override
     public void roundJsonGenerator(int roundCounter, int attackerHp, int attackerDmg,
                                    int defenderHp, int defenderDmg) {
         /**
@@ -35,50 +33,17 @@ public class PvpModel extends CombatModel {
          * @param int roundCounter
          * @param int attackerDmg
          * @param int defenderDmg
+         * @param int defenderHp
+         * @param int attackerHp
          * @return none
          */
-        ObjectNode round = createBasicRoundNode(roundCounter, attackerHp, attackerDmg);
-        round.put("defenderLife", defenderHp);
-        round.put("defenderDmg", defenderDmg);
-        this.getHistoryCombat().add(round);
+        this.getHistoryCombat().add(genericFunctions.roundJsonGenerator(roundCounter, "Attacker",
+                attackerHp, attackerDmg, "Defender", defenderHp, defenderDmg)
+        );
     }
 
-    @Override
-    public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
-                                         int amountPointsTitleWinOrLose, long experienceGain,
-                                         long goldGain, int diamondsGain, boolean levelUp) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to create a basic round finish node.
-         * @param long goldAmountWin
-         * @param long goldAmountLoseCombat
-         * @param int amountPointsTitleWinOrLose
-         * @param long experienceGain
-         * @param long goldGain
-         * @param long diamondsGain
-         * @param boolean levelUp
-         * @return none
-         */
-        ObjectNode round = createBasicRoundFinishNode(
-                0, 0, 0, false,
-                goldAmountWin, goldAmountLoseCombat);
-
-        if (this.getUser().getHp() > 0) {
-            round.put("win", this.getUser().getUsername());
-            round.put("titlePointsWin", amountPointsTitleWinOrLose);
-            round.put("lose", defender.getUsername());
-            round.put("titlePointsLose", amountPointsTitleWinOrLose);
-        } else {
-            round.put("win", defender.getUsername());
-            round.put("lose", this.getUser().getUsername());
-            round.put("titlePointsLose", amountPointsTitleWinOrLose);
-        }
-
-        this.getHistoryCombat().add(round);
-    }
-
-    public void roundJsonGeneratorFinish(long goldAmountWin, long goldAmountLoseCombat,
-                                         int amountPointsTitleWinOrLose) {
+    public void roundJsonGeneratorFinish(int attackerHp, String attackerName, String defenderName,
+                                         int mmrWinAndLose, long goldAmountWin, long goldAmountLoseCombat) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round finish node.
@@ -87,7 +52,11 @@ public class PvpModel extends CombatModel {
          * @param int amountPointsTitleWinOrLose
          * @return none
          */
-        roundJsonGeneratorFinish(goldAmountWin, goldAmountLoseCombat, amountPointsTitleWinOrLose
-                , 0, 0, 0, false);
+        this.getHistoryCombat().add(
+                genericFunctions.roundJsonGeneratorFinish(attackerHp, attackerName,
+                        defenderName, mmrWinAndLose, goldAmountWin,
+                        goldAmountLoseCombat, 0, 0, 0, false
+                )
+        );
     }
 }

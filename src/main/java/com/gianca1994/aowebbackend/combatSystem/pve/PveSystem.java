@@ -26,6 +26,7 @@ public class PveSystem {
          * @return PveModel
          */
         PveModel pveModel = new PveModel(new ArrayList<>(), user, npc);
+        String userName = user.getUsername(), npcName = npc.getName();
 
         int roundCounter = 0, diamondsGain = 0, userDmg, npcDmg;
         long experienceGain = 0, goldGain = 0;
@@ -66,7 +67,7 @@ public class PveSystem {
             }
             pveModel.roundJsonGenerator(roundCounter, userHp, userDmg, npcHp, npcDmg);
         }
-        pveModel.roundJsonGeneratorFinish(experienceGain, goldGain, diamondsGain, levelUp);
+        pveModel.roundJsonGeneratorFinish(userHp, userName, npcName, experienceGain, goldGain, diamondsGain, levelUp);
 
         user.updateTitle();
         user.setHp(userHp);
