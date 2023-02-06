@@ -1,5 +1,5 @@
 import requests
-import api_request
+from src import api_request
 from multiprocessing import Process
 
 users = [

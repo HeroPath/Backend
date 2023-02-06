@@ -1,5 +1,5 @@
 import pandas as pd
-import api_request
+from src import api_request
 
 
 def save_quests(url, token):
