@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.combatSystem.pvp;
 
+import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -16,9 +17,9 @@ public class PvpSystem {
     private static final GenericFunctions genericFunctions = new GenericFunctions();
     private static final PvpFunctions pvpFunctions = new PvpFunctions();
 
-    public static PvpModel PvpUserVsUser(User user,
-                                         User attacked,
-                                         GuildRepository guildRepository) {
+    public static CombatModel PvpUserVsUser(User user,
+                                            User attacked,
+                                            GuildRepository guildRepository) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of starting a combat between two users.
@@ -28,7 +29,7 @@ public class PvpSystem {
          * @param GuildRepository guildRepository
          * @return PvpModel
          */
-        PvpModel pvpModel = new PvpModel(new ArrayList<>(), user, attacked);
+        CombatModel pvpModel = new CombatModel(new ArrayList<>(), user, attacked);
         int mmrWinAndLose = pvpFunctions.calculatePointsTitleWinOrLose(attacked);
         String attackerName = user.getUsername(), defenderName = attacked.getUsername();
 
@@ -65,9 +66,7 @@ public class PvpSystem {
             }
             pvpModel.roundJsonGenerator(roundCounter, userHp, userDmg, attackedHp, attackedDmg);
         }
-        pvpModel.roundJsonGeneratorFinish(userHp, attackerName, defenderName,
-                mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat
-        );
+        pvpModel.roundJsonGeneratorFinish(userHp, 0, 0, 0, mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat, false);
         user.setHp(userHp);
         attacked.setHp(attackedHp);
         return pvpModel;

@@ -5,10 +5,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.gianca1994.aowebbackend.combatSystem.pve.PveModel;
+import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
-import com.gianca1994.aowebbackend.combatSystem.pvp.PvpModel;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
@@ -142,16 +141,12 @@ public class UserService {
         User defender = userRepository.findByUsername(nameRequestDTO.getName());
         validator.userVsUserCombatSystem(attacker, defender);
 
-        PvpModel pvpUserVsUserModel = PvpSystem.PvpUserVsUser(
-                attacker, defender, guildRepository);
+        CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildRepository);
+        userRepository.save(pvpSystem.getAttacker());
 
-        userRepository.save(pvpUserVsUserModel.getUser());
-
-        if (defender.getUsername().equals("test"))
-            pvpUserVsUserModel.getDefender().setHp(defender.getMaxHp());
-
-        userRepository.save(pvpUserVsUserModel.getDefender());
-        return pvpUserVsUserModel.getHistoryCombat();
+        if (defender.getUsername().equals("test")) pvpSystem.getDefender().setHp(defender.getMaxHp());
+        userRepository.save(pvpSystem.getDefender());
+        return pvpSystem.getHistoryCombat();
     }
 
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String username,
@@ -167,8 +162,8 @@ public class UserService {
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
         validator.userVsNpcCombatSystem(user, npc);
 
-        PveModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
-        userRepository.save(pveSystem.getUser());
+        CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
+        userRepository.save(pveSystem.getAttacker());
         return pveSystem.getHistoryCombat();
     }
 }
