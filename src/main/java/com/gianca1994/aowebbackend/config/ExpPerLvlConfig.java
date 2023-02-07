@@ -42,9 +42,10 @@ public class ExpPerLvlConfig {
             2263191733L, 2307424589L
     };
 
-    public static long getExpInitial(){
-        return LEVELS[0];
+    public static long getExpInitial() {
+        return LEVELS[ModifConfig.START_LVL - 1];
     }
+
     public static long getExpNextLevel(int currentLevel) {
         return LEVELS[currentLevel];
     }

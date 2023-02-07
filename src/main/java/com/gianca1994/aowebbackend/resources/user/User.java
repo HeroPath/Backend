@@ -306,12 +306,19 @@ public class User {
     }
     //********** END CALCULATE STATS **********//
 
+    //************ CALCULATE GUILD CREATE ************//
     public void userCreateGuild(String guildName, long goldCost, int diamondsCost) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to create a guild
+         * @param String guildName
+         * @param long goldCost
+         * @param int diamondsCost
+         * @return void
          */
         this.setGuildName(guildName);
         this.setGold(this.getGold() - goldCost);
         this.setDiamond(this.getDiamond() - diamondsCost);
     }
+    //********** END CALCULATE GUILD CREATE **********//
 }

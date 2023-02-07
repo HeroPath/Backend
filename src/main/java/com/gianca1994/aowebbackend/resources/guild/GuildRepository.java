@@ -15,11 +15,13 @@ import java.util.List;
 
 @Repository
 public interface GuildRepository extends JpaRepository<Guild, Long> {
+    boolean existsGuildByName(String name);
+    boolean existsGuildByTag(String tag);
     Guild findByName(String name);
     List<Guild> findAllByOrderByTitlePointsDesc();
 
-    boolean existsGuildByName(String name);
-    boolean existsGuildByTag(String tag);
+    @Query("SELECT g.level FROM Guild g WHERE g.name = :name")
+    int findLevelByName(@Param("name") String name);
 
     @Query("SELECT g.diamonds FROM Guild g WHERE g.name = :name")
     int findDiamondsByName(@Param("name") String name);

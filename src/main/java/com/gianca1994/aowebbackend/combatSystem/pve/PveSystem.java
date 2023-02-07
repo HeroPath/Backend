@@ -16,7 +16,7 @@ public class PveSystem {
     private static final GenericFunctions genericFunctions = new GenericFunctions();
     private static final PveFunctions pveFunctions = new PveFunctions();
 
-    public static CombatModel PveUserVsNpc(User user, Npc npc) {
+    public static CombatModel PveUserVsNpc(User user, Npc npc, float bonusExpGold) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of the combat between the user and the npc.
@@ -29,7 +29,6 @@ public class PveSystem {
         int roundCounter = 0, diamondsGain = 0, userDmg, npcDmg;
         long experienceGain = 0, goldGain = 0;
         boolean levelUp = false, stopPve = false;
-
         boolean chanceDropDiamonds = pveFunctions.chanceDropDiamonds();
         int userHp = user.getHp(), npcHp = npc.getMaxHp(), userDefense = user.getDefense(),
                 npcDefense = npc.getDefense();
@@ -44,10 +43,11 @@ public class PveSystem {
             if (pveFunctions.checkIfNpcDied(npcHp)) {
                 npcDmg = 0;
                 npcHp = 0;
-                experienceGain = pveFunctions.CalculateUserExperienceGain(npc);
-                goldGain = pveFunctions.calculateUserGoldGain(npc);
-                if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
 
+                experienceGain = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
+                goldGain = (long) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
+
+                if (chanceDropDiamonds) diamondsGain = pveFunctions.amountDiamondsDrop(user);
                 pveFunctions.updateExpGldNpcsKilled(user, experienceGain, goldGain);
                 pveFunctions.updateQuestProgress(user, npc);
                 levelUp = user.userLevelUp();
