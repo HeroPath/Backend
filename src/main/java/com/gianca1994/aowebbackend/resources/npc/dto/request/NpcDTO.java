@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.npc.dto;
+package com.gianca1994.aowebbackend.resources.npc.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
