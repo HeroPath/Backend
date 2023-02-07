@@ -63,11 +63,10 @@ public class PveSystem {
             }
             pveModel.roundJsonGenerator(roundCounter, userHp, userDmg, npcHp, npcDmg);
         }
-        pveModel.roundJsonGeneratorFinish(
-                userHp, experienceGain, goldGain, diamondsGain, 0, 0, 0, levelUp
-        );
+        pveModel.roundJsonGeneratorFinish(userHp, experienceGain, goldGain, diamondsGain, 0, 0, 0, levelUp);
         user.updateTitle();
         user.setHp(userHp);
+        npc.setHp(npc.getMaxHp());
         return pveModel;
     }
 }
