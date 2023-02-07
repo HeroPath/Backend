@@ -12,6 +12,8 @@ import java.util.Objects;
 
 public class QuestServiceValidator {
 
+    private QuestRepository questRepository;
+
     public void getQuestByName(Quest quest) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -22,7 +24,7 @@ public class QuestServiceValidator {
         if (quest == null) throw new Conflict("Quest not found");
     }
 
-    public void saveQuest(Quest checkQuest, QuestDTO quest) throws Conflict {
+    public void saveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
@@ -30,7 +32,9 @@ public class QuestServiceValidator {
          * @param QuestDTO quest
          * @return void
          */
-        if (checkQuest != null) throw new Conflict("Quest already exists");
+        boolean checkQuest = questRepository.existsByName(quest.getName());
+        if (checkQuest) throw new Conflict("Quest already exists");
+
         if (Objects.equals(quest.getName(), "")) throw new Conflict("Name cannot be empty");
         if (Objects.equals(quest.getNameNpcKill(), "")) throw new Conflict("Name NPC Kill cannot be empty");
         if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");

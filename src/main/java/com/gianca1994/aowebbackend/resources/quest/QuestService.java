@@ -95,8 +95,7 @@ public class QuestService {
          * @param Quest quest
          * @return none
          */
-        Quest checkQuest = questRepository.findByName(quest.getName());
-        validator.saveQuest(checkQuest, quest);
+        validator.saveQuest(quest);
         questRepository.save(
                 new Quest(
                         quest.getName(),

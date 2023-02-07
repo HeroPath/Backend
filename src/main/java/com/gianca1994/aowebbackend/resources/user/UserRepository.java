@@ -32,7 +32,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.diamond = :diamond WHERE u.id = :id")
     void updateUserDiamond(@Param("diamond") int diamond, @Param("id") Long id);
-
     ////////////////////////////////////////////////////////////////
 
     //////////////////// USED FOR USER_SERVICE ////////////////////

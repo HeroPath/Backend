@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface QuestRepository extends JpaRepository<Quest, Long> {
     Quest findByName(String name);
 
+    boolean existsByName(String name);
+
     @Query("SELECT q FROM Quest q")
     Page<Quest> findAllQuests(PageRequest pageRequest);
 }
