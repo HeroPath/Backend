@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.npc;
 
+import com.gianca1994.aowebbackend.resources.npc.dto.NpcDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.npc;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.npc.dto.NpcDTO;
 
 import java.util.Set;
 
