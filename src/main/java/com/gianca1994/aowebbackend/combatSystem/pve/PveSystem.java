@@ -31,14 +31,13 @@ public class PveSystem {
         boolean levelUp = false, stopPve = false;
 
         boolean chanceDropDiamonds = pveFunctions.chanceDropDiamonds();
-        int userHp = user.getHp(), npcHp = npc.getHp(), userDefense = user.getDefense(),
-                npcDefense = npc.getDefense(), npcMaxHp = npc.getMaxHp();
+        int userHp = user.getHp(), npcHp = npc.getMaxHp(), userDefense = user.getDefense(),
+                npcDefense = npc.getDefense();
 
         while (!stopPve) {
             roundCounter++;
             if (user.getRole().equals("ADMIN")) userDmg = 9999999;
             else userDmg = genericFunctions.getUserDmg(user, npcDefense);
-
             npcDmg = pveFunctions.calculateNpcDmg(npc, userDefense);
             npcHp -= userDmg;
 
@@ -69,7 +68,6 @@ public class PveSystem {
         );
         user.updateTitle();
         user.setHp(userHp);
-        npc.setHp(npcMaxHp);
         return pveModel;
     }
 }
