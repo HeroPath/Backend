@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQu
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
@@ -94,10 +95,8 @@ public class PveFunctions {
          * @param Npc npc
          * @return none
          */
-        Map<String, UserQuest> userQuests = new HashMap<>();
-        for (UserQuest quest : user.getUserQuests()) {
-            userQuests.put(quest.getQuest().getNameNpcKill(), quest);
-        }
+        Map<String, UserQuest> userQuests = user.getUserQuests().stream()
+                .collect(Collectors.toMap(quest -> quest.getQuest().getNameNpcKill(), quest -> quest));
 
         UserQuest quest = userQuests.get(npc.getName());
         if (quest != null && !npc.getName().equals("player") &&

@@ -47,9 +47,7 @@ public class QuestService {
         List<Quest> unacceptedQuests = allQuests.stream()
                 .filter(quest -> {
                     for (UserQuest userQuest : userQuests) {
-                        if (userQuest.getQuest().getName().equals(quest.getName())) {
-                            return false;
-                        }
+                        if (userQuest.getQuest().getName().equals(quest.getName())) return false;
                     }
                     return true;
                 }).collect(Collectors.toList());

@@ -1,7 +1,10 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +25,7 @@ public class GuildController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<ObjectNode> getAllGuilds() throws Conflict {
+    public List<GuildRankingDTO> getAllGuilds() throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns all the guilds in the database
@@ -37,7 +40,7 @@ public class GuildController {
 
     @GetMapping("/in-guild")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ObjectNode getUserGuild(@RequestHeader("Authorization") String token) {
+    public GuildUserDTO getUserGuild(@RequestHeader("Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns the guild of the user
