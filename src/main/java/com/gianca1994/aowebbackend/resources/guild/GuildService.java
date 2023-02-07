@@ -13,6 +13,7 @@ import com.gianca1994.aowebbackend.resources.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -189,10 +190,26 @@ public class GuildService {
         else guildRepository.save(guild);
     }
 
-    public void donateDiamonds(long userId, int diamonds) throws Conflict {
+    @Transactional
+    public int donateDiamonds(long userId, int diamonds) throws Conflict {
         /**
          *
          */
+        String guildName = userRepository.findGuildNameByUserId(userId);
+        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+
+        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
+        int userDiamonds = userRepository.findDiamondByUserId(userId);
+
+        if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
+
+        userDiamonds -= diamonds;
+        guildDiamonds += diamonds;
+
+        userRepository.updateUserDiamond(userDiamonds, userId);
+        guildRepository.updateDiamondsByName(guildDiamonds, guildName);
+
+        return guildDiamonds;
 
     }
 

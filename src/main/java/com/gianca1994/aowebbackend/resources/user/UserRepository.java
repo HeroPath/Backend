@@ -26,6 +26,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     ///////////////////////////////////////////////////////////////
 
     //////////////////// USED FOR GUILD_SERVICE ////////////////////
+
+    @Query("SELECT u.guildName FROM User u WHERE u.id = :id")
+    String findGuildNameByUserId(@Param("id") Long id);
+
     @Query("SELECT u.diamond FROM User u WHERE u.id = :id")
     int findDiamondByUserId(@Param("id") Long id);
 
