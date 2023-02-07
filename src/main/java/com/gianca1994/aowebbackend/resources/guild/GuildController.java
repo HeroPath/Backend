@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.guild;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
