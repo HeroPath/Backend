@@ -100,6 +100,21 @@ public class GuildController {
                 name);
     }
 
+    @GetMapping("/make-subleader/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void makeUserSubLeader(@RequestHeader("Authorization") String token,
+                                  @PathVariable String name) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method makes a user subleader of a guild
+         * @param token - Token of the user that is trying to make the user subleader
+         * @param name - Name of the user to be made subleader
+         * @return void
+         */
+        guildService.makeUserSubLeader(
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+    }
+
     @GetMapping("/remove/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void removeUserGuild(@RequestHeader("Authorization") String token,
@@ -116,18 +131,5 @@ public class GuildController {
         );
     }
 
-    @GetMapping("/make-subleader/{name}")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void makeUserSubLeader(@RequestHeader("Authorization") String token,
-                                  @PathVariable String name) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method makes a user subleader of a guild
-         * @param token - Token of the user that is trying to make the user subleader
-         * @param name - Name of the user to be made subleader
-         * @return void
-         */
-        guildService.makeUserSubLeader(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
-    }
+
 }

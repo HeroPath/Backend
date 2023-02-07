@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -23,7 +22,6 @@ public class GuildService {
 
     GuildServiceValidator validator = new GuildServiceValidator();
     private final GuildRankingDTO guildRankingDTO = new GuildRankingDTO();
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     private GuildRepository guildRepository;
@@ -145,6 +143,25 @@ public class GuildService {
          */
     }
 
+    public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method makes a user subleader
+         * @param String username
+         * @param String nameSubLeader
+         * @return void
+         */
+        User user = userRepository.findByUsername(username);
+        Guild guild = guildRepository.findByName(user.getGuildName());
+        User userSubLeader = userRepository.findByUsername(nameSubLeader);
+        validator.makeUserSubLeader(user, guild, userSubLeader);
+
+        if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
+        else guild.setSubLeader(userSubLeader.getUsername());
+
+        guildRepository.save(guild);
+    }
+
     public void removeUserGuild(String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -173,22 +190,4 @@ public class GuildService {
         else guildRepository.save(guild);
     }
 
-    public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method makes a user subleader
-         * @param String username
-         * @param String nameSubLeader
-         * @return void
-         */
-        User user = userRepository.findByUsername(username);
-        Guild guild = guildRepository.findByName(user.getGuildName());
-        User userSubLeader = userRepository.findByUsername(nameSubLeader);
-        validator.makeUserSubLeader(user, guild, userSubLeader);
-
-        if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
-        else guild.setSubLeader(userSubLeader.getUsername());
-
-        guildRepository.save(guild);
-    }
 }
