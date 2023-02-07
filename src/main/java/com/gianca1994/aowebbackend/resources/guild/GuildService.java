@@ -77,24 +77,23 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
+        String guildDtoName = guildDTO.getName().toLowerCase();
+        String guildDtoTag = guildDTO.getTag().toLowerCase();
         validator.saveGuild(
                 user, guildDTO,
-                guildRepository.existsGuildByName(guildDTO.getName().toLowerCase()),
-                guildRepository.existsGuildByTag(guildDTO.getTag().toLowerCase())
+                guildRepository.existsGuildByName(guildDtoName),
+                guildRepository.existsGuildByTag(guildDtoTag)
         );
 
         Guild guild = new Guild(
-                guildDTO.getName().toLowerCase(), guildDTO.getDescription(),
-                guildDTO.getTag().toLowerCase(), user.getUsername(), (short) 1, 0
+                guildDtoName, guildDTO.getDescription(), guildDtoTag,
+                user.getUsername(), (short) 1, 0
         );
 
         guild.getMembers().add(user);
         guild.setTitlePoints(user.getTitlePoints());
 
-        user.setGuildName(guildDTO.getName());
-        user.setGold(user.getGold() - SvConfig.GOLD_TO_CREATE_GUILD);
-        user.setDiamond(user.getDiamond() - SvConfig.DIAMOND_TO_CREATE_GUILD);
-
+        user.userCreateGuild(guildDtoName, SvConfig.GOLD_TO_CREATE_GUILD, SvConfig.DIAMOND_TO_CREATE_GUILD);
         userRepository.save(user);
         guildRepository.save(guild);
     }

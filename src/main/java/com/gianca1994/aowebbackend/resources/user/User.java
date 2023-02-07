@@ -305,4 +305,13 @@ public class User {
         this.criticalChance = Math.min(this.luck * aClass.getCriticalModifier(), ModifConfig.MAX_CRITICAL_PERCENTAGE);
     }
     //********** END CALCULATE STATS **********//
+
+    public void userCreateGuild(String guildName, long goldCost, int diamondsCost) {
+        /**
+         *
+         */
+        this.setGuildName(guildName);
+        this.setGold(this.getGold() - goldCost);
+        this.setDiamond(this.getDiamond() - diamondsCost);
+    }
 }
