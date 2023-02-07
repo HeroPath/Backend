@@ -32,7 +32,7 @@ public class GuildService {
     @Autowired
     private UserService userService;
 
-    public List<GuildRankingDTO> getAllGuilds() {
+    public List<GuildRankingDTO> getAll() {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a list of all guilds
@@ -43,7 +43,7 @@ public class GuildService {
                 .collect(Collectors.toList());
     }
 
-    public GuildUserDTO getUserGuild(String username) {
+    public GuildUserDTO getUser(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a guild by a user
@@ -67,7 +67,7 @@ public class GuildService {
         return guildUserDTO;
     }
 
-    public void saveGuild(String username, GuildDTO guildDTO) throws Conflict {
+    public void save(String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild
@@ -94,7 +94,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void requestUserGuild(String username, String guildName) throws Conflict {
+    public void requestUser(String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
@@ -110,7 +110,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void acceptUserGuild(String username, String nameAccept) throws Conflict {
+    public void acceptUser(String username, String nameAccept) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method accepts a user to a guild
@@ -132,7 +132,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void rejectUserGuild(String username, String nameReject) throws Conflict {
+    public void rejectUser(String username, String nameReject) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method rejects a user to a guild
@@ -161,7 +161,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void removeUserGuild(String username, String nameRemove) throws Conflict {
+    public void removeUser(String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
@@ -187,6 +187,13 @@ public class GuildService {
 
         if (guild.getMembers().size() == 0) guildRepository.delete(guild);
         else guildRepository.save(guild);
+    }
+
+    public void donateDiamonds(long userId, int diamonds) throws Conflict {
+        /**
+         *
+         */
+
     }
 
 }
