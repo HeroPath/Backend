@@ -76,12 +76,11 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        Guild checkGuild = guildRepository.findByName(guildDTO.getName());
-        validator.saveGuild(user, guildDTO, checkGuild);
+        validator.saveGuild(user, guildDTO);
 
         Guild guild = new Guild(
-                guildDTO.getName(), guildDTO.getDescription(), guildDTO.getTag(),
-                user.getUsername(), (short) 1, 0
+                guildDTO.getName().toLowerCase(), guildDTO.getDescription(),
+                guildDTO.getTag().toLowerCase(), user.getUsername(), (short) 1, 0
         );
 
         guild.getMembers().add(user);

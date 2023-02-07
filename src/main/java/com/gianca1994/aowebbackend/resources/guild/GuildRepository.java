@@ -1,6 +1,9 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,5 +17,16 @@ import java.util.List;
 public interface GuildRepository extends JpaRepository<Guild, Long> {
     Guild findByName(String name);
     List<Guild> findAllByOrderByTitlePointsDesc();
+
+    boolean existsGuildByName(String name);
+    boolean existsGuildByTag(String tag);
+
+    @Query("SELECT g.diamonds FROM Guild g WHERE g.name = :name")
+    int findDiamondsByName(@Param("name") String name);
+
+    @Modifying
+    @Query("UPDATE Guild g SET g.diamonds = :diamonds WHERE g.name = :name")
+    int updateDiamondsByName(@Param("diamonds") int diamonds, @Param("name") String name);
+
 }
 
