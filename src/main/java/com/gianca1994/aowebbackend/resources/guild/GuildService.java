@@ -193,24 +193,23 @@ public class GuildService {
     @Transactional
     public int donateDiamonds(long userId, int diamonds) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method donates diamonds to a guild
+         * @param long userId
+         * @param int diamonds
+         * @return int
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
         if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
 
         int guildDiamonds = guildRepository.findDiamondsByName(guildName);
         int userDiamonds = userRepository.findDiamondByUserId(userId);
-
         if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
 
         userDiamonds -= diamonds;
         guildDiamonds += diamonds;
-
         userRepository.updateUserDiamond(userDiamonds, userId);
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
-
         return guildDiamonds;
-
     }
-
 }

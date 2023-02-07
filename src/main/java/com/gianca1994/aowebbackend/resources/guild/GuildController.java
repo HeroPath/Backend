@@ -138,15 +138,17 @@ public class GuildController {
     @PostMapping("/donate")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public int donateGuild(@RequestHeader("Authorization") String token,
-                            @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
+                           @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method donates diamonds to a guild
+         * @param token - Token of the user that is trying to donate diamonds to the guild
+         * @param guildDonateDiamondsDTO - Amount of diamonds to be donated
+         * @return int
          */
         return guildService.donateDiamonds(
                 jwtTokenUtil.getIdFromToken(token.substring(7)),
                 guildDonateDiamondsDTO.getAmountDiamonds()
         );
     }
-
-
 }
