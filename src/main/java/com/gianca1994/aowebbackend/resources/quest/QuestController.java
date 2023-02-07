@@ -62,7 +62,7 @@ public class QuestController {
 
     @DeleteMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteQuest(@PathVariable String name) {
+    public void deleteQuest(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of deleting a quest.

@@ -12,29 +12,24 @@ import java.util.Objects;
 
 public class QuestServiceValidator {
 
-    private QuestRepository questRepository;
-
-    public void getQuestByName(Quest quest) throws Conflict {
+    public void getQuestByNameOrDelete(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting a quest by name.
-         * @param Quest quest
+         * Explanation: This function is in charge of getting a quest by name or deleting it.
+         * @param boolean exist
          * @return void
          */
-        if (quest == null) throw new Conflict("Quest not found");
+        if (!exist) throw new Conflict("Quest not found");
     }
 
-    public void saveQuest(QuestDTO quest) throws Conflict {
+    public void saveQuest(QuestDTO quest, boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
-         * @param Quest checkQuest
          * @param QuestDTO quest
          * @return void
          */
-        boolean checkQuest = questRepository.existsByName(quest.getName());
-        if (checkQuest) throw new Conflict("Quest already exists");
-
+        if (exist) throw new Conflict("Quest already exists");
         if (Objects.equals(quest.getName(), "")) throw new Conflict("Name cannot be empty");
         if (Objects.equals(quest.getNameNpcKill(), "")) throw new Conflict("Name NPC Kill cannot be empty");
         if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");
@@ -42,16 +37,6 @@ public class QuestServiceValidator {
         if (quest.getGiveExp() < 0) throw new Conflict("Experience cannot be negative");
         if (quest.getGiveGold() < 0) throw new Conflict("Gold cannot be negative");
         if (quest.getGiveDiamonds() < 0) throw new Conflict("Diamonds cannot be negative");
-    }
-
-    public void deleteQuest(Quest quest) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of deleting a quest.
-         * @param Quest quest
-         * @return void
-         */
-        if (quest == null) throw new NotFound("Quest not found");
     }
 
     public void acceptQuest(User user, List<UserQuest> userQuests, Quest quest) throws Conflict {

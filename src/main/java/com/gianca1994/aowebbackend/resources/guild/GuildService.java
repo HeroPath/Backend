@@ -77,7 +77,9 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
-        validator.saveGuild(user, guildDTO);
+        boolean nameExist = guildRepository.existsGuildByName(guildDTO.getName().toLowerCase());
+        boolean tagExist = guildRepository.existsGuildByTag(guildDTO.getTag().toLowerCase());
+        validator.saveGuild(user, guildDTO, nameExist, tagExist);
 
         Guild guild = new Guild(
                 guildDTO.getName().toLowerCase(), guildDTO.getDescription(),

@@ -83,9 +83,8 @@ public class QuestService {
          * @param String name
          * @return Quest
          */
-        Quest quest = questRepository.findByName(name);
-        validator.getQuestByName(quest);
-        return quest;
+        validator.getQuestByNameOrDelete(questRepository.existsByName(name));
+        return questRepository.findByName(name);
     }
 
     public void saveQuest(QuestDTO quest) throws Conflict {
@@ -95,29 +94,26 @@ public class QuestService {
          * @param Quest quest
          * @return none
          */
-        validator.saveQuest(quest);
+        validator.saveQuest(quest, questRepository.existsByName(quest.getName()));
         questRepository.save(
                 new Quest(
-                        quest.getName(),
-                        quest.getNameNpcKill().toLowerCase(),
-                        quest.getNpcKillAmountNeeded(),
-                        quest.getUserKillAmountNeeded(),
-                        quest.getGiveExp(),
-                        quest.getGiveGold(),
-                        quest.getGiveDiamonds()
+                        quest.getName(), quest.getNameNpcKill().toLowerCase(),
+                        quest.getNpcKillAmountNeeded(), quest.getUserKillAmountNeeded(),
+                        quest.getGiveExp(), quest.getGiveGold(), quest.getGiveDiamonds()
                 )
         );
     }
 
-    public void deleteQuest(String name) {
+    public void deleteQuest(String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of deleting a quest.
          * @param String name
          * @return none
          */
+        validator.getQuestByNameOrDelete(questRepository.existsByName(name));
+
         Quest quest = questRepository.findByName(name);
-        validator.deleteQuest(quest);
         questRepository.delete(quest);
     }
 
