@@ -13,7 +13,7 @@ public class ModifConfig {
      */
 
     /////////////////////////// USER ///////////////////////////
-    public static final short START_LVL = 100;
+    public static final short START_LVL = 1;
     public static final long START_EXP = 0;
     public static final long START_GOLD = 1000000;
     public static final int START_DIAMOND = 100000;
