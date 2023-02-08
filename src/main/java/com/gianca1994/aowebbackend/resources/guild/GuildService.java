@@ -233,5 +233,10 @@ public class GuildService {
         int guildDiamonds = guildRepository.findDiamondsByName(guildName);
         if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
             throw new Conflict("Your guild doesn't have enough diamonds");
+
+        guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
+        guildLevel++;
+        guildRepository.updateDiamondsByName(guildDiamonds, guildName);
+        guildRepository.updateLevelByName(guildLevel, guildName);
     }
 }
