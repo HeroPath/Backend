@@ -29,7 +29,7 @@ public interface GuildRepository extends JpaRepository<Guild, Long> {
 
     @Modifying
     @Query("UPDATE Guild g SET g.level = :level WHERE g.name = :name")
-    void updateLevelByName(@Param("level") int level, @Param("name") String name);
+    void updateLevelByName(@Param("level") short level, @Param("name") String name);
 
     @Query("SELECT g.diamonds FROM Guild g WHERE g.name = :name")
     int findDiamondsByName(@Param("name") String name);

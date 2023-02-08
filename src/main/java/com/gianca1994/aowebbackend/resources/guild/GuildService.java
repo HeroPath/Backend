@@ -217,11 +217,11 @@ public class GuildService {
         return guildDiamonds;
     }
 
+    @Transactional
     public void upgradeLevel(long userId, String username) throws Conflict {
         /**
          *
          */
-
         String guildName = userRepository.findGuildNameByUserId(userId);
         if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
         if (!guildRepository.isLeaderOrSubLeader(username, guildName))
@@ -237,6 +237,6 @@ public class GuildService {
         guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
         guildLevel++;
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
-        guildRepository.updateLevelByName(guildLevel, guildName);
+        guildRepository.updateLevelByName((short) guildLevel, guildName);
     }
 }
