@@ -5,6 +5,7 @@ import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUpgradeDonateDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +138,7 @@ public class GuildController {
 
     @PostMapping("/donate")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public int donateGuild(@RequestHeader("Authorization") String token,
+    public GuildUpgradeDonateDTO donateGuild(@RequestHeader("Authorization") String token,
                            @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -154,14 +155,14 @@ public class GuildController {
 
     @GetMapping("/upgrade")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
+    public GuildUpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method upgrades the level of a guild
          * @param token - Token of the user that is trying to upgrade the level of the guild
          * @return void
          */
-        guildService.upgradeLevel(
+        return guildService.upgradeLevel(
                 jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7))
         );

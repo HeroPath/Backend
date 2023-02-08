@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuildUpgradeDTO {
+public class GuildUpgradeDonateDTO {
     private int level;
     private int diamonds;
 }

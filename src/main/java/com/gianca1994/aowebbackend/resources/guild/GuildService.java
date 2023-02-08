@@ -5,7 +5,9 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUpgradeDonateDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -195,7 +197,7 @@ public class GuildService {
     }
 
     @Transactional
-    public int donateDiamonds(long userId, int diamonds) throws Conflict {
+    public GuildUpgradeDonateDTO donateDiamonds(long userId, int diamonds) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method donates diamonds to a guild
@@ -204,6 +206,7 @@ public class GuildService {
          * @return int
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
+        int guildLevel = guildRepository.findLevelByName(guildName);
         int userDiamonds = userRepository.findDiamondByUserId(userId);
         validator.donateDiamonds(guildName, diamonds, userDiamonds);
 
@@ -213,11 +216,11 @@ public class GuildService {
 
         userRepository.updateUserDiamond(userDiamonds, userId);
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
-        return guildDiamonds;
+        return new GuildUpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 
     @Transactional
-    public void upgradeLevel(long userId, String username) throws Conflict {
+    public GuildUpgradeDonateDTO upgradeLevel(long userId, String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method upgrades the level of a guild
@@ -236,5 +239,6 @@ public class GuildService {
         guildLevel++;
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
         guildRepository.updateLevelByName((short) guildLevel, guildName);
+        return new GuildUpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 }
