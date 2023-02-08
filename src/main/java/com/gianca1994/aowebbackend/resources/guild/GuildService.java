@@ -131,7 +131,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void rejectUser(String username, String nameReject) throws Conflict {
+    public void rejectUser(long userId, String username, String nameReject) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method rejects a user to a guild
@@ -139,6 +139,17 @@ public class GuildService {
          * @param String nameReject
          * @return void
          */
+        String guildName = userRepository.findGuildNameByUserId(userId);
+        if (guildName.equals("")) throw new Conflict("You are not in a guild");
+
+        Guild guild = guildRepository.findByName(guildName);
+        if (guild == null) throw new NotFound("Guild not found");
+
+        if (!guildRepository.isLeaderOrSubLeader(username, guildName)) throw new Conflict("You are not the leader or subleader of this guild");
+        if (guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject))) throw new Conflict("User is not a request for this guild");
+
+        guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
+        guildRepository.save(guild);
     }
 
     public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {

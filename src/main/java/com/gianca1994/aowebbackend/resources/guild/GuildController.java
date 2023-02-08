@@ -104,6 +104,19 @@ public class GuildController {
                 name);
     }
 
+    @GetMapping("/reject/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void rejectUserGuild(@RequestHeader("Authorization") String token,
+                                @PathVariable String name) throws Conflict {
+        /**
+         *
+         */
+        guildService.rejectUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name);
+    }
+
     @GetMapping("/make-subleader/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void makeUserSubLeader(@RequestHeader("Authorization") String token,
