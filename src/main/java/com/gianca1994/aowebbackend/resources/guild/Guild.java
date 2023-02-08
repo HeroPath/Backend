@@ -75,7 +75,10 @@ public class Guild {
 
     public void userAddGuild(User user) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method adds a user to the guild
+         * @param user - User to be added
+         * @return void
          */
         this.getRequests().remove(user);
         this.getMembers().add(user);
