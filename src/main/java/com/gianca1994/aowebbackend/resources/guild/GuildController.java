@@ -4,9 +4,9 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUpgradeDonateDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +27,7 @@ public class GuildController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<GuildRankingDTO> getAllGuilds() throws Conflict {
+    public List<RankingDTO> getAllGuilds() throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a list of all guilds
@@ -42,7 +42,7 @@ public class GuildController {
 
     @GetMapping("/in-guild")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public GuildUserDTO getUserGuild(@RequestHeader("Authorization") String token) {
+    public UserDTO getUserGuild(@RequestHeader("Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns the guild of the user
@@ -138,8 +138,8 @@ public class GuildController {
 
     @PostMapping("/donate")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public GuildUpgradeDonateDTO donateGuild(@RequestHeader("Authorization") String token,
-                           @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
+    public UpgradeDonateDTO donateGuild(@RequestHeader("Authorization") String token,
+                                        @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method donates diamonds to a guild
@@ -155,7 +155,7 @@ public class GuildController {
 
     @GetMapping("/upgrade")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public GuildUpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
+    public UpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method upgrades the level of a guild

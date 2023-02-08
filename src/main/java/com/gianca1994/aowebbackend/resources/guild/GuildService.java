@@ -5,10 +5,9 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUpgradeDonateDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 public class GuildService {
 
     GuildServiceValidator validator = new GuildServiceValidator();
-    private final GuildRankingDTO guildRankingDTO = new GuildRankingDTO();
+    private final RankingDTO rankingDTO = new RankingDTO();
 
     @Autowired
     private GuildRepository guildRepository;
@@ -36,18 +35,18 @@ public class GuildService {
     @Autowired
     private UserService userService;
 
-    public List<GuildRankingDTO> getAll() {
+    public List<RankingDTO> getAll() {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a list of all guilds
          * @return List<ObjectNode>
          */
         return guildRepository.findAllByOrderByTitlePointsDesc().stream()
-                .map(guildRankingDTO::guildRankingDTO)
+                .map(rankingDTO::guildRankingDTO)
                 .collect(Collectors.toList());
     }
 
-    public GuildUserDTO getUser(String username) {
+    public UserDTO getUser(String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a guild by a user
@@ -57,18 +56,18 @@ public class GuildService {
         User userInGuild = userRepository.findByUsername(username);
         if (userInGuild == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
 
-        GuildUserDTO guildUserDTO = new GuildUserDTO(!Objects.equals(userInGuild.getGuildName(), ""));
+        UserDTO userDTO = new UserDTO(!Objects.equals(userInGuild.getGuildName(), ""));
         Guild guild = guildRepository.findByName(userInGuild.getGuildName());
-        if (guild == null) return guildUserDTO;
+        if (guild == null) return userDTO;
 
-        guildUserDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(),
+        userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(),
                 guild.getDescription(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size(),
                 guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(), SvConfig.MAX_MEMBERS_IN_GUILD
         );
 
-        guildUserDTO.createMembersList(guild, userService);
-        guildUserDTO.createRequestList(guild, userService);
-        return guildUserDTO;
+        userDTO.createMembersList(guild, userService);
+        userDTO.createRequestList(guild, userService);
+        return userDTO;
     }
 
     public void save(String username, GuildDTO guildDTO) throws Conflict {
@@ -190,7 +189,7 @@ public class GuildService {
     }
 
     @Transactional
-    public GuildUpgradeDonateDTO donateDiamonds(long userId, int diamonds) throws Conflict {
+    public UpgradeDonateDTO donateDiamonds(long userId, int diamonds) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method donates diamonds to a guild
@@ -209,11 +208,11 @@ public class GuildService {
 
         userRepository.updateUserDiamond(userDiamonds, userId);
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
-        return new GuildUpgradeDonateDTO(guildLevel, guildDiamonds);
+        return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 
     @Transactional
-    public GuildUpgradeDonateDTO upgradeLevel(long userId, String username) throws Conflict {
+    public UpgradeDonateDTO upgradeLevel(long userId, String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method upgrades the level of a guild
@@ -232,6 +231,6 @@ public class GuildService {
         guildLevel++;
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
         guildRepository.updateLevelByName((short) guildLevel, guildName);
-        return new GuildUpgradeDonateDTO(guildLevel, guildDiamonds);
+        return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 }
