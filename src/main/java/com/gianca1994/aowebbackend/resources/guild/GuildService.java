@@ -220,7 +220,11 @@ public class GuildService {
     @Transactional
     public void upgradeLevel(long userId, String username) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method upgrades the level of a guild
+         * @param long userId
+         * @param String username
+         * @return void
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
         if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");

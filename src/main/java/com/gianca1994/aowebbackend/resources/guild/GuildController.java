@@ -156,7 +156,10 @@ public class GuildController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method upgrades the level of a guild
+         * @param token - Token of the user that is trying to upgrade the level of the guild
+         * @return void
          */
         guildService.upgradeLevel(
                 jwtTokenUtil.getIdFromToken(token.substring(7)),
