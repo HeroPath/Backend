@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
+import com.gianca1994.aowebbackend.config.GuildUpgradeConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -216,13 +217,21 @@ public class GuildService {
         return guildDiamonds;
     }
 
-    public void upgradeLevel(long userId) throws Conflict {
+    public void upgradeLevel(long userId, String username) throws Conflict {
         /**
          *
          */
+
         String guildName = userRepository.findGuildNameByUserId(userId);
         if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+        if (!guildRepository.isLeaderOrSubLeader(username, guildName))
+            throw new Conflict("You are not the leader or subleader of your guild");
+
+        int guildLevel = guildRepository.findLevelByName(guildName);
+        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict("Your guild is already at the maximum level");
 
         int guildDiamonds = guildRepository.findDiamondsByName(guildName);
+        if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
+            throw new Conflict("Your guild doesn't have enough diamonds");
     }
 }

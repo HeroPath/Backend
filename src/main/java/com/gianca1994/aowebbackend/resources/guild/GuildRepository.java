@@ -17,8 +17,12 @@ import java.util.List;
 public interface GuildRepository extends JpaRepository<Guild, Long> {
     boolean existsGuildByName(String name);
     boolean existsGuildByTag(String tag);
+
     Guild findByName(String name);
     List<Guild> findAllByOrderByTitlePointsDesc();
+
+    @Query("SELECT CASE WHEN g.leader = :username OR g.subLeader = :username THEN true ELSE false END FROM Guild g WHERE g.name = :guildName")
+    boolean isLeaderOrSubLeader(String username, String guildName);
 
     @Query("SELECT g.level FROM Guild g WHERE g.name = :name")
     int findLevelByName(@Param("name") String name);
