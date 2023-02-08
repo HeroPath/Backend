@@ -109,7 +109,11 @@ public class GuildController {
     public void rejectUserGuild(@RequestHeader("Authorization") String token,
                                 @PathVariable String name) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method rejects a user to a guild
+         * @param String token - Token of the user that is trying to reject the user to the guild
+         * @param String name - Name of the user to be rejected
+         * @return void
          */
         guildService.rejectUser(
                 jwtTokenUtil.getIdFromToken(token.substring(7)),

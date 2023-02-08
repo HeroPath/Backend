@@ -135,8 +135,9 @@ public class GuildService {
         /**
          * @Author: Gianca1994
          * Explanation: This method rejects a user to a guild
-         * @param String username
-         * @param String nameReject
+         * @param long userId - Id of the user who rejects
+         * @param String username - Username of the user who rejects
+         * @param String nameReject - Username of the user who is rejected
          * @return void
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
