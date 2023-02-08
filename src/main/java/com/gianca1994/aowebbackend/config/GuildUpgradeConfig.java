@@ -2,10 +2,13 @@ package com.gianca1994.aowebbackend.config;
 
 public class GuildUpgradeConfig {
     public static final int[] DIAMONDS = new int[]{
-            100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600
+            2000, 3000, 4500, 6750, 10125, 15188, 22781, 34172, 51258, 76887
     };
 
     public static int getDiamondCost(int level) {
         return DIAMONDS[level - 1];
     }
 }
+
+
+

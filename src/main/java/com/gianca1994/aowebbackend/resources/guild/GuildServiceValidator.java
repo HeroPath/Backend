@@ -74,6 +74,25 @@ public class GuildServiceValidator {
         if (!guild.getRequests().contains(userAccept)) throw new Conflict("User is not in the guild requests");
     }
 
+    public void makeUserSubLeader(User user, Guild guild, User userSubLeader) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method accepts a user to join a guild
+         * @param User user
+         * @param Guild guild
+         * @param User userSubLeader
+         * @return void
+         */
+        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
+        if (guild == null) throw new NotFound("Guild not found");
+        if (!Objects.equals(user.getUsername(), guild.getLeader()))
+            throw new Conflict("You do not have the permissions to make a subleader");
+        if (userSubLeader == null) throw new NotFound("User not found");
+        if (Objects.equals(userSubLeader.getUsername(), guild.getLeader()))
+            throw new Conflict("User is already leader");
+    }
+
     public void removeUserGuild(User user, Guild guild, User userRemove, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -106,22 +125,5 @@ public class GuildServiceValidator {
         if (userRemove == null) throw new NotFound("User not found");
     }
 
-    public void makeUserSubLeader(User user, Guild guild, User userSubLeader) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method accepts a user to join a guild
-         * @param User user
-         * @param Guild guild
-         * @param User userSubLeader
-         * @return void
-         */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
-        if (guild == null) throw new NotFound("Guild not found");
-        if (!Objects.equals(user.getUsername(), guild.getLeader()))
-            throw new Conflict("You do not have the permissions to make a subleader");
-        if (userSubLeader == null) throw new NotFound("User not found");
-        if (Objects.equals(userSubLeader.getUsername(), guild.getLeader()))
-            throw new Conflict("User is already leader");
-    }
+
 }
