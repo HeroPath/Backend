@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.aowebbackend.config.ExpPerLvlConfig;
+import com.gianca1994.aowebbackend.config.ExpLvlConfig;
 import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
@@ -131,7 +131,7 @@ public class User {
         this.aClass = aClass;
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ExpPerLvlConfig.getExpInitial();
+        this.experienceToNextLevel = ExpLvlConfig.getExpInitial();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
@@ -242,7 +242,7 @@ public class User {
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
                 this.experience -= this.experienceToNextLevel;
-                this.experienceToNextLevel = ExpPerLvlConfig.getExpNextLevel(this.level);
+                this.experienceToNextLevel = ExpLvlConfig.getExpNextLevel(this.level);
                 this.level++;
             } else levelUp = false;
         } while (levelUp);
