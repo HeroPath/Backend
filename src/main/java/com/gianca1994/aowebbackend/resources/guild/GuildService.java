@@ -156,7 +156,7 @@ public class GuildService {
     public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method makes a user subleader
+         * Explanation: This method makes a user subLeader
          * @param String username
          * @param String nameSubLeader
          * @return void
@@ -168,7 +168,6 @@ public class GuildService {
 
         if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
         else guild.setSubLeader(userSubLeader.getUsername());
-
         guildRepository.save(guild);
     }
 
@@ -185,14 +184,7 @@ public class GuildService {
         User userRemove = userRepository.findByUsername(nameRemove);
         validator.removeUserGuild(user, guild, userRemove, nameRemove);
 
-        if (userRemove.getUsername().equals(guild.getSubLeader())) guild.setSubLeader("");
-        if (Objects.equals(userRemove.getUsername(), guild.getLeader())) {
-            guild.setLeader(guild.getSubLeader());
-            guild.setSubLeader("");
-        }
-
-        guild.getMembers().remove(userRemove);
-        guild.setTitlePoints(guild.getTitlePoints() - userRemove.getTitlePoints());
+        guild.userRemoveGuild(userRemove);
         userRemove.setGuildName("");
         userRepository.save(userRemove);
 

@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: Gianca1994
@@ -74,5 +71,21 @@ public class Guild {
         this.level = level;
         this.diamonds = diamonds;
         this.titlePoints = 0;
+    }
+
+    public void userRemoveGuild(User user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method removes a user from the guild
+         * @param user - User to be removed
+         * @return void
+         */
+        if (user.getUsername().equals(this.getSubLeader())) this.setSubLeader("");
+        if (Objects.equals(user.getUsername(), this.getLeader())) {
+            this.setLeader(this.getSubLeader());
+            this.setSubLeader("");
+        }
+        this.getMembers().remove(user);
+        this.setTitlePoints(this.getTitlePoints() - user.getTitlePoints());
     }
 }
