@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
+import com.gianca1994.aowebbackend.config.GuildUpgradeConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -125,5 +126,36 @@ public class GuildServiceValidator {
         if (userRemove == null) throw new NotFound("User not found");
     }
 
+    public void donateDiamonds(String guildName, int diamonds, int userDiamonds) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method donates diamonds to a guild
+         * @param String guildName
+         * @param int diamonds
+         * @param int userDiamonds
+         * @return void
+         */
+        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+        if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
+    }
+
+    public void upgradeLevel(String guildName, boolean isLeaderOrSubLeader,
+                             int guildLevel, int guildDiamonds) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method upgrades the level of a guild
+         * @param String guildName
+         * @param boolean isLeaderOrSubLeader
+         * @param int guildLevel
+         * @param int userDiamonds
+         * @return void
+         */
+        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+        if (!isLeaderOrSubLeader)
+            throw new Conflict("You are not the leader or subleader of your guild");
+        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict("Your guild is already at the maximum level");
+        if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
+            throw new Conflict("Your guild doesn't have enough diamonds");
+    }
 
 }

@@ -204,14 +204,13 @@ public class GuildService {
          * @return int
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
-
-        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
         int userDiamonds = userRepository.findDiamondByUserId(userId);
-        if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
+        validator.donateDiamonds(guildName, diamonds, userDiamonds);
 
         userDiamonds -= diamonds;
+        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
         guildDiamonds += diamonds;
+
         userRepository.updateUserDiamond(userDiamonds, userId);
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
         return guildDiamonds;
@@ -227,16 +226,11 @@ public class GuildService {
          * @return void
          */
         String guildName = userRepository.findGuildNameByUserId(userId);
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
-        if (!guildRepository.isLeaderOrSubLeader(username, guildName))
-            throw new Conflict("You are not the leader or subleader of your guild");
-
+        boolean isLeaderOrSubLeader = guildRepository.isLeaderOrSubLeader(username, guildName);
         int guildLevel = guildRepository.findLevelByName(guildName);
-        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict("Your guild is already at the maximum level");
-
         int guildDiamonds = guildRepository.findDiamondsByName(guildName);
-        if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
-            throw new Conflict("Your guild doesn't have enough diamonds");
+
+        validator.upgradeLevel(guildName, isLeaderOrSubLeader, guildLevel, guildDiamonds);
 
         guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
         guildLevel++;
