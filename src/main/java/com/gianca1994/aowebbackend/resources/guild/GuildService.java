@@ -215,4 +215,14 @@ public class GuildService {
         guildRepository.updateDiamondsByName(guildDiamonds, guildName);
         return guildDiamonds;
     }
+
+    public void upgradeLevel(long userId) throws Conflict {
+        /**
+         *
+         */
+        String guildName = userRepository.findGuildNameByUserId(userId);
+        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+
+        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
+    }
 }
