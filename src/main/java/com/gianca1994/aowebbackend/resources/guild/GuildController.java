@@ -151,4 +151,16 @@ public class GuildController {
                 guildDonateDiamondsDTO.getAmountDiamonds()
         );
     }
+
+    @GetMapping("/upgrade")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
+        /**
+         *
+         */
+        guildService.upgradeLevel(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
+                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        );
+    }
 }
