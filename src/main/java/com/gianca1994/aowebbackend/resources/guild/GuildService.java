@@ -82,16 +82,9 @@ public class GuildService {
         User user = userRepository.findByUsername(username);
         String guildDtoName = guildDTO.getName().toLowerCase();
         String guildDtoTag = guildDTO.getTag().toLowerCase();
-        validator.saveGuild(
-                user, guildDTO,
-                guildRepository.existsGuildByName(guildDtoName),
-                guildRepository.existsGuildByTag(guildDtoTag)
-        );
+        validator.saveGuild(user, guildDTO, guildRepository.existsGuildByName(guildDtoName), guildRepository.existsGuildByTag(guildDtoTag));
 
-        Guild guild = new Guild(
-                guildDtoName, guildDTO.getDescription(), guildDtoTag,
-                user.getUsername(), (short) 1, 0
-        );
+        Guild guild = new Guild(guildDtoName, guildDTO.getDescription(), guildDtoTag, user.getUsername(), (short) 1, 0);
 
         guild.getMembers().add(user);
         guild.setTitlePoints(user.getTitlePoints());
