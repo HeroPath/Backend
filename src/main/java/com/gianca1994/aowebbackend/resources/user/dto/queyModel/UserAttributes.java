@@ -32,6 +32,7 @@ public class UserAttributes {
 
     public void addStat(String stat) {
         stat = stat.toLowerCase();
+        this.freeSkillPoints--;
         switch (stat) {
             case "strength":
                 this.strength++;
@@ -51,7 +52,6 @@ public class UserAttributes {
             default:
                 throw new IllegalArgumentException("Invalid stat name");
         }
-        this.freeSkillPoints--;
         updateStats();
     }
 

@@ -158,11 +158,18 @@ public class UserService {
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
          */
+        float bonusExpGold = 1;
         User user = userRepository.findByUsername(username);
         Npc npc = npcRepository.findByName(nameRequestDTO.getName().toLowerCase());
+
+        if (guildRepository.existsGuildByName(user.getGuildName())) {
+            int guildLevel = guildRepository.findLevelByName(user.getGuildName());
+            bonusExpGold = guildLevel > 1 ? 1 + (float) (Math.pow(guildLevel, 2) / 100) : 1;
+        }
+
         validator.userVsNpcCombatSystem(user, npc);
 
-        CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc);
+        CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, bonusExpGold);
         userRepository.save(pveSystem.getAttacker());
         return pveSystem.getHistoryCombat();
     }

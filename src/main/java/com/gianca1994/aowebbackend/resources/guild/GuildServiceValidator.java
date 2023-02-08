@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class GuildServiceValidator {
 
-    public void saveGuild(User user, GuildDTO guildDTO, Guild checkGuild) throws Conflict {
+    public void saveGuild(User user, GuildDTO guildDTO, boolean nameExist, boolean tagExist) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method creates a guild
@@ -32,7 +32,8 @@ public class GuildServiceValidator {
         if (guildDTO.getName() == null) throw new Conflict("Name is required");
         if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
         if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
-        if (checkGuild != null) throw new Conflict("Guild already exists");
+        if (nameExist) throw new Conflict("Guild already exists");
+        if (tagExist) throw new Conflict("Tag already exists");
     }
 
     public void requestUserGuild(User user, Guild guild) throws Conflict {

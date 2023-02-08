@@ -21,6 +21,7 @@ public class GuildRankingDTO {
     private int memberAmount;
     private int maxMembers;
     private int titlePoints;
+    private short level;
 
     public GuildRankingDTO guildRankingDTO(Guild guild) {
         /**
@@ -37,7 +38,8 @@ public class GuildRankingDTO {
                 guild.getSubLeader(),
                 guild.getMembers().size(),
                 SvConfig.MAX_MEMBERS_IN_GUILD,
-                guild.getTitlePoints()
+                guild.getTitlePoints(),
+                guild.getLevel()
         );
     }
 }

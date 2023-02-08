@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.config;
 
 
-public class ExpPerLvlConfig {
+public class ExpLvlConfig {
     public static final long[] LEVELS = new long[]{
             5L, 13L, 23L, 35L, 51L, 71L, 96L, 128L, 168L, 220L, 284L, 363L, 462L, 584L, 732L, 911L,
             1128L, 1387L, 1696L, 2061L, 2491L, 2995L, 3584L, 4267L, 5057L, 5967L, 7011L, 8205L,
@@ -42,9 +42,10 @@ public class ExpPerLvlConfig {
             2263191733L, 2307424589L
     };
 
-    public static long getExpInitial(){
-        return LEVELS[0];
+    public static long getExpInitial() {
+        return LEVELS[ModifConfig.START_LVL - 1];
     }
+
     public static long getExpNextLevel(int currentLevel) {
         return LEVELS[currentLevel];
     }
