@@ -73,6 +73,15 @@ public class Guild {
         this.titlePoints = 0;
     }
 
+    public void userAddGuild(User user) {
+        /**
+         *
+         */
+        this.getRequests().remove(user);
+        this.getMembers().add(user);
+        this.titlePoints += user.getTitlePoints();
+    }
+
     public void userRemoveGuild(User user) {
         /**
          * @Author: Gianca1994
