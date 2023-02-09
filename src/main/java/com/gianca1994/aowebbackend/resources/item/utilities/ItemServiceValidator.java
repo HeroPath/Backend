@@ -1,9 +1,10 @@
-package com.gianca1994.aowebbackend.resources.item;
+package com.gianca1994.aowebbackend.resources.item.utilities;
 
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 
@@ -29,7 +30,7 @@ public class ItemServiceValidator {
                 newItem.getIntelligence() < 0 || newItem.getVitality() < 0 ||
                 newItem.getLuck() < 0) throw new BadRequest(ItemConst.STATS_CANNOT_BE_LESS_THAN_0);
         if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(newItem.getType()))
-            throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType() + " item");
+            throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType());
     }
 
     public void buyItem(User user, Item itemBuy) throws Conflict {

@@ -6,7 +6,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
-import com.gianca1994.aowebbackend.resources.item.ItemConst;
+import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 
 import java.util.Objects;

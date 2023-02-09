@@ -4,6 +4,8 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
+import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
+import com.gianca1994.aowebbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
