@@ -1,8 +1,10 @@
-package com.gianca1994.aowebbackend.resources.npc;
+package com.gianca1994.aowebbackend.resources.npc.utilities;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
+import com.gianca1994.aowebbackend.resources.npc.utilities.NpcConst;
 
 import java.util.Set;
 
