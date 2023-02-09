@@ -113,7 +113,7 @@ public class ItemController {
          */
         return itemService.unequipItem(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO
+                equipUnequipItemDTO.getId()
         );
     }
 }

@@ -9,7 +9,6 @@ import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class ItemServiceValidator {
@@ -99,22 +98,11 @@ public class ItemServiceValidator {
             if (item.getType().equals(itemType)) throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM);
         }
     }
-    ////////////////////////////////////////////////////////////////////////////////
 
-    public void unequipItem(User user, Item itemUnequip) throws Conflict {
+    public void checkItemInEquipment(Set<Item> equipment, Item item) {
         /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to unequip an item
-         * @param User user
-         * @param Item itemUnequip
-         * @return void
+         *
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (itemUnequip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-
-        if (!user.getEquipment().getItems().contains(itemUnequip))
-            throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConst.INVENTORY_FULL);
+        if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
     }
 }

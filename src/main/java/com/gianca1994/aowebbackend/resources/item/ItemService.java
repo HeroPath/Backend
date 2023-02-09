@@ -129,7 +129,7 @@ public class ItemService {
         return new EquipOrUnequipDTO(user);
     }
 
-    public EquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO unequipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -137,8 +137,15 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsById(itemId));
+
         User user = userR.findByUsername(username);
-        Item itemUnequip = itemR.findById(equipUnequipItemDTO.getId()).get();
+        Item itemUnequip = itemR.findById(itemId).get();
+
+        validator.checkInventoryFull(user.getInventory().getItems().size());
+        validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
+
         validator.unequipItem(user, itemUnequip);
 
         user.getEquipment().getItems().remove(itemUnequip);
