@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.guild;
 
+import com.gianca1994.aowebbackend.resources.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -48,19 +49,6 @@ class GuildTest {
                 1,
                 new ArrayList<>(),
                 new HashSet<>()
-        );
-        assertNotNull(guild);
-    }
-
-    @Test
-    void constructorArgsTest() {
-        Guild guild = new Guild(
-                "Test",
-                "Test",
-                "Test",
-                "Test",
-                (short) 1,
-                1
         );
         assertNotNull(guild);
     }
