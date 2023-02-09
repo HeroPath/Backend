@@ -185,7 +185,7 @@ public class GuildServiceValidator {
          * @return void
          */
         if (!Objects.equals(nameRemove, username))
-            if (Objects.equals(username, leader)) throw new Conflict("You cannot remove the guild leader");
+            if (Objects.equals(nameRemove, leader)) throw new Conflict("You cannot remove the guild leader");
     }
 
     public void checkRemoveLeaderNotSubLeader(String nameRemove, String leader, String subLeader,
