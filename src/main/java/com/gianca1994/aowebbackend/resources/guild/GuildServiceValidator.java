@@ -22,6 +22,16 @@ public class GuildServiceValidator {
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
     }
 
+    public void guildFound(Guild guild) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a guild exists
+         * @param Guild guild
+         * @return void
+         */
+        if (guild == null) throw new NotFound("Guild not found");
+    }
+
     public void checkUserInGuild(String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -83,24 +93,28 @@ public class GuildServiceValidator {
         if (diamond < diamondReq) throw new Conflict("You need " + diamondReq + " diamonds to create a guild");
     }
 
-
-    ////////////////////////////////////////////////////////////////////////
-    public void requestUserGuild(User user, Guild guild) throws Conflict {
+    public void reqLvlToReqGuild(int level) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method requests a user to join a guild
-         * @param User user
-         * @param Guild guild
+         * Explanation: This method checks if the user has the required level to request a guild
+         * @param int level
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
-        if (user.getLevel() < SvConfig.LEVEL_TO_JOIN_GUILD)
-            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_JOIN_GUILD + " to join a guild");
-        if (guild == null) throw new NotFound("Guild not found");
-        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
-            throw new Conflict("Guild is full");
+        int lvlReq = SvConfig.LEVEL_TO_JOIN_GUILD;
+        if (level < lvlReq) throw new Conflict("You need to be level " + lvlReq + " to join a guild");
     }
+
+    public void checkGuildIsFull(int membersSize) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the guild is full
+         * @param int membersSize
+         * @return void
+         */
+        if (membersSize >= SvConfig.MAX_MEMBERS_IN_GUILD) throw new Conflict("Guild is full");
+    }
+
+    ////////////////////////////////////////////////////////////////////////
 
     public void acceptUserGuild(boolean userExist, String guildName, boolean isLeaderOrSubLeader,
                                 Guild guild, User userAccept) throws Conflict {

@@ -107,8 +107,13 @@ public class GuildService {
          * @return void
          */
         User user = userR.findByUsername(username);
+        validator.userFound(user);
+        validator.checkUserInGuild(user.getGuildName());
+        validator.reqLvlToReqGuild(user.getLevel());
+
         Guild guild = guildR.findByName(guildName);
-        validator.requestUserGuild(user, guild);
+        validator.guildFound(guild);
+        validator.checkGuildIsFull(guild.getMembers().size());
 
         guild.getRequests().add(user);
         guildR.save(guild);
