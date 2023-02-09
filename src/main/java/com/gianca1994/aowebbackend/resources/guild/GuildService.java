@@ -167,8 +167,7 @@ public class GuildService {
         Guild guild = guildR.findByName(guildName);
         validator.guildFound(guild);
         validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
-        //validator.checkUserInReqGuild(guild.getRequests().contains(userR.findByUsername(nameReject)));
-        validator.checkUserInReqGuild(guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject)));
+        validator.checkUserInReqGuild(guild.getRequests().contains(userR.findByUsername(nameReject)));
 
         guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
         guildR.save(guild);
