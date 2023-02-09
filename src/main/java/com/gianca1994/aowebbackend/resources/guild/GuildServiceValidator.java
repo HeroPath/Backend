@@ -107,7 +107,7 @@ public class GuildServiceValidator {
     public void guildReqToCreate(int level, long gold, int diamond) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user has the required fields to create a guild
+         * Explanation: This method checks if the user has the required level, gold and diamond to create a guild
          * @param int level
          * @param long gold
          * @param int diamond
@@ -147,7 +147,7 @@ public class GuildServiceValidator {
     public void checkGuildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is the leader or subleader of the guild
+         * Explanation: This method checks if the user is the leader or sub leader of the guild
          * @param boolean isLeaderOrSubLeader
          * @return void
          */
@@ -223,25 +223,25 @@ public class GuildServiceValidator {
         if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
-    public void upgradeLevel(String guildName, boolean isLeaderOrSubLeader,
-                             int guildLevel, int guildDiamonds) throws Conflict {
+    public void checkGuildLvlMax(int guildLevel) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method upgrades the level of a guild
-         * @param String guildName
-         * @param boolean isLeaderOrSubLeader
+         * Explanation: This method checks if the guild is at the maximum level
          * @param int guildLevel
-         * @param int userDiamonds
          * @return void
          */
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
-        if (!isLeaderOrSubLeader)
-            throw new Conflict("You are not the leader or subleader of your guild");
         if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict("Your guild is already at the maximum level");
+    }
+
+    public void checkGuildDiamondsForUpgrade(int guildDiamonds, int guildLevel) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the guild has enough diamonds to upgrade
+         * @param int guildDiamonds
+         * @param int guildLevel
+         * @return void
+         */
         if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
             throw new Conflict("Your guild doesn't have enough diamonds");
     }
-
 }

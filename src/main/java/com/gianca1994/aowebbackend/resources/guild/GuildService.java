@@ -3,12 +3,10 @@ package com.gianca1994.aowebbackend.resources.guild;
 import com.gianca1994.aowebbackend.config.GuildUpgradeConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
-import com.gianca1994.aowebbackend.resources.item.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;
@@ -129,10 +127,7 @@ public class GuildService {
          * @param String nameAccept
          * @return void
          */
-        validator.userFound(userR.existsById(userId));
-
-        String guildName = userR.findGuildNameByUserId(userId);
-        validator.checkUserNotInGuild(guildName);
+        String guildName = getGuildName(userId);
         validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
         Guild guild = guildR.findByName(guildName);
@@ -159,10 +154,7 @@ public class GuildService {
          * @param String nameReject - Username of the user who is rejected
          * @return void
          */
-        validator.userFound(userR.existsById(userId));
-
-        String guildName = userR.findGuildNameByUserId(userId);
-        validator.checkUserNotInGuild(guildName);
+        String guildName = getGuildName(userId);
 
         Guild guild = guildR.findByName(guildName);
         validator.guildFound(guild);
@@ -181,10 +173,7 @@ public class GuildService {
          * @param String nameSubLeader
          * @return void
          */
-        validator.userFound(userR.existsById(userId));
-
-        String guildName = userR.findGuildNameByUserId(userId);
-        validator.checkUserNotInGuild(guildName);
+        String guildName = getGuildName(userId);
         validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
         Guild guild = guildR.findByName(guildName);
@@ -242,12 +231,7 @@ public class GuildService {
          * @param int diamonds
          * @return int
          */
-        validator.userFound(userR.existsById(userId));
-
-        String guildName = userR.findGuildNameByUserId(userId);
-        validator.guildFoundByName(guildR.existsGuildByName(guildName));
-        validator.checkUserNotInGuild(guildName);
-
+        String guildName = getGuildName(userId);
         int guildLevel = guildR.findLevelByName(guildName);
         int userDiamonds = userR.findDiamondByUserId(userId);
         validator.checkUserDiamondsForDonate(userDiamonds, diamonds);
@@ -270,17 +254,29 @@ public class GuildService {
          * @param String username
          * @return void
          */
-        String guildName = userR.findGuildNameByUserId(userId);
-        boolean isLeaderOrSubLeader = guildR.isLeaderOrSubLeader(username, guildName);
-        int guildLevel = guildR.findLevelByName(guildName);
-        int guildDiamonds = guildR.findDiamondsByName(guildName);
+        String guildName = getGuildName(userId);
+        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
-        validator.upgradeLevel(guildName, isLeaderOrSubLeader, guildLevel, guildDiamonds);
+        int guildLevel = guildR.findLevelByName(guildName);
+        validator.checkGuildLvlMax(guildLevel);
+
+        int guildDiamonds = guildR.findDiamondsByName(guildName);
+        validator.checkGuildDiamondsForUpgrade(guildDiamonds, guildLevel);
 
         guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
         guildLevel++;
         guildR.updateDiamondsByName(guildDiamonds, guildName);
         guildR.updateLevelByName((short) guildLevel, guildName);
         return new UpgradeDonateDTO(guildLevel, guildDiamonds);
+    }
+
+    private String getGuildName(long userId) throws Conflict {
+        validator.userFound(userR.existsById(userId));
+
+        String guildName = userR.findGuildNameByUserId(userId);
+        validator.checkUserNotInGuild(guildName);
+        validator.guildFoundByName(guildR.existsGuildByName(guildName));
+
+        return guildName;
     }
 }
