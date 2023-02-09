@@ -61,7 +61,7 @@ public class ItemServiceValidator {
         if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     public void sellItem(User user, Item itemSell) {
         /**
          * @Author: Gianca1994
@@ -73,7 +73,7 @@ public class ItemServiceValidator {
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (Objects.isNull(itemSell)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
         if (!user.getInventory().getItems().contains(itemSell))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
+            throw new NotFound(ItemConst.ITEM_NOT_INVENTORY);
     }
 
     public void equipItem(User user, Item itemEquip) throws Conflict {
@@ -87,19 +87,19 @@ public class ItemServiceValidator {
         if (itemEquip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!user.getInventory().getItems().contains(itemEquip))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
+            throw new NotFound(ItemConst.ITEM_NOT_INVENTORY);
         if (!Objects.equals(user.getAClass(), itemEquip.getClassRequired()) && !Objects.equals(itemEquip.getClassRequired(), "none"))
-            throw new Conflict(ItemConst.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
+            throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
             if (!ItemConst.ENABLED_EQUIP.contains(itemEquipedOld.getType()))
-                throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType());
+                throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM + itemEquipedOld.getType());
             if (Objects.equals(itemEquipedOld.getType(), itemEquip.getType()))
-                throw new Conflict(ItemConst.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);
+                throw new Conflict(ItemConst.CANT_EQUIP_SAME_TYPE);
         }
 
         if (user.getLevel() < itemEquip.getLvlMin())
-            throw new Conflict(ItemConst.YOU_CANT_EQUIP_AN_ITEM_THAT_REQUIRES_LEVEL + itemEquip.getLvlMin());
+            throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemEquip.getLvlMin());
     }
 
     public void unequipItem(User user, Item itemUnequip) throws Conflict {
@@ -114,8 +114,8 @@ public class ItemServiceValidator {
         if (itemUnequip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
 
         if (!user.getEquipment().getItems().contains(itemUnequip))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_EQUIPMENT);
+            throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
         if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+            throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 }

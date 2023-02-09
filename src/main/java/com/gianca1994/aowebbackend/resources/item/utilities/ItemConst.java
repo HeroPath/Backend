@@ -33,8 +33,8 @@ public class ItemConst {
     public static final String NOT_ENOUGH_GOLD = "You don't have enough gold";
     public static final String INVENTORY_FULL = "Inventory is full";
     public static final String ITEM_NOT_INVENTORY = "Item not found in inventory";
+    public static final String ITEM_NOT_EQUIPMENT = "Item not found in equipment";
     public static final String ITEM_NOT_FOR_CLASS = "The item does not correspond to your class";
     public static final String CANT_EQUIP_SAME_TYPE = "You can't equip two items of the same type";
     public static final String ITEM_LEVEL_REQ = "You can't equip an item that requires level ";
-    public static final String ITEM_NOT_IN_EQUIPMENT = "Item not found in equipment";
 }
