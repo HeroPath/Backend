@@ -219,9 +219,10 @@ public class GuildService {
         User userRemove = userR.findByUsername(nameRemove);
         validator.userFoundByObject(userRemove);
 
-        if (!Objects.equals(nameRemove, user.getUsername()))
+        if (!Objects.equals(nameRemove, user.getUsername())) {
             validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
-        validator.checkUserRemoveLeader(username, userRemove.getUsername(), guild.getLeader());
+            validator.checkUserRemoveLeader(userRemove.getUsername(), guild.getLeader());
+        }
         validator.checkRemoveLeaderNotSubLeader(userRemove.getUsername(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size());
 
         guild.userRemoveGuild(userRemove);
@@ -241,10 +242,15 @@ public class GuildService {
          * @param int diamonds
          * @return int
          */
+        validator.userFound(userR.existsById(userId));
+
         String guildName = userR.findGuildNameByUserId(userId);
+        validator.guildFoundByName(guildR.existsGuildByName(guildName));
+        validator.checkUserNotInGuild(guildName);
+
         int guildLevel = guildR.findLevelByName(guildName);
         int userDiamonds = userR.findDiamondByUserId(userId);
-        validator.donateDiamonds(guildName, diamonds, userDiamonds);
+        validator.checkUserDiamondsForDonate(userDiamonds, diamonds);
 
         userDiamonds -= diamonds;
         int guildDiamonds = guildR.findDiamondsByName(guildName);

@@ -42,6 +42,16 @@ public class GuildServiceValidator {
         if (guild == null) throw new NotFound("Guild not found");
     }
 
+    public void guildFoundByName(boolean guildExist) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a guild exists
+         * @param boolean guildExist
+         * @return void
+         */
+        if (!guildExist) throw new NotFound("Guild not found");
+    }
+
     public void checkUserInGuild(String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -175,7 +185,7 @@ public class GuildServiceValidator {
         if (Objects.equals(username, leader)) throw new Conflict("User is already leader");
     }
 
-    public void checkUserRemoveLeader(String username, String nameRemove, String leader) throws Conflict {
+    public void checkUserRemoveLeader(String nameRemove, String leader) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method checks if the user is the leader of the guild
@@ -184,8 +194,7 @@ public class GuildServiceValidator {
          * @param String leader
          * @return void
          */
-        if (!Objects.equals(nameRemove, username))
-            if (Objects.equals(nameRemove, leader)) throw new Conflict("You cannot remove the guild leader");
+        if (Objects.equals(nameRemove, leader)) throw new Conflict("You cannot remove the guild leader");
     }
 
     public void checkRemoveLeaderNotSubLeader(String nameRemove, String leader, String subLeader,
@@ -203,20 +212,18 @@ public class GuildServiceValidator {
             throw new Conflict("You cannot remove the leader because there is no sub leader to take command");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
-    public void donateDiamonds(String guildName, int diamonds, int userDiamonds) throws Conflict {
+    public void checkUserDiamondsForDonate(int userDiamonds, int diamonds) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method donates diamonds to a guild
-         * @param String guildName
-         * @param int diamonds
+         * Explanation: This method checks if the user has enough diamonds to donate
          * @param int userDiamonds
+         * @param int diamonds
          * @return void
          */
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
         if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
     }
+
+    ////////////////////////////////////////////////////////////////////////
 
     public void upgradeLevel(String guildName, boolean isLeaderOrSubLeader,
                              int guildLevel, int guildDiamonds) throws Conflict {

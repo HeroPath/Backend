@@ -24,12 +24,6 @@ public interface GuildRepository extends JpaRepository<Guild, Long> {
     @Query("SELECT CASE WHEN g.leader = :username OR g.subLeader = :username THEN true ELSE false END FROM Guild g WHERE g.name = :guildName")
     boolean isLeaderOrSubLeader(String username, String guildName);
 
-    @Query("SELECT CASE WHEN g.leader = :username THEN true ELSE false END FROM Guild g WHERE g.name = :guildName")
-    boolean isLeader(String username, String guildName);
-
-    @Query("SELECT CASE WHEN g.subLeader = :username THEN true ELSE false END FROM Guild g WHERE g.name = :guildName")
-    boolean isSubLeader(String username, String guildName);
-
     @Query("SELECT g.level FROM Guild g WHERE g.name = :name")
     int findLevelByName(@Param("name") String name);
 
