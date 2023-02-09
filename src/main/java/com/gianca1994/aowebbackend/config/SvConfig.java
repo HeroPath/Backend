@@ -42,7 +42,7 @@ public class SvConfig {
 
     /////////////////////////// GUILD ///////////////////////////
     public static final int MAX_MEMBERS_IN_GUILD = 5;
-    public static final int LEVEL_TO_CREATE_GUILD = 2;
+    public static final int LEVEL_TO_CREATE_GUILD = 100;
     public static final int GOLD_TO_CREATE_GUILD = 500000;
     public static final int DIAMOND_TO_CREATE_GUILD = 100;
     public static final int LEVEL_TO_JOIN_GUILD = 10;
