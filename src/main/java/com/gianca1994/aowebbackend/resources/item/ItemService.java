@@ -146,8 +146,6 @@ public class ItemService {
         validator.checkInventoryFull(user.getInventory().getItems().size());
         validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
 
-        validator.unequipItem(user, itemUnequip);
-
         user.getEquipment().getItems().remove(itemUnequip);
         user.getInventory().getItems().add(itemUnequip);
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
