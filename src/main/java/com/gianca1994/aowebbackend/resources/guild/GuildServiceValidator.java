@@ -12,7 +12,17 @@ import java.util.Objects;
 
 public class GuildServiceValidator {
 
-    public void userFound(User user) throws NotFound {
+    public void userFound(boolean userExist) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a user exists
+         * @param boolean userExist
+         * @return void
+         */
+        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
+    }
+
+    public void userFoundByObject(User user) throws NotFound {
         /**
          * @Author: Gianca1994
          * Explanation: This method checks if a user exists
@@ -40,6 +50,16 @@ public class GuildServiceValidator {
          * @return void
          */
         if (!Objects.equals(guildName, "")) throw new Conflict("You are already in a guild");
+    }
+
+    public void checkUserNotInGuild(String guildName) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a user is not in a guild
+         * @param String guildName
+         * @return void
+         */
+        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
     }
 
     public void guildNameExist(boolean guildExist) throws Conflict {
@@ -114,28 +134,35 @@ public class GuildServiceValidator {
         if (membersSize >= SvConfig.MAX_MEMBERS_IN_GUILD) throw new Conflict("Guild is full");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
-    public void acceptUserGuild(boolean userExist, String guildName, boolean isLeaderOrSubLeader,
-                                Guild guild, User userAccept) throws Conflict {
+    public void checkGuildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method accepts a user to join a guild
-         * @param User user
-         * @param Guild guild
-         * @param User userAccept
+         * Explanation: This method checks if the user is the leader or subleader of the guild
+         * @param boolean isLeaderOrSubLeader
          * @return void
          */
-        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
-        if (!isLeaderOrSubLeader) throw new Conflict("You are not the leader or subleader of the guild");
-        if (guild == null) throw new NotFound("Guild not found");
-        if (guild.getMembers().size() >= SvConfig.MAX_MEMBERS_IN_GUILD)
-            throw new Conflict("Guild is full");
-        if (userAccept == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!Objects.equals(userAccept.getGuildName(), "")) throw new Conflict("User is already in a guild");
-        if (!guild.getRequests().contains(userAccept)) throw new Conflict("User is not in the guild requests");
+        if (!isLeaderOrSubLeader) throw new Conflict("You are not the leader or sub leader of the guild");
     }
+
+    public void checkOtherUserInGuild(String guildName) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user is in a guild
+         * @param String guildName
+         * @return void
+         */
+        if (!Objects.equals(guildName, "")) throw new Conflict("User is already in a guild");
+    }
+
+    public void checkUserInReqGuild(boolean userInRequest) throws Conflict {
+        /**
+         *
+         *
+         */
+        if (!userInRequest) throw new Conflict("User is not in the guild requests");
+    }
+
+    ////////////////////////////////////////////////////////////////////////
 
     public void makeUserSubLeader(User user, Guild guild, User userSubLeader) throws Conflict {
         /**

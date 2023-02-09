@@ -46,22 +46,22 @@ public class GuildService {
                 .collect(Collectors.toList());
     }
 
-    public UserDTO getUser(String username) {
+    public UserDTO getUser(long userId, String username) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a guild by a user
          * @param String username
          * @return ObjectNode
          */
-        User userInGuild = userR.findByUsername(username);
-        validator.userFound(userInGuild);
+        validator.userFound(userR.existsById(userId));
 
+        User userInGuild = userR.findByUsername(username);
         UserDTO userDTO = new UserDTO(!Objects.equals(userInGuild.getGuildName(), ""));
         Guild guild = guildR.findByName(userInGuild.getGuildName());
         if (guild == null) return userDTO;
 
-        userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(),
-                guild.getDescription(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size(),
+        userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(), guild.getDescription(),
+                guild.getLeader(), guild.getSubLeader(), guild.getMembers().size(),
                 guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(), SvConfig.MAX_MEMBERS_IN_GUILD
         );
 
@@ -70,7 +70,7 @@ public class GuildService {
         return userDTO;
     }
 
-    public void save(String username, GuildDTO guildDTO) throws Conflict {
+    public void save(long userId, String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild
@@ -79,9 +79,9 @@ public class GuildService {
          * @return void
          */
         validator.guildDtoReqToSaveGuild(guildDTO);
+        validator.userFound(userR.existsById(userId));
 
         User user = userR.findByUsername(username);
-        validator.userFound(user);
         validator.checkUserInGuild(user.getGuildName());
 
         String guildDtoName = guildDTO.getName().toLowerCase();
@@ -98,7 +98,7 @@ public class GuildService {
         guildR.save(guild);
     }
 
-    public void requestUser(String username, String guildName) throws Conflict {
+    public void requestUser(long userId, String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method adds a user to a guild
@@ -106,8 +106,9 @@ public class GuildService {
          * @param String guildName
          * @return void
          */
+        validator.userFound(userR.existsById(userId));
+
         User user = userR.findByUsername(username);
-        validator.userFound(user);
         validator.checkUserInGuild(user.getGuildName());
         validator.reqLvlToReqGuild(user.getLevel());
 
@@ -127,12 +128,20 @@ public class GuildService {
          * @param String nameAccept
          * @return void
          */
-        boolean userExist = userR.existsById(userId);
+        validator.userFound(userR.existsById(userId));
+
         String guildName = userR.findGuildNameByUserId(userId);
-        boolean isLeaderOrSubLeader = guildR.isLeaderOrSubLeader(username, guildName);
+        validator.checkUserNotInGuild(guildName);
+        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+
         Guild guild = guildR.findByName(guildName);
+        validator.guildFound(guild);
+        validator.checkGuildIsFull(guild.getMembers().size());
+
         User userAccept = userR.findByUsername(nameAccept);
-        validator.acceptUserGuild(userExist, guildName, isLeaderOrSubLeader, guild, userAccept);
+        validator.userFoundByObject(userAccept);
+        validator.checkOtherUserInGuild(userAccept.getGuildName());
+        validator.checkUserInReqGuild(guild.getRequests().contains(userAccept));
 
         guild.userAddGuild(userAccept);
         userAccept.setGuildName(guild.getName());

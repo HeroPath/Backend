@@ -50,6 +50,7 @@ public class GuildController {
          * @return GuildUserDTO - Guild of the user
          */
         return guildService.getUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7))
         );
     }
@@ -66,6 +67,7 @@ public class GuildController {
          * @return void
          */
         guildService.save(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 guildDTO
         );
@@ -83,6 +85,7 @@ public class GuildController {
          * @return void
          */
         guildService.requestUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 requestGuildNameDTO.getName()
         );
