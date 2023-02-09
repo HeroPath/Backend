@@ -33,13 +33,6 @@ public class ItemServiceValidator {
         if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
     }
 
-    public void itemFoundObject(boolean item) throws NotFound {
-        /**
-         *
-         */
-        if (!item) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-    }
-
     public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
         /**
          *
@@ -52,24 +45,23 @@ public class ItemServiceValidator {
             throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
         if (!ItemConst.ENABLED_EQUIP.contains(newItem.getType()))
             throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
-
     }
 
-    public void buyItem(User user, Item itemBuy) throws Conflict {
+    public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to buy an item
-         * @param User user
-         * @param Item itemBuy
-         * @return void
+         *
          */
-        //if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        //if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+        if (goldUser < itemPrice) throw new Conflict(ItemConst.NOT_ENOUGH_GOLD);
     }
 
+    public void checkInventoryFull(int inventorySize) throws Conflict {
+        /**
+         *
+         */
+        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
+    }
+
+////////////////////////////////////////////////////////////////////////////////
     public void sellItem(User user, Item itemSell) {
         /**
          * @Author: Gianca1994

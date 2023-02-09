@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.item;
 
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
@@ -69,12 +70,12 @@ public class ItemService {
         validator.itemFound(itemR.existsByName(itemName));
         Item itemBuy = itemR.findByName(itemName);
 
-        validator.buyItem(user, itemBuy);
+        validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
+        validator.checkInventoryFull(user.getInventory().getItems().size());
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
         userR.save(user);
-
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
