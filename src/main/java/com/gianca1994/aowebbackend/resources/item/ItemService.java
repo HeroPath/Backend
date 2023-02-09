@@ -79,7 +79,7 @@ public class ItemService {
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public BuySellDTO sellItem(String username, NameRequestDTO nameRequestDTO) {
+    public BuySellDTO sellItem(String username, String itemName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -87,14 +87,16 @@ public class ItemService {
          * @param SellItemDTO sellItemDTO
          * @return none
          */
+        validator.userFound(userR.existsByUsername(username));
         User user = userR.findByUsername(username);
-        Item itemSell = itemR.findByName(nameRequestDTO.getName().toLowerCase());
-        validator.sellItem(user, itemSell);
+
+        validator.itemFound(itemR.existsByName(itemName));
+        Item itemSell = itemR.findByName(itemName);
+        validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice() / 2));
         user.getInventory().getItems().remove(itemSell);
         userR.save(user);
-
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 

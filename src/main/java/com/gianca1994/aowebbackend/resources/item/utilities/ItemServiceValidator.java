@@ -8,6 +8,7 @@ import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ItemServiceValidator {
@@ -61,20 +62,14 @@ public class ItemServiceValidator {
         if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    public void sellItem(User user, Item itemSell) {
+    public void inventoryContainsItem(List<Item> userInventory, Item itemSell) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to sell an item
-         * @param User user
-         * @param Item itemSell
-         * @return void
+         *
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.isNull(itemSell)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        if (!user.getInventory().getItems().contains(itemSell))
-            throw new NotFound(ItemConst.ITEM_NOT_INVENTORY);
+        if (!userInventory.contains(itemSell)) throw new Conflict(ItemConst.ITEM_NOT_INVENTORY);
     }
+
+    ////////////////////////////////////////////////////////////////////////////////
 
     public void equipItem(User user, Item itemEquip) throws Conflict {
         /**
