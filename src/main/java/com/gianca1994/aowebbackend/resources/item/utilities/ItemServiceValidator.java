@@ -10,6 +10,7 @@ import com.gianca1994.aowebbackend.resources.user.User;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class ItemServiceValidator {
 
@@ -83,33 +84,22 @@ public class ItemServiceValidator {
         if (userLevel < itemLevel) throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemLevel);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-
-    public void equipItem(User user, Item itemEquip) throws Conflict {
+    public void checkItemEquipIfPermitted(String itemType) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to equip an item
-         * @param User user
-         * @param Item itemEquip
-         * @return void
+         *
          */
-        //if (itemEquip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        //if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        //if (!user.getInventory().getItems().contains(itemEquip))
-        //    throw new NotFound(ItemConst.ITEM_NOT_INVENTORY);
-        //if (!Objects.equals(user.getAClass(), itemEquip.getClassRequired()) && !Objects.equals(itemEquip.getClassRequired(), "none"))
-        //    throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
-
-        for (Item itemEquipedOld : user.getEquipment().getItems()) {
-            if (!ItemConst.ENABLED_EQUIP.contains(itemEquipedOld.getType()))
-                throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM + itemEquipedOld.getType());
-            if (Objects.equals(itemEquipedOld.getType(), itemEquip.getType()))
-                throw new Conflict(ItemConst.CANT_EQUIP_SAME_TYPE);
-        }
-
-        //if (user.getLevel() < itemEquip.getLvlMin())
-        //    throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemEquip.getLvlMin());
+        if (!ItemConst.ENABLED_EQUIP.contains(itemType)) throw new Conflict(ItemConst.ITEM_EQUIP_NOT_PERMITTED);
     }
+
+    public void checkEquipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
+        /**
+         *
+         */
+        for (Item item : equipment) {
+            if (item.getType().equals(itemType)) throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////
 
     public void unequipItem(User user, Item itemUnequip) throws Conflict {
         /**

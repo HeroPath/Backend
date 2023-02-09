@@ -112,12 +112,12 @@ public class ItemService {
 
         User user = userR.findByUsername(username);
         Item itemEquip = itemR.findById(itemId).get();
+
+        validator.checkItemEquipIfPermitted(itemEquip.getType());
+        validator.checkEquipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
         validator.inventoryContainsItem(user.getInventory().getItems(), itemEquip);
         validator.checkItemClassEquip(user.getAClass(), itemEquip.getClassRequired());
         validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
-
-
-        validator.equipItem(user, itemEquip);
 
         user.getInventory().getItems().remove(itemEquip);
         if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) user.setHp(user.getMaxHp());
