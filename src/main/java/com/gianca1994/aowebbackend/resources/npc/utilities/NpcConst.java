@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.npc;
+package com.gianca1994.aowebbackend.resources.npc.utilities;
 
 public class NpcConst {
     /**

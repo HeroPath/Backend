@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.jwt;
 
 import java.io.IOException;
 
+import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import io.jsonwebtoken.ExpiredJwtException;
 
 import javax.servlet.FilterChain;

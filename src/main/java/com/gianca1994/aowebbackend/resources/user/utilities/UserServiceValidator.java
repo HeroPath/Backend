@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user;
+package com.gianca1994.aowebbackend.resources.user.utilities;
 
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
 import com.gianca1994.aowebbackend.config.SvConfig;
@@ -7,8 +7,10 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
+import com.gianca1994.aowebbackend.resources.user.utilities.UserConst;
 
 
 public class UserServiceValidator {

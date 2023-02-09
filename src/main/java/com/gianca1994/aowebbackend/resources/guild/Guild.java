@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: Gianca1994
@@ -65,14 +62,43 @@ public class Guild {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> requests = new HashSet<>();
 
-    public Guild(String name, String description, String tag, String leader, short level, int diamonds) {
+    public Guild(String name, String description, String tag, String leader, int titlePoints, User userLeader) {
         this.name = name;
         this.description = description;
         this.tag = tag;
         this.leader = leader;
         this.subLeader = "";
-        this.level = level;
-        this.diamonds = diamonds;
-        this.titlePoints = 0;
+        this.level = 1;
+        this.diamonds = 0;
+        this.titlePoints = titlePoints;
+        this.members.add(userLeader);
+    }
+
+    public void userAddGuild(User user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method adds a user to the guild
+         * @param user - User to be added
+         * @return void
+         */
+        this.getRequests().remove(user);
+        this.getMembers().add(user);
+        this.titlePoints += user.getTitlePoints();
+    }
+
+    public void userRemoveGuild(User user) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method removes a user from the guild
+         * @param user - User to be removed
+         * @return void
+         */
+        if (user.getUsername().equals(this.getSubLeader())) this.setSubLeader("");
+        if (Objects.equals(user.getUsername(), this.getLeader())) {
+            this.setLeader(this.getSubLeader());
+            this.setSubLeader("");
+        }
+        this.getMembers().remove(user);
+        this.setTitlePoints(this.getTitlePoints() - user.getTitlePoints());
     }
 }

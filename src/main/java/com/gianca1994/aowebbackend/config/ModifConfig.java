@@ -15,8 +15,8 @@ public class ModifConfig {
     /////////////////////////// USER ///////////////////////////
     public static final short START_LVL = 1;
     public static final long START_EXP = 0;
-    public static final long START_GOLD = 1000000;
-    public static final int START_DIAMOND = 100000;
+    public static final long START_GOLD = 100000;
+    public static final int START_DIAMOND = 10000;
     public static final int START_FREE_SKILL_POINTS = 3;
     public static final int FREE_SKILL_POINTS_PER_LEVEL = 1;
     public static final int MAX_CRITICAL_PERCENTAGE = 50;
@@ -36,9 +36,9 @@ public class ModifConfig {
 
     /////////////////////////// CLASS ////////////////////////////
     public static final List<Class> CLASSES = Arrays.asList(
-            new Class("mage", 1, 1, 3, 2, 2, 5, 6, 10, 1, 1, 0.715f),
-            new Class("archer", 1, 3, 1, 2, 2, 4, 5, 15, 2, 3, 0.834f),
-            new Class("warrior", 3, 1, 1, 3, 1, 3, 4, 20, 3, 2, 0.625f)
+            new Class("mage", 1, 1, 2, 2, 2, 3, 5, 10, 1, 1, 0.715f),
+            new Class("archer", 1, 2, 1, 2, 2, 2, 4, 15, 2, 3, 0.834f),
+            new Class("warrior", 2, 1, 1, 2, 2, 2, 3, 20, 3, 2, 0.625f)
     );
     /////////////////////////// CLASS ////////////////////////////
 }

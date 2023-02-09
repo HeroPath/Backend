@@ -4,8 +4,9 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildRankingDTO;
-import com.gianca1994.aowebbackend.resources.guild.dto.response.GuildUserDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
+import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
 import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +27,7 @@ public class GuildController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<GuildRankingDTO> getAllGuilds() throws Conflict {
+    public List<RankingDTO> getAllGuilds() throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns a list of all guilds
@@ -41,7 +42,7 @@ public class GuildController {
 
     @GetMapping("/in-guild")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public GuildUserDTO getUserGuild(@RequestHeader("Authorization") String token) {
+    public UserDTO getUserGuild(@RequestHeader("Authorization") String token) {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns the guild of the user
@@ -49,6 +50,7 @@ public class GuildController {
          * @return GuildUserDTO - Guild of the user
          */
         return guildService.getUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7))
         );
     }
@@ -65,6 +67,7 @@ public class GuildController {
          * @return void
          */
         guildService.save(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 guildDTO
         );
@@ -82,6 +85,7 @@ public class GuildController {
          * @return void
          */
         guildService.requestUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 requestGuildNameDTO.getName()
         );
@@ -99,6 +103,24 @@ public class GuildController {
          * @return void
          */
         guildService.acceptUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name);
+    }
+
+    @GetMapping("/reject/{name}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void rejectUserGuild(@RequestHeader("Authorization") String token,
+                                @PathVariable String name) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method rejects a user to a guild
+         * @param String token - Token of the user that is trying to reject the user to the guild
+         * @param String name - Name of the user to be rejected
+         * @return void
+         */
+        guildService.rejectUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 name);
     }
@@ -115,7 +137,10 @@ public class GuildController {
          * @return void
          */
         guildService.makeUserSubLeader(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name
+        );
     }
 
     @GetMapping("/remove/{name}")
@@ -130,6 +155,7 @@ public class GuildController {
          * @return void
          */
         guildService.removeUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 name
         );
@@ -137,8 +163,8 @@ public class GuildController {
 
     @PostMapping("/donate")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public int donateGuild(@RequestHeader("Authorization") String token,
-                           @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
+    public UpgradeDonateDTO donateGuild(@RequestHeader("Authorization") String token,
+                                        @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method donates diamonds to a guild
@@ -154,14 +180,14 @@ public class GuildController {
 
     @GetMapping("/upgrade")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
+    public UpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method upgrades the level of a guild
          * @param token - Token of the user that is trying to upgrade the level of the guild
          * @return void
          */
-        guildService.upgradeLevel(
+        return guildService.upgradeLevel(
                 jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7))
         );

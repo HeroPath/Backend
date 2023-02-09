@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuildUserDTO {
+public class UserDTO {
     private boolean userInGuild;
     private String username;
     private String name;
@@ -31,7 +31,7 @@ public class GuildUserDTO {
     private List<UserGuildDTO> members;
     private Set<UserGuildDTO> requests;
 
-    public GuildUserDTO(boolean userInGuild) {
+    public UserDTO(boolean userInGuild) {
         this.userInGuild = userInGuild;
     }
 

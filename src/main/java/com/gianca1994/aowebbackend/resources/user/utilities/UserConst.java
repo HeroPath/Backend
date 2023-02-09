@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.user;
+package com.gianca1994.aowebbackend.resources.user.utilities;
 
 import java.util.Arrays;
 import java.util.List;

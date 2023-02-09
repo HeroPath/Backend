@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.item;
+package com.gianca1994.aowebbackend.resources.item.utilities;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ItemConst {
             "wings",
             "potion"
     );
-    public static final String YOU_CANT_EQUIP_MORE_THAN_ONE = "You can't equip more than one ";
+    public static final String YOU_CANT_EQUIP_MORE_THAN_ONE = "You can't equip more than one %s item";
     public static final String YOU_DONT_HAVE_ENOUGH_GOLD = "You don't have enough gold";
     public static final String INVENTORY_IS_FULL = "Inventory is full";
     public static final String ITEM_NOT_FOUND_IN_INVENTORY = "Item not found in inventory";

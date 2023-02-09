@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GuildRankingDTO {
+public class RankingDTO {
     private String name;
     private String description;
     private String tag;
@@ -23,14 +23,14 @@ public class GuildRankingDTO {
     private int titlePoints;
     private short level;
 
-    public GuildRankingDTO guildRankingDTO(Guild guild) {
+    public RankingDTO guildRankingDTO(Guild guild) {
         /**
          * @Author: Gianca1994
          * Explanation: This method converts a Guild object into a GuildRankingDTO object
          * @param guild: Guild object
          * @return GuildRankingDTO
          */
-        return new GuildRankingDTO(
+        return new RankingDTO(
                 guild.getName(),
                 guild.getDescription(),
                 guild.getTag(),
