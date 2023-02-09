@@ -173,7 +173,7 @@ public class GuildService {
         guildR.save(guild);
     }
 
-    public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
+    public void makeUserSubLeader(long userId, String username, String nameNewSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method makes a user subLeader
@@ -181,10 +181,18 @@ public class GuildService {
          * @param String nameSubLeader
          * @return void
          */
-        User user = userR.findByUsername(username);
-        Guild guild = guildR.findByName(user.getGuildName());
-        User userSubLeader = userR.findByUsername(nameSubLeader);
-        validator.makeUserSubLeader(user, guild, userSubLeader);
+        validator.userFound(userR.existsById(userId));
+
+        String guildName = userR.findGuildNameByUserId(userId);
+        validator.checkUserNotInGuild(guildName);
+        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+
+        Guild guild = guildR.findByName(guildName);
+        validator.guildFound(guild);
+
+        User userSubLeader = userR.findByUsername(nameNewSubLeader);
+        validator.userFoundByObject(userSubLeader);
+        validator.checkUserIsLeader(userSubLeader.getUsername(), guild.getLeader());
 
         if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
         else guild.setSubLeader(userSubLeader.getUsername());

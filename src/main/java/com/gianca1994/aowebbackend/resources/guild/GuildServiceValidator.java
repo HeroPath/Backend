@@ -164,6 +164,13 @@ public class GuildServiceValidator {
         if (!userInRequest) throw new Conflict("User is not in the guild requests");
     }
 
+    public void checkUserIsLeader(String username, String leader) throws Conflict {
+        /**
+         *
+         */
+        if (Objects.equals(username, leader)) throw new Conflict("User is already leader");
+    }
+
     ////////////////////////////////////////////////////////////////////////
 
     public void makeUserSubLeader(User user, Guild guild, User userSubLeader) throws Conflict {

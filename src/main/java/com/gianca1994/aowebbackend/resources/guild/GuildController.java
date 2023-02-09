@@ -137,7 +137,10 @@ public class GuildController {
          * @return void
          */
         guildService.makeUserSubLeader(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), name);
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
+                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+                name
+        );
     }
 
     @GetMapping("/remove/{name}")
