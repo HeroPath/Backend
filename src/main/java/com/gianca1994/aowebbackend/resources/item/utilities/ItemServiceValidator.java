@@ -99,7 +99,7 @@ public class ItemServiceValidator {
          * @param String itemClass
          * @return void
          */
-        if (!userClass.equals(itemClass) && !"none".equals(userClass)) throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
+        if (!userClass.equals(itemClass) && !"none".equals(itemClass)) throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
     }
 
     public void checkItemLevelEquip(int userLevel, int itemLevel) throws Conflict {
