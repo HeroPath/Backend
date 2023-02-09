@@ -62,7 +62,8 @@ public class GuildService {
 
         userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(), guild.getDescription(),
                 guild.getLeader(), guild.getSubLeader(), guild.getMembers().size(),
-                guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(), SvConfig.MAX_MEMBERS_IN_GUILD
+                guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(),
+                SvConfig.MAX_MEMBERS_IN_GUILD
         );
 
         userDTO.createMembersList(guild, userS);
@@ -158,16 +159,16 @@ public class GuildService {
          * @param String nameReject - Username of the user who is rejected
          * @return void
          */
+        validator.userFound(userR.existsById(userId));
+
         String guildName = userR.findGuildNameByUserId(userId);
-        if (guildName.equals("")) throw new Conflict("You are not in a guild");
+        validator.checkUserNotInGuild(guildName);
 
         Guild guild = guildR.findByName(guildName);
-        if (guild == null) throw new NotFound("Guild not found");
-
-        if (!guildR.isLeaderOrSubLeader(username, guildName))
-            throw new Conflict("You are not the leader or subleader of this guild");
-        if (guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject)))
-            throw new Conflict("User is not a request for this guild");
+        validator.guildFound(guild);
+        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+        //validator.checkUserInReqGuild(guild.getRequests().contains(userR.findByUsername(nameReject)));
+        validator.checkUserInReqGuild(guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject)));
 
         guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
         guildR.save(guild);

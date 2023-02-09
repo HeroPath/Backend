@@ -156,8 +156,10 @@ public class GuildServiceValidator {
 
     public void checkUserInReqGuild(boolean userInRequest) throws Conflict {
         /**
-         *
-         *
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user is in the guild requests
+         * @param boolean userInRequest
+         * @return void
          */
         if (!userInRequest) throw new Conflict("User is not in the guild requests");
     }
