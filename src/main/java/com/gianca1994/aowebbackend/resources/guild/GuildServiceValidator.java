@@ -175,39 +175,35 @@ public class GuildServiceValidator {
         if (Objects.equals(username, leader)) throw new Conflict("User is already leader");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-
-    public void removeUserGuild(User user, Guild guild, User userRemove, String nameRemove) throws Conflict {
+    public void checkUserRemoveLeader(String username, String nameRemove, String leader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method removes a user from a guild
-         * @param User user
-         * @param Guild guild
-         * @param User userRemove
+         * Explanation: This method checks if the user is the leader of the guild
+         * @param String username
          * @param String nameRemove
+         * @param String leader
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.equals(user.getGuildName(), "")) throw new Conflict("You are not in a guild");
-        if (guild == null) throw new NotFound("Guild not found");
-
-        if (!Objects.equals(nameRemove, user.getUsername())) {
-            if (!Objects.equals(nameRemove, user.getUsername()) &&
-                    !Objects.equals(user.getUsername(), guild.getLeader()) &&
-                    !Objects.equals(user.getUsername(), guild.getSubLeader())
-            ) throw new Conflict("You do not have the permissions to delete another member");
-
-            if (Objects.equals(nameRemove, guild.getLeader())) throw new Conflict("You cannot remove the guild leader");
-
-            if (Objects.equals(nameRemove, guild.getSubLeader()) && !Objects.equals(user.getUsername(), guild.getLeader())
-            ) throw new Conflict("You cannot remove the guild subleader");
-        }
-        if (nameRemove.equals(guild.getLeader()) &&
-                guild.getSubLeader().equals("") &&
-                guild.getMembers().size() > 1
-        ) throw new Conflict("You cannot leave the clan because there is no sub-leader to take command");
-        if (userRemove == null) throw new NotFound("User not found");
+        if (!Objects.equals(nameRemove, username))
+            if (Objects.equals(username, leader)) throw new Conflict("You cannot remove the guild leader");
     }
+
+    public void checkRemoveLeaderNotSubLeader(String nameRemove, String leader, String subLeader,
+                                              int memberSize) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user is the leader of the guild
+         * @param String nameRemove
+         * @param String leader
+         * @param String subLeader
+         * @param int memberSize
+         * @return void
+         */
+        if (nameRemove.equals(leader) && subLeader.equals("") && memberSize > 1)
+            throw new Conflict("You cannot remove the leader because there is no sub leader to take command");
+    }
+
+    ////////////////////////////////////////////////////////////////////////
 
     public void donateDiamonds(String guildName, int diamonds, int userDiamonds) throws Conflict {
         /**

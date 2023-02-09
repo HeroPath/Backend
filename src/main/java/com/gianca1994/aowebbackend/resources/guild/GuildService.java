@@ -199,7 +199,7 @@ public class GuildService {
         guildR.save(guild);
     }
 
-    public void removeUser(String username, String nameRemove) throws Conflict {
+    public void removeUser(long userId, String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
@@ -207,16 +207,28 @@ public class GuildService {
          * @param String nameRemove
          * @return void
          */
+        validator.userFound(userR.existsById(userId));
+
         User user = userR.findByUsername(username);
+        validator.checkUserNotInGuild(user.getGuildName());
+
         Guild guild = guildR.findByName(user.getGuildName());
+        validator.guildFound(guild);
+        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
+
         User userRemove = userR.findByUsername(nameRemove);
-        validator.removeUserGuild(user, guild, userRemove, nameRemove);
+        validator.userFoundByObject(userRemove);
+
+        if (!Objects.equals(nameRemove, user.getUsername()))
+            validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
+        validator.checkUserRemoveLeader(username, userRemove.getUsername(), guild.getLeader());
+        validator.checkRemoveLeaderNotSubLeader(userRemove.getUsername(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size());
 
         guild.userRemoveGuild(userRemove);
         userRemove.setGuildName("");
         userR.save(userRemove);
 
-        if (guild.getMembers().size() == 0) guildR.delete(guild);
+        if (guild.getMembers().size() <= 0) guildR.delete(guild);
         else guildR.save(guild);
     }
 
