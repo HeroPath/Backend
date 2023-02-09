@@ -62,7 +62,7 @@ public class ItemController {
          */
         return itemService.buyItem(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+                nameRequestDTO.getName().toLowerCase()
         );
     }
 

@@ -55,7 +55,7 @@ public class ItemService {
         ));
     }
 
-    public BuySellDTO buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public BuySellDTO buyItem(String username, String itemName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -63,8 +63,12 @@ public class ItemService {
          * @param String name
          * @return none
          */
+        validator.userFound(userR.existsByUsername(username));
         User user = userR.findByUsername(username);
-        Item itemBuy = itemR.findByName(nameRequestDTO.getName().toLowerCase());
+
+        validator.itemFound(itemR.existsByName(itemName));
+        Item itemBuy = itemR.findByName(itemName);
+
         validator.buyItem(user, itemBuy);
 
         user.getInventory().getItems().add(itemBuy);

@@ -12,11 +12,25 @@ import java.util.Objects;
 
 public class ItemServiceValidator {
 
-    public void itemExists(boolean item) throws NotFound {
+    public void userFound(boolean userExist) throws NotFound {
         /**
          *
          */
-        if (item) throw new NotFound(ItemConst.ALREADY_EXISTS);
+        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
+    }
+
+    public void itemFound(boolean itemExist) throws NotFound {
+        /**
+         *
+         */
+        if (!itemExist) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+    }
+
+    public void itemExists(boolean itemExist) throws NotFound {
+        /**
+         *
+         */
+        if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
     }
 
     public void itemFoundObject(boolean item) throws NotFound {
@@ -49,8 +63,8 @@ public class ItemServiceValidator {
          * @param Item itemBuy
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+        //if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+        //if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
         if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
         if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
             throw new Conflict(ItemConst.INVENTORY_IS_FULL);
