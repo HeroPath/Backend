@@ -21,35 +21,35 @@ public class ItemService {
     ItemServiceValidator validator = new ItemServiceValidator();
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemRepository itemR;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     public List<Item> getClassShop(String aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the items of a specific class.
+         * Explanation: This function is in charge of returning a list of items that are available for a class.
          * @param String aClass
          * @return List<Item>
          */
-        return itemRepository.findByClassRequiredOrderByLvlMinAsc(aClass);
+        return itemR.findByClassRequiredOrderByLvlMinAsc(aClass);
     }
 
-    public void saveItem(ItemDTO newItem) throws Conflict {
+    public void saveItem(ItemDTO newItem) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
-         * @param Item item
-         * @return Item
+         * @param ItemDTO newItem
+         * @return none
          */
-        Item item = itemRepository.findByName(newItem.getName().toLowerCase());
-        validator.saveItem(item, newItem);
+        validator.checkDtoToSaveItem(newItem);
+        validator.itemExists(itemR.existsByName(newItem.getName().toLowerCase()));
 
-        String classRequired = newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired();
-        itemRepository.save(new Item(
+        itemR.save(new Item(
                 newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(),
-                classRequired, newItem.getPrice(),
+                newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired(),
+                newItem.getPrice(),
                 newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(),
                 newItem.getVitality(), newItem.getLuck()
         ));
@@ -63,13 +63,13 @@ public class ItemService {
          * @param String name
          * @return none
          */
-        User user = userRepository.findByUsername(username);
-        Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
+        User user = userR.findByUsername(username);
+        Item itemBuy = itemR.findByName(nameRequestDTO.getName().toLowerCase());
         validator.buyItem(user, itemBuy);
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
-        userRepository.save(user);
+        userR.save(user);
 
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
@@ -82,13 +82,13 @@ public class ItemService {
          * @param SellItemDTO sellItemDTO
          * @return none
          */
-        User user = userRepository.findByUsername(username);
-        Item itemSell = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
+        User user = userR.findByUsername(username);
+        Item itemSell = itemR.findByName(nameRequestDTO.getName().toLowerCase());
         validator.sellItem(user, itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice() / 2));
         user.getInventory().getItems().remove(itemSell);
-        userRepository.save(user);
+        userR.save(user);
 
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
@@ -102,8 +102,8 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userRepository.findByUsername(username);
-        Item itemEquip = itemRepository.findById(equipUnequipItemDTO.getId()).get();
+        User user = userR.findByUsername(username);
+        Item itemEquip = itemR.findById(equipUnequipItemDTO.getId()).get();
         validator.equipItem(user, itemEquip);
 
         user.getInventory().getItems().remove(itemEquip);
@@ -113,7 +113,7 @@ public class ItemService {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }
-        userRepository.save(user);
+        userR.save(user);
         return new EquipOrUnequipDTO(user);
     }
 
@@ -125,15 +125,15 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
-        User user = userRepository.findByUsername(username);
-        Item itemUnequip = itemRepository.findById(equipUnequipItemDTO.getId()).get();
+        User user = userR.findByUsername(username);
+        Item itemUnequip = itemR.findById(equipUnequipItemDTO.getId()).get();
         validator.unequipItem(user, itemUnequip);
 
         user.getEquipment().getItems().remove(itemUnequip);
         user.getInventory().getItems().add(itemUnequip);
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
-        userRepository.save(user);
+        userR.save(user);
 
         return new EquipOrUnequipDTO(user);
     }

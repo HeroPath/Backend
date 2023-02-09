@@ -12,25 +12,33 @@ import java.util.Objects;
 
 public class ItemServiceValidator {
 
-    public void saveItem(Item item, ItemDTO newItem) throws Conflict, BadRequest {
+    public void itemExists(boolean item) throws NotFound {
         /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to save an item
-         * @param Item item
-         * @param ItemDTO newItem
-         * @return void
+         *
          */
-        if (item != null) throw new Conflict(ItemConst.ITEM_ALREADY_EXISTS);
+        if (item) throw new NotFound(ItemConst.ALREADY_EXISTS);
+    }
 
-        if (Objects.equals(newItem.getName(), "")) throw new BadRequest(ItemConst.NAME_CANNOT_BE_EMPTY);
-        if (Objects.equals(newItem.getType(), "")) throw new BadRequest(ItemConst.TYPE_CANNOT_BE_EMPTY);
-        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_MIN_CANNOT_BE_LESS_THAN_0);
-        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_CANNOT_BE_LESS_THAN_0);
-        if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 ||
-                newItem.getIntelligence() < 0 || newItem.getVitality() < 0 ||
-                newItem.getLuck() < 0) throw new BadRequest(ItemConst.STATS_CANNOT_BE_LESS_THAN_0);
-        if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(newItem.getType()))
-            throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType());
+    public void itemFoundObject(boolean item) throws NotFound {
+        /**
+         *
+         */
+        if (!item) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+    }
+
+    public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
+        /**
+         *
+         */
+        if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
+        if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
+        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
+        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
+        if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
+            throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
+        if (!ItemConst.ENABLED_EQUIP.contains(newItem.getType()))
+            throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
+
     }
 
     public void buyItem(User user, Item itemBuy) throws Conflict {
@@ -78,7 +86,7 @@ public class ItemServiceValidator {
             throw new Conflict(ItemConst.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
-            if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(itemEquipedOld.getType()))
+            if (!ItemConst.ENABLED_EQUIP.contains(itemEquipedOld.getType()))
                 throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType());
             if (Objects.equals(itemEquipedOld.getType(), itemEquip.getType()))
                 throw new Conflict(ItemConst.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);

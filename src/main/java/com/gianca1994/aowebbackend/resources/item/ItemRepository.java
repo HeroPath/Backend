@@ -14,6 +14,8 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     Item findByName(String name);
 
+    boolean existsByName(String name);
+
     // List of items by class
     List<Item> findByClassRequiredOrderByLvlMinAsc(String aClass);
 }
