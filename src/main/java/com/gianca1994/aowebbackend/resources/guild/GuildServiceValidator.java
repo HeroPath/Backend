@@ -12,31 +12,79 @@ import java.util.Objects;
 
 public class GuildServiceValidator {
 
-    public void saveGuild(User user, GuildDTO guildDTO, boolean nameExist, boolean tagExist) throws Conflict {
+    public void userFound(User user) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method creates a guild
+         * Explanation: This method checks if a user exists
          * @param User user
-         * @param GuildDTO guildDTO
-         * @param Guild checkGuild
          * @return void
          */
         if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!Objects.equals(user.getGuildName(), "")) throw new Conflict("You are already in a guild");
-        if (user.getLevel() < SvConfig.LEVEL_TO_CREATE_GUILD)
-            throw new Conflict("You need to be level " + SvConfig.LEVEL_TO_CREATE_GUILD + " to create a guild");
-        if (user.getGold() < SvConfig.GOLD_TO_CREATE_GUILD)
-            throw new Conflict("You need " + SvConfig.GOLD_TO_CREATE_GUILD + " gold to create a guild");
-        if (user.getDiamond() < SvConfig.DIAMOND_TO_CREATE_GUILD)
-            throw new Conflict("You need " + SvConfig.DIAMOND_TO_CREATE_GUILD + " diamonds to create a guild");
+    }
 
-        if (guildDTO.getName() == null) throw new Conflict("Name is required");
-        if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
-        if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
-        if (nameExist) throw new Conflict("Guild already exists");
+    public void checkUserInGuild(String guildName) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a user is in a guild
+         * @param String guildName
+         * @return void
+         */
+        if (!Objects.equals(guildName, "")) throw new Conflict("You are already in a guild");
+    }
+
+    public void guildNameExist(boolean guildExist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a guild exists
+         * @param boolean guildExist
+         * @return void
+         */
+        if (guildExist) throw new Conflict("Guild already exists");
+    }
+
+    public void guildTagExist(boolean tagExist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if a guild tag exists
+         * @param boolean tagExist
+         * @return void
+         */
         if (tagExist) throw new Conflict("Tag already exists");
     }
 
+    public void guildDtoReqToSaveGuild(GuildDTO guildDTO) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the guildDTO has the required fields to save a guild
+         * @param GuildDTO guildDTO
+         * @return void
+         */
+        if (guildDTO.getName() == null) throw new Conflict("Name is required");
+        if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
+        if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
+    }
+
+    public void guildReqToCreate(int level, long gold, int diamond) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user has the required fields to create a guild
+         * @param int level
+         * @param long gold
+         * @param int diamond
+         * @return void
+         */
+        int lvlReq = SvConfig.LEVEL_TO_CREATE_GUILD;
+        if (level < lvlReq) throw new Conflict("You need to be level " + lvlReq + " to create a guild");
+
+        long goldReq = SvConfig.GOLD_TO_CREATE_GUILD;
+        if (gold < goldReq) throw new Conflict("You need " + goldReq + " gold to create a guild");
+
+        int diamondReq = SvConfig.DIAMOND_TO_CREATE_GUILD;
+        if (diamond < diamondReq) throw new Conflict("You need " + diamondReq + " diamonds to create a guild");
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////
     public void requestUserGuild(User user, Guild guild) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -73,7 +121,6 @@ public class GuildServiceValidator {
         if (userAccept == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
         if (!Objects.equals(userAccept.getGuildName(), "")) throw new Conflict("User is already in a guild");
         if (!guild.getRequests().contains(userAccept)) throw new Conflict("User is not in the guild requests");
-
     }
 
     public void makeUserSubLeader(User user, Guild guild, User userSubLeader) throws Conflict {

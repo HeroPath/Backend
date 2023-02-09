@@ -27,13 +27,13 @@ public class GuildService {
     private final RankingDTO rankingDTO = new RankingDTO();
 
     @Autowired
-    private GuildRepository guildRepository;
+    private GuildRepository guildR;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     @Autowired
-    private UserService userService;
+    private UserService userS;
 
     public List<RankingDTO> getAll() {
         /**
@@ -41,7 +41,7 @@ public class GuildService {
          * Explanation: This method returns a list of all guilds
          * @return List<ObjectNode>
          */
-        return guildRepository.findAllByOrderByTitlePointsDesc().stream()
+        return guildR.findAllByOrderByTitlePointsDesc().stream()
                 .map(rankingDTO::guildRankingDTO)
                 .collect(Collectors.toList());
     }
@@ -53,11 +53,11 @@ public class GuildService {
          * @param String username
          * @return ObjectNode
          */
-        User userInGuild = userRepository.findByUsername(username);
-        if (userInGuild == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+        User userInGuild = userR.findByUsername(username);
+        validator.userFound(userInGuild);
 
         UserDTO userDTO = new UserDTO(!Objects.equals(userInGuild.getGuildName(), ""));
-        Guild guild = guildRepository.findByName(userInGuild.getGuildName());
+        Guild guild = guildR.findByName(userInGuild.getGuildName());
         if (guild == null) return userDTO;
 
         userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(),
@@ -65,8 +65,8 @@ public class GuildService {
                 guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(), SvConfig.MAX_MEMBERS_IN_GUILD
         );
 
-        userDTO.createMembersList(guild, userService);
-        userDTO.createRequestList(guild, userService);
+        userDTO.createMembersList(guild, userS);
+        userDTO.createRequestList(guild, userS);
         return userDTO;
     }
 
@@ -78,16 +78,24 @@ public class GuildService {
          * @param GuildDTO guildDTO
          * @return void
          */
-        User user = userRepository.findByUsername(username);
-        String guildDtoName = guildDTO.getName().toLowerCase();
-        String guildDtoTag = guildDTO.getTag().toLowerCase();
-        validator.saveGuild(user, guildDTO, guildRepository.existsGuildByName(guildDtoName), guildRepository.existsGuildByTag(guildDtoTag));
+        validator.guildDtoReqToSaveGuild(guildDTO);
 
+        User user = userR.findByUsername(username);
+        validator.userFound(user);
+        validator.checkUserInGuild(user.getGuildName());
+
+        String guildDtoName = guildDTO.getName().toLowerCase();
+        validator.guildNameExist(guildR.existsGuildByName(guildDtoName));
+
+        String guildDtoTag = guildDTO.getTag().toLowerCase();
+        validator.guildTagExist(guildR.existsGuildByTag(guildDtoTag));
+
+        validator.guildReqToCreate(user.getLevel(), user.getGold(), user.getDiamond());
         Guild guild = new Guild(guildDtoName, guildDTO.getDescription(), guildDtoTag, user.getUsername(), user.getTitlePoints(), user);
 
         user.userCreateGuild(guildDtoName, SvConfig.GOLD_TO_CREATE_GUILD, SvConfig.DIAMOND_TO_CREATE_GUILD);
-        userRepository.save(user);
-        guildRepository.save(guild);
+        userR.save(user);
+        guildR.save(guild);
     }
 
     public void requestUser(String username, String guildName) throws Conflict {
@@ -98,12 +106,12 @@ public class GuildService {
          * @param String guildName
          * @return void
          */
-        User user = userRepository.findByUsername(username);
-        Guild guild = guildRepository.findByName(guildName);
+        User user = userR.findByUsername(username);
+        Guild guild = guildR.findByName(guildName);
         validator.requestUserGuild(user, guild);
 
         guild.getRequests().add(user);
-        guildRepository.save(guild);
+        guildR.save(guild);
     }
 
     public void acceptUser(long userId, String username, String nameAccept) throws Conflict {
@@ -114,17 +122,17 @@ public class GuildService {
          * @param String nameAccept
          * @return void
          */
-        boolean userExist = userRepository.existsById(userId);
-        String guildName = userRepository.findGuildNameByUserId(userId);
-        boolean isLeaderOrSubLeader = guildRepository.isLeaderOrSubLeader(username, guildName);
-        Guild guild = guildRepository.findByName(guildName);
-        User userAccept = userRepository.findByUsername(nameAccept);
+        boolean userExist = userR.existsById(userId);
+        String guildName = userR.findGuildNameByUserId(userId);
+        boolean isLeaderOrSubLeader = guildR.isLeaderOrSubLeader(username, guildName);
+        Guild guild = guildR.findByName(guildName);
+        User userAccept = userR.findByUsername(nameAccept);
         validator.acceptUserGuild(userExist, guildName, isLeaderOrSubLeader, guild, userAccept);
 
         guild.userAddGuild(userAccept);
         userAccept.setGuildName(guild.getName());
-        userRepository.save(userAccept);
-        guildRepository.save(guild);
+        userR.save(userAccept);
+        guildR.save(guild);
     }
 
     public void rejectUser(long userId, String username, String nameReject) throws Conflict {
@@ -136,19 +144,19 @@ public class GuildService {
          * @param String nameReject - Username of the user who is rejected
          * @return void
          */
-        String guildName = userRepository.findGuildNameByUserId(userId);
+        String guildName = userR.findGuildNameByUserId(userId);
         if (guildName.equals("")) throw new Conflict("You are not in a guild");
 
-        Guild guild = guildRepository.findByName(guildName);
+        Guild guild = guildR.findByName(guildName);
         if (guild == null) throw new NotFound("Guild not found");
 
-        if (!guildRepository.isLeaderOrSubLeader(username, guildName))
+        if (!guildR.isLeaderOrSubLeader(username, guildName))
             throw new Conflict("You are not the leader or subleader of this guild");
         if (guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject)))
             throw new Conflict("User is not a request for this guild");
 
         guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
-        guildRepository.save(guild);
+        guildR.save(guild);
     }
 
     public void makeUserSubLeader(String username, String nameSubLeader) throws Conflict {
@@ -159,14 +167,14 @@ public class GuildService {
          * @param String nameSubLeader
          * @return void
          */
-        User user = userRepository.findByUsername(username);
-        Guild guild = guildRepository.findByName(user.getGuildName());
-        User userSubLeader = userRepository.findByUsername(nameSubLeader);
+        User user = userR.findByUsername(username);
+        Guild guild = guildR.findByName(user.getGuildName());
+        User userSubLeader = userR.findByUsername(nameSubLeader);
         validator.makeUserSubLeader(user, guild, userSubLeader);
 
         if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
         else guild.setSubLeader(userSubLeader.getUsername());
-        guildRepository.save(guild);
+        guildR.save(guild);
     }
 
     public void removeUser(String username, String nameRemove) throws Conflict {
@@ -177,17 +185,17 @@ public class GuildService {
          * @param String nameRemove
          * @return void
          */
-        User user = userRepository.findByUsername(username);
-        Guild guild = guildRepository.findByName(user.getGuildName());
-        User userRemove = userRepository.findByUsername(nameRemove);
+        User user = userR.findByUsername(username);
+        Guild guild = guildR.findByName(user.getGuildName());
+        User userRemove = userR.findByUsername(nameRemove);
         validator.removeUserGuild(user, guild, userRemove, nameRemove);
 
         guild.userRemoveGuild(userRemove);
         userRemove.setGuildName("");
-        userRepository.save(userRemove);
+        userR.save(userRemove);
 
-        if (guild.getMembers().size() == 0) guildRepository.delete(guild);
-        else guildRepository.save(guild);
+        if (guild.getMembers().size() == 0) guildR.delete(guild);
+        else guildR.save(guild);
     }
 
     @Transactional
@@ -199,17 +207,17 @@ public class GuildService {
          * @param int diamonds
          * @return int
          */
-        String guildName = userRepository.findGuildNameByUserId(userId);
-        int guildLevel = guildRepository.findLevelByName(guildName);
-        int userDiamonds = userRepository.findDiamondByUserId(userId);
+        String guildName = userR.findGuildNameByUserId(userId);
+        int guildLevel = guildR.findLevelByName(guildName);
+        int userDiamonds = userR.findDiamondByUserId(userId);
         validator.donateDiamonds(guildName, diamonds, userDiamonds);
 
         userDiamonds -= diamonds;
-        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
+        int guildDiamonds = guildR.findDiamondsByName(guildName);
         guildDiamonds += diamonds;
 
-        userRepository.updateUserDiamond(userDiamonds, userId);
-        guildRepository.updateDiamondsByName(guildDiamonds, guildName);
+        userR.updateUserDiamond(userDiamonds, userId);
+        guildR.updateDiamondsByName(guildDiamonds, guildName);
         return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 
@@ -222,17 +230,17 @@ public class GuildService {
          * @param String username
          * @return void
          */
-        String guildName = userRepository.findGuildNameByUserId(userId);
-        boolean isLeaderOrSubLeader = guildRepository.isLeaderOrSubLeader(username, guildName);
-        int guildLevel = guildRepository.findLevelByName(guildName);
-        int guildDiamonds = guildRepository.findDiamondsByName(guildName);
+        String guildName = userR.findGuildNameByUserId(userId);
+        boolean isLeaderOrSubLeader = guildR.isLeaderOrSubLeader(username, guildName);
+        int guildLevel = guildR.findLevelByName(guildName);
+        int guildDiamonds = guildR.findDiamondsByName(guildName);
 
         validator.upgradeLevel(guildName, isLeaderOrSubLeader, guildLevel, guildDiamonds);
 
         guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
         guildLevel++;
-        guildRepository.updateDiamondsByName(guildDiamonds, guildName);
-        guildRepository.updateLevelByName((short) guildLevel, guildName);
+        guildR.updateDiamondsByName(guildDiamonds, guildName);
+        guildR.updateLevelByName((short) guildLevel, guildName);
         return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 }
