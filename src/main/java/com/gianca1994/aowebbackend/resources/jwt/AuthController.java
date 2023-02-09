@@ -3,6 +3,7 @@ package com.gianca1994.aowebbackend.resources.jwt;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.jwt.dto.request.JwtRequestDTO;
 import com.gianca1994.aowebbackend.resources.jwt.dto.response.JwtResponseDTO;
+import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import com.gianca1994.aowebbackend.exception.Conflict;

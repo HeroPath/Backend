@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.jwt;
+package com.gianca1994.aowebbackend.resources.jwt.utilities;
 
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;

@@ -79,7 +79,7 @@ public class ItemServiceValidator {
 
         for (Item itemEquipedOld : user.getEquipment().getItems()) {
             if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(itemEquipedOld.getType()))
-                throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType() + " item");
+                throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType());
             if (Objects.equals(itemEquipedOld.getType(), itemEquip.getType()))
                 throw new Conflict(ItemConst.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);
         }

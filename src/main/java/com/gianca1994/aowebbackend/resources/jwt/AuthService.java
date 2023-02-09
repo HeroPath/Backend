@@ -9,6 +9,8 @@ import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
+import com.gianca1994.aowebbackend.resources.jwt.utilities.AuthServiceValidator;
+import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.jwt;
+package com.gianca1994.aowebbackend.resources.jwt.utilities;
 
 public class JWTConst {
     /**
