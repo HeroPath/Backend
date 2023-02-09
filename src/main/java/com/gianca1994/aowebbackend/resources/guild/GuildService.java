@@ -106,7 +106,7 @@ public class GuildService {
         guildRepository.save(guild);
     }
 
-    public void acceptUser(String username, String nameAccept) throws Conflict {
+    public void acceptUser(long userId, String username, String nameAccept) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method accepts a user to a guild
@@ -114,16 +114,15 @@ public class GuildService {
          * @param String nameAccept
          * @return void
          */
-        User user = userRepository.findByUsername(username);
-
-
-        Guild guild = guildRepository.findByName(user.getGuildName());
+        boolean userExist = userRepository.existsById(userId);
+        String guildName = userRepository.findGuildNameByUserId(userId);
+        boolean isLeaderOrSubLeader = guildRepository.isLeaderOrSubLeader(username, guildName);
+        Guild guild = guildRepository.findByName(guildName);
         User userAccept = userRepository.findByUsername(nameAccept);
-        validator.acceptUserGuild(user, guild, userAccept);
+        validator.acceptUserGuild(userExist, guildName, isLeaderOrSubLeader, guild, userAccept);
 
         guild.userAddGuild(userAccept);
         userAccept.setGuildName(guild.getName());
-
         userRepository.save(userAccept);
         guildRepository.save(guild);
     }

@@ -100,6 +100,7 @@ public class GuildController {
          * @return void
          */
         guildService.acceptUser(
+                jwtTokenUtil.getIdFromToken(token.substring(7)),
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
                 name);
     }
