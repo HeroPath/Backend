@@ -7,6 +7,7 @@ import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
+import com.gianca1994.aowebbackend.resources.guild.utilities.GuildServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import com.gianca1994.aowebbackend.resources.user.UserService;

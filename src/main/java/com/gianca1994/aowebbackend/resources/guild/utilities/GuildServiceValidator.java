@@ -1,9 +1,10 @@
-package com.gianca1994.aowebbackend.resources.guild;
+package com.gianca1994.aowebbackend.resources.guild.utilities;
 
 import com.gianca1994.aowebbackend.config.GuildUpgradeConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.guild.Guild;
 import com.gianca1994.aowebbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.aowebbackend.resources.item.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -39,7 +40,7 @@ public class GuildServiceValidator {
          * @param Guild guild
          * @return void
          */
-        if (guild == null) throw new NotFound("Guild not found");
+        if (guild == null) throw new NotFound(GuildConst.GUILD_NOT_FOUND);
     }
 
     public void guildFoundByName(boolean guildExist) throws NotFound {
@@ -49,7 +50,7 @@ public class GuildServiceValidator {
          * @param boolean guildExist
          * @return void
          */
-        if (!guildExist) throw new NotFound("Guild not found");
+        if (!guildExist) throw new NotFound(GuildConst.GUILD_NOT_FOUND);
     }
 
     public void checkUserInGuild(String guildName) throws Conflict {
@@ -59,7 +60,7 @@ public class GuildServiceValidator {
          * @param String guildName
          * @return void
          */
-        if (!Objects.equals(guildName, "")) throw new Conflict("You are already in a guild");
+        if (!Objects.equals(guildName, "")) throw new Conflict(GuildConst.ALREADY_IN_GUILD);
     }
 
     public void checkUserNotInGuild(String guildName) throws Conflict {
@@ -69,7 +70,7 @@ public class GuildServiceValidator {
          * @param String guildName
          * @return void
          */
-        if (Objects.equals(guildName, "")) throw new Conflict("You are not in a guild");
+        if (Objects.equals(guildName, "")) throw new Conflict(GuildConst.NOT_IN_GUILD);
     }
 
     public void guildNameExist(boolean guildExist) throws Conflict {
@@ -79,7 +80,7 @@ public class GuildServiceValidator {
          * @param boolean guildExist
          * @return void
          */
-        if (guildExist) throw new Conflict("Guild already exists");
+        if (guildExist) throw new Conflict(GuildConst.GUILD_NAME_EXIST);
     }
 
     public void guildTagExist(boolean tagExist) throws Conflict {
@@ -89,7 +90,7 @@ public class GuildServiceValidator {
          * @param boolean tagExist
          * @return void
          */
-        if (tagExist) throw new Conflict("Tag already exists");
+        if (tagExist) throw new Conflict(GuildConst.GUILD_TAG_EXIST);
     }
 
     public void guildDtoReqToSaveGuild(GuildDTO guildDTO) throws Conflict {
@@ -99,9 +100,9 @@ public class GuildServiceValidator {
          * @param GuildDTO guildDTO
          * @return void
          */
-        if (guildDTO.getName() == null) throw new Conflict("Name is required");
-        if (guildDTO.getDescription() == null) throw new Conflict("Description is required");
-        if (guildDTO.getTag() == null) throw new Conflict("Tag is required");
+        if (guildDTO.getName() == null) throw new Conflict(GuildConst.NAME_REQUIRED);
+        if (guildDTO.getDescription() == null) throw new Conflict(GuildConst.DESCRIPTION_REQUIRED);
+        if (guildDTO.getTag() == null) throw new Conflict(GuildConst.TAG_REQUIRED);
     }
 
     public void guildReqToCreate(int level, long gold, int diamond) throws Conflict {
@@ -113,14 +114,9 @@ public class GuildServiceValidator {
          * @param int diamond
          * @return void
          */
-        int lvlReq = SvConfig.LEVEL_TO_CREATE_GUILD;
-        if (level < lvlReq) throw new Conflict("You need to be level " + lvlReq + " to create a guild");
-
-        long goldReq = SvConfig.GOLD_TO_CREATE_GUILD;
-        if (gold < goldReq) throw new Conflict("You need " + goldReq + " gold to create a guild");
-
-        int diamondReq = SvConfig.DIAMOND_TO_CREATE_GUILD;
-        if (diamond < diamondReq) throw new Conflict("You need " + diamondReq + " diamonds to create a guild");
+        if (level < SvConfig.LEVEL_TO_CREATE_GUILD) throw new Conflict(GuildConst.GUILD_LVL_REQ);
+        if (gold < SvConfig.GOLD_TO_CREATE_GUILD) throw new Conflict(GuildConst.GUILD_GOLD_REQ);
+        if (diamond < SvConfig.DIAMOND_TO_CREATE_GUILD) throw new Conflict(GuildConst.GUILD_DIAMOND_REQ);
     }
 
     public void reqLvlToReqGuild(int level) throws Conflict {
@@ -130,8 +126,7 @@ public class GuildServiceValidator {
          * @param int level
          * @return void
          */
-        int lvlReq = SvConfig.LEVEL_TO_JOIN_GUILD;
-        if (level < lvlReq) throw new Conflict("You need to be level " + lvlReq + " to join a guild");
+        if (level < SvConfig.LEVEL_TO_JOIN_GUILD) throw new Conflict(GuildConst.GUILD_LVL_REQ);
     }
 
     public void checkGuildIsFull(int membersSize) throws Conflict {
@@ -141,7 +136,7 @@ public class GuildServiceValidator {
          * @param int membersSize
          * @return void
          */
-        if (membersSize >= SvConfig.MAX_MEMBERS_IN_GUILD) throw new Conflict("Guild is full");
+        if (membersSize >= SvConfig.MAX_MEMBERS_IN_GUILD) throw new Conflict(GuildConst.GUILD_FULL);
     }
 
     public void checkGuildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
@@ -151,7 +146,7 @@ public class GuildServiceValidator {
          * @param boolean isLeaderOrSubLeader
          * @return void
          */
-        if (!isLeaderOrSubLeader) throw new Conflict("You are not the leader or sub leader of the guild");
+        if (!isLeaderOrSubLeader) throw new Conflict(GuildConst.NOT_LEADER_OR_SUB_LEADER);
     }
 
     public void checkOtherUserInGuild(String guildName) throws Conflict {
@@ -161,7 +156,7 @@ public class GuildServiceValidator {
          * @param String guildName
          * @return void
          */
-        if (!Objects.equals(guildName, "")) throw new Conflict("User is already in a guild");
+        if (!Objects.equals(guildName, "")) throw new Conflict(GuildConst.USER_IN_GUILD);
     }
 
     public void checkUserInReqGuild(boolean userInRequest) throws Conflict {
@@ -171,7 +166,7 @@ public class GuildServiceValidator {
          * @param boolean userInRequest
          * @return void
          */
-        if (!userInRequest) throw new Conflict("User is not in the guild requests");
+        if (!userInRequest) throw new Conflict(GuildConst.USER_NOT_IN_REQUEST);
     }
 
     public void checkUserIsLeader(String username, String leader) throws Conflict {
@@ -182,7 +177,7 @@ public class GuildServiceValidator {
          * @param String leader
          * @return void
          */
-        if (Objects.equals(username, leader)) throw new Conflict("User is already leader");
+        if (Objects.equals(username, leader)) throw new Conflict(GuildConst.USER_ALREADY_LEADER);
     }
 
     public void checkUserRemoveLeader(String nameRemove, String leader) throws Conflict {
@@ -194,7 +189,7 @@ public class GuildServiceValidator {
          * @param String leader
          * @return void
          */
-        if (Objects.equals(nameRemove, leader)) throw new Conflict("You cannot remove the guild leader");
+        if (Objects.equals(nameRemove, leader)) throw new Conflict(GuildConst.CANNOT_REMOVE_LEADER);
     }
 
     public void checkRemoveLeaderNotSubLeader(String nameRemove, String leader, String subLeader,
@@ -209,7 +204,7 @@ public class GuildServiceValidator {
          * @return void
          */
         if (nameRemove.equals(leader) && subLeader.equals("") && memberSize > 1)
-            throw new Conflict("You cannot remove the leader because there is no sub leader to take command");
+            throw new Conflict(GuildConst.NO_SUB_LEADER);
     }
 
     public void checkUserDiamondsForDonate(int userDiamonds, int diamonds) throws Conflict {
@@ -220,7 +215,7 @@ public class GuildServiceValidator {
          * @param int diamonds
          * @return void
          */
-        if (userDiamonds < diamonds) throw new Conflict("You don't have enough diamonds");
+        if (userDiamonds < diamonds) throw new Conflict(GuildConst.NOT_ENOUGH_DIAMONDS);
     }
 
     public void checkGuildLvlMax(int guildLevel) throws Conflict {
@@ -230,7 +225,7 @@ public class GuildServiceValidator {
          * @param int guildLevel
          * @return void
          */
-        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict("Your guild is already at the maximum level");
+        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict(GuildConst.GUILD_LVL_MAX);
     }
 
     public void checkGuildDiamondsForUpgrade(int guildDiamonds, int guildLevel) throws Conflict {
@@ -242,6 +237,6 @@ public class GuildServiceValidator {
          * @return void
          */
         if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
-            throw new Conflict("Your guild doesn't have enough diamonds");
+            throw new Conflict(GuildConst.GUILD_NOT_ENOUGH_DIAMONDS);
     }
 }
