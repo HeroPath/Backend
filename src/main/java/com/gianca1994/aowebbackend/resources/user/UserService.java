@@ -19,6 +19,7 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
+import com.gianca1994.aowebbackend.resources.user.utilities.UserServiceValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
