@@ -62,15 +62,16 @@ public class Guild {
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> requests = new HashSet<>();
 
-    public Guild(String name, String description, String tag, String leader, short level, int diamonds) {
+    public Guild(String name, String description, String tag, String leader, int titlePoints, User userLeader) {
         this.name = name;
         this.description = description;
         this.tag = tag;
         this.leader = leader;
         this.subLeader = "";
-        this.level = level;
-        this.diamonds = diamonds;
-        this.titlePoints = 0;
+        this.level = 1;
+        this.diamonds = 0;
+        this.titlePoints = titlePoints;
+        this.members.add(userLeader);
     }
 
     public void userAddGuild(User user) {

@@ -83,9 +83,7 @@ public class GuildService {
         String guildDtoTag = guildDTO.getTag().toLowerCase();
         validator.saveGuild(user, guildDTO, guildRepository.existsGuildByName(guildDtoName), guildRepository.existsGuildByTag(guildDtoTag));
 
-        Guild guild = new Guild(guildDtoName, guildDTO.getDescription(), guildDtoTag, user.getUsername(), (short) 1, 0);
-        guild.getMembers().add(user);
-        guild.setTitlePoints(user.getTitlePoints());
+        Guild guild = new Guild(guildDtoName, guildDTO.getDescription(), guildDtoTag, user.getUsername(), user.getTitlePoints(), user);
 
         user.userCreateGuild(guildDtoName, SvConfig.GOLD_TO_CREATE_GUILD, SvConfig.DIAMOND_TO_CREATE_GUILD);
         userRepository.save(user);
@@ -117,6 +115,8 @@ public class GuildService {
          * @return void
          */
         User user = userRepository.findByUsername(username);
+
+
         Guild guild = guildRepository.findByName(user.getGuildName());
         User userAccept = userRepository.findByUsername(nameAccept);
         validator.acceptUserGuild(user, guild, userAccept);
@@ -143,8 +143,10 @@ public class GuildService {
         Guild guild = guildRepository.findByName(guildName);
         if (guild == null) throw new NotFound("Guild not found");
 
-        if (!guildRepository.isLeaderOrSubLeader(username, guildName)) throw new Conflict("You are not the leader or subleader of this guild");
-        if (guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject))) throw new Conflict("User is not a request for this guild");
+        if (!guildRepository.isLeaderOrSubLeader(username, guildName))
+            throw new Conflict("You are not the leader or subleader of this guild");
+        if (guild.getRequests().stream().noneMatch(u -> u.getUsername().equals(nameReject)))
+            throw new Conflict("User is not a request for this guild");
 
         guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
         guildRepository.save(guild);
