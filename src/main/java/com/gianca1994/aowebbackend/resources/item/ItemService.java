@@ -65,11 +65,10 @@ public class ItemService {
          * @return none
          */
         validator.userFound(userR.existsByUsername(username));
-        User user = userR.findByUsername(username);
-
         validator.itemFound(itemR.existsByName(itemName));
-        Item itemBuy = itemR.findByName(itemName);
 
+        User user = userR.findByUsername(username);
+        Item itemBuy = itemR.findByName(itemName);
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
         validator.checkInventoryFull(user.getInventory().getItems().size());
 
@@ -88,9 +87,9 @@ public class ItemService {
          * @return none
          */
         validator.userFound(userR.existsByUsername(username));
-        User user = userR.findByUsername(username);
-
         validator.itemFound(itemR.existsByName(itemName));
+
+        User user = userR.findByUsername(username);
         Item itemSell = itemR.findByName(itemName);
         validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
@@ -100,8 +99,7 @@ public class ItemService {
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public EquipOrUnequipDTO equipItem(String username,
-                                       EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO equipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping or unequipping an item to the user.
@@ -109,14 +107,21 @@ public class ItemService {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User
          */
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsById(itemId));
+
         User user = userR.findByUsername(username);
-        Item itemEquip = itemR.findById(equipUnequipItemDTO.getId()).get();
+        Item itemEquip = itemR.findById(itemId).get();
+        validator.inventoryContainsItem(user.getInventory().getItems(), itemEquip);
+        validator.checkItemClassEquip(user.getAClass(), itemEquip.getClassRequired());
+        validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
+
+
         validator.equipItem(user, itemEquip);
 
         user.getInventory().getItems().remove(itemEquip);
-        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
-            user.setHp(user.getMaxHp());
-        } else {
+        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) user.setHp(user.getMaxHp());
+        else {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }

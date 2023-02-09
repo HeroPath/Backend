@@ -69,7 +69,7 @@ public class ItemController {
     @PostMapping("/sell")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public BuySellDTO sellItem(@RequestHeader(value = "Authorization") String token,
-                               @RequestBody NameRequestDTO nameRequestDTO) {
+                               @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -96,7 +96,7 @@ public class ItemController {
          */
         return itemService.equipItem(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO
+                equipUnequipItemDTO.getId()
         );
     }
 
