@@ -7,13 +7,6 @@ import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
 
 public class NpcServiceValidator {
 
-    public void npcFoundByObject(Npc npc) {
-        /**
-         *
-         */
-        if (npc == null) throw new NotFound(NpcConst.NPC_NOT_FOUND);
-    }
-
     public void npcFound(boolean npcExist) {
         /**
          * @Author: Gianca1994

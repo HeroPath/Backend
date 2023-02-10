@@ -8,7 +8,6 @@ public class NpcConst {
     public static final String NPC_NOT_FOUND = "Npc not found";
     public static final String NOT_NPC_ZONE = "No npcs found in that area";
     public static final String NAME_EMPTY = "Name cannot be empty";
-
     public static final String LVL_LT_1  = "Level cannot be less than 1";
     public static final String GIVE_MIN_EXP_LT_0  = "GiveMinExp cannot be less than 0";
     public static final String GIVE_MAX_EXP_LT_0  = "GiveMaxExp cannot be less than 0";
