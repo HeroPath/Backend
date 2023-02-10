@@ -3,13 +3,10 @@ package com.gianca1994.aowebbackend.resources.quest.utilities;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
-import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.List;
-import java.util.Objects;
 
 public class QuestServiceValidator {
 
@@ -104,36 +101,22 @@ public class QuestServiceValidator {
 
     public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user has completed a quest.
+         * @param int amountKill
+         * @param int amountNeeded
+         * @return void
          */
         if (amountKill < amountNeeded) throw new Conflict("You have not killed enough NPCs or users");
     }
 
     public void questAlreadyCompleted(long userQuestId) throws Conflict {
         /**
-         *
-         */
-        if (userQuestId == 0) throw new Conflict("You already completed this quest");
-    }
-
-
-    //////////////////////////////////////
-
-    public void completeQuest(User user, UserQuest userQuest, Quest quest) throws Conflict {
-        /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of completing a quest.
-         * @param User user
-         * @param UserQuest userQuest
-         * @param Quest quest
+         * Explanation: This function is in charge of validating if a user has already completed a quest.
+         * @param long userQuestId
          * @return void
          */
-        //if (user == null) throw new NotFound("User not found");
-        //if (quest == null) throw new NotFound("Quest not found");
-        //if (userQuest == null) throw new NotFound("You don't have this quest");
-
-
-        if (userQuest.getAmountUserKill() < quest.getUserKillAmountNeeded())
-            throw new Conflict("You didn't kill enough users");
+        if (userQuestId == 0) throw new Conflict("You already completed this quest");
     }
 }

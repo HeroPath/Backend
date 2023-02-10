@@ -6,7 +6,6 @@ import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.quest.utilities.PageFilterQuest;
 import com.gianca1994.aowebbackend.resources.quest.utilities.QuestServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.*;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
