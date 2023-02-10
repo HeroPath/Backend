@@ -48,9 +48,10 @@ public class GuildService {
     public UserDTO getUser(long userId, String username) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns a guild by a user
+         * Explanation: This method returns a userDTO
+         * @param long userId
          * @param String username
-         * @return ObjectNode
+         * @return UserDTO
          */
         validator.userFound(userR.existsById(userId));
 
@@ -73,7 +74,8 @@ public class GuildService {
     public void save(long userId, String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method saves a guild
+         * Explanation: This method creates a guild
+         * @param long userId
          * @param String username
          * @param GuildDTO guildDTO
          * @return void
@@ -101,7 +103,8 @@ public class GuildService {
     public void requestUser(long userId, String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method adds a user to a guild
+         * Explanation: This method requests a user to a guild
+         * @param long userId
          * @param String username
          * @param String guildName
          * @return void
@@ -124,6 +127,7 @@ public class GuildService {
         /**
          * @Author: Gianca1994
          * Explanation: This method accepts a user to a guild
+         * @param long userId
          * @param String username
          * @param String nameAccept
          * @return void
@@ -150,9 +154,9 @@ public class GuildService {
         /**
          * @Author: Gianca1994
          * Explanation: This method rejects a user to a guild
-         * @param long userId - Id of the user who rejects
-         * @param String username - Username of the user who rejects
-         * @param String nameReject - Username of the user who is rejected
+         * @param long userId
+         * @param String username
+         * @param String nameReject
          * @return void
          */
         String guildName = getGuildName(userId);
@@ -169,9 +173,10 @@ public class GuildService {
     public void makeUserSubLeader(long userId, String username, String nameNewSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method makes a user subLeader
+         * Explanation: This method makes a user sub leader
+         * @param long userId
          * @param String username
-         * @param String nameSubLeader
+         * @param String nameNewSubLeader
          * @return void
          */
         String guildName = getGuildName(userId);
@@ -193,6 +198,7 @@ public class GuildService {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
+         * @param long userId
          * @param String username
          * @param String nameRemove
          * @return void
@@ -230,7 +236,7 @@ public class GuildService {
          * Explanation: This method donates diamonds to a guild
          * @param long userId
          * @param int diamonds
-         * @return int
+         * @return UpgradeDonateDTO
          */
         String guildName = getGuildName(userId);
         int guildLevel = guildR.findLevelByName(guildName);
@@ -253,7 +259,7 @@ public class GuildService {
          * Explanation: This method upgrades the level of a guild
          * @param long userId
          * @param String username
-         * @return void
+         * @return UpgradeDonateDTO
          */
         String guildName = getGuildName(userId);
         validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));

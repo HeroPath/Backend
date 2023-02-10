@@ -20,21 +20,21 @@ import java.util.List;
 public class GuildController {
 
     @Autowired
-    private GuildService guildService;
+    private GuildService guildS;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public List<RankingDTO> getAllGuilds() throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns a list of all guilds
-         * @return List<GuildRankingDTO> - List of all the guilds
+         * Explanation: This method returns all the guilds in the database
+         * @return List<RankingDTO>
          */
         try {
-            return guildService.getAll();
+            return guildS.getAll();
         } catch (Exception e) {
             throw new Conflict("Error while getting all the guilds");
         }
@@ -46,12 +46,12 @@ public class GuildController {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns the guild of the user
-         * @param token - Token of the user that is trying to get the guild
-         * @return GuildUserDTO - Guild of the user
+         * @param String token
+         * @return UserDTO
          */
-        return guildService.getUser(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        return guildS.getUser(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7))
         );
     }
 
@@ -62,13 +62,13 @@ public class GuildController {
         /**
          * @Author: Gianca1994
          * Explanation: This method saves a guild in the database
-         * @param token - Token of the user that is trying to save the guild
-         * @param guildDTO - Guild to be saved
+         * @param String token
+         * @param GuildDTO guildDTO
          * @return void
          */
-        guildService.save(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.save(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 guildDTO
         );
     }
@@ -79,14 +79,14 @@ public class GuildController {
                                  @RequestBody RequestGuildNameDTO requestGuildNameDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method adds a user to a guild
-         * @param token - Token of the user that is trying to add the user to the guild
-         * @param requestGuildNameDTO - Name of the guild to be added
+         * Explanation: This method requests a user to a guild
+         * @param String token
+         * @param RequestGuildNameDTO requestGuildNameDTO
          * @return void
          */
-        guildService.requestUser(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.requestUser(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 requestGuildNameDTO.getName()
         );
     }
@@ -98,13 +98,13 @@ public class GuildController {
         /**
          * @Author: Gianca1994
          * Explanation: This method accepts a user to a guild
-         * @param String token - Token of the user that is trying to accept the user to the guild
-         * @param String name - Name of the user to be accepted
+         * @param String token
+         * @param String name
          * @return void
          */
-        guildService.acceptUser(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.acceptUser(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 name);
     }
 
@@ -115,13 +115,13 @@ public class GuildController {
         /**
          * @Author: Gianca1994
          * Explanation: This method rejects a user to a guild
-         * @param String token - Token of the user that is trying to reject the user to the guild
-         * @param String name - Name of the user to be rejected
+         * @param String token
+         * @param String name
          * @return void
          */
-        guildService.rejectUser(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.rejectUser(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 name);
     }
 
@@ -131,14 +131,14 @@ public class GuildController {
                                   @PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method makes a user subleader of a guild
-         * @param token - Token of the user that is trying to make the user subleader
-         * @param name - Name of the user to be made subleader
+         * Explanation: This method makes a user subleader
+         * @param String token
+         * @param String name
          * @return void
          */
-        guildService.makeUserSubLeader(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.makeUserSubLeader(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 name
         );
     }
@@ -150,13 +150,13 @@ public class GuildController {
         /**
          * @Author: Gianca1994
          * Explanation: This method removes a user from a guild
-         * @param token - Token of the user that is trying to remove the user from the guild
-         * @param name - Name of the user to be removed
+         * @param String token
+         * @param String name
          * @return void
          */
-        guildService.removeUser(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        guildS.removeUser(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7)),
                 name
         );
     }
@@ -167,13 +167,13 @@ public class GuildController {
                                         @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method donates diamonds to a guild
-         * @param token - Token of the user that is trying to donate diamonds to the guild
-         * @param guildDonateDiamondsDTO - Amount of diamonds to be donated
-         * @return int
+         * Explanation: This method donates diamonds to the guild
+         * @param String token
+         * @param GuildDonateDiamondsDTO guildDonateDiamondsDTO
+         * @return UpgradeDonateDTO
          */
-        return guildService.donateDiamonds(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
+        return guildS.donateDiamonds(
+                jwt.getIdFromToken(token.substring(7)),
                 guildDonateDiamondsDTO.getAmountDiamonds()
         );
     }
@@ -183,13 +183,13 @@ public class GuildController {
     public UpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method upgrades the level of a guild
-         * @param token - Token of the user that is trying to upgrade the level of the guild
-         * @return void
+         * Explanation: This method upgrades the guild level
+         * @param String token
+         * @return UpgradeDonateDTO
          */
-        return guildService.upgradeLevel(
-                jwtTokenUtil.getIdFromToken(token.substring(7)),
-                jwtTokenUtil.getUsernameFromToken(token.substring(7))
+        return guildS.upgradeLevel(
+                jwt.getIdFromToken(token.substring(7)),
+                jwt.getUsernameFromToken(token.substring(7))
         );
     }
 }
