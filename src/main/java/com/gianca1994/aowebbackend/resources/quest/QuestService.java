@@ -65,7 +65,8 @@ public class QuestService {
          * @param Quest quest
          * @return none
          */
-        validator.saveQuest(quest, questR.existsByName(quest.getName()));
+        validator.questExist(questR.existsByName(quest.getName()));
+        validator.checkDtoSaveQuest(quest);
         questR.save(
                 new Quest(
                         quest.getName(), quest.getNameNpcKill().toLowerCase(),
@@ -82,13 +83,12 @@ public class QuestService {
          * @param String name
          * @return none
          */
-        validator.getQuestByNameOrDelete(questR.existsByName(name));
-
+        validator.questFound(questR.existsByName(name));
         Quest quest = questR.findByName(name);
         questR.delete(quest);
     }
 
-    public void acceptQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public void acceptQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
@@ -96,12 +96,15 @@ public class QuestService {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        User user = userR.findByUsername(username);
+        validator.userFound(userR.existsByUsername(username));
+        validator.questFound(questR.existsByName(nameQuest));
+
         List<UserQuest> userQuests = userQuestR.findByUserUsername(username);
-        Quest quest = questR.findByName(nameRequestDTO.getName());
+        validator.checkUserMaxQuests(userQuests.size());
+        validator.checkQuestAccepted(userQuests, nameQuest);
 
-        validator.acceptQuest(user, userQuests, quest);
-
+        User user = userR.findByUsername(username);
+        Quest quest = questR.findByName(nameQuest);
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
         userQuest.setQuest(quest);

@@ -23,6 +23,16 @@ public class QuestServiceValidator {
         if (!exist) throw new Conflict("Quest not found");
     }
 
+    public void questExist(boolean exist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a quest exists.
+         * @param boolean exist
+         * @return void
+         */
+        if (exist) throw new Conflict("Quest already exists");
+    }
+
     public void validPage(int page) throws NotFound {
         /**
          * @Author: Gianca1994
@@ -33,16 +43,15 @@ public class QuestServiceValidator {
         if (page < 0) throw new NotFound("Page not available");
     }
 
-    public void saveQuest(QuestDTO quest, boolean exist) throws Conflict {
+    public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving a quest.
+         * Explanation: This function is in charge of validating the data of a quest.
          * @param QuestDTO quest
          * @return void
          */
-        if (exist) throw new Conflict("Quest already exists");
-        if (Objects.equals(quest.getName(), "")) throw new Conflict("Name cannot be empty");
-        if (Objects.equals(quest.getNameNpcKill(), "")) throw new Conflict("Name NPC Kill cannot be empty");
+        if (quest.getName().isEmpty()) throw new Conflict("Name cannot be empty");
+        if (quest.getNameNpcKill().isEmpty()) throw new Conflict("Name NPC Kill cannot be empty");
         if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");
         if (quest.getUserKillAmountNeeded() < 0) throw new Conflict("User Kill Amount Needed cannot be negative");
         if (quest.getGiveExp() < 0) throw new Conflict("Experience cannot be negative");
@@ -50,25 +59,30 @@ public class QuestServiceValidator {
         if (quest.getGiveDiamonds() < 0) throw new Conflict("Diamonds cannot be negative");
     }
 
-    public void acceptQuest(User user, List<UserQuest> userQuests, Quest quest) throws Conflict {
+    public void userFound(boolean exist) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of accepting a quest.
-         * @param User user
-         * @param List<UserQuest> userQuests
-         * @param Quest quest
-         * @return void
+         *
          */
-        if (user == null) throw new NotFound("User not found");
-        if (userQuests.size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
-        if (quest == null) throw new NotFound("Quest not found");
+        if (!exist) throw new Conflict("User not found");
+    }
 
-        for (UserQuest userQuest : userQuests) {
-            if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
-                throw new Conflict("You already accepted this quest");
-            }
+    public void checkUserMaxQuests(int amountQuests) throws Conflict {
+        /**
+         *
+         */
+        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
+    }
+
+    public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
+        /**
+         *
+         */
+        if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
+            throw new Conflict("You already accepted this quest");
         }
     }
+
+    //////////////////////////////////////
 
     public void completeQuest(User user, UserQuest userQuest, Quest quest) throws Conflict {
         /**

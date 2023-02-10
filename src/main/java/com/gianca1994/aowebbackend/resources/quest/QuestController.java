@@ -85,7 +85,7 @@ public class QuestController {
          */
         questService.acceptQuest(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+                nameRequestDTO.getName()
         );
     }
 
