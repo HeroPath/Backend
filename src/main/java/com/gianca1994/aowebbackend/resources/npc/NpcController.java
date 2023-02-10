@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class NpcController {
 
     @Autowired
-    private NpcService npcService;
+    private NpcService npcS;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -31,7 +31,7 @@ public class NpcController {
          * @return ArrayList<Npc>
          */
         try {
-            return npcService.getAllNpcs();
+            return npcS.getAllNpcs();
         } catch (Exception e) {
             throw new Conflict("Error in getting all npcs");
         }
@@ -47,7 +47,7 @@ public class NpcController {
          * @param String name
          * @return Npc
          */
-        return npcService.getNpcByName(name);
+        return npcS.getNpcByName(name);
     }
 
     @GetMapping("/zone/{zone}")
@@ -59,7 +59,7 @@ public class NpcController {
          * @param String zone
          * @return ArrayList<Npc>
          */
-        return npcService.filterNpcByZone(zone);
+        return npcS.filterNpcByZone(zone);
     }
 
     @PostMapping()
@@ -72,6 +72,6 @@ public class NpcController {
          * @param Npc npc
          * @return Npc
          */
-        return npcService.saveNpc(npc);
+        return npcS.saveNpc(npc);
     }
 }
