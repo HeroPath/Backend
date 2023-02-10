@@ -20,10 +20,10 @@ import java.util.List;
 public class ItemController {
 
     @Autowired
-    private ItemService itemService;
+    private ItemService itemS;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @GetMapping("/shop/{aClass}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -34,7 +34,7 @@ public class ItemController {
          * @param String aClass
          * @return List<Item>
          */
-        return itemService.getClassShop(aClass);
+        return itemS.getClassShop(aClass);
     }
 
     @PostMapping()
@@ -46,7 +46,7 @@ public class ItemController {
          * @param Item item
          * @return Item
          */
-        itemService.saveItem(newItem);
+        itemS.saveItem(newItem);
     }
 
     @PostMapping("/buy")
@@ -60,8 +60,8 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        return itemService.buyItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        return itemS.buyItem(
+                jwt.getUsernameFromToken(token.substring(7)),
                 nameRequestDTO.getName().toLowerCase()
         );
     }
@@ -77,8 +77,8 @@ public class ItemController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        return itemService.sellItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        return itemS.sellItem(
+                jwt.getUsernameFromToken(token.substring(7)),
                 nameRequestDTO.getName().toLowerCase()
         );
     }
@@ -94,8 +94,8 @@ public class ItemController {
          * @param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.equipItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        return itemS.equipItem(
+                jwt.getUsernameFromToken(token.substring(7)),
                 equipUnequipItemDTO.getId()
         );
     }
@@ -111,8 +111,8 @@ public class ItemController {
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
          * @return User user
          */
-        return itemService.unequipItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        return itemS.unequipItem(
+                jwt.getUsernameFromToken(token.substring(7)),
                 equipUnequipItemDTO.getId()
         );
     }
