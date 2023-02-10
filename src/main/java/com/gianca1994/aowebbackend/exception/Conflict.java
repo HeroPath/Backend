@@ -2,8 +2,9 @@ package com.gianca1994.aowebbackend.exception;
 
 /**
  * @Author: Gianca1994
- * Explanation: ConflictException
+ * Explanation: This class is used to throw a conflict exception.
  */
+
 public class Conflict extends Exception {
     public Conflict(String message) {
         super(message);

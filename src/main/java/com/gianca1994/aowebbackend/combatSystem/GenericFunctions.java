@@ -9,6 +9,7 @@ import com.gianca1994.aowebbackend.resources.user.User;
  * @Author: Gianca1994
  * Explanation: This class contains all the generic functions that are used in the combat system.
  */
+
 public class GenericFunctions {
 
     public boolean checkLifeStartCombat(User user) {

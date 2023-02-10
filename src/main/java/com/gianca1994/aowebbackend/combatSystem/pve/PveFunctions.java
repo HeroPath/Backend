@@ -5,14 +5,14 @@ import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: PveFunctions
+ * Explanation: This class is in charge of the functions of the pve combat system.
  */
+
 public class PveFunctions {
     public int calculateNpcDmg(Npc npc, int userDefense) {
         /**

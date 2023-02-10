@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 /**
  * @Author: Gianca1994
- * Explanation: ApiExceptionHandler
+ * Explanation: This class is used to handle all the exceptions that are thrown in the application.
  */
 
 @ControllerAdvice

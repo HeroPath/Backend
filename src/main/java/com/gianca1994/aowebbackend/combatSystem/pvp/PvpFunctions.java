@@ -7,12 +7,12 @@ import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
+ * Explanation: This class is in charge of the functions of the pvp.
  */
+
 public class PvpFunctions {
     public long getUserGoldThief(long userGold) {
         /**
