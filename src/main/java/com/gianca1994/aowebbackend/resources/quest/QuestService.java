@@ -113,7 +113,7 @@ public class QuestService {
         userQuestR.save(userQuest);
     }
 
-    public Quest completeQuest(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public Quest completeQuest(String username, String questName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of completing a quest.
@@ -121,26 +121,29 @@ public class QuestService {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        User user = userR.findByUsername(username);
-        Quest quest = questR.findByName(nameRequestDTO.getName());
-        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, quest.getName());
+        validator.userFound(userR.existsByUsername(username));
+        validator.questFound(questR.existsByName(questName));
 
-        validator.completeQuest(user, userQuest, quest);
+        User user = userR.findByUsername(username);
+        Quest quest = questR.findByName(questName);
+        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, questName);
+        validator.userQuestFound(userQuest);
+        validator.checkQuestCompleted(userQuest.getAmountNpcKill(), quest.getNpcKillAmountNeeded());
+        validator.checkQuestCompleted(userQuest.getAmountUserKill(), quest.getUserKillAmountNeeded());
 
         user.setExperience(user.getExperience() + quest.getGiveExp());
         user.setGold(user.getGold() + quest.getGiveGold());
         user.setDiamond(user.getDiamond() + quest.getGiveDiamonds());
         user.userLevelUp();
 
-        if (userQuest.getId() == null) throw new Conflict("You already completed this quest");
-
+        validator.questAlreadyCompleted(userQuest.getId());
         userQuestR.delete(userQuest);
         user.getUserQuests().remove(userQuest);
         userR.save(user);
         return userQuest.getQuest();
     }
 
-    public void cancelQuest(String username, NameRequestDTO nameRequestDTO) {
+    public void cancelQuest(String username, String questName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of canceling a quest.
@@ -148,8 +151,11 @@ public class QuestService {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameRequestDTO.getName());
-        validator.cancelQuest(userQuest);
+        validator.userFound(userR.existsByUsername(username));
+        validator.questFound(questR.existsByName(questName));
+
+        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, questName);
+        validator.userQuestFound(userQuest);
         userQuestR.delete(userQuest);
     }
 }

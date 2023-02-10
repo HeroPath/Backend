@@ -33,6 +33,26 @@ public class QuestServiceValidator {
         if (exist) throw new Conflict("Quest already exists");
     }
 
+    public void userQuestFound(UserQuest userQuest) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user quest exists.
+         * @param UserQuest userQuest
+         * @return void
+         */
+        if (userQuest == null) throw new NotFound("You don't have this quest");
+    }
+
+    public void userFound(boolean exist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user exists.
+         * @param boolean exist
+         * @return void
+         */
+        if (!exist) throw new Conflict("User not found");
+    }
+
     public void validPage(int page) throws NotFound {
         /**
          * @Author: Gianca1994
@@ -59,16 +79,6 @@ public class QuestServiceValidator {
         if (quest.getGiveDiamonds() < 0) throw new Conflict("Diamonds cannot be negative");
     }
 
-    public void userFound(boolean exist) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user exists.
-         * @param boolean exist
-         * @return void
-         */
-        if (!exist) throw new Conflict("User not found");
-    }
-
     public void checkUserMaxQuests(int amountQuests) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -92,6 +102,21 @@ public class QuestServiceValidator {
         }
     }
 
+    public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
+        /**
+         *
+         */
+        if (amountKill < amountNeeded) throw new Conflict("You have not killed enough NPCs or users");
+    }
+
+    public void questAlreadyCompleted(long userQuestId) throws Conflict {
+        /**
+         *
+         */
+        if (userQuestId == 0) throw new Conflict("You already completed this quest");
+    }
+
+
     //////////////////////////////////////
 
     public void completeQuest(User user, UserQuest userQuest, Quest quest) throws Conflict {
@@ -103,23 +128,12 @@ public class QuestServiceValidator {
          * @param Quest quest
          * @return void
          */
-        if (user == null) throw new NotFound("User not found");
-        if (quest == null) throw new NotFound("Quest not found");
-        if (userQuest == null) throw new NotFound("You don't have this quest");
+        //if (user == null) throw new NotFound("User not found");
+        //if (quest == null) throw new NotFound("Quest not found");
+        //if (userQuest == null) throw new NotFound("You don't have this quest");
 
-        if (userQuest.getAmountNpcKill() < quest.getNpcKillAmountNeeded())
-            throw new Conflict("You didn't kill enough npcs");
+
         if (userQuest.getAmountUserKill() < quest.getUserKillAmountNeeded())
             throw new Conflict("You didn't kill enough users");
-    }
-
-    public void cancelQuest(UserQuest userQuest) {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of canceling a quest.
-         * @param UserQuest userQuest
-         * @return void
-         */
-        if (userQuest == null) throw new NotFound("You don't have this quest");
     }
 }

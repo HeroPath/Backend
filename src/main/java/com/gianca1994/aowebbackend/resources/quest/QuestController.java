@@ -102,7 +102,7 @@ public class QuestController {
          */
         return questService.completeQuest(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+                nameRequestDTO.getName()
         );
     }
 
@@ -119,7 +119,7 @@ public class QuestController {
          */
         questService.cancelQuest(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+                nameRequestDTO.getName()
         );
     }
 }
