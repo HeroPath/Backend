@@ -44,13 +44,13 @@ public class AuthService implements UserDetailsService {
     AuthServiceValidator validator = new AuthServiceValidator();
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     @Autowired
-    private InventoryRepository inventoryRepository;
+    private InventoryRepository inventoryR;
 
     @Autowired
-    private EquipmentRepository equipmentRepository;
+    private EquipmentRepository equipmentR;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -63,7 +63,7 @@ public class AuthService implements UserDetailsService {
          * @param String username
          * @return UserDetails
          */
-        User user = userRepository.findByUsername(username);
+        User user = userR.findByUsername(username);
         GrantedAuthority authorities = new SimpleGrantedAuthority(user.getRole());
         return new org.springframework.security.core.userdetails.
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
@@ -84,12 +84,12 @@ public class AuthService implements UserDetailsService {
                         c -> c.getName().equalsIgnoreCase(user.getClassName()))
                 .findFirst().orElse(null);
 
-        validator.saveUser(username, password, email, aClass, userRepository);
+        validator.saveUser(username, password, email, aClass, userR);
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
-        inventoryRepository.save(inventory);
-        equipmentRepository.save(equipment);
+        inventoryR.save(inventory);
+        equipmentR.save(equipment);
 
         User newUser = new User(
                 username, encryptPassword(user.getPassword()), email,
@@ -103,7 +103,7 @@ public class AuthService implements UserDetailsService {
         if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
             newUser.setRole("ADMIN");
 
-        return userRepository.save(newUser);
+        return userR.save(newUser);
     }
 
     private boolean validateEmail(String email) {
