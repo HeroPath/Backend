@@ -1,9 +1,7 @@
 package com.gianca1994.aowebbackend.resources.npc;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
-import com.gianca1994.aowebbackend.resources.npc.utilities.NpcConst;
 import com.gianca1994.aowebbackend.resources.npc.utilities.NpcServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,29 +42,16 @@ public class NpcService {
         return npcR.findByName(name.toLowerCase());
     }
 
-    public Set<Npc> filterNpcByZone(String zone) {
+    public ArrayList<Npc> filterNpcByZone(String zone) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
          * @return Set<Npc>
          */
-        Set<Npc> npcs = new TreeSet<>(new NpcLevelComparator());
-        npcs.addAll(npcR.findByZone(zone.toLowerCase()));
-        validator.filterNpcByZone(npcs);
+        ArrayList<Npc> npcs = npcR.findByZoneAndOrderByLevel(zone.toLowerCase());
+        validator.npcNotFoundZone(npcs.size());
         return npcs;
-    }
-
-    static class NpcLevelComparator implements Comparator<Npc> {
-        /**
-         * @return int
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of comparing the npcs by level.
-         */
-        @Override
-        public int compare(Npc npc1, Npc npc2) {
-            return Integer.compare(npc1.getLevel(), npc2.getLevel());
-        }
     }
 
     public Npc saveNpc(NpcDTO npc) throws Conflict {

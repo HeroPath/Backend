@@ -24,14 +24,14 @@ public class NpcServiceValidator {
         if (!npcExist) throw new NotFound(NpcConst.NPC_NOT_FOUND);
     }
 
-    public void filterNpcByZone(Set<Npc> npcs) {
+    public void npcNotFoundZone(int npcSize) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to filter the npcs by zone
          * @param Set<Npc> npcs
          * @return void
          */
-        if (npcs.isEmpty()) throw new NotFound(NpcConst.NPC_NOT_FOUND_ZONE);
+        if (npcSize <= 0) throw new NotFound(NpcConst.NPC_NOT_FOUND_ZONE);
     }
 
     public void saveNpc(NpcDTO npc) throws Conflict {

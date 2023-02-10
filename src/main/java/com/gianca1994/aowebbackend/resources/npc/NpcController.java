@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * @Author: Gianca1994
@@ -53,7 +52,7 @@ public class NpcController {
 
     @GetMapping("/zone/{zone}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Set<Npc> filterNpcByZone(@PathVariable String zone) throws Conflict {
+    public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
