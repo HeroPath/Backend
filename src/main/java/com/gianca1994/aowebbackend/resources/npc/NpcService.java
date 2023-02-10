@@ -1,9 +1,7 @@
 package com.gianca1994.aowebbackend.resources.npc;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
-import com.gianca1994.aowebbackend.resources.npc.utilities.NpcConst;
 import com.gianca1994.aowebbackend.resources.npc.utilities.NpcServiceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +10,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcService
+ * Explanation: This class is in charge of the business logic of the npc.
  */
 
 @Service
@@ -21,7 +19,7 @@ public class NpcService {
     NpcServiceValidator validator = new NpcServiceValidator();
 
     @Autowired
-    private NpcRepository npcRepository;
+    private NpcRepository npcR;
 
     public ArrayList<Npc> getAllNpcs() {
         /**
@@ -30,7 +28,7 @@ public class NpcService {
          * @param none
          * @return ArrayList<Npc>
          */
-        return (ArrayList<Npc>) npcRepository.findAll();
+        return (ArrayList<Npc>) npcR.findAll();
     }
 
     public Npc getNpcByName(String name) {
@@ -40,33 +38,20 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        if (npcRepository.findByName(name.toLowerCase()) == null) throw new NotFound(NpcConst.NPC_NOT_FOUND);
-        return npcRepository.findByName(name.toLowerCase());
+        validator.npcFound(npcR.existsByName(name.toLowerCase()));
+        return npcR.findByName(name.toLowerCase());
     }
 
-    public Set<Npc> filterNpcByZone(String zone) throws Conflict {
+    public ArrayList<Npc> filterNpcByZone(String zone) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
          * @return Set<Npc>
          */
-        Set<Npc> npcs = new TreeSet<>(new NpcLevelComparator());
-        npcs.addAll(npcRepository.findByZone(zone.toLowerCase()));
-        validator.filterNpcByZone(npcs);
+        ArrayList<Npc> npcs = npcR.findByZoneAndOrderByLevel(zone.toLowerCase());
+        validator.npcNotFoundZone(npcs.size());
         return npcs;
-    }
-
-    static class NpcLevelComparator implements Comparator<Npc> {
-        /**
-         * @return int
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of comparing the npcs by level.
-         */
-        @Override
-        public int compare(Npc npc1, Npc npc2) {
-            return Integer.compare(npc1.getLevel(), npc2.getLevel());
-        }
     }
 
     public Npc saveNpc(NpcDTO npc) throws Conflict {
@@ -77,11 +62,12 @@ public class NpcService {
          * @return Npc
          */
         validator.saveNpc(npc);
-        Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
+        String nameNpc = npc.getName().toLowerCase();
+        Npc checkNpcSave = npcR.findByName(nameNpc);
 
         if (checkNpcSave == null) {
             checkNpcSave = new Npc();
-            checkNpcSave.setName(npc.getName().toLowerCase());
+            checkNpcSave.setName(nameNpc);
         }
 
         checkNpcSave.setLevel(npc.getLevel());
@@ -95,6 +81,6 @@ public class NpcService {
         checkNpcSave.setMaxDmg(npc.getMaxDmg());
         checkNpcSave.setDefense(npc.getDefense());
         checkNpcSave.setZone(npc.getZone());
-        return npcRepository.save(checkNpcSave);
+        return npcR.save(checkNpcSave);
     }
 }

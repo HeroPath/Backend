@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.jwt;
+package com.gianca1994.aowebbackend.resources.jwt.config;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Author: Gianca1994
- * Explanation: JwtAuthenticationEntryPoint
+ * Explanation: This class is used to handle the case when the user is not authenticated.
  */
 
 @Component

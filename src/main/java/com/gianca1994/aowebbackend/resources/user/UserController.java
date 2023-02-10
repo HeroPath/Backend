@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.resources.user;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserController
+ * Explanation: This class is used to manage the user's requests.
  */
 
 @RestController
@@ -23,23 +23,23 @@ import java.util.ArrayList;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    UserService userS;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @GetMapping("/profile")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public User getProfile(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the profile of the user.
+         * Explanation: This method is used to get the profile of the user.
          * @param String token
-         * @return User user
+         * @return User
          */
         try {
-            return userService.getProfile(
-                    jwtTokenUtil.getUsernameFromToken(token.substring(7))
+            return userS.getProfile(
+                    jwt.getUsernameFromToken(token.substring(7))
             );
         } catch (Exception e) {
             throw new Conflict("Error in getting the profile");
@@ -52,9 +52,10 @@ public class UserController {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get the ranking of all the users.
-         * @return ArrayList<User> users
+         * @param int page
+         * @return RankingResponseDTO
          */
-        return userService.getRankingAll(page);
+        return userS.getRankingAll(page);
     }
 
     @PostMapping("/add-skill-points/{skillName}")
@@ -63,13 +64,13 @@ public class UserController {
                                             @PathVariable String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to add skill points to the user.
+         * Explanation: This method is used to add a skill point to a skill.
          * @param String token
-         * @param FreeSkillPointDTO freeSkillPointDTO
-         * @return User user
+         * @param String skillName
+         * @return UserAttributes
          */
-        return userService.setFreeSkillPoint(
-                jwtTokenUtil.getIdFromToken(token.substring(7)), skillName
+        return userS.setFreeSkillPoint(
+                jwt.getIdFromToken(token.substring(7)), skillName
         );
     }
 
@@ -79,13 +80,14 @@ public class UserController {
                                             @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to attack another user.
+         * Explanation: This method is used to attack a user.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return ArrayList<ObjectNode> objectNodes
+         * @return ArrayList<ObjectNode>
          */
-        return userService.userVsUserCombatSystem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        return userS.userVsUserCombatSystem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName().toLowerCase()
         );
     }
 
@@ -98,10 +100,11 @@ public class UserController {
          * Explanation: This method is used to attack a npc.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return ArrayList<ObjectNode> objectNodes
+         * @return ArrayList<ObjectNode>
          */
-        return userService.userVsNpcCombatSystem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)), nameRequestDTO
+        return userS.userVsNpcCombatSystem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName().toLowerCase()
         );
     }
 }

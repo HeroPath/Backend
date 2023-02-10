@@ -6,102 +6,149 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
-import com.gianca1994.aowebbackend.resources.user.User;
 
-import java.util.Objects;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of validating the data sent to the ItemService.
+ */
 
 public class ItemServiceValidator {
 
-    public void saveItem(Item item, ItemDTO newItem) throws Conflict, BadRequest {
+    public void userFound(boolean userExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to save an item
-         * @param Item item
+         * Explanation: This function is in charge of checking if a user exists.
+         * @param boolean userExist
+         * @return void
+         */
+        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
+    }
+
+    public void itemFound(boolean itemExist) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of checking if an item exists.
+         * @param boolean itemExist
+         * @return void
+         */
+        if (!itemExist) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+    }
+
+    public void itemExists(boolean itemExist) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of checking if an item already exists.
+         * @param boolean itemExist
+         * @return void
+         */
+        if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
+    }
+
+    public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of checking if the data sent to save an item is correct.
          * @param ItemDTO newItem
          * @return void
          */
-        if (item != null) throw new Conflict(ItemConst.ITEM_ALREADY_EXISTS);
-
-        if (Objects.equals(newItem.getName(), "")) throw new BadRequest(ItemConst.NAME_CANNOT_BE_EMPTY);
-        if (Objects.equals(newItem.getType(), "")) throw new BadRequest(ItemConst.TYPE_CANNOT_BE_EMPTY);
-        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_MIN_CANNOT_BE_LESS_THAN_0);
-        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_CANNOT_BE_LESS_THAN_0);
-        if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 ||
-                newItem.getIntelligence() < 0 || newItem.getVitality() < 0 ||
-                newItem.getLuck() < 0) throw new BadRequest(ItemConst.STATS_CANNOT_BE_LESS_THAN_0);
-        if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(newItem.getType()))
-            throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + newItem.getType());
+        if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
+        if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
+        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
+        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
+        if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
+            throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
+        if (!ItemConst.ENABLED_EQUIP.contains(newItem.getType()))
+            throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
     }
 
-    public void buyItem(User user, Item itemBuy) throws Conflict {
+    public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to buy an item
-         * @param User user
-         * @param Item itemBuy
+         * Explanation: This method check if the user have enough gold to buy the item.
+         * @param long goldUser
+         * @param int itemPrice
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.isNull(itemBuy)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        if (user.getGold() < itemBuy.getPrice()) throw new Conflict(ItemConst.YOU_DONT_HAVE_ENOUGH_GOLD);
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+        if (goldUser < itemPrice) throw new Conflict(ItemConst.NOT_ENOUGH_GOLD);
     }
 
-    public void sellItem(User user, Item itemSell) {
+    public void checkInventoryFull(int inventorySize) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to sell an item
-         * @param User user
-         * @param Item itemSell
+         * Explanation: This method check if the user inventory is full.
+         * @param int inventorySize
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (Objects.isNull(itemSell)) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        if (!user.getInventory().getItems().contains(itemSell))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
+        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 
-    public void equipItem(User user, Item itemEquip) throws Conflict {
+    public void inventoryContainsItem(List<Item> userInventory, Item item) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to equip an item
-         * @param User user
-         * @param Item itemEquip
+         * Explanation: This method check if the user inventory contains the item.
+         * @param List<Item> userInventory
+         * @param Item item
          * @return void
          */
-        if (itemEquip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (!user.getInventory().getItems().contains(itemEquip))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_INVENTORY);
-        if (!Objects.equals(user.getAClass(), itemEquip.getClassRequired()) && !Objects.equals(itemEquip.getClassRequired(), "none"))
-            throw new Conflict(ItemConst.ITEM_DOES_NOT_CORRESPOND_TO_YOUR_CLASS);
+        if (!userInventory.contains(item)) throw new Conflict(ItemConst.ITEM_NOT_INVENTORY);
+    }
 
-        for (Item itemEquipedOld : user.getEquipment().getItems()) {
-            if (!ItemConst.ITEM_ENABLED_TO_EQUIP.contains(itemEquipedOld.getType()))
-                throw new Conflict(ItemConst.YOU_CANT_EQUIP_MORE_THAN_ONE + itemEquipedOld.getType());
-            if (Objects.equals(itemEquipedOld.getType(), itemEquip.getType()))
-                throw new Conflict(ItemConst.YOU_CANT_EQUIP_TWO_ITEMS_OF_THE_SAME_TYPE);
+    public void checkItemClassEquip(String userClass, String itemClass) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user class is the same of the item class.
+         * @param String userClass
+         * @param String itemClass
+         * @return void
+         */
+        if (!userClass.equals(itemClass) && !"none".equals(itemClass)) throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
+    }
+
+    public void checkItemLevelEquip(int userLevel, int itemLevel) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user level is enough to equip the item.
+         * @param int userLevel
+         * @param int itemLevel
+         * @return void
+         */
+        if (userLevel < itemLevel) throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemLevel);
+    }
+
+    public void checkItemEquipIfPermitted(String itemType) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item can be equipped.
+         * @param String itemType
+         * @return void
+         */
+        if (!ItemConst.ENABLED_EQUIP.contains(itemType)) throw new Conflict(ItemConst.ITEM_EQUIP_NOT_PERMITTED);
+    }
+
+    public void checkEquipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user can equip more items of the same type.
+         * @param Set<Item> equipment
+         * @param String itemType
+         * @return void
+         */
+        for (Item item : equipment) {
+            if (item.getType().equals(itemType)) throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM);
         }
-
-        if (user.getLevel() < itemEquip.getLvlMin())
-            throw new Conflict(ItemConst.YOU_CANT_EQUIP_AN_ITEM_THAT_REQUIRES_LEVEL + itemEquip.getLvlMin());
     }
 
-    public void unequipItem(User user, Item itemUnequip) throws Conflict {
+    public void checkItemInEquipment(Set<Item> equipment, Item item) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the request to unequip an item
-         * @param User user
-         * @param Item itemUnequip
+         * Explanation: This method check if the item is in the equipment of the user.
+         * @param Set<Item> equipment
+         * @param Item item
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
-        if (itemUnequip == null) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
-
-        if (!user.getEquipment().getItems().contains(itemUnequip))
-            throw new NotFound(ItemConst.ITEM_NOT_FOUND_IN_EQUIPMENT);
-        if (user.getInventory().getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new Conflict(ItemConst.INVENTORY_IS_FULL);
+        if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
     }
 }

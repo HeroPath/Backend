@@ -6,12 +6,12 @@ import com.gianca1994.aowebbackend.resources.title.Title;
 import java.util.Arrays;
 import java.util.List;
 
-public class ModifConfig {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class is used to modify the configuration of the application.
-     */
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to modify the configuration of the application.
+ */
 
+public class ModifConfig {
     /////////////////////////// USER ///////////////////////////
     public static final short START_LVL = 1;
     public static final long START_EXP = 0;

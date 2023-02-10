@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.item.dto.response;
 
-
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -8,6 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to send the user's data to the client after an item is equipped or unequipped.
+ */
 
 @Getter
 @Setter

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: NameDTO
+ * Explanation: DTO for the name of the user
  */
 
 @Getter

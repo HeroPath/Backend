@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * @Author: Gianca1994
- * Explanation: JwtRequestDTO
+ * Explanation: This class is used to receive the username and password from the client
  */
 
 @Getter

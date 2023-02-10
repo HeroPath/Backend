@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to add users to a guild.
+ * Explanation: This class is used to return the user's guild information
  */
 
 @Getter

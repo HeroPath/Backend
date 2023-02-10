@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to store the information about the user's quests.
+ * Explanation: This class is the entity of the user_quest table
  */
 
 @Entity

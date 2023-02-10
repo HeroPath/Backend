@@ -2,8 +2,9 @@ package com.gianca1994.aowebbackend.exception;
 
 /**
  * @Author: Gianca1994
- * Explanation: NotFoundException
+ * Explanation: This class is used to throw a not found exception.
  */
+
 public class NotFound extends RuntimeException {
     public NotFound(String message) {
         super(message);

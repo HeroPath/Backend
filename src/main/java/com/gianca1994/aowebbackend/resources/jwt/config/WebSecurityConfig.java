@@ -1,4 +1,4 @@
-package com.gianca1994.aowebbackend.resources.jwt;
+package com.gianca1994.aowebbackend.resources.jwt.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: Gianca1994
- * Explanation: WebSecurityConfig
+ * Explanation: This class is used to configure the web security.
  */
 
 @Configuration

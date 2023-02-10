@@ -1,7 +1,7 @@
 package com.gianca1994.aowebbackend.resources.quest;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.aowebbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
@@ -9,16 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of handling the requests related to the quests.
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/quests")
 public class QuestController {
 
     @Autowired
-    private QuestService questService;
+    private QuestService questS;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -28,10 +33,11 @@ public class QuestController {
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String token
-         * @return List<ObjectNode>
+         * @param int page
+         * @return QuestListDTO
          */
-        return questService.getQuests(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
+        return questS.getQuests(
+                jwt.getUsernameFromToken(token.substring(7)),
                 page
         );
     }
@@ -45,7 +51,7 @@ public class QuestController {
          * @param String name
          * @return Quest
          */
-        return questService.getQuestByName(name);
+        return questS.getQuestByName(name);
     }
 
     @PostMapping
@@ -53,11 +59,11 @@ public class QuestController {
     public void saveQuest(@RequestBody QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save a quest.
+         * Explanation: This function is in charge of saving a quest.
          * @param QuestDTO quest
          * @return none
          */
-        questService.saveQuest(quest);
+        questS.saveQuest(quest);
     }
 
     @DeleteMapping("/{name}")
@@ -69,7 +75,7 @@ public class QuestController {
          * @param String name
          * @return none
          */
-        questService.deleteQuest(name);
+        questS.deleteQuest(name);
     }
 
     @PostMapping("/accept")
@@ -83,9 +89,9 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.acceptQuest(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+        questS.acceptQuest(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName()
         );
     }
 
@@ -98,11 +104,11 @@ public class QuestController {
          * Explanation: This method is used to complete a quest.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return Quest
          */
-        return questService.completeQuest(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+        return questS.completeQuest(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName()
         );
     }
 
@@ -117,9 +123,9 @@ public class QuestController {
          * @param NameRequestDTO nameRequestDTO
          * @return none
          */
-        questService.cancelQuest(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+        questS.cancelQuest(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName()
         );
     }
 }

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to represent a quest in the database.
+ * Explanation: DTO for Quest
  */
 
 @Getter

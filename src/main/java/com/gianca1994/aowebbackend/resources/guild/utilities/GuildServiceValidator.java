@@ -11,6 +11,11 @@ import com.gianca1994.aowebbackend.resources.user.User;
 
 import java.util.Objects;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the methods to validate the guild service
+ */
+
 public class GuildServiceValidator {
 
     public void userFound(boolean userExist) throws NotFound {

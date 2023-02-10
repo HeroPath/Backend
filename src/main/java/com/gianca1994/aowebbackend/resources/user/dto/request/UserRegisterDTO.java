@@ -4,7 +4,7 @@ import lombok.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserDTO
+ * Explanation: DTO for the register of the user
  */
 
 @Getter

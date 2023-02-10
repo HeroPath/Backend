@@ -3,89 +3,125 @@ package com.gianca1994.aowebbackend.resources.quest.utilities;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.quest.Quest;
 import com.gianca1994.aowebbackend.resources.quest.dto.request.QuestDTO;
-import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.List;
-import java.util.Objects;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of validating the data of a quest.
+ */
 
 public class QuestServiceValidator {
 
-    public void getQuestByNameOrDelete(boolean exist) throws Conflict {
+    public void questFound(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting a quest by name or deleting it.
+         * Explanation: This function is in charge of validating if a quest exists.
          * @param boolean exist
          * @return void
          */
-        if (!exist) throw new Conflict("Quest not found");
+        if (!exist) throw new Conflict(QuestConst.QUEST_NOT_FOUND);
     }
 
-    public void saveQuest(QuestDTO quest, boolean exist) throws Conflict {
+    public void questExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving a quest.
+         * Explanation: This function is in charge of validating if a quest exists.
+         * @param boolean exist
+         * @return void
+         */
+        if (exist) throw new Conflict(QuestConst.QUEST_ALREADY_EXISTS);
+    }
+
+    public void userQuestFound(UserQuest userQuest) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user quest exists.
+         * @param UserQuest userQuest
+         * @return void
+         */
+        if (userQuest == null) throw new NotFound(QuestConst.USER_QUEST_NOT_FOUND);
+    }
+
+    public void userFound(boolean exist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user exists.
+         * @param boolean exist
+         * @return void
+         */
+        if (!exist) throw new Conflict(QuestConst.USER_NOT_FOUND);
+    }
+
+    public void validPage(int page) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a page exists.
+         * @param int page
+         * @return void
+         */
+        if (page < 0) throw new NotFound(QuestConst.PAGE_NOT_AVAILABLE);
+    }
+
+    public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the data of a quest.
          * @param QuestDTO quest
          * @return void
          */
-        if (exist) throw new Conflict("Quest already exists");
-        if (Objects.equals(quest.getName(), "")) throw new Conflict("Name cannot be empty");
-        if (Objects.equals(quest.getNameNpcKill(), "")) throw new Conflict("Name NPC Kill cannot be empty");
-        if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");
-        if (quest.getUserKillAmountNeeded() < 0) throw new Conflict("User Kill Amount Needed cannot be negative");
-        if (quest.getGiveExp() < 0) throw new Conflict("Experience cannot be negative");
-        if (quest.getGiveGold() < 0) throw new Conflict("Gold cannot be negative");
-        if (quest.getGiveDiamonds() < 0) throw new Conflict("Diamonds cannot be negative");
+        if (quest.getName().isEmpty()) throw new Conflict(QuestConst.NAME_EMPTY);
+        if (quest.getNameNpcKill().isEmpty()) throw new Conflict(QuestConst.NAME_NPC_KILL_EMPTY);
+        if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict(QuestConst.NPC_KILL_AMOUNT_LT0);
+        if (quest.getUserKillAmountNeeded() < 0) throw new Conflict(QuestConst.USER_KILL_AMOUNT_LT0);
+        if (quest.getGiveExp() < 0) throw new Conflict(QuestConst.GIVE_EXP_LT0);
+        if (quest.getGiveGold() < 0) throw new Conflict(QuestConst.GIVE_GOLD_LT0);
+        if (quest.getGiveDiamonds() < 0) throw new Conflict(QuestConst.GIVE_DIAMONDS_LT0);
     }
 
-    public void acceptQuest(User user, List<UserQuest> userQuests, Quest quest) throws Conflict {
+    public void checkUserMaxQuests(int amountQuests) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of accepting a quest.
-         * @param User user
-         * @param List<UserQuest> userQuests
-         * @param Quest quest
+         * Explanation: This function is in charge of validating if a user has reached the maximum number of quests.
+         * @param int amountQuests
          * @return void
          */
-        if (user == null) throw new NotFound("User not found");
-        if (userQuests.size() >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
-        if (quest == null) throw new NotFound("Quest not found");
+        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(QuestConst.MAX_ACTIVE_QUESTS);
+    }
 
-        for (UserQuest userQuest : userQuests) {
-            if (Objects.equals(userQuest.getQuest().getName(), quest.getName())) {
-                throw new Conflict("You already accepted this quest");
-            }
+    public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user has already accepted a quest.
+         * @param List<UserQuest> userQuests
+         * @param String questName
+         * @return void
+         */
+        if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
+            throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
         }
     }
 
-    public void completeQuest(User user, UserQuest userQuest, Quest quest) throws Conflict {
+    public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of completing a quest.
-         * @param User user
-         * @param UserQuest userQuest
-         * @param Quest quest
+         * Explanation: This function is in charge of validating if a user has completed a quest.
+         * @param int amountKill
+         * @param int amountNeeded
          * @return void
          */
-        if (user == null) throw new NotFound("User not found");
-        if (quest == null) throw new NotFound("Quest not found");
-        if (userQuest == null) throw new NotFound("You don't have this quest");
-
-        if (userQuest.getAmountNpcKill() < quest.getNpcKillAmountNeeded())
-            throw new Conflict("You didn't kill enough npcs");
-        if (userQuest.getAmountUserKill() < quest.getUserKillAmountNeeded())
-            throw new Conflict("You didn't kill enough users");
+        if (amountKill < amountNeeded) throw new Conflict(QuestConst.QUEST_AMOUNT_CHECK);
     }
 
-    public void cancelQuest(UserQuest userQuest) {
+    public void questAlreadyCompleted(long userQuestId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of canceling a quest.
-         * @param UserQuest userQuest
+         * Explanation: This function is in charge of validating if a user has already completed a quest.
+         * @param long userQuestId
          * @return void
          */
-        if (userQuest == null) throw new NotFound("You don't have this quest");
+        if (userQuestId == 0) throw new Conflict(QuestConst.QUEST_ALREADY_COMPLETED);
     }
 }

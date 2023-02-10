@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the functions that are used in the PvpCombatSystem.
+ * Explanation: This class is in charge of the combat between two users.
  */
 
 public class PvpSystem {

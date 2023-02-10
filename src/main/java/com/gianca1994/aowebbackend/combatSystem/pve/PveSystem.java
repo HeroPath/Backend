@@ -9,8 +9,9 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: PveSystem
+ * Explanation: This class is in charge of the combat between the user and the npc.
  */
+
 public class PveSystem {
 
     private static final GenericFunctions genericFunctions = new GenericFunctions();

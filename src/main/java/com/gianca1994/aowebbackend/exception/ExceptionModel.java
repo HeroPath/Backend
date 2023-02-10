@@ -6,8 +6,9 @@ import java.time.ZonedDateTime;
 
 /**
  * @Author: Gianca1994
- * Explanation: ExceptionModel
+ * Explanation: This class is used to create a model for the exceptions.
  */
+
 public class ExceptionModel {
     private final String message;
     private final HttpStatus httpStatus;

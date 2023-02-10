@@ -5,6 +5,11 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to validate the user.
+ */
+
 public class AuthServiceValidator {
 
     public void saveUser(String username, String email, String password, Class aClass, UserRepository userRepository) throws Conflict {
@@ -15,6 +20,7 @@ public class AuthServiceValidator {
          * @param String email
          * @param String password
          * @param Class aClass
+         * @param UserRepository userRepository
          * @return void
          */
         if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);

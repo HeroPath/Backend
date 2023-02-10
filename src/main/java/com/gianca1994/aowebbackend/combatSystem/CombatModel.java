@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to create a combat model.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

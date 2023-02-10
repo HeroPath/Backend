@@ -5,7 +5,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of handling the requests related to the items.
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/items")
 public class ItemController {
 
     @Autowired
-    private ItemService itemService;
+    private ItemService itemS;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @GetMapping("/shop/{aClass}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -34,19 +39,19 @@ public class ItemController {
          * @param String aClass
          * @return List<Item>
          */
-        return itemService.getClassShop(aClass);
+        return itemS.getClassShop(aClass);
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void saveItem(@RequestBody ItemDTO newItem) throws Conflict {
+    public void saveItem(@RequestBody ItemDTO newItem) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
-         * @param Item item
-         * @return Item
+         * @param ItemDTO newItem
+         * @return void
          */
-        itemService.saveItem(newItem);
+        itemS.saveItem(newItem);
     }
 
     @PostMapping("/buy")
@@ -58,28 +63,28 @@ public class ItemController {
          * Explanation: This function is in charge of buying an item.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return BuySellDTO
          */
-        return itemService.buyItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+        return itemS.buyItem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName().toLowerCase()
         );
     }
 
     @PostMapping("/sell")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public BuySellDTO sellItem(@RequestHeader(value = "Authorization") String token,
-                               @RequestBody NameRequestDTO nameRequestDTO) {
+                               @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return BuySellDTO
          */
-        return itemService.sellItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO
+        return itemS.sellItem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                nameRequestDTO.getName().toLowerCase()
         );
     }
 
@@ -92,11 +97,11 @@ public class ItemController {
          * Explanation: This method is used to equip an item to the user.
          * @param String token
          * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User user
+         * @return EquipOrUnequipDTO
          */
-        return itemService.equipItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO
+        return itemS.equipItem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO.getId()
         );
     }
 
@@ -106,14 +111,14 @@ public class ItemController {
                                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to unequip an item to the user.
+         * Explanation: This method is used to unequip an item from the user.
          * @param String token
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User user
+         * @return EquipOrUnequipDTO
          */
-        return itemService.unequipItem(
-                jwtTokenUtil.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO
+        return itemS.unequipItem(
+                jwt.getUsernameFromToken(token.substring(7)),
+                equipUnequipItemDTO.getId()
         );
     }
 }

@@ -1,13 +1,14 @@
 package com.gianca1994.aowebbackend.config;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the statics of the server.
+ */
+
 public class SvConfig {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class is used to modify the configuration of the application.
-     */
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 100;
-    public static final int GOLD_MULTIPLIER = 100;
+    public static final int EXPERIENCE_MULTIPLIER = 999999;
+    public static final int GOLD_MULTIPLIER = 99999;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
@@ -38,6 +39,7 @@ public class SvConfig {
 
     /////////////////////////// QUEST ///////////////////////////
     public static final int MAX_ACTIVE_QUESTS = 3;
+    public static final int QUEST_PER_PAGE = 7;
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////

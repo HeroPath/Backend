@@ -7,11 +7,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcController
+ * Explanation: This class is in charge of the npc controller.
  */
 
 @RestController
@@ -20,7 +19,7 @@ import java.util.Set;
 public class NpcController {
 
     @Autowired
-    private NpcService npcService;
+    private NpcService npcS;
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
@@ -32,7 +31,7 @@ public class NpcController {
          * @return ArrayList<Npc>
          */
         try {
-            return npcService.getAllNpcs();
+            return npcS.getAllNpcs();
         } catch (Exception e) {
             throw new Conflict("Error in getting all npcs");
         }
@@ -40,7 +39,7 @@ public class NpcController {
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Npc getNpcByName(@PathVariable String name) throws Conflict {
+    public Npc getNpcByName(@PathVariable String name) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the npc by name.
@@ -48,19 +47,19 @@ public class NpcController {
          * @param String name
          * @return Npc
          */
-        return npcService.getNpcByName(name);
+        return npcS.getNpcByName(name);
     }
 
     @GetMapping("/zone/{zone}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Set<Npc> filterNpcByZone(@PathVariable String zone) throws Conflict {
+    public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
          * @return ArrayList<Npc>
          */
-        return npcService.filterNpcByZone(zone);
+        return npcS.filterNpcByZone(zone);
     }
 
     @PostMapping()
@@ -73,6 +72,6 @@ public class NpcController {
          * @param Npc npc
          * @return Npc
          */
-        return npcService.saveNpc(npc);
+        return npcS.saveNpc(npc);
     }
 }

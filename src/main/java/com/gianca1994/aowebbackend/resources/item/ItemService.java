@@ -1,19 +1,22 @@
 package com.gianca1994.aowebbackend.resources.item;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of the business logic of the items.
+ */
 
 @Service
 public class ItemService {
@@ -21,119 +24,135 @@ public class ItemService {
     ItemServiceValidator validator = new ItemServiceValidator();
 
     @Autowired
-    private ItemRepository itemRepository;
+    private ItemRepository itemR;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     public List<Item> getClassShop(String aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the items of a specific class.
+         * Explanation: This function is in charge of returning a list of items that are available for a class.
          * @param String aClass
          * @return List<Item>
          */
-        return itemRepository.findByClassRequiredOrderByLvlMinAsc(aClass);
+        return itemR.findByClassRequiredOrderByLvlMinAsc(aClass);
     }
 
-    public void saveItem(ItemDTO newItem) throws Conflict {
+    public void saveItem(ItemDTO newItem) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
-         * @param Item item
-         * @return Item
+         * @param ItemDTO newItem
+         * @return none
          */
-        Item item = itemRepository.findByName(newItem.getName().toLowerCase());
-        validator.saveItem(item, newItem);
+        validator.checkDtoToSaveItem(newItem);
+        validator.itemExists(itemR.existsByName(newItem.getName().toLowerCase()));
 
-        String classRequired = newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired();
-        itemRepository.save(new Item(
+        itemR.save(new Item(
                 newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(),
-                classRequired, newItem.getPrice(),
+                newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired(),
+                newItem.getPrice(),
                 newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(),
                 newItem.getVitality(), newItem.getLuck()
         ));
     }
 
-    public BuySellDTO buyItem(String username, NameRequestDTO nameRequestDTO) throws Conflict {
+    public BuySellDTO buyItem(String username, String itemName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
          * @param String username
-         * @param String name
-         * @return none
+         * @param String itemName
+         * @return BuySellDTO
          */
-        User user = userRepository.findByUsername(username);
-        Item itemBuy = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        validator.buyItem(user, itemBuy);
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsByName(itemName));
+
+        User user = userR.findByUsername(username);
+        Item itemBuy = itemR.findByName(itemName);
+        validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
+        validator.checkInventoryFull(user.getInventory().getItems().size());
 
         user.getInventory().getItems().add(itemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
-        userRepository.save(user);
-
+        userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public BuySellDTO sellItem(String username, NameRequestDTO nameRequestDTO) {
+    public BuySellDTO sellItem(String username, String itemName) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
          * @param String username
-         * @param SellItemDTO sellItemDTO
-         * @return none
+         * @param String itemName
+         * @return BuySellDTO
          */
-        User user = userRepository.findByUsername(username);
-        Item itemSell = itemRepository.findByName(nameRequestDTO.getName().toLowerCase());
-        validator.sellItem(user, itemSell);
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsByName(itemName));
+
+        User user = userR.findByUsername(username);
+        Item itemSell = itemR.findByName(itemName);
+        validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice() / 2));
         user.getInventory().getItems().remove(itemSell);
-        userRepository.save(user);
-
+        userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public EquipOrUnequipDTO equipItem(String username,
-                                       EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO equipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * Explanation: This function is in charge of equipping an item.
          * @param String username
-         * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User
+         * @param long itemId
+         * @return EquipOrUnequipDTO
          */
-        User user = userRepository.findByUsername(username);
-        Item itemEquip = itemRepository.findById(equipUnequipItemDTO.getId()).get();
-        validator.equipItem(user, itemEquip);
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsById(itemId));
+
+        User user = userR.findByUsername(username);
+        Item itemEquip = itemR.findById(itemId).get();
+
+        validator.checkItemEquipIfPermitted(itemEquip.getType());
+        validator.checkEquipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
+        validator.inventoryContainsItem(user.getInventory().getItems(), itemEquip);
+        validator.checkItemClassEquip(user.getAClass(), itemEquip.getClassRequired());
+        validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
-            user.setHp(user.getMaxHp());
-        } else {
+        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) user.setHp(user.getMaxHp());
+        else {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }
-        userRepository.save(user);
+        userR.save(user);
         return new EquipOrUnequipDTO(user);
     }
 
-    public EquipOrUnequipDTO unequipItem(String username, EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+    public EquipOrUnequipDTO unequipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * Explanation: This function is in charge of unequipping an item.
          * @param String username
-         * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User
+         * @param long itemId
+         * @return EquipOrUnequipDTO
          */
-        User user = userRepository.findByUsername(username);
-        Item itemUnequip = itemRepository.findById(equipUnequipItemDTO.getId()).get();
-        validator.unequipItem(user, itemUnequip);
+        validator.userFound(userR.existsByUsername(username));
+        validator.itemFound(itemR.existsById(itemId));
+
+        User user = userR.findByUsername(username);
+        Item itemUnequip = itemR.findById(itemId).get();
+
+        validator.checkInventoryFull(user.getInventory().getItems().size());
+        validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
 
         user.getEquipment().getItems().remove(itemUnequip);
         user.getInventory().getItems().add(itemUnequip);
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
-        userRepository.save(user);
+        userR.save(user);
 
         return new EquipOrUnequipDTO(user);
     }

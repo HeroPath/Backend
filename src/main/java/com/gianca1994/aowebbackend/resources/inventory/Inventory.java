@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to represent the inventory of a character.
+ * Explanation: This class is the Inventory entity, it is used to store the items that the user has in his inventory.
  */
 
 @Entity

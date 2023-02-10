@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
 import com.gianca1994.aowebbackend.exception.NotFound;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.jwt.dto.request.JwtRequestDTO;
 import com.gianca1994.aowebbackend.resources.jwt.dto.response.JwtResponseDTO;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
@@ -14,21 +15,22 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: AuthController
+ * Explanation: This class is used to manage the authentication and registration of users.
  */
+
 @RestController
 @CrossOrigin()
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @Autowired
-    private AuthService authService;
+    private AuthService authS;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     @PostMapping(value = "login")
     public ResponseEntity<?> login(@RequestBody JwtRequestDTO authenticationRequest) throws Exception {
@@ -41,11 +43,11 @@ public class AuthController {
         String username = authenticationRequest.getUsername().toLowerCase();
         String password = authenticationRequest.getPassword();
 
-        if (!userRepository.existsByUsername(username)) throw new NotFound(JWTConst.USER_NOT_FOUND);
-        authService.authenticate(username, password);
+        if (!userR.existsByUsername(username)) throw new NotFound(JWTConst.USER_NOT_FOUND);
+        authS.authenticate(username, password);
 
-        final UserDetails userDetails = authService.loadUserByUsername(username);
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final UserDetails userDetails = authS.loadUserByUsername(username);
+        final String token = jwt.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponseDTO(token));
     }
 
@@ -57,7 +59,7 @@ public class AuthController {
          * @param UserDTO user
          * @return ResponseEntity<?>
          */
-        return ResponseEntity.ok(authService.saveUser(user));
+        return ResponseEntity.ok(authS.saveUser(user));
     }
 }
 
