@@ -21,7 +21,7 @@ public class NpcService {
     NpcServiceValidator validator = new NpcServiceValidator();
 
     @Autowired
-    private NpcRepository npcRepository;
+    private NpcRepository npcR;
 
     public ArrayList<Npc> getAllNpcs() {
         /**
@@ -30,7 +30,7 @@ public class NpcService {
          * @param none
          * @return ArrayList<Npc>
          */
-        return (ArrayList<Npc>) npcRepository.findAll();
+        return (ArrayList<Npc>) npcR.findAll();
     }
 
     public Npc getNpcByName(String name) {
@@ -40,11 +40,11 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        if (npcRepository.findByName(name.toLowerCase()) == null) throw new NotFound(NpcConst.NPC_NOT_FOUND);
-        return npcRepository.findByName(name.toLowerCase());
+        validator.npcFound(npcR.existsByName(name.toLowerCase()));
+        return npcR.findByName(name.toLowerCase());
     }
 
-    public Set<Npc> filterNpcByZone(String zone) throws Conflict {
+    public Set<Npc> filterNpcByZone(String zone) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.
@@ -52,7 +52,7 @@ public class NpcService {
          * @return Set<Npc>
          */
         Set<Npc> npcs = new TreeSet<>(new NpcLevelComparator());
-        npcs.addAll(npcRepository.findByZone(zone.toLowerCase()));
+        npcs.addAll(npcR.findByZone(zone.toLowerCase()));
         validator.filterNpcByZone(npcs);
         return npcs;
     }
@@ -77,7 +77,7 @@ public class NpcService {
          * @return Npc
          */
         validator.saveNpc(npc);
-        Npc checkNpcSave = npcRepository.findByName(npc.getName().toLowerCase());
+        Npc checkNpcSave = npcR.findByName(npc.getName().toLowerCase());
 
         if (checkNpcSave == null) {
             checkNpcSave = new Npc();
@@ -95,6 +95,6 @@ public class NpcService {
         checkNpcSave.setMaxDmg(npc.getMaxDmg());
         checkNpcSave.setDefense(npc.getDefense());
         checkNpcSave.setZone(npc.getZone());
-        return npcRepository.save(checkNpcSave);
+        return npcR.save(checkNpcSave);
     }
 }

@@ -10,6 +10,20 @@ import java.util.Set;
 
 public class NpcServiceValidator {
 
+    public void npcFoundByObject(Npc npc) {
+        /**
+         *
+         */
+        if (npc == null) throw new NotFound(NpcConst.NPC_NOT_FOUND);
+    }
+
+    public void npcFound(boolean npcExist) {
+        /**
+         *
+         */
+        if (!npcExist) throw new NotFound(NpcConst.NPC_NOT_FOUND);
+    }
+
     public void filterNpcByZone(Set<Npc> npcs) {
         /**
          * @Author: Gianca1994
