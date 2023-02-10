@@ -17,7 +17,7 @@ public class QuestServiceValidator {
          * @param boolean exist
          * @return void
          */
-        if (!exist) throw new Conflict("Quest not found");
+        if (!exist) throw new Conflict(QuestConst.QUEST_NOT_FOUND);
     }
 
     public void questExist(boolean exist) throws Conflict {
@@ -27,7 +27,7 @@ public class QuestServiceValidator {
          * @param boolean exist
          * @return void
          */
-        if (exist) throw new Conflict("Quest already exists");
+        if (exist) throw new Conflict(QuestConst.QUEST_ALREADY_EXISTS);
     }
 
     public void userQuestFound(UserQuest userQuest) {
@@ -37,7 +37,7 @@ public class QuestServiceValidator {
          * @param UserQuest userQuest
          * @return void
          */
-        if (userQuest == null) throw new NotFound("You don't have this quest");
+        if (userQuest == null) throw new NotFound(QuestConst.USER_QUEST_NOT_FOUND);
     }
 
     public void userFound(boolean exist) throws Conflict {
@@ -47,7 +47,7 @@ public class QuestServiceValidator {
          * @param boolean exist
          * @return void
          */
-        if (!exist) throw new Conflict("User not found");
+        if (!exist) throw new Conflict(QuestConst.USER_NOT_FOUND);
     }
 
     public void validPage(int page) throws NotFound {
@@ -57,7 +57,7 @@ public class QuestServiceValidator {
          * @param int page
          * @return void
          */
-        if (page < 0) throw new NotFound("Page not available");
+        if (page < 0) throw new NotFound(QuestConst.PAGE_NOT_AVAILABLE);
     }
 
     public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
@@ -67,13 +67,13 @@ public class QuestServiceValidator {
          * @param QuestDTO quest
          * @return void
          */
-        if (quest.getName().isEmpty()) throw new Conflict("Name cannot be empty");
-        if (quest.getNameNpcKill().isEmpty()) throw new Conflict("Name NPC Kill cannot be empty");
-        if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict("NPC Kill Amount Needed cannot be negative");
-        if (quest.getUserKillAmountNeeded() < 0) throw new Conflict("User Kill Amount Needed cannot be negative");
-        if (quest.getGiveExp() < 0) throw new Conflict("Experience cannot be negative");
-        if (quest.getGiveGold() < 0) throw new Conflict("Gold cannot be negative");
-        if (quest.getGiveDiamonds() < 0) throw new Conflict("Diamonds cannot be negative");
+        if (quest.getName().isEmpty()) throw new Conflict(QuestConst.NAME_EMPTY);
+        if (quest.getNameNpcKill().isEmpty()) throw new Conflict(QuestConst.NAME_NPC_KILL_EMPTY);
+        if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict(QuestConst.NPC_KILL_AMOUNT_LT0);
+        if (quest.getUserKillAmountNeeded() < 0) throw new Conflict(QuestConst.USER_KILL_AMOUNT_LT0);
+        if (quest.getGiveExp() < 0) throw new Conflict(QuestConst.GIVE_EXP_LT0);
+        if (quest.getGiveGold() < 0) throw new Conflict(QuestConst.GIVE_GOLD_LT0);
+        if (quest.getGiveDiamonds() < 0) throw new Conflict(QuestConst.GIVE_DIAMONDS_LT0);
     }
 
     public void checkUserMaxQuests(int amountQuests) throws Conflict {
@@ -83,7 +83,7 @@ public class QuestServiceValidator {
          * @param int amountQuests
          * @return void
          */
-        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
+        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(QuestConst.MAX_ACTIVE_QUESTS);
     }
 
     public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
@@ -95,7 +95,7 @@ public class QuestServiceValidator {
          * @return void
          */
         if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
-            throw new Conflict("You already accepted this quest");
+            throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
         }
     }
 
@@ -107,7 +107,7 @@ public class QuestServiceValidator {
          * @param int amountNeeded
          * @return void
          */
-        if (amountKill < amountNeeded) throw new Conflict("You have not killed enough NPCs or users");
+        if (amountKill < amountNeeded) throw new Conflict(QuestConst.QUEST_AMOUNT_CHECK);
     }
 
     public void questAlreadyCompleted(long userQuestId) throws Conflict {
@@ -117,6 +117,6 @@ public class QuestServiceValidator {
          * @param long userQuestId
          * @return void
          */
-        if (userQuestId == 0) throw new Conflict("You already completed this quest");
+        if (userQuestId == 0) throw new Conflict(QuestConst.QUEST_ALREADY_COMPLETED);
     }
 }
