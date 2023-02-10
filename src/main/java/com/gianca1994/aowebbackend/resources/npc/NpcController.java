@@ -39,7 +39,7 @@ public class NpcController {
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Npc getNpcByName(@PathVariable String name) throws Conflict {
+    public Npc getNpcByName(@PathVariable String name) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the npc by name.
@@ -52,7 +52,7 @@ public class NpcController {
 
     @GetMapping("/zone/{zone}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) throws Conflict {
+    public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of filtering the npcs by zone.

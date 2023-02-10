@@ -62,11 +62,12 @@ public class NpcService {
          * @return Npc
          */
         validator.saveNpc(npc);
-        Npc checkNpcSave = npcR.findByName(npc.getName().toLowerCase());
+        String nameNpc = npc.getName().toLowerCase();
+        Npc checkNpcSave = npcR.findByName(nameNpc);
 
         if (checkNpcSave == null) {
             checkNpcSave = new Npc();
-            checkNpcSave.setName(npc.getName().toLowerCase());
+            checkNpcSave.setName(nameNpc);
         }
 
         checkNpcSave.setLevel(npc.getLevel());
