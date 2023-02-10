@@ -1,15 +1,12 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,8 +58,8 @@ public class ItemService {
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
          * @param String username
-         * @param String name
-         * @return none
+         * @param String itemName
+         * @return BuySellDTO
          */
         validator.userFound(userR.existsByUsername(username));
         validator.itemFound(itemR.existsByName(itemName));
@@ -83,8 +80,8 @@ public class ItemService {
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
          * @param String username
-         * @param SellItemDTO sellItemDTO
-         * @return none
+         * @param String itemName
+         * @return BuySellDTO
          */
         validator.userFound(userR.existsByUsername(username));
         validator.itemFound(itemR.existsByName(itemName));
@@ -102,10 +99,10 @@ public class ItemService {
     public EquipOrUnequipDTO equipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * Explanation: This function is in charge of equipping an item.
          * @param String username
-         * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User
+         * @param long itemId
+         * @return EquipOrUnequipDTO
          */
         validator.userFound(userR.existsByUsername(username));
         validator.itemFound(itemR.existsById(itemId));
@@ -132,10 +129,10 @@ public class ItemService {
     public EquipOrUnequipDTO unequipItem(String username, long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of equipping or unequipping an item to the user.
+         * Explanation: This function is in charge of unequipping an item.
          * @param String username
-         * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User
+         * @param long itemId
+         * @return EquipOrUnequipDTO
          */
         validator.userFound(userR.existsByUsername(username));
         validator.itemFound(itemR.existsById(itemId));

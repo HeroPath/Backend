@@ -39,12 +39,12 @@ public class ItemController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void saveItem(@RequestBody ItemDTO newItem) throws Conflict {
+    public void saveItem(@RequestBody ItemDTO newItem) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving an item.
-         * @param Item item
-         * @return Item
+         * @param ItemDTO newItem
+         * @return void
          */
         itemS.saveItem(newItem);
     }
@@ -58,7 +58,7 @@ public class ItemController {
          * Explanation: This function is in charge of buying an item.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return BuySellDTO
          */
         return itemS.buyItem(
                 jwt.getUsernameFromToken(token.substring(7)),
@@ -75,7 +75,7 @@ public class ItemController {
          * Explanation: This function is in charge of selling an item.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return BuySellDTO
          */
         return itemS.sellItem(
                 jwt.getUsernameFromToken(token.substring(7)),
@@ -92,7 +92,7 @@ public class ItemController {
          * Explanation: This method is used to equip an item to the user.
          * @param String token
          * @param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User user
+         * @return EquipOrUnequipDTO
          */
         return itemS.equipItem(
                 jwt.getUsernameFromToken(token.substring(7)),
@@ -106,10 +106,10 @@ public class ItemController {
                                          @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to unequip an item to the user.
+         * Explanation: This method is used to unequip an item from the user.
          * @param String token
          * @Param EquipUnequipItemDTO equipUnequipItemDTO
-         * @return User user
+         * @return EquipOrUnequipDTO
          */
         return itemS.unequipItem(
                 jwt.getUsernameFromToken(token.substring(7)),
