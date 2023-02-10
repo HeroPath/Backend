@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of handling the requests related to the items.
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/items")

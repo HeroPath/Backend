@@ -5,6 +5,11 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to validate the user.
+ */
+
 public class AuthServiceValidator {
 
     public void saveUser(String username, String email, String password, Class aClass, UserRepository userRepository) throws Conflict {

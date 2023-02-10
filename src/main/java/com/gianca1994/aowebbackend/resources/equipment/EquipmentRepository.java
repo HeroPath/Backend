@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @Author: Gianca1994
- * Explanation: Repository
+ * Explanation: This is the repository for the Equipment entity.
  */
 
 @Repository

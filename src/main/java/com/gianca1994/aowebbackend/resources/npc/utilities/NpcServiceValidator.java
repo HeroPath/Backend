@@ -5,6 +5,11 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the methods used to validate the npc before saving it
+ */
+
 public class NpcServiceValidator {
 
     public void npcFound(boolean npcExist) {

@@ -11,7 +11,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the model of the Npc entity.
+ * Explanation: This class is the entity of the table npcs in the database.
  */
 
 @Entity

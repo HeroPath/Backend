@@ -11,6 +11,11 @@ import lombok.Getter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of getting all the quests.
+ */
+
 @Getter
 @AllArgsConstructor
 public class PageFilterQuest {

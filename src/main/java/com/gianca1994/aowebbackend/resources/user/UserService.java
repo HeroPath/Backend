@@ -15,7 +15,6 @@ import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.NpcRepository;
 import com.gianca1994.aowebbackend.resources.quest.QuestRepository;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
@@ -31,7 +30,7 @@ import javax.transaction.Transactional;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserService
+ * Explanation: This class is in charge of the user service.
  */
 
 @Service

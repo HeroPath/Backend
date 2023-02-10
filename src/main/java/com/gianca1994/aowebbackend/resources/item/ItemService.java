@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of the business logic of the items.
+ */
+
 @Service
 public class ItemService {
 

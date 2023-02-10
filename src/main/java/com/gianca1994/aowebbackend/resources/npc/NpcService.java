@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcService
+ * Explanation: This class is in charge of the business logic of the npc.
  */
 
 @Service

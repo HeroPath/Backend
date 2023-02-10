@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the methods to manage the guilds
+ */
+
 @Service
 public class GuildService {
 

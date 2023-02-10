@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This is the repository for the Item class.
+ * Explanation: This class is in charge of handling the requests related to the items.
  */
 
 @Repository
@@ -18,6 +18,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsById(@NonNull Long id);
     boolean existsByName(String name);
 
-    // List of items by class
     List<Item> findByClassRequiredOrderByLvlMinAsc(String aClass);
 }

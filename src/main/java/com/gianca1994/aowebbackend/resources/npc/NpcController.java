@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcController
+ * Explanation: This class is in charge of the npc controller.
  */
 
 @RestController

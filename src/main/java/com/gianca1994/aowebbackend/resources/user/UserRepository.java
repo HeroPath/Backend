@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserRepository
+ * Explanation: This interface is used to perform queries on the database.
  */
 
 @Repository

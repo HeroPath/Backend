@@ -11,6 +11,11 @@ import lombok.Setter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to send the guild information to the user.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

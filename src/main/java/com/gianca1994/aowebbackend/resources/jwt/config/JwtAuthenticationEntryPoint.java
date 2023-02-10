@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Author: Gianca1994
- * Explanation: JwtAuthenticationEntryPoint
+ * Explanation: This class is used to handle the case when the user is not authenticated.
  */
 
 @Component

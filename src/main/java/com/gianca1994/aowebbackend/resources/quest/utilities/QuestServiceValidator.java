@@ -8,6 +8,11 @@ import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQu
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of validating the data of a quest.
+ */
+
 public class QuestServiceValidator {
 
     public void questFound(boolean exist) throws Conflict {

@@ -35,7 +35,7 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserService
+ * Explanation: This class is used to authenticate the user.
  */
 
 @Service

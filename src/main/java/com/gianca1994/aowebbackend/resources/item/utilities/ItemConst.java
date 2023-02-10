@@ -3,11 +3,12 @@ package com.gianca1994.aowebbackend.resources.item.utilities;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the constants used in the Item class
+ */
+
 public class ItemConst {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class contains all the constants used in the Item class
-     */
     public static final String POTION_NAME = "potion";
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";

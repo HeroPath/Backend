@@ -1,10 +1,11 @@
 package com.gianca1994.aowebbackend.resources.quest.utilities;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of getting all the quests.
+ */
+
 public class QuestConst {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class is in charge of storing all the constants used in the quest service.
-     */
     public static final String QUEST_NOT_FOUND = "Quest not found";
     public static final String QUEST_ALREADY_EXISTS = "Quest already exists";
     public static final String USER_QUEST_NOT_FOUND = "User quest not found";

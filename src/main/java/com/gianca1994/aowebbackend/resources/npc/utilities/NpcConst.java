@@ -1,10 +1,11 @@
 package com.gianca1994.aowebbackend.resources.npc.utilities;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the constants used in the NpcResource class
+ */
+
 public class NpcConst {
-    /**
-     * @Author: Gianca1994
-     * Explanation: This class contains all the constants used in the Npc class.
-     */
     public static final String NPC_NOT_FOUND = "Npc not found";
     public static final String NOT_NPC_ZONE = "No npcs found in that area";
     public static final String NAME_EMPTY = "Name cannot be empty";

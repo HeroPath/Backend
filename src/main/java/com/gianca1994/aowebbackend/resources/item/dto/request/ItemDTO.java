@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: ItemDTO
+ * Explanation: DTO for the Item entity
  */
 
 @Getter

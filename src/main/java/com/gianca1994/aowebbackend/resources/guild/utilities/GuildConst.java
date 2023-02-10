@@ -2,6 +2,11 @@ package com.gianca1994.aowebbackend.resources.guild.utilities;
 
 import com.gianca1994.aowebbackend.config.SvConfig;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the constants used in the guild package
+ */
+
 public class GuildConst {
     public static final String GUILD_NOT_FOUND = "Guild not found";
     public static final String GUILD_NAME_EXIST = "Guild name already exist";

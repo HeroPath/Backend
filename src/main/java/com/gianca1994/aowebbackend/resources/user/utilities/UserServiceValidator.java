@@ -10,8 +10,11 @@ import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
-import com.gianca1994.aowebbackend.resources.user.utilities.UserConst;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of validating the user service.
+ */
 
 public class UserServiceValidator {
 

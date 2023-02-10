@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to store the data of the classes
+ * Explanation: This class is used to manage the classes.
  */
 
 @Getter

@@ -18,7 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 /**
  * @Author: Gianca1994
- * Explanation: JwtTokenUtil
+ * Explanation: This class is used to generate the token.
  */
 
 @Component
@@ -33,7 +33,7 @@ public class JwtTokenUtil implements Serializable {
     private String SECRET_KEY;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userR;
 
     public String getUsernameFromToken(String token) {
         /**
@@ -106,7 +106,7 @@ public class JwtTokenUtil implements Serializable {
          * @return String
          */
         Map<String, Object> claims = new HashMap<>();
-        long userId = userRepository.findByUsername(userDetails.getUsername()).getId();
+        long userId = userR.findByUsername(userDetails.getUsername()).getId();
         claims.put("userId", userId);
         return doGenerateToken(claims, userDetails.getUsername());
     }

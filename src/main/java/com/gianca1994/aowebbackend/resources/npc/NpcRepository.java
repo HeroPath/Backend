@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: NpcRepository
+ * Explanation: This is the repository for the Npc class. It extends the JpaRepository interface
  */
 
 @Repository

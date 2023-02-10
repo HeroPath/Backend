@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to request a guild name.
+ * Explanation: DTO for the guild resource
  */
 
 @Getter

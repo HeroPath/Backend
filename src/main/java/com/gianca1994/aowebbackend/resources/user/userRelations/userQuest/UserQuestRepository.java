@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to store the information about the user's quests.
+ * Explanation: This is the repository for the UserQuest entity.
  */
 
 @Repository

@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: AuthController
+ * Explanation: This class is used to manage the authentication and registration of users.
  */
+
 @RestController
 @CrossOrigin()
 @RequestMapping("/api/v1/auth")

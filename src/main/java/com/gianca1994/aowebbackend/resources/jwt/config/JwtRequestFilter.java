@@ -23,16 +23,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * @Author: Gianca1994
- * Explanation: JwtRequestFilter
+ * Explanation: This class is used to filter the request and check if the token is valid or not.
  */
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private AuthService authService;
+    private AuthService auth;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private JwtTokenUtil jwt;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -51,7 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith(JWTConst.TOKEN_PREFIX)) {
             jwtToken = requestTokenHeader.substring(7);
             try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                username = jwt.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println(JWTConst.UNABLE_GET_TOKEN);
                 throw new ServletException(JWTConst.UNABLE_GET_TOKEN);
@@ -65,9 +65,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.authService.loadUserByUsername(username);
+            UserDetails userDetails = this.auth.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+            if (jwt.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

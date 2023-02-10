@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of handling the requests related to the quests.
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/quests")

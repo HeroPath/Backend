@@ -10,6 +10,11 @@ import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is in charge of validating the data sent to the ItemService.
+ */
+
 public class ItemServiceValidator {
 
     public void userFound(boolean userExist) throws NotFound {

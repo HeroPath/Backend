@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: UserController
+ * Explanation: This class is used to manage the user's requests.
  */
 
 @RestController
