@@ -61,21 +61,31 @@ public class QuestServiceValidator {
 
     public void userFound(boolean exist) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user exists.
+         * @param boolean exist
+         * @return void
          */
         if (!exist) throw new Conflict("User not found");
     }
 
     public void checkUserMaxQuests(int amountQuests) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user has reached the maximum number of quests.
+         * @param int amountQuests
+         * @return void
          */
         if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict("You can't accept more than 3 quests");
     }
 
     public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a user has already accepted a quest.
+         * @param List<UserQuest> userQuests
+         * @param String questName
+         * @return void
          */
         if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
             throw new Conflict("You already accepted this quest");
