@@ -1,7 +1,8 @@
-package com.gianca1994.aowebbackend.resources.jwt;
+package com.gianca1994.aowebbackend.resources.jwt.config;
 
 import java.io.IOException;
 
+import com.gianca1994.aowebbackend.resources.jwt.AuthService;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import io.jsonwebtoken.ExpiredJwtException;
 

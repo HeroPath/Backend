@@ -15,6 +15,7 @@ public class AuthServiceValidator {
          * @param String email
          * @param String password
          * @param Class aClass
+         * @param UserRepository userRepository
          * @return void
          */
         if (!username.matches(JWTConst.USERNAME_PATTERN)) throw new BadRequest(JWTConst.USERNAME_NOT_VALID);

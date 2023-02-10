@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.resources.guild.dto.request.RequestGuildNameD
 import com.gianca1994.aowebbackend.resources.guild.dto.response.RankingDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UpgradeDonateDTO;
 import com.gianca1994.aowebbackend.resources.guild.dto.response.UserDTO;
-import com.gianca1994.aowebbackend.resources.jwt.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
