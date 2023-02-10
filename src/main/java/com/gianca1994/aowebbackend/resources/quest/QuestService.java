@@ -33,7 +33,7 @@ public class QuestService {
          * Explanation: This function is in charge of getting all the quests.
          * @param String username
          * @param int page
-         * @return List<ObjectNode>
+         * @return QuestListDTO
          */
         validator.validPage(page);
         PageFilterQuest pageFilterM = new PageFilterQuest(
@@ -61,7 +61,7 @@ public class QuestService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of saving a quest.
-         * @param Quest quest
+         * @param QuestDTO quest
          * @return none
          */
         validator.questExist(questR.existsByName(quest.getName()));
@@ -92,7 +92,7 @@ public class QuestService {
          * @Author: Gianca1994
          * Explanation: This function is in charge of accepting a quest.
          * @param String username
-         * @param NameRequestDTO nameRequestDTO
+         * @param String nameQuest
          * @return none
          */
         validator.userFound(userR.existsByUsername(username));
@@ -112,20 +112,20 @@ public class QuestService {
         userQuestR.save(userQuest);
     }
 
-    public Quest completeQuest(String username, String questName) throws Conflict {
+    public Quest completeQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of completing a quest.
          * @param String username
-         * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @param String nameQuest
+         * @return Quest
          */
         validator.userFound(userR.existsByUsername(username));
-        validator.questFound(questR.existsByName(questName));
+        validator.questFound(questR.existsByName(nameQuest));
 
         User user = userR.findByUsername(username);
-        Quest quest = questR.findByName(questName);
-        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, questName);
+        Quest quest = questR.findByName(nameQuest);
+        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
         validator.userQuestFound(userQuest);
         validator.checkQuestCompleted(userQuest.getAmountNpcKill(), quest.getNpcKillAmountNeeded());
         validator.checkQuestCompleted(userQuest.getAmountUserKill(), quest.getUserKillAmountNeeded());
@@ -142,18 +142,18 @@ public class QuestService {
         return userQuest.getQuest();
     }
 
-    public void cancelQuest(String username, String questName) throws Conflict {
+    public void cancelQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of canceling a quest.
          * @param String username
-         * @param NameRequestDTO nameRequestDTO
+         * @param String nameQuest
          * @return none
          */
         validator.userFound(userR.existsByUsername(username));
-        validator.questFound(questR.existsByName(questName));
+        validator.questFound(questR.existsByName(nameQuest));
 
-        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, questName);
+        UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
         validator.userQuestFound(userQuest);
         userQuestR.delete(userQuest);
     }
