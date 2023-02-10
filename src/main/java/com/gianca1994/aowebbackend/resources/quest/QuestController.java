@@ -28,7 +28,8 @@ public class QuestController {
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting all the quests.
          * @param String token
-         * @return List<ObjectNode>
+         * @param int page
+         * @return QuestListDTO
          */
         return questService.getQuests(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
@@ -53,7 +54,7 @@ public class QuestController {
     public void saveQuest(@RequestBody QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save a quest.
+         * Explanation: This function is in charge of saving a quest.
          * @param QuestDTO quest
          * @return none
          */
@@ -98,7 +99,7 @@ public class QuestController {
          * Explanation: This method is used to complete a quest.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
-         * @return none
+         * @return Quest
          */
         return questService.completeQuest(
                 jwtTokenUtil.getUsernameFromToken(token.substring(7)),
