@@ -13,14 +13,24 @@ import java.util.Objects;
 
 public class QuestServiceValidator {
 
-    public void getQuestByNameOrDelete(boolean exist) throws Conflict {
+    public void questFound(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting a quest by name or deleting it.
+         * Explanation: This function is in charge of validating if a quest exists.
          * @param boolean exist
          * @return void
          */
         if (!exist) throw new Conflict("Quest not found");
+    }
+
+    public void validPage(int page) throws NotFound {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating if a page exists.
+         * @param int page
+         * @return void
+         */
+        if (page < 0) throw new NotFound("Page not available");
     }
 
     public void saveQuest(QuestDTO quest, boolean exist) throws Conflict {

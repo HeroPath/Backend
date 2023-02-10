@@ -36,6 +36,7 @@ public class QuestService {
          * @param int page
          * @return List<ObjectNode>
          */
+        validator.validPage(page);
         PageFilterQuest pageFilterM = new PageFilterQuest(
                 page, questR.findAll(), userQuestR.findByUserUsername(username)
         );
@@ -53,7 +54,7 @@ public class QuestService {
          * @param String name
          * @return Quest
          */
-        validator.getQuestByNameOrDelete(questR.existsByName(name));
+        validator.questFound(questR.existsByName(name));
         return questR.findByName(name);
     }
 
