@@ -78,11 +78,19 @@ public class UserServiceValidator {
 
         String userEquipmentType = "none";
         for (Item item : user.getEquipment().getItems()) {
-            if (item.getType().equals("ship")) userEquipmentType = "ship";
-            if (item.getType().equals("wings")) userEquipmentType = "wings";
+            if (item.getType().equals("ship")) {
+                userEquipmentType = "ship";
+                break;
+            }
+            if (item.getType().equals("wings")) {
+                userEquipmentType = "wings";
+                break;
+            }
         }
-        if (npc.getZone().equals("sea") && !userEquipmentType.equals("ship")) throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
-        if (npc.getZone().equals("hell") && !userEquipmentType.equals("wings")) throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
 
+        if (npc.getZone().equals("sea") && !userEquipmentType.equals("ship"))
+            throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
+        if (npc.getZone().equals("hell") && !userEquipmentType.equals("wings"))
+            throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
     }
 }

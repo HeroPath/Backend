@@ -7,14 +7,14 @@ package com.gianca1994.aowebbackend.config;
 
 public class SvConfig {
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 10;
+    public static final int EXPERIENCE_MULTIPLIER = 999999;
     public static final int GOLD_MULTIPLIER = 10;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
     public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 5;
+    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
     /////////////////////////// DIAMONDS ///////////////////////////
 
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
@@ -39,7 +39,7 @@ public class SvConfig {
 
     /////////////////////////// QUEST ///////////////////////////
     public static final int MAX_ACTIVE_QUESTS = 3;
-    public static final int QUEST_PER_PAGE = 7;
+    public static final int QUEST_PER_PAGE = 5;
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////

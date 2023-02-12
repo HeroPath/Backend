@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.combatSystem.pve;
 
 import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.user.User;
 
@@ -53,6 +54,7 @@ public class PveSystem {
                 pveFunctions.updateQuestProgress(user, npc);
                 levelUp = user.userLevelUp();
                 if (levelUp) userHp = user.getMaxHp();
+                if (user.getLevel() >= SvConfig.LEVEL_MAX) experienceGain = 0;
                 stopPve = true;
             } else {
                 userHp = genericFunctions.userReceiveDmg(user, userHp, npcDmg);
