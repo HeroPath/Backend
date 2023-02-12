@@ -131,7 +131,7 @@ public class GuildServiceValidator {
          * @param int level
          * @return void
          */
-        if (level < SvConfig.LEVEL_TO_JOIN_GUILD) throw new Conflict(GuildConst.GUILD_LVL_REQ);
+        if (level < SvConfig.LEVEL_TO_JOIN_GUILD) throw new Conflict(GuildConst.GUILD_LVL_REQUEST);
     }
 
     public void checkGuildIsFull(int membersSize) throws Conflict {
