@@ -183,7 +183,10 @@ public class UserService {
 
     private float calculateBonusGuild(String guildName) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the bonus of the guild.
+         * @param String guildName
+         * @return float
          */
         if (!guildR.existsGuildByName(guildName)) return 1;
         int guildLevel = guildR.findLevelByName(guildName);

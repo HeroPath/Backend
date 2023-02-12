@@ -21,14 +21,20 @@ public class UserServiceValidator {
 
     public void userExist(boolean exist) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user.
+         * @param boolean exist
+         * @return void
          */
         if (!exist) throw new Conflict(UserConst.USER_NOT_FOUND);
     }
 
     public void npcExist(boolean exist) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the npc.
+         * @param boolean exist
+         * @return void
          */
         if (!exist) throw new Conflict(UserConst.NPC_NOT_FOUND);
     }
@@ -59,14 +65,22 @@ public class UserServiceValidator {
 
     public void checkAutoAttack(User attacker, User defender) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the auto attack.
+         * @param User attacker
+         * @param User defender
+         * @return void
          */
         if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
     }
 
     public void checkDifferenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the difference level pvp.
+         * @param short attackerLvl
+         * @param short defenderLvl
+         * @return void
          */
         if (attackerLvl - defenderLvl > SvConfig.MAX_LEVEL_DIFFERENCE)
             throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
@@ -74,23 +88,32 @@ public class UserServiceValidator {
 
     public void checkDifferenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the difference level pve.
+         * @param short userLvl
+         * @param short npcLvl
+         * @return void
          */
         if (npcLvl > userLvl + SvConfig.MAX_LEVEL_DIFFERENCE)
             throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
     }
 
-
     public void checkDefenderNotAdmin(User defender) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the defender not admin.
+         * @param User defender
+         * @return void
          */
         if (defender.getRole().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
     }
 
-    public void checkLifeStartCombat(User user) throws Conflict {
+    public void checkLifeStartCombat(User user) {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the life start combat.
+         * @param User user
+         * @return void
          */
         if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
 
@@ -98,7 +121,10 @@ public class UserServiceValidator {
 
     public void checkUserItemReqZoneSea(Equipment userEquip) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user item req zone sea.
+         * @param Equipment userEquip
+         * @return void
          */
         if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("ship")))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
@@ -106,7 +132,10 @@ public class UserServiceValidator {
 
     public void checkUserItemReqZoneHell(Equipment userEquip) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of validating the user item req zone hell.
+         * @param Equipment userEquip
+         * @return void
          */
         if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
