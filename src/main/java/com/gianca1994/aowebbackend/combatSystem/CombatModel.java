@@ -43,8 +43,8 @@ public class CombatModel {
         this.isPvP = true;
     }
 
-    public void roundJsonGenerator(int roundCounter, int attackerHp, int attackerDmg,
-                                   int defenderHp, int defenderDmg) {
+    public void roundCombat(int roundCounter, int attackerHp, int attackerDmg,
+                            int defenderHp, int defenderDmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round node.
@@ -62,9 +62,9 @@ public class CombatModel {
         );
     }
 
-    public void roundJsonGeneratorFinish(int attackerHp, long experienceGain, long goldGain,
-                                         int diamondsGain, int mmrWinAndLose, long goldAmountWin,
-                                         long goldAmountLoseCombat, boolean levelUp) {
+    public void finishCombat(int attackerHp, long experienceGain, long goldGain,
+                             int diamondsGain, int mmrWinAndLose, long goldAmountWin,
+                             long goldAmountLoseCombat, boolean levelUp) {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to create a basic round finish node.

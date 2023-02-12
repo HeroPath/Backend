@@ -105,7 +105,7 @@ public class PveFunctions {
         }
     }
 
-    public void updateExpGldNpcsKilled(User user, long experienceGain, long goldGain) {
+    public void updateExpAndGold(User user, long experienceGain, long goldGain) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of updating the experience, gold and npcs killed.

@@ -42,7 +42,7 @@ class GenericFunctionsTest {
 
     @Test
     void givenUserAndDmg_whenUserReceiveDmg_thenReturnHp() {
-        int hp = genericFunctionsTest.userReceiveDmg(userTest, 100, 10);
+        int hp = genericFunctionsTest.reduceUserHp(userTest, 100, 10);
         assertEquals(90, hp);
     }
 
