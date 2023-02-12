@@ -5,7 +5,7 @@ from src import api_request
 def save_quests(url, token):
     quests = pd.read_excel("data/quests.xlsx")
     questsDataFrame = pd.DataFrame(quests, columns=[
-        "name", "nameNpcKill", "npcKillAmountNeeded", "userKillAmountNeeded", "giveExp",
+        "name", "nameNpcKill", "npcAmountNeed", "userAmountNeed", "giveExp",
         "giveGold", "giveDiamonds"
     ])
 

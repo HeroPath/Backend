@@ -119,25 +119,25 @@ public class UserServiceValidator {
 
     }
 
-    public void checkUserItemReqZoneSea(Equipment userEquip) throws Conflict {
+    public void checkUserItemReqZoneSea(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of validating the user item req zone sea.
          * @param Equipment userEquip
          * @return void
          */
-        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("ship")))
+        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("ship")) && npcZone.equals("sea"))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
     }
 
-    public void checkUserItemReqZoneHell(Equipment userEquip) throws Conflict {
+    public void checkUserItemReqZoneHell(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of validating the user item req zone hell.
          * @param Equipment userEquip
          * @return void
          */
-        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")))
+        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")) && npcZone.equals("hell"))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
     }
 }

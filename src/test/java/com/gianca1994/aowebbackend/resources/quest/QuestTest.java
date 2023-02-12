@@ -17,8 +17,8 @@ class QuestTest {
         quest.setId(1L);
         quest.setName("name");
         quest.setNameNpcKill("nameNpcKill");
-        quest.setNpcKillAmountNeeded(1);
-        quest.setUserKillAmountNeeded(1);
+        quest.setNpcAmountNeed(1);
+        quest.setUserAmountNeed(1);
         quest.setGiveExp(1L);
         quest.setGiveGold(1L);
         quest.setGiveDiamonds((short) 1);
@@ -70,12 +70,12 @@ class QuestTest {
 
     @Test
     void givenQuest_whenGetNpcKillAmountNeeded_thenReturnNpcKillAmountNeeded() {
-        assertThat(quest.getNpcKillAmountNeeded()).isEqualTo(1);
+        assertThat(quest.getNpcAmountNeed()).isEqualTo(1);
     }
 
     @Test
     void givenQuest_whenGetUserKillAmountNeeded_thenReturnUserKillAmountNeeded() {
-        assertThat(quest.getUserKillAmountNeeded()).isEqualTo(1);
+        assertThat(quest.getUserAmountNeed()).isEqualTo(1);
     }
 
     @Test

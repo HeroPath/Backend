@@ -170,10 +170,10 @@ public class UserService {
 
         User user = userR.findByUsername(username);
         validator.checkLifeStartCombat(user);
-        validator.checkUserItemReqZoneSea(user.getEquipment());
-        validator.checkUserItemReqZoneHell(user.getEquipment());
 
         Npc npc = npcR.findByName(npcName);
+        validator.checkUserItemReqZoneSea(user.getEquipment(), npc.getZone());
+        validator.checkUserItemReqZoneHell(user.getEquipment(), npc.getZone());
         validator.checkDifferenceLevelPVE(user.getLevel(), npc.getLevel());
 
         CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));

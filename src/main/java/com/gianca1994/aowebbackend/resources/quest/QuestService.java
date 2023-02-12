@@ -74,7 +74,7 @@ public class QuestService {
         questR.save(
                 new Quest(
                         quest.getName(), quest.getNameNpcKill().toLowerCase(),
-                        quest.getNpcKillAmountNeeded(), quest.getUserKillAmountNeeded(),
+                        quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
                         quest.getGiveExp(), quest.getGiveGold(), quest.getGiveDiamonds()
                 )
         );
@@ -112,8 +112,8 @@ public class QuestService {
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
         userQuest.setQuest(quest);
-        userQuest.setAmountNpcKill(0);
-        userQuest.setAmountUserKill(0);
+        userQuest.setNpcAmountNeed(0);
+        userQuest.setUserAmountNeed(0);
         userQuestR.save(userQuest);
     }
 
@@ -132,8 +132,8 @@ public class QuestService {
         Quest quest = questR.findByName(nameQuest);
         UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
         validator.userQuestFound(userQuest);
-        validator.checkQuestCompleted(userQuest.getAmountNpcKill(), quest.getNpcKillAmountNeeded());
-        validator.checkQuestCompleted(userQuest.getAmountUserKill(), quest.getUserKillAmountNeeded());
+        validator.checkQuestCompleted(userQuest.getNpcAmountNeed(), quest.getNpcAmountNeed());
+        validator.checkQuestCompleted(userQuest.getUserAmountNeed(), quest.getUserAmountNeed());
 
         user.setExperience(user.getExperience() + quest.getGiveExp());
         user.setGold(user.getGold() + quest.getGiveGold());

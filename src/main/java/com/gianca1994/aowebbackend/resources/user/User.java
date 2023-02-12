@@ -75,9 +75,9 @@ public class User {
     @Column
     private short level;
     @Column
-    private long experience;
+    private int experience;
     @Column
-    private long experienceToNextLevel;
+    private int experienceToNextLevel;
     @Column
     private long gold;
     @Column

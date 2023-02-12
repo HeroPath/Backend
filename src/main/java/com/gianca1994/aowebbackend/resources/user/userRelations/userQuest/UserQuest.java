@@ -35,8 +35,8 @@ public class UserQuest {
     private Quest quest;
 
     @Column(name = "amount_npc_kill")
-    private Integer amountNpcKill;
+    private Integer npcAmountNeed;
 
     @Column(name = "amount_user_kill")
-    private Integer amountUserKill;
+    private Integer userAmountNeed;
 }
