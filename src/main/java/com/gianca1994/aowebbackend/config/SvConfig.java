@@ -49,6 +49,7 @@ public class SvConfig {
     public static final int DIAMOND_TO_CREATE_GUILD = 100;
     public static final int LEVEL_TO_JOIN_GUILD = 10;
     public static final int GUILD_LVL_MAX = 10;
+    public static final int USER_PER_PAGE = 5;
     /////////////////////////// GUILD ///////////////////////////
 
 }

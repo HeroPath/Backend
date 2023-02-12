@@ -5,8 +5,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.item.Item;
-import com.gianca1994.aowebbackend.resources.npc.Npc;
+import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
@@ -20,11 +19,25 @@ public class UserServiceValidator {
 
     GenericFunctions genericFunctions = new GenericFunctions();
 
+    public void userExist(boolean exist) throws Conflict {
+        /**
+         *
+         */
+        if (!exist) throw new Conflict(UserConst.USER_NOT_FOUND);
+    }
+
+    public void npcExist(boolean exist) throws Conflict {
+        /**
+         *
+         */
+        if (!exist) throw new Conflict(UserConst.NPC_NOT_FOUND);
+    }
+
     public void getUserForGuild(UserGuildDTO userGuildDTO) throws NotFound {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of validating the user for guild.
-         * @param User user
+         * @param UserGuildDTO userGuildDTO
          * @return void
          */
         if (userGuildDTO == null) throw new NotFound(UserConst.USER_NOT_FOUND);
@@ -34,8 +47,8 @@ public class UserServiceValidator {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of validating the free skill point.
-         * @param User user
-         * @param FreeSkillPointDTO freeSkillPointDTO
+         * @param UserAttributes uAttr
+         * @param String skillName
          * @return void
          */
         if (uAttr == null) throw new NotFound(UserConst.USER_NOT_FOUND);
@@ -44,53 +57,58 @@ public class UserServiceValidator {
             throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
     }
 
-    public void userVsUserCombatSystem(User attacker, User defender) throws Conflict {
+    public void checkAutoAttack(User attacker, User defender) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user vs user combat system.
-         * @param User attacker
-         * @param User defender
-         * @return void
+         *
          */
-        if (attacker == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(attacker)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-        if (attacker.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
         if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
-        if (defender == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (defender.getLevel() < SvConfig.MAX_LEVEL_DIFFERENCE) throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
-        if (defender.getRole().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
-        if (genericFunctions.checkLifeStartCombat(defender)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_15_ENEMY);
     }
 
-    public void userVsNpcCombatSystem(User user, Npc npc) throws Conflict {
+    public void checkDifferenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
         /**
-         * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user vs npc combat system.
-         * @param User user
-         * @param Npc npc
-         * @return void
+         *
          */
-        if (user == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
-        if (npc == null) throw new NotFound(UserConst.NPC_NOT_FOUND);
-        if (npc.getLevel() > user.getLevel() + SvConfig.MAX_LEVEL_DIFFERENCE)
+        if (attackerLvl - defenderLvl > SvConfig.MAX_LEVEL_DIFFERENCE)
+            throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+    }
+
+    public void checkDifferenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
+        /**
+         *
+         */
+        if (npcLvl > userLvl + SvConfig.MAX_LEVEL_DIFFERENCE)
             throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
+    }
 
-        String userEquipmentType = "none";
-        for (Item item : user.getEquipment().getItems()) {
-            if (item.getType().equals("ship")) {
-                userEquipmentType = "ship";
-                break;
-            }
-            if (item.getType().equals("wings")) {
-                userEquipmentType = "wings";
-                break;
-            }
-        }
 
-        if (npc.getZone().equals("sea") && !userEquipmentType.equals("ship"))
+    public void checkDefenderNotAdmin(User defender) throws Conflict {
+        /**
+         *
+         */
+        if (defender.getRole().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
+    }
+
+    public void checkLifeStartCombat(User user) throws Conflict {
+        /**
+         *
+         */
+        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
+
+    }
+
+    public void checkUserItemReqZoneSea(Equipment userEquip) throws Conflict {
+        /**
+         *
+         */
+        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("ship")))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
-        if (npc.getZone().equals("hell") && !userEquipmentType.equals("wings"))
+    }
+
+    public void checkUserItemReqZoneHell(Equipment userEquip) throws Conflict {
+        /**
+         *
+         */
+        if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
     }
 }
