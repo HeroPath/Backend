@@ -77,6 +77,7 @@ public class User {
                     referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "mail_id",
                     referencedColumnName = "id"))
+    @JsonIgnore
     private Set<Mail> mail;
 
     @Column
