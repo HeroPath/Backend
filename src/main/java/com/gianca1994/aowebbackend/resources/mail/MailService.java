@@ -22,11 +22,23 @@ public class MailService {
     private UserRepository userR;
 
     public List<Mail> getMails(String username) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method returns all the mails of the user
+         * @param String username
+         * @return List<Mail>
+         */
         return mailR.findAllByReceiver(username);
     }
 
     public void sendMail(String username, SendMailDTO mail) throws Conflict {
-
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method sends a mail to the receiver
+         * @param String username
+         * @param SendMailDTO mail
+         * @return void
+         */
         validator.receiverNotEmpty(mail.getReceiver());
         validator.subjectNotEmpty(mail.getSubject());
         validator.messageNotEmpty(mail.getMessage());
