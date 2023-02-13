@@ -8,6 +8,7 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
+import com.gianca1994.aowebbackend.resources.mail.Mail;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 import lombok.AllArgsConstructor;
@@ -69,6 +70,14 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserQuest> userQuests;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_mails",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "mail_id",
+                    referencedColumnName = "id"))
+    private Set<Mail> mail;
 
     @Column
     private String aClass;

@@ -1,11 +1,14 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "mails")
@@ -30,4 +33,5 @@ public class Mail {
 
     @Column(nullable = false)
     private String message;
+
 }
