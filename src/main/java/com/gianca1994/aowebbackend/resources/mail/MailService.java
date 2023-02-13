@@ -25,6 +25,7 @@ public class MailService {
         User receiver = userR.findByUsername(mail.getReceiver());
 
         Mail newMail = new Mail(username, mail.getSubject(), mail.getMessage());
+        mailR.save(newMail);
 
         receiver.getMail().add(newMail);
         userR.save(receiver);

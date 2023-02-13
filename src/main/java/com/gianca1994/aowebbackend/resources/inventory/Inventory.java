@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.inventory;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Inventory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private Long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
