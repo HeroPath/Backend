@@ -17,7 +17,7 @@ class QuestDTOTest {
         questDTO.setNameNpcKill("nameNpcKill");
         questDTO.setNpcAmountNeed(1);
         questDTO.setUserAmountNeed(1);
-        questDTO.setGiveExp(1L);
+        questDTO.setGiveExp(1);
         questDTO.setGiveGold(1L);
         questDTO.setGiveDiamonds((short) 1);
     }
@@ -34,7 +34,7 @@ class QuestDTOTest {
                 "name",
                 "nameNpcKill", 1,
                 1,
-                1L,
+                1,
                 1L,
                 (short) 1
         );
@@ -83,7 +83,7 @@ class QuestDTOTest {
                 "name",
                 "nameNpcKill", 1,
                 1,
-                1L,
+                1,
                 1L,
                 (short) 1
         );

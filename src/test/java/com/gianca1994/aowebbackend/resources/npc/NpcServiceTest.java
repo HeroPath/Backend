@@ -29,7 +29,7 @@ class NpcServiceTest {
         npcRepository.save(
                 new Npc(
                         "test", (short) 1,
-                        1L, 1L,
+                        1, 1,
                         1L, 1L,
                         1, 1,
                         1, 1,
@@ -58,7 +58,7 @@ class NpcServiceTest {
     void givenNpcDTO_whenSaveNpc_thenReturnNpc() throws Conflict {
         NpcDTO npcDTO = new NpcDTO(
                 "test2", (short) 1,
-                1L, 1L,
+                1, 1,
                 1L, 1L,
                 1, 1,
                 1, 1,
