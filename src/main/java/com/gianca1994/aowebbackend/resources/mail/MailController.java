@@ -20,9 +20,9 @@ public class MailController {
     private JwtTokenUtil jwt;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Mail> getAllMails() {
-        return mailS.getMails();
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public List<Mail> getAllMails(@RequestHeader(value = "Authorization") String token) {
+        return mailS.getMails(jwt.getUsernameFromToken(token.substring(7)));
     }
 
     @PostMapping("/send")

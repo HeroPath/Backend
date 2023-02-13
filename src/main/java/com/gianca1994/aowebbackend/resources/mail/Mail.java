@@ -27,13 +27,18 @@ public class Mail {
     private String sender;
 
     @Column(nullable = false)
+    @JsonIgnore
+    private String receiver;
+
+    @Column(nullable = false)
     private String subject;
 
     @Column(nullable = false)
     private String message;
 
-    public Mail(String sender, String subject, String message) {
+    public Mail(String sender, String receiver, String subject, String message) {
         this.sender = sender;
+        this.receiver = receiver;
         this.subject = subject;
         this.message = message;
     }

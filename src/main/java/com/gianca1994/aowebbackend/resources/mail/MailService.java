@@ -17,14 +17,14 @@ public class MailService {
     @Autowired
     private UserRepository userR;
 
-    public List<Mail> getMails() {
-        return mailR.findAll();
+    public List<Mail> getMails(String username) {
+        return mailR.findAllByReceiver(username);
     }
 
     public void sendMail(String username, SendMailDTO mail) {
         User receiver = userR.findByUsername(mail.getReceiver());
 
-        Mail newMail = new Mail(username, mail.getSubject(), mail.getMessage());
+        Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), mail.getMessage());
         mailR.save(newMail);
 
         receiver.getMail().add(newMail);
