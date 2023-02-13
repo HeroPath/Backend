@@ -15,5 +15,4 @@ public class MailService {
         return mailR.findAll();
     }
 
-
 }
