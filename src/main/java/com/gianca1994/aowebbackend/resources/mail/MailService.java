@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is the service of the mail
+ */
+
 @Service
 public class MailService {
 

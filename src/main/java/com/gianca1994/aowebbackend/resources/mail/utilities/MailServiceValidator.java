@@ -2,6 +2,11 @@ package com.gianca1994.aowebbackend.resources.mail.utilities;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class contains all the methods that validate the data
+ */
+
 public class MailServiceValidator {
 
     public void userExist(boolean exist) throws Conflict {

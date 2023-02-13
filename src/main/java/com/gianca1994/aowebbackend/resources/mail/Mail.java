@@ -8,7 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to create the mail object
+ */
 
 @Entity
 @Table(name = "mails")

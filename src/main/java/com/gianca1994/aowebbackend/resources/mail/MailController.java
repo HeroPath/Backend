@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to manage the mails
+ */
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/mails")
