@@ -14,4 +14,6 @@ public class MailService {
     public List<Mail> getMails() {
         return mailR.findAll();
     }
+
+
 }
