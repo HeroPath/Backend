@@ -9,6 +9,7 @@ import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.AuthServiceValidator;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -54,6 +55,9 @@ public class AuthService implements UserDetailsService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenUtil jwt;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
