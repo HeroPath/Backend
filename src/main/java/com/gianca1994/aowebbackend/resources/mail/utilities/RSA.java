@@ -30,6 +30,10 @@ public class RSA {
     private String publicKey;
     private String privateKey;
 
+    public RSA(String publicKey, String privateKey) {
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+    }
 
     public String encryptMsg(String message) {
         try {
