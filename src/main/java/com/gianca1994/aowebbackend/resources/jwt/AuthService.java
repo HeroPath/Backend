@@ -100,8 +100,8 @@ public class AuthService implements UserDetailsService {
     public User saveUser(UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save a new user in the database.
-         * @param UserDTO user
+         * Explanation: This method is used to save the user.
+         * @param UserRegisterDTO user
          * @return User
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);

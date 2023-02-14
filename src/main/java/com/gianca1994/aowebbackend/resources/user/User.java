@@ -143,8 +143,7 @@ public class User {
     @JsonIgnore
     private String rsaPrivateKey;
 
-    //public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
-    public User(UserRegisterJwtDTO userJwt){
+    public User(UserRegisterJwtDTO userJwt) {
         this.username = userJwt.getUsername();
         this.password = userJwt.getPassword();
         this.email = userJwt.getEmail();
@@ -177,7 +176,9 @@ public class User {
 
     public void generatePrivateAndPublicKey() throws InterruptedException {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method generates a private and public key for the user.
+         * @return none
          */
         Thread keyGeneratorThread = new Thread(() -> {
             try {
@@ -200,7 +201,7 @@ public class User {
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
         /**
          * @Author: Gianca1994
-         * Explanation:
+         * Explanation: This method swaps an item from the inventory to the equipment or vice versa.
          * @param Item item
          * @param boolean toEquip
          * @return none
