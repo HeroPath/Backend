@@ -119,6 +119,7 @@ public class AuthService implements UserDetailsService {
         Thread saveThread = new Thread(() -> {
             TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
             transactionTemplate.executeWithoutResult(status -> {
+                newUser.setPassword(encryptPassword(newUser.getPassword()));
                 inventoryR.save(newUser.getInventory());
                 equipmentR.save(newUser.getEquipment());
                 try {

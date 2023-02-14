@@ -3,6 +3,7 @@ package com.gianca1994.aowebbackend.resources.mail;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.mail.dto.request.SendMailDTO;
 import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator;
+import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class MailService {
         return mailR.findAllByReceiver(username);
     }
 
-    public void sendMail(String username, SendMailDTO mail) throws Conflict {
+    public void sendMail(String username, SendMailDTO mail) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method sends a mail to the receiver
@@ -51,9 +52,16 @@ public class MailService {
         validator.userExist(userR.existsByUsername(mail.getReceiver()));
 
         User receiver = userR.findByUsername(mail.getReceiver());
-        Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), mail.getMessage());
-        receiver.getMail().add(newMail);
-        mailR.save(newMail);
-        userR.save(receiver);
+
+        RSA rsa = new RSA(receiver.getRsaPublicKey(), receiver.getRsaPrivateKey());
+        String encryptedMessage = rsa.encrypt(mail.getMessage());
+        System.out.println(encryptedMessage);
+        //String decryptedMessage = rsa.decrypt(encryptedMessage);
+        //System.out.println(decryptedMessage);
+
+        //Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), mail.getMessage());
+        //receiver.getMail().add(newMail);
+        //mailR.save(newMail);
+        //userR.save(receiver);
     }
 }

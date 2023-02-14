@@ -187,8 +187,8 @@ public class User {
                 KeyPair keyPair = keyPairGenerator.generateKeyPair();
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
                 RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-                this.rsaPublicKey = publicKey.toString();
-                this.rsaPrivateKey = privateKey.toString();
+                this.rsaPublicKey = publicKey.getModulus().toString();
+                this.rsaPrivateKey = privateKey.getPrivateExponent().toString();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }

@@ -40,7 +40,7 @@ public class MailController {
     @PostMapping("/send")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void sendMail(@RequestHeader(value = "Authorization") String token,
-                         @RequestBody SendMailDTO mail) throws Conflict {
+                         @RequestBody SendMailDTO mail) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to send a mail to another user
