@@ -7,7 +7,7 @@
 
 ## Experience equation to level up from 1 to 300
 ```
-5 * (1.5 ** (math.log10(x * 0.09 + 1) / math.log10(1.07)) + x)
+5 * (1.5 ** (math.log10(x * 0.09 + 1) / math.log10(1.0703)) + x)
 ```
 
 ## DockerCommands:

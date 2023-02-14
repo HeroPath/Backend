@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
 import com.gianca1994.aowebbackend.combatSystem.pvp.PvpSystem;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.item.ItemRepository;
@@ -53,13 +54,14 @@ public class UserService {
     @Autowired
     GuildRepository guildR;
 
-    public User getProfile(String username) {
+    public User getProfile(String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of getting the profile of the user.
          * @param String username
          * @return User
          */
+        validator.userExist(userR.existsByUsername(username));
         return userR.findByUsername(username);
     }
 
@@ -82,11 +84,10 @@ public class UserService {
          * @param int page
          * @return RankingResponseDTO
          */
-        int userPerPage = 10;
-        int totalPages = (int) Math.ceil((double) userR.count() / userPerPage);
-        Page<User> usersPage = userR.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, userPerPage));
+        int totalPages = (int) Math.ceil((double) userR.count() / SvConfig.USER_PER_PAGE);
+        Page<User> usersPage = userR.findAllByOrderByLevelDescTitlePointsDescExperienceDesc(PageRequest.of(page, SvConfig.USER_PER_PAGE));
         List<User> users = usersPage.getContent();
-        AtomicInteger pos = new AtomicInteger((page * userPerPage) + 1);
+        AtomicInteger pos = new AtomicInteger((page * SvConfig.USER_PER_PAGE) + 1);
 
         List<UserRankingDTO> ranking = users.stream().map(user -> new UserRankingDTO(
                 pos.getAndIncrement(),
@@ -112,6 +113,7 @@ public class UserService {
          * @param String skillName
          * @return UserAttributes
          */
+        validator.userExist(userR.existsById(userId));
         UserAttributes uAttr = userR.findAttributesByUserId(userId);
         validator.setFreeSkillPoint(uAttr, skillName);
 
@@ -136,9 +138,16 @@ public class UserService {
          * @param String nameDefender
          * @return ArrayList<ObjectNode>
          */
+        validator.userExist(userR.existsByUsername(username));
+        validator.userExist(userR.existsByUsername(nameDefender));
+
         User attacker = userR.findByUsername(username);
+        validator.checkLifeStartCombat(attacker);
         User defender = userR.findByUsername(nameDefender);
-        validator.userVsUserCombatSystem(attacker, defender);
+        validator.checkDefenderNotAdmin(defender);
+        validator.checkLifeStartCombat(defender);
+        validator.checkAutoAttack(attacker, defender);
+        validator.checkDifferenceLevelPVP(attacker.getLevel(), defender.getLevel());
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
         userR.save(pvpSystem.getAttacker());
@@ -156,19 +165,31 @@ public class UserService {
          * @param String npcName
          * @return ArrayList<ObjectNode>
          */
-        float bonusExpGold = 1;
+        validator.userExist(userR.existsByUsername(username));
+        validator.npcExist(npcR.existsByName(npcName));
+
         User user = userR.findByUsername(username);
+        validator.checkLifeStartCombat(user);
+
         Npc npc = npcR.findByName(npcName);
+        validator.checkUserItemReqZoneSea(user.getEquipment(), npc.getZone());
+        validator.checkUserItemReqZoneHell(user.getEquipment(), npc.getZone());
+        validator.checkDifferenceLevelPVE(user.getLevel(), npc.getLevel());
 
-        if (guildR.existsGuildByName(user.getGuildName())) {
-            int guildLevel = guildR.findLevelByName(user.getGuildName());
-            bonusExpGold = guildLevel > 1 ? 1 + (float) (Math.pow(guildLevel, 2) / 100) : 1;
-        }
-
-        validator.userVsNpcCombatSystem(user, npc);
-
-        CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, bonusExpGold);
+        CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));
         userR.save(pveSystem.getAttacker());
         return pveSystem.getHistoryCombat();
+    }
+
+    private float calculateBonusGuild(String guildName) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of calculating the bonus of the guild.
+         * @param String guildName
+         * @return float
+         */
+        if (!guildR.existsGuildByName(guildName)) return 1;
+        int guildLevel = guildR.findLevelByName(guildName);
+        return guildLevel > 1 ? 1 + guildLevel * guildLevel / 100f : 1;
     }
 }

@@ -15,9 +15,9 @@ class QuestDTOTest {
         questDTO = new QuestDTO();
         questDTO.setName("name");
         questDTO.setNameNpcKill("nameNpcKill");
-        questDTO.setNpcKillAmountNeeded(1);
-        questDTO.setUserKillAmountNeeded(1);
-        questDTO.setGiveExp(1L);
+        questDTO.setNpcAmountNeed(1);
+        questDTO.setUserAmountNeed(1);
+        questDTO.setGiveExp(1);
         questDTO.setGiveGold(1L);
         questDTO.setGiveDiamonds((short) 1);
     }
@@ -34,7 +34,7 @@ class QuestDTOTest {
                 "name",
                 "nameNpcKill", 1,
                 1,
-                1L,
+                1,
                 1L,
                 (short) 1
         );
@@ -54,12 +54,12 @@ class QuestDTOTest {
 
     @Test
     void givenQuestDTO_whenGetNpcKillAmountNeeded_thenReturnNpcKillAmountNeeded() {
-        assertThat(questDTO.getNpcKillAmountNeeded()).isEqualTo(1);
+        assertThat(questDTO.getNpcAmountNeed()).isEqualTo(1);
     }
 
     @Test
     void givenQuestDTO_whenGetUserKillAmountNeeded_thenReturnUserKillAmountNeeded() {
-        assertThat(questDTO.getUserKillAmountNeeded()).isEqualTo(1);
+        assertThat(questDTO.getUserAmountNeed()).isEqualTo(1);
     }
 
     @Test
@@ -83,7 +83,7 @@ class QuestDTOTest {
                 "name",
                 "nameNpcKill", 1,
                 1,
-                1L,
+                1,
                 1L,
                 (short) 1
         );

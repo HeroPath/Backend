@@ -17,9 +17,9 @@ class QuestTest {
         quest.setId(1L);
         quest.setName("name");
         quest.setNameNpcKill("nameNpcKill");
-        quest.setNpcKillAmountNeeded(1);
-        quest.setUserKillAmountNeeded(1);
-        quest.setGiveExp(1L);
+        quest.setNpcAmountNeed(1);
+        quest.setUserAmountNeed(1);
+        quest.setGiveExp(1);
         quest.setGiveGold(1L);
         quest.setGiveDiamonds((short) 1);
     }
@@ -35,7 +35,7 @@ class QuestTest {
         Quest quest = new Quest(
                 1L, "name", "nameNpcKill",
                 1, 1,
-                1L, 1L, (short) 1, new HashSet<>()
+                1, 1L, (short) 1, new HashSet<>()
         );
         assertThat(quest).isNotNull();
     }
@@ -70,12 +70,12 @@ class QuestTest {
 
     @Test
     void givenQuest_whenGetNpcKillAmountNeeded_thenReturnNpcKillAmountNeeded() {
-        assertThat(quest.getNpcKillAmountNeeded()).isEqualTo(1);
+        assertThat(quest.getNpcAmountNeed()).isEqualTo(1);
     }
 
     @Test
     void givenQuest_whenGetUserKillAmountNeeded_thenReturnUserKillAmountNeeded() {
-        assertThat(quest.getUserKillAmountNeeded()).isEqualTo(1);
+        assertThat(quest.getUserAmountNeed()).isEqualTo(1);
     }
 
     @Test
@@ -99,7 +99,7 @@ class QuestTest {
                 2L, "name2", "nameNpcKill2",
 
                 2, 2,
-                2L, 2L, (short) 2,
+                2, 2L, (short) 2,
                 new HashSet<>()
         );
         assertThat(quest).isNotEqualTo(quest2);

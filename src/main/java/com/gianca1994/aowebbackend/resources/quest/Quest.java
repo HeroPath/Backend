@@ -35,13 +35,13 @@ public class Quest {
     private String nameNpcKill;
 
     @Column
-    private int npcKillAmountNeeded;
+    private int npcAmountNeed;
 
     @Column
-    private int userKillAmountNeeded;
+    private int userAmountNeed;
 
     @Column
-    private long giveExp;
+    private int giveExp;
 
     @Column
     private long giveGold;
@@ -53,11 +53,11 @@ public class Quest {
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
-    public Quest(String name, String nameNpcKill, int npcKillAmountNeeded, int userKillAmountNeeded, long giveExp, long giveGold, short giveDiamonds) {
+    public Quest(String name, String nameNpcKill, int npcAmountNeed, int userAmountNeed, int giveExp, long giveGold, short giveDiamonds) {
         this.name = name;
         this.nameNpcKill = nameNpcKill;
-        this.npcKillAmountNeeded = npcKillAmountNeeded;
-        this.userKillAmountNeeded = userKillAmountNeeded;
+        this.npcAmountNeed = npcAmountNeed;
+        this.userAmountNeed = userAmountNeed;
         this.giveExp = giveExp;
         this.giveGold = giveGold;
         this.giveDiamonds = giveDiamonds;

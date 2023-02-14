@@ -26,6 +26,7 @@ public class GuildConst {
     public static final String NOT_ENOUGH_DIAMONDS = "You don't have enough diamonds";
     public static final String GUILD_LVL_MAX = "Your guild is already at the maximum level";
     public static final String GUILD_NOT_ENOUGH_DIAMONDS = "Your guild doesn't have enough diamonds";
+    public static final String GUILD_LVL_REQUEST = "You need to be level " + SvConfig.LEVEL_TO_JOIN_GUILD + " to join a guild";
     public static final String GUILD_LVL_REQ = "You need to be level " + SvConfig.LEVEL_TO_CREATE_GUILD + " to create a guild";
     public static final String GUILD_GOLD_REQ = "You need " + SvConfig.GOLD_TO_CREATE_GUILD + " gold to create a guild";
     public static final String GUILD_DIAMOND_REQ = "You need " + SvConfig.DIAMOND_TO_CREATE_GUILD + " diamonds to create a guild";

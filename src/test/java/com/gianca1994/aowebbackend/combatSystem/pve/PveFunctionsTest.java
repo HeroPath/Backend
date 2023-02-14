@@ -18,8 +18,8 @@ class PveFunctionsTest {
 
     private Npc npcTest = new Npc(
             "test", (short) 1,
-            10L,
-            10L,
+            10,
+            10,
             10L,
             10L,
             100,

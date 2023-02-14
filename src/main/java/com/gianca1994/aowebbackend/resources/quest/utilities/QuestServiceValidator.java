@@ -74,8 +74,8 @@ public class QuestServiceValidator {
          */
         if (quest.getName().isEmpty()) throw new Conflict(QuestConst.NAME_EMPTY);
         if (quest.getNameNpcKill().isEmpty()) throw new Conflict(QuestConst.NAME_NPC_KILL_EMPTY);
-        if (quest.getNpcKillAmountNeeded() < 0) throw new Conflict(QuestConst.NPC_KILL_AMOUNT_LT0);
-        if (quest.getUserKillAmountNeeded() < 0) throw new Conflict(QuestConst.USER_KILL_AMOUNT_LT0);
+        if (quest.getNpcAmountNeed() < 0) throw new Conflict(QuestConst.NPC_KILL_AMOUNT_LT0);
+        if (quest.getUserAmountNeed() < 0) throw new Conflict(QuestConst.USER_KILL_AMOUNT_LT0);
         if (quest.getGiveExp() < 0) throw new Conflict(QuestConst.GIVE_EXP_LT0);
         if (quest.getGiveGold() < 0) throw new Conflict(QuestConst.GIVE_GOLD_LT0);
         if (quest.getGiveDiamonds() < 0) throw new Conflict(QuestConst.GIVE_DIAMONDS_LT0);

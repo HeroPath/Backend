@@ -17,8 +17,8 @@ import lombok.Setter;
 public class NpcDTO {
     private String name;
     private short level;
-    private Long giveMaxExp;
-    private Long giveMinExp;
+    private int giveMaxExp;
+    private int giveMinExp;
     private Long giveMaxGold;
     private Long giveMinGold;
     private int hp;

@@ -51,7 +51,7 @@ public class PvpSystem {
                 pvpFunctions.updateQuests(user);
                 stopPvp = true;
             } else {
-                userHp = genericFunctions.userReceiveDmg(user, userHp, attackedDmg);
+                userHp = genericFunctions.reduceUserHp(user, userHp, attackedDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
                     userDmg = 0;
                     userHp = 0;
@@ -60,9 +60,9 @@ public class PvpSystem {
                     stopPvp = true;
                 }
             }
-            pvpModel.roundJsonGenerator(roundCounter, userHp, userDmg, attackedHp, attackedDmg);
+            pvpModel.roundCombat(roundCounter, userHp, userDmg, attackedHp, attackedDmg);
         }
-        pvpModel.roundJsonGeneratorFinish(userHp, 0, 0, 0, mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat, false);
+        pvpModel.finishCombat(userHp, 0, 0, 0, mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat, false);
         user.setHp(userHp);
         attacked.setHp(attackedHp);
         return pvpModel;

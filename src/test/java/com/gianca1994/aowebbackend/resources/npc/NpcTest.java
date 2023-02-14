@@ -15,8 +15,8 @@ class NpcTest {
         npcTest.setId(1L);
         npcTest.setName("Test");
         npcTest.setLevel((short) 1);
-        npcTest.setGiveMinExp(1L);
-        npcTest.setGiveMaxExp(1L);
+        npcTest.setGiveMinExp(1);
+        npcTest.setGiveMaxExp(1);
         npcTest.setGiveMinGold(1L);
         npcTest.setGiveMaxGold(1L);
         npcTest.setHp(1);
@@ -35,13 +35,13 @@ class NpcTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Npc npc = new Npc(1L, "Test", (short) 1, 1L, 1L, 1L, 1L, 1, 1, 1, 1, 1, "Test");
+        Npc npc = new Npc(1L, "Test", (short) 1, 1, 1, 1L, 1L, 1, 1, 1, 1, 1, "Test");
         assertThat(npc).isNotNull();
     }
 
     @Test
     public void constructorAllArgsWithoutIdTest() {
-        Npc npc = new Npc("Test", (short) 1, 1L, 1L, 1L, 1L, 1, 1, 1, 1, 1, "Test");
+        Npc npc = new Npc("Test", (short) 1, 1, 1, 1L, 1L, 1, 1, 1, 1, 1, "Test");
         assertThat(npc).isNotNull();
     }
 
@@ -112,7 +112,7 @@ class NpcTest {
 
     @Test
     void givenNpc_whenEquals_thenFalse() {
-        Npc npc = new Npc(1L, "Test", (short) 1, 1L, 1L, 1L, 1L, 1, 1, 1, 1, 1, "Test");
+        Npc npc = new Npc(1L, "Test", (short) 1, 1, 1, 1L, 1L, 1, 1, 1, 1, 1, "Test");
         assertThat(npcTest.equals(npc)).isFalse();
     }
 }

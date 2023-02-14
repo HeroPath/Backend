@@ -51,7 +51,7 @@ public class GenericFunctions {
         else return dmg;
     }
 
-    public int userReceiveDmg(User user, int userHp, int dmg) {
+    public int reduceUserHp(User user, int userHp, int dmg) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the damage that the user.

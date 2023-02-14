@@ -10,8 +10,11 @@ import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @Author: Gianca1994

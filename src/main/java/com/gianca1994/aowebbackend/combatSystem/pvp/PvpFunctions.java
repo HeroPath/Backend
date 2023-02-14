@@ -108,8 +108,8 @@ public class PvpFunctions {
         Set<UserQuest> userQuests = user.getUserQuests();
         for (UserQuest quest : userQuests) {
             if (quest.getQuest().getNameNpcKill().equalsIgnoreCase("player")
-                    && quest.getAmountUserKill() < quest.getQuest().getUserKillAmountNeeded()) {
-                quest.setAmountUserKill(quest.getAmountUserKill() + 1);
+                    && quest.getUserAmountNeed() < quest.getQuest().getUserAmountNeed()) {
+                quest.setUserAmountNeed(quest.getUserAmountNeed() + 1);
                 break;
             }
         }

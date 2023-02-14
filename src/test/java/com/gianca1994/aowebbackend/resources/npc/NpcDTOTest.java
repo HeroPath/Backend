@@ -15,8 +15,8 @@ class NpcDTOTest {
         npcDTO = new NpcDTO();
         npcDTO.setName("Test");
         npcDTO.setLevel((short) 1);
-        npcDTO.setGiveMinExp(1L);
-        npcDTO.setGiveMaxExp(1L);
+        npcDTO.setGiveMinExp(1);
+        npcDTO.setGiveMaxExp(1);
         npcDTO.setGiveMinGold(1L);
         npcDTO.setGiveMaxGold(1L);
         npcDTO.setHp(1);
@@ -35,7 +35,7 @@ class NpcDTOTest {
 
     @Test
     public void constructorAllArgsTest() {
-        NpcDTO npcDTO = new NpcDTO("Test", (short) 1, 1L, 1L, 1L, 1L, 1, 1, 1, 1, 1, "Test");
+        NpcDTO npcDTO = new NpcDTO("Test", (short) 1, 1, 1, 1L, 1L, 1, 1, 1, 1, 1, "Test");
         assertThat(npcDTO).isNotNull();
     }
 
@@ -102,7 +102,7 @@ class NpcDTOTest {
 
     @Test
     void givenNpcDTO_whenEquals_thenReturnFalse() {
-        NpcDTO npcDTO2 = new NpcDTO("Test", (short) 1, 1L, 1L, 1L, 1L, 1, 1, 1, 1, 1, "Test");
+        NpcDTO npcDTO2 = new NpcDTO("Test", (short) 1, 1, 1, 1L, 1L, 1, 1, 1, 1, 1, "Test");
         assertThat(npcDTO.equals(npcDTO2)).isFalse();
     }
 }

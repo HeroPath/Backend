@@ -89,8 +89,8 @@ public class PageFilterQuest {
                 .map(userQuest -> {
                     ObjectNode questON = new ObjectMapper().createObjectNode();
                     questON.putPOJO("quest", userQuest.getQuest());
-                    questON.put("npcKillAmount", userQuest.getAmountNpcKill());
-                    questON.put("userKillAmount", userQuest.getAmountUserKill());
+                    questON.put("npcKillAmount", userQuest.getNpcAmountNeed());
+                    questON.put("userKillAmount", userQuest.getUserAmountNeed());
                     return questON;
                 }).collect(Collectors.toList());
     }

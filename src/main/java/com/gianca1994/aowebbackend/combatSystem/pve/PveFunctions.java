@@ -25,14 +25,14 @@ public class PveFunctions {
         return userDefense >= npcDmg ? 0 : npcDmg - userDefense;
     }
 
-    public long CalculateUserExperienceGain(Npc npc) {
+    public int CalculateUserExperienceGain(Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the experience gain.
          * @param Npc npc
          * @return long
          */
-        return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp())) * SvConfig.EXPERIENCE_MULTIPLIER;
+        return (int) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp()) * SvConfig.EXPERIENCE_MULTIPLIER);
     }
 
     public boolean checkIfNpcDied(int npcHp) {
@@ -100,12 +100,12 @@ public class PveFunctions {
 
         UserQuest quest = userQuests.get(npc.getName());
         if (quest != null && !npc.getName().equals("player") &&
-                quest.getAmountNpcKill() < quest.getQuest().getNpcKillAmountNeeded()) {
-            quest.setAmountNpcKill(quest.getAmountNpcKill() + 1);
+                quest.getNpcAmountNeed() < quest.getQuest().getNpcAmountNeed()) {
+            quest.setNpcAmountNeed(quest.getNpcAmountNeed() + 1);
         }
     }
 
-    public void updateExpGldNpcsKilled(User user, long experienceGain, long goldGain) {
+    public void updateExpAndGold(User user, int experienceGain, long goldGain) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of updating the experience, gold and npcs killed.

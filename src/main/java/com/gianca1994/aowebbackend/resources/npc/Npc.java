@@ -34,11 +34,11 @@ public class Npc {
 
     @Column(nullable = false)
     @JsonIgnore
-    private long giveMinExp;
+    private int giveMinExp;
 
     @Column(nullable = false)
     @JsonIgnore
-    private long giveMaxExp;
+    private int giveMaxExp;
 
     @Column(nullable = false)
     @JsonIgnore
@@ -66,7 +66,7 @@ public class Npc {
     @Column(nullable = false)
     private String zone;
 
-    public Npc(String name, short level, Long giveMinExp, Long giveMaxExp, Long giveMinGold, Long giveMaxGold, int hp, int maxHp, int minDmg, int maxDmg, int defense, String zone) {
+    public Npc(String name, short level, int giveMinExp, int giveMaxExp, Long giveMinGold, Long giveMaxGold, int hp, int maxHp, int minDmg, int maxDmg, int defense, String zone) {
         this.name = name;
         this.level = level;
         this.giveMinExp = giveMinExp;
