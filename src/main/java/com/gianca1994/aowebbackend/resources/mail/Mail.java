@@ -1,7 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +36,7 @@ public class Mail {
     @Column(nullable = false)
     private String subject;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     private String message;
 
     public Mail(String sender, String receiver, String subject, String message) {

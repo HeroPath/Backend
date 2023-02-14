@@ -53,14 +53,14 @@ public class MailService {
         User receiver = userR.findByUsername(mail.getReceiver());
 
         RSA rsa = new RSA(receiver.getRsaPublicKey(), receiver.getRsaPrivateKey());
-        String encryptedMessage = rsa.encrypt(mail.getMessage());
-        System.out.println(encryptedMessage);
-        String decryptedMessage = rsa.decrypt(encryptedMessage);
-        System.out.println(decryptedMessage);
+        //String encryptedMessage = rsa.encrypt(mail.getMessage());
+        //System.out.println(encryptedMessage);
+        //String decryptedMessage = rsa.decrypt(encryptedMessage);
+        //System.out.println(decryptedMessage);
 
-        //Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), mail.getMessage());
-        //receiver.getMail().add(newMail);
-        //mailR.save(newMail);
-        //userR.save(receiver);
+        Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), rsa.encrypt(mail.getMessage()));
+        receiver.getMail().add(newMail);
+        mailR.save(newMail);
+        userR.save(receiver);
     }
 }

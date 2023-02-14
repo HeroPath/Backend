@@ -5,12 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMDecryptorProvider;
-import org.bouncycastle.openssl.PEMEncryptedKeyPair;
-import org.bouncycastle.openssl.PEMKeyPair;
-import org.bouncycastle.openssl.PEMParser;
-import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
-import org.bouncycastle.openssl.jcajce.JcePEMDecryptorProviderBuilder;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
@@ -18,9 +12,10 @@ import javax.crypto.Cipher;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
-import java.security.PrivateKey;
 import java.security.Security;
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -47,29 +42,19 @@ public class RSA {
         }
     }
 
-
-    public String decrypt(String message) throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
-
-        PEMParser pemParser = new PEMParser(new StringReader(this.privateKey));
-        Object object = pemParser.readObject();
-        PEMKeyPair pemKeyPair = null;
-
-        if (object instanceof PEMEncryptedKeyPair) {
-            PEMDecryptorProvider decProv = new JcePEMDecryptorProviderBuilder().build(new char[]{});
-            pemKeyPair = ((PEMEncryptedKeyPair) object).decryptKeyPair(decProv);
-        } else if (object instanceof PEMKeyPair) {
-            pemKeyPair = (PEMKeyPair) object;
-        } else {
-            throw new Exception("Invalid private key format");
+    public String decrypt(String encryptedMessage) {
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            PemReader pemReader = new PemReader(new StringReader(this.privateKey));
+            PemObject pemObject = pemReader.readPemObject();
+            RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al desencriptar el mensaje: " + e.getMessage(), e);
         }
-
-        PrivateKey privateKey = new JcaPEMKeyConverter().setProvider("BC").getPrivateKey(pemKeyPair.getPrivateKeyInfo());
-
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(message));
-        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 
 
