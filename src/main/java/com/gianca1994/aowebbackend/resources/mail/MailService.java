@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
-import com.gianca1994.aowebbackend.resources.mail.dto.request.SendMailDTO;
 import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator;
 import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -33,14 +32,16 @@ public class MailService {
          * @param String username
          * @return List<Mail>
          */
+        User user = userR.findByUsername(username);
         List<Mail> mails = mailR.findAllByReceiver(username);
-        mails.forEach(mail -> mail.setMessage(new RSA(userR.findByUsername(mail.getReceiver()).
-                getRsaPublicKey(), userR.findByUsername(mail.getReceiver()).getRsaPrivateKey()).
-                decrypt(mail.getMessage())));
+        mails.forEach(mail -> {
+            RSA rsa = new RSA(user.getRsaPublicKey(), user.getRsaPrivateKey());
+            mail.setMessage(rsa.decryptMsg(mail.getMessage()));
+        });
         return mails;
     }
 
-    public void sendMail(String username, SendMailDTO mail) throws Exception {
+    public void sendMail(String username, String receiver, String subject, String msg) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method sends a mail to the receiver
@@ -48,23 +49,23 @@ public class MailService {
          * @param SendMailDTO mail
          * @return void
          */
-        validator.receiverNotEmpty(mail.getReceiver());
-        validator.subjectNotEmpty(mail.getSubject());
-        validator.messageNotEmpty(mail.getMessage());
+        validator.receiverNotEmpty(receiver);
+        validator.subjectNotEmpty(subject);
+        validator.messageNotEmpty(msg);
         validator.userExist(userR.existsByUsername(username));
-        validator.userExist(userR.existsByUsername(mail.getReceiver()));
+        validator.userExist(userR.existsByUsername(receiver));
 
-        User receiver = userR.findByUsername(mail.getReceiver());
+        User userRec = userR.findByUsername(receiver);
+        RSA rsa = new RSA(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
 
-        RSA rsa = new RSA(receiver.getRsaPublicKey(), receiver.getRsaPrivateKey());
-        //String encryptedMessage = rsa.encrypt(mail.getMessage());
-        //System.out.println(encryptedMessage);
-        //String decryptedMessage = rsa.decrypt(encryptedMessage);
-        //System.out.println(decryptedMessage);
+        String encryptedMessage = rsa.encryptMsg(msg);
+        System.out.println(encryptedMessage);
+        String decryptedMessage = rsa.decryptMsg(encryptedMessage);
+        System.out.println(decryptedMessage);
 
-        Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), rsa.encrypt(mail.getMessage()));
-        receiver.getMail().add(newMail);
+        Mail newMail = new Mail(username, receiver, subject, rsa.encryptMsg(msg));
+        userRec.getMail().add(newMail);
         mailR.save(newMail);
-        userR.save(receiver);
+        userR.save(userRec);
     }
 }

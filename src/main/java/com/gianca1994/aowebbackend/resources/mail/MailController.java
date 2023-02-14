@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
-import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.mail.dto.request.SendMailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,7 @@ public class MailController {
          */
         mailS.sendMail(
                 jwt.getUsernameFromToken(token.substring(7)),
-                mail
+                mail.getReceiver(), mail.getSubject(), mail.getMessage()
         );
     }
 }

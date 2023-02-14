@@ -27,7 +27,7 @@ public class RSA {
     private String publicKey;
     private String privateKey;
 
-    public String encrypt(String message) {
+    public String encryptMsg(String message) {
         try {
             Security.addProvider(new BouncyCastleProvider());
             PemReader pemReader = new PemReader(new StringReader(this.publicKey));
@@ -42,7 +42,7 @@ public class RSA {
         }
     }
 
-    public String decrypt(String encryptedMessage) {
+    public String decryptMsg(String encryptedMessage) {
         try {
             Security.addProvider(new BouncyCastleProvider());
             PemReader pemReader = new PemReader(new StringReader(this.privateKey));
@@ -56,6 +56,4 @@ public class RSA {
             throw new RuntimeException("Error al desencriptar el mensaje: " + e.getMessage(), e);
         }
     }
-
-
 }
