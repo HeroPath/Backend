@@ -23,7 +23,6 @@ public class Mail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
 
     @Column(nullable = false)

@@ -24,7 +24,7 @@ public class MailController {
     @Autowired
     private JwtTokenUtil jwt;
 
-    @GetMapping
+    @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public List<Mail> getAllMails(@RequestHeader(value = "Authorization") String token) throws Exception {
         /**
@@ -50,6 +50,19 @@ public class MailController {
         mailS.sendMail(
                 jwt.getUsernameFromToken(token.substring(7)),
                 mail.getReceiver(), mail.getSubject(), mail.getMessage()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void deleteMail(@RequestHeader(value = "Authorization") String token,
+                              @PathVariable("id") Long id) throws Exception {
+        /**
+         *
+         */
+        mailS.deleteMail(
+                jwt.getUsernameFromToken(token.substring(7)),
+                id
         );
     }
 }

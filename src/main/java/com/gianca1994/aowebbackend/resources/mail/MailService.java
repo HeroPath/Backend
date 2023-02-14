@@ -68,4 +68,11 @@ public class MailService {
         mailR.save(newMail);
         userR.save(userRec);
     }
+
+    public void deleteMail(String username, Long id) throws Exception {
+        /**
+         *
+         */
+
+    }
 }

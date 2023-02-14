@@ -48,4 +48,18 @@ public class MailServiceValidator {
          */
         if (message.isEmpty()) throw new Conflict(MailConst.MESSAGE_EMPTY);
     }
+
+    public void mailExist(boolean exist) throws Conflict {
+        /**
+         *
+         */
+        if (!exist) throw new Conflict(MailConst.MAIL_NOT_FOUND);
+    }
+
+    public void mailBelongToUser(String username, String receiver) throws Conflict {
+        /**
+         *
+         */
+        if (!username.equals(receiver)) throw new Conflict(MailConst.MAIL_NOT_FOUND);
+    }
 }
