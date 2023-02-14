@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -73,7 +74,7 @@ public class AuthService implements UserDetailsService {
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
     }
 
-    public User saveUser(UserRegisterDTO user) throws Conflict {
+    public User saveUser(UserRegisterDTO user) throws Conflict, NoSuchAlgorithmException {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to save a new user in the database.
@@ -103,10 +104,9 @@ public class AuthService implements UserDetailsService {
                 aClass.getVitality(), aClass.getLuck()
         );
         newUser.calculateStats(true);
+        if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho")) newUser.setRole("ADMIN");
 
-        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
-            newUser.setRole("ADMIN");
-
+        newUser.generatePrivateAndPublicKey();
         return userR.save(newUser);
     }
 

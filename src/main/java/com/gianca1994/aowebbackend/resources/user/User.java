@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -131,6 +134,13 @@ public class User {
     @Column
     private String guildName;
 
+    @Column(columnDefinition = "text")
+    private String rsaPublicKey;
+
+    @Column(columnDefinition = "text")
+    private String rsaPrivateKey;
+
+
     public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
@@ -160,6 +170,31 @@ public class User {
         this.titleName = ModifConfig.TITLES.get(0).getName();
         this.titlePoints = 0;
         this.guildName = "";
+    }
+
+    public void generatePrivateAndPublicKey() {
+        /**
+         *
+         */
+        Thread keyGeneratorThread = new Thread(() -> {
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                keyPairGenerator.initialize(2048);
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
+                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+                RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+                this.rsaPublicKey = publicKey.toString();
+                this.rsaPrivateKey = privateKey.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        });
+        keyGeneratorThread.start();
+        try {
+            keyGeneratorThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     //********** START SWAP ITEM METHODS **********//
