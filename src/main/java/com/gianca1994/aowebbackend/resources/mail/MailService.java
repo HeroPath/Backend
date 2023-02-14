@@ -45,7 +45,9 @@ public class MailService {
          * @Author: Gianca1994
          * Explanation: This method sends a mail to the receiver
          * @param String username
-         * @param SendMailDTO mail
+         * @param String receiver
+         * @param String subject
+         * @param String msg
          * @return void
          */
         validator.receiverNotEmpty(receiver);

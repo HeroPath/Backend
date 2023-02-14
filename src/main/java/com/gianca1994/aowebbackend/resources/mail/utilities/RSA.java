@@ -36,6 +36,12 @@ public class RSA {
     }
 
     public String encryptMsg(String message) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method encrypts the message
+         * @param String message
+         * @return String
+         */
         try {
             PemObject pemObject = pemGenerator(this.publicKey);
             RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance(this.algorithm).generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
@@ -49,6 +55,12 @@ public class RSA {
     }
 
     public String decryptMsg(String encryptedMessage) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method decrypts the message
+         * @param String encryptedMessage
+         * @return String
+         */
         try {
             PemObject pemObject = pemGenerator(this.privateKey);
             RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance(this.algorithm).generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
@@ -62,6 +74,12 @@ public class RSA {
     }
 
     public PemObject pemGenerator(String key) throws IOException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method generates the pem object
+         * @param String key
+         * @return PemObject
+         */
         Security.addProvider(new BouncyCastleProvider());
         PemReader pemReader = new PemReader(new StringReader(key));
         return pemReader.readPemObject();
