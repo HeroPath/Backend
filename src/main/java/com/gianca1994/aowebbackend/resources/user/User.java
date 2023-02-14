@@ -8,6 +8,7 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.mail.Mail;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
@@ -142,14 +143,15 @@ public class User {
     @JsonIgnore
     private String rsaPrivateKey;
 
-    public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    //public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public User(UserRegisterJwtDTO userJwt){
+        this.username = userJwt.getUsername();
+        this.password = userJwt.getPassword();
+        this.email = userJwt.getEmail();
         this.role = "STANDARD";
-        this.inventory = inventory;
-        this.equipment = equipment;
-        this.aClass = aClass;
+        this.inventory = userJwt.getInventory();
+        this.equipment = userJwt.getEquipment();
+        this.aClass = userJwt.getAClass().getName();
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
         this.experienceToNextLevel = ExpLvlConfig.getExpInitial();
@@ -159,11 +161,11 @@ public class User {
         this.minDmg = 0;
         this.maxHp = 0;
         this.hp = 0;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
-        this.vitality = vitality;
-        this.luck = luck;
+        this.strength = userJwt.getAClass().getStrength();
+        this.dexterity = userJwt.getAClass().getDexterity();
+        this.intelligence = userJwt.getAClass().getIntelligence();
+        this.vitality = userJwt.getAClass().getVitality();
+        this.luck = userJwt.getAClass().getLuck();
         this.freeSkillPoints = ModifConfig.START_FREE_SKILL_POINTS;
         this.npcKills = 0;
         this.pvpWins = 0;

@@ -10,6 +10,7 @@ import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.AuthServiceValidator;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -104,30 +105,22 @@ public class AuthService implements UserDetailsService {
          * @return User
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
-        String username = user.getUsername().toLowerCase();
-        String password = user.getPassword();
-        String email = user.getEmail().toLowerCase();
-        Class aClass = ModifConfig.CLASSES.stream().filter(c -> c.getName().equalsIgnoreCase(user.getClassName())).findFirst().orElse(null);
-        validator.saveUser(username, password, email, aClass, userR);
 
-        Inventory inventory = new Inventory();
-        Equipment equipment = new Equipment();
+        UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
+        validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
 
-        User newUser = new User(
-                username, encryptPassword(user.getPassword()), email,
-                inventory, equipment,
-                aClass.getName(),
-                aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
-                aClass.getVitality(), aClass.getLuck()
-        );
+        userJwt.setInventory(new Inventory());
+        userJwt.setEquipment(new Equipment());
+        User newUser = new User(userJwt);
         newUser.calculateStats(true);
+
         if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho")) newUser.setRole("ADMIN");
 
         Thread saveThread = new Thread(() -> {
             TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
             transactionTemplate.executeWithoutResult(status -> {
-                inventoryR.save(inventory);
-                equipmentR.save(equipment);
+                inventoryR.save(newUser.getInventory());
+                equipmentR.save(newUser.getEquipment());
                 try {
                     newUser.generatePrivateAndPublicKey();
                 } catch (InterruptedException e) {
