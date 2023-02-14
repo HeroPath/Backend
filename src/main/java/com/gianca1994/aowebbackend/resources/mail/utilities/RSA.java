@@ -9,6 +9,7 @@ import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemReader;
 
 import javax.crypto.Cipher;
+import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
@@ -29,9 +30,7 @@ public class RSA {
 
     public String encryptMsg(String message) {
         try {
-            Security.addProvider(new BouncyCastleProvider());
-            PemReader pemReader = new PemReader(new StringReader(this.publicKey));
-            PemObject pemObject = pemReader.readPemObject();
+            PemObject pemObject = pemGenerator(this.publicKey);
             RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -44,9 +43,7 @@ public class RSA {
 
     public String decryptMsg(String encryptedMessage) {
         try {
-            Security.addProvider(new BouncyCastleProvider());
-            PemReader pemReader = new PemReader(new StringReader(this.privateKey));
-            PemObject pemObject = pemReader.readPemObject();
+            PemObject pemObject = pemGenerator(this.privateKey);
             RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -55,5 +52,11 @@ public class RSA {
         } catch (Exception e) {
             throw new RuntimeException("Error al desencriptar el mensaje: " + e.getMessage(), e);
         }
+    }
+
+    public PemObject pemGenerator(String key) throws IOException {
+        Security.addProvider(new BouncyCastleProvider());
+        PemReader pemReader = new PemReader(new StringReader(key));
+        return pemReader.readPemObject();
     }
 }
