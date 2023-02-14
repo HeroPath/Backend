@@ -34,10 +34,9 @@ public class MailService {
          * @return List<Mail>
          */
         List<Mail> mails = mailR.findAllByReceiver(username);
-        for (Mail mail : mails) {
-            RSA rsa = new RSA(userR.findByUsername(mail.getReceiver()).getRsaPublicKey(), userR.findByUsername(mail.getReceiver()).getRsaPrivateKey());
-            mail.setMessage(rsa.decrypt(mail.getMessage()));
-        }
+        mails.forEach(mail -> mail.setMessage(new RSA(userR.findByUsername(mail.getReceiver()).
+                getRsaPublicKey(), userR.findByUsername(mail.getReceiver()).getRsaPrivateKey()).
+                decrypt(mail.getMessage())));
         return mails;
     }
 
