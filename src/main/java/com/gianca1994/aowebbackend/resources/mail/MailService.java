@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
-import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.mail.dto.request.SendMailDTO;
 import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator;
 import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
@@ -56,8 +55,8 @@ public class MailService {
         RSA rsa = new RSA(receiver.getRsaPublicKey(), receiver.getRsaPrivateKey());
         String encryptedMessage = rsa.encrypt(mail.getMessage());
         System.out.println(encryptedMessage);
-        //String decryptedMessage = rsa.decrypt(encryptedMessage);
-        //System.out.println(decryptedMessage);
+        String decryptedMessage = rsa.decrypt(encryptedMessage);
+        System.out.println(decryptedMessage);
 
         //Mail newMail = new Mail(username, receiver.getUsername(), mail.getSubject(), mail.getMessage());
         //receiver.getMail().add(newMail);
