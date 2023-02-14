@@ -142,7 +142,6 @@ public class User {
     @JsonIgnore
     private String rsaPrivateKey;
 
-
     public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.username = username;
         this.password = password;
@@ -174,7 +173,7 @@ public class User {
         this.guildName = "";
     }
 
-    public void generatePrivateAndPublicKey() {
+    public void generatePrivateAndPublicKey() throws InterruptedException {
         /**
          *
          */
@@ -192,11 +191,7 @@ public class User {
             }
         });
         keyGeneratorThread.start();
-        try {
-            keyGeneratorThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        keyGeneratorThread.join();
     }
 
     //********** START SWAP ITEM METHODS **********//

@@ -55,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping(value = "register")
-    public ResponseEntity<?> register(@RequestBody UserRegisterDTO user) throws Conflict, NoSuchAlgorithmException {
+    public ResponseEntity<?> register(@RequestBody UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to register a new user.

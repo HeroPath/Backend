@@ -29,10 +29,13 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
 /**
@@ -58,7 +61,7 @@ public class AuthService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwt;
+    private PlatformTransactionManager transactionManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
@@ -74,7 +77,26 @@ public class AuthService implements UserDetailsService {
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
     }
 
-    public User saveUser(UserRegisterDTO user) throws Conflict, NoSuchAlgorithmException {
+    public void authenticate(String username, String password) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to authenticate the user.
+         * @param String username: The username of the user.
+         * @param String password: The password of the user.
+         * @return void
+         */
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        } catch (BadCredentialsException e) {
+            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+        } catch (DisabledException e) {
+            throw new Exception(JWTConst.USER_DISABLED, e);
+        }
+    }
+
+    public User saveUser(UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to save a new user in the database.
@@ -85,16 +107,11 @@ public class AuthService implements UserDetailsService {
         String username = user.getUsername().toLowerCase();
         String password = user.getPassword();
         String email = user.getEmail().toLowerCase();
-        Class aClass = ModifConfig.CLASSES.stream().filter(
-                        c -> c.getName().equalsIgnoreCase(user.getClassName()))
-                .findFirst().orElse(null);
-
+        Class aClass = ModifConfig.CLASSES.stream().filter(c -> c.getName().equalsIgnoreCase(user.getClassName())).findFirst().orElse(null);
         validator.saveUser(username, password, email, aClass, userR);
 
         Inventory inventory = new Inventory();
         Equipment equipment = new Equipment();
-        inventoryR.save(inventory);
-        equipmentR.save(equipment);
 
         User newUser = new User(
                 username, encryptPassword(user.getPassword()), email,
@@ -106,8 +123,21 @@ public class AuthService implements UserDetailsService {
         newUser.calculateStats(true);
         if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho")) newUser.setRole("ADMIN");
 
-        newUser.generatePrivateAndPublicKey();
-        return userR.save(newUser);
+        Thread saveThread = new Thread(() -> {
+            TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+            transactionTemplate.executeWithoutResult(status -> {
+                inventoryR.save(inventory);
+                equipmentR.save(equipment);
+                try {
+                    newUser.generatePrivateAndPublicKey();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                userR.save(newUser);
+            });
+        });
+        saveThread.start();
+        return newUser;
     }
 
     private boolean validateEmail(String email) {
@@ -130,24 +160,5 @@ public class AuthService implements UserDetailsService {
          * @return String
          */
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
-    }
-
-    public void authenticate(String username, String password) throws Exception {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to authenticate the user.
-         * @param String username: The username of the user.
-         * @param String password: The password of the user.
-         * @return void
-         */
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-        } catch (BadCredentialsException e) {
-            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
-        } catch (DisabledException e) {
-            throw new Exception(JWTConst.USER_DISABLED, e);
-        }
     }
 }
