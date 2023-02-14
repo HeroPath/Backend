@@ -25,14 +25,17 @@ import java.util.Base64;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RSA {
+    private String algorithm = "RSA";
+    private String instance = "RSA/ECB/PKCS1Padding";
     private String publicKey;
     private String privateKey;
+
 
     public String encryptMsg(String message) {
         try {
             PemObject pemObject = pemGenerator(this.publicKey);
-            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance(this.algorithm).generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
+            Cipher cipher = Cipher.getInstance(this.instance);
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
@@ -44,8 +47,8 @@ public class RSA {
     public String decryptMsg(String encryptedMessage) {
         try {
             PemObject pemObject = pemGenerator(this.privateKey);
-            RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance(this.algorithm).generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
+            Cipher cipher = Cipher.getInstance(this.instance);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
             return new String(decryptedBytes, StandardCharsets.UTF_8);
