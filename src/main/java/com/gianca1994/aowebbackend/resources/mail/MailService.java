@@ -26,6 +26,8 @@ public class MailService {
     @Autowired
     private UserRepository userR;
 
+    private final RSA rsa = new RSA();
+
     public List<Mail> getMails(String username) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -33,7 +35,8 @@ public class MailService {
          * @param String username
          * @return List<Mail>
          */
-        RSA rsa = new RSA(userR.findRsaPublicK(username), userR.findRsaPrivateK(username));
+        rsa.setPublicKey(userR.findRsaPublicK(username));
+        rsa.setPrivateKey(userR.findRsaPrivateK(username));
         List<Mail> mails = mailR.findAllByReceiver(username);
         for (Mail mail : mails) {
             mail.setMessage(rsa.decryptMsg(mail.getMessage()));
@@ -58,7 +61,8 @@ public class MailService {
         validator.userExist(userR.existsByUsername(receiver));
 
         User userRec = userR.findByUsername(receiver);
-        RSA rsa = new RSA(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
+        rsa.setPublicKey(userRec.getRsaPublicKey());
+        rsa.setPrivateKey(userRec.getRsaPrivateKey());
 
         String encryptedMessage = rsa.encryptMsg(msg);
         System.out.println(encryptedMessage);

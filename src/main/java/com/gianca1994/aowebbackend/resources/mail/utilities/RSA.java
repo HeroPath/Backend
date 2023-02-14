@@ -28,13 +28,8 @@ import java.util.Base64;
 public class RSA {
     private String algorithm = "RSA";
     private String instance = "RSA/ECB/PKCS1Padding";
-    private String publicKey;
-    private String privateKey;
-
-    public RSA(String publicKey, String privateKey) {
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
-    }
+    private String publicKey = "";
+    private String privateKey = "";
 
     public String encryptMsg(String message) throws Conflict {
         /**

@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
+import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.aowebbackend.resources.mail.dto.request.SendMailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class MailController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Mail> getAllMails(@RequestHeader(value = "Authorization") String token) {
+    public List<Mail> getAllMails(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to get all the mails of the user
