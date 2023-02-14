@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail.utilities;
 
+import com.gianca1994.aowebbackend.exception.Conflict;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class RSA {
         this.privateKey = privateKey;
     }
 
-    public String encryptMsg(String message) {
+    public String encryptMsg(String message) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method encrypts the message
@@ -50,11 +51,11 @@ public class RSA {
             byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
-            throw new RuntimeException("Error encrypting the message");
+            throw new Conflict("Error encrypting the message");
         }
     }
 
-    public String decryptMsg(String encryptedMessage) {
+    public String decryptMsg(String encryptedMessage) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method decrypts the message
@@ -69,7 +70,7 @@ public class RSA {
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
             return new String(decryptedBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new RuntimeException("Error decrypting the message");
+            throw new Conflict("Error decrypting the message");
         }
     }
 

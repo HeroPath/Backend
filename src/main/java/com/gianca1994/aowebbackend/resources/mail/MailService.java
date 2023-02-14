@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
+import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator;
 import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -25,7 +26,7 @@ public class MailService {
     @Autowired
     private UserRepository userR;
 
-    public List<Mail> getMails(String username) {
+    public List<Mail> getMails(String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns all the mails of the user
@@ -34,9 +35,9 @@ public class MailService {
          */
         RSA rsa = new RSA(userR.findRsaPublicK(username), userR.findRsaPrivateK(username));
         List<Mail> mails = mailR.findAllByReceiver(username);
-        mails.forEach(mail -> {
+        for (Mail mail : mails) {
             mail.setMessage(rsa.decryptMsg(mail.getMessage()));
-        });
+        }
         return mails;
     }
 
