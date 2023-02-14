@@ -23,7 +23,7 @@ import java.util.Base64;
 public class AES {
     private String algorithm = "AES";
     private String instance = "AES/ECB/PKCS5Padding";
-    private String key = SvConfig.AES_KEY;
+    private String key = SvConfig.AES_KEY_128BITS;
 
     public String encryptMsg(String message) throws Exception {
         /**
