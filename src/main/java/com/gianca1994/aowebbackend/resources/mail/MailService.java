@@ -35,8 +35,7 @@ public class MailService {
          * @param String username
          * @return List<Mail>
          */
-        rsa.setPublicKey(userR.findRsaPublicK(username));
-        rsa.setPrivateKey(userR.findRsaPrivateK(username));
+        rsa.setKeys(userR.findRsaPublicK(username), userR.findRsaPrivateK(username));
         List<Mail> mails = mailR.findAllByReceiver(username);
         for (Mail mail : mails) {
             mail.setMessage(rsa.decryptMsg(mail.getMessage()));
@@ -61,8 +60,7 @@ public class MailService {
         validator.userExist(userR.existsByUsername(receiver));
 
         User userRec = userR.findByUsername(receiver);
-        rsa.setPublicKey(userRec.getRsaPublicKey());
-        rsa.setPrivateKey(userRec.getRsaPrivateKey());
+        rsa.setKeys(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
 
         String encryptedMessage = rsa.encryptMsg(msg);
         System.out.println(encryptedMessage);

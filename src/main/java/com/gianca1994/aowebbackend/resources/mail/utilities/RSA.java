@@ -21,6 +21,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is the service of the mail
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,6 +35,18 @@ public class RSA {
     private String instance = "RSA/ECB/PKCS1Padding";
     private String publicKey = "";
     private String privateKey = "";
+
+    public void setKeys(String publicKey, String privateKey) {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method sets the keys
+         * @param String publicKey
+         * @param String privateKey
+         * @return void
+         */
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+    }
 
     public String encryptMsg(String message) throws Conflict {
         /**
