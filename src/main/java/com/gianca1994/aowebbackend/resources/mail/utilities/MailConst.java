@@ -10,4 +10,6 @@ public class MailConst {
     public static final String RECEIVER_EMPTY = "Receiver can't be empty";
     public static final String SUBJECT_EMPTY = "Subject can't be empty";
     public static final String MESSAGE_EMPTY = "Message can't be empty";
+    public static final String ERROR_ENCRYPTING = "Error encrypting the message";
+    public static final String ERROR_DECRYPTING = "Error decrypting the message";
 }

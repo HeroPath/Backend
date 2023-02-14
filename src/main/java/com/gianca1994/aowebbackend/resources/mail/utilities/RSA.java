@@ -63,7 +63,7 @@ public class RSA {
             byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (Exception e) {
-            throw new Conflict("Error encrypting the message");
+            throw new Conflict(MailConst.ERROR_ENCRYPTING);
         }
     }
 
@@ -82,7 +82,7 @@ public class RSA {
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
             return new String(decryptedBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new Conflict("Error decrypting the message");
+            throw new Conflict(MailConst.ERROR_DECRYPTING);
         }
     }
 

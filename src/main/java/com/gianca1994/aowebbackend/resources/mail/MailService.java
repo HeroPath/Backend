@@ -1,6 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail;
 
-import com.gianca1994.aowebbackend.exception.Conflict;
+import com.gianca1994.aowebbackend.resources.mail.utilities.AES;
 import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator;
 import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
 import com.gianca1994.aowebbackend.resources.user.User;
@@ -27,15 +27,16 @@ public class MailService {
     private UserRepository userR;
 
     private final RSA rsa = new RSA();
+    private final AES aes = new AES();
 
-    public List<Mail> getMails(String username) throws Conflict {
+    public List<Mail> getMails(String username) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method returns all the mails of the user
          * @param String username
          * @return List<Mail>
          */
-        rsa.setKeys(userR.findRsaPublicK(username), userR.findRsaPrivateK(username));
+        rsa.setKeys(userR.findRsaPublicK(username), aes.decryptMsg(userR.findRsaPrivateK(username)));
         List<Mail> mails = mailR.findAllByReceiver(username);
         for (Mail mail : mails) {
             mail.setMessage(rsa.decryptMsg(mail.getMessage()));
@@ -61,11 +62,6 @@ public class MailService {
 
         User userRec = userR.findByUsername(receiver);
         rsa.setKeys(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
-
-        String encryptedMessage = rsa.encryptMsg(msg);
-        System.out.println(encryptedMessage);
-        String decryptedMessage = rsa.decryptMsg(encryptedMessage);
-        System.out.println(decryptedMessage);
 
         Mail newMail = new Mail(username, receiver, subject, rsa.encryptMsg(msg));
         userRec.getMail().add(newMail);

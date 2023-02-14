@@ -10,6 +10,7 @@ import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.mail.Mail;
+import com.gianca1994.aowebbackend.resources.mail.utilities.AES;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 import lombok.AllArgsConstructor;
@@ -184,6 +185,7 @@ public class User {
          * Explanation: This method generates a private and public key for the user in PEM format.
          * @return none
          */
+        AES aes = new AES();
         Thread keyGeneratorThread = new Thread(() -> {
             try {
                 KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -211,11 +213,13 @@ public class User {
 
                 // Set public and private keys as class variables
                 this.rsaPublicKey = publicKeyString;
-                this.rsaPrivateKey = privateKeyString;
+                this.rsaPrivateKey = aes.encryptMsg(privateKeyString);
 
                 pemWriter.close();
             } catch (NoSuchAlgorithmException | IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         });
         keyGeneratorThread.start();
