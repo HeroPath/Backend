@@ -135,9 +135,11 @@ public class User {
     private String guildName;
 
     @Column(columnDefinition = "text")
+    @JsonIgnore
     private String rsaPublicKey;
 
     @Column(columnDefinition = "text")
+    @JsonIgnore
     private String rsaPrivateKey;
 
 
