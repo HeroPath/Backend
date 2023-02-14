@@ -33,7 +33,12 @@ public class MailService {
          * @param String username
          * @return List<Mail>
          */
-        return mailR.findAllByReceiver(username);
+        List<Mail> mails = mailR.findAllByReceiver(username);
+        for (Mail mail : mails) {
+            RSA rsa = new RSA(userR.findByUsername(mail.getReceiver()).getRsaPublicKey(), userR.findByUsername(mail.getReceiver()).getRsaPrivateKey());
+            mail.setMessage(rsa.decrypt(mail.getMessage()));
+        }
+        return mails;
     }
 
     public void sendMail(String username, SendMailDTO mail) throws Exception {
