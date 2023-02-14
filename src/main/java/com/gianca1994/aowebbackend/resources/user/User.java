@@ -16,8 +16,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -177,7 +181,7 @@ public class User {
     public void generatePrivateAndPublicKey() throws InterruptedException {
         /**
          * @Author: Gianca1994
-         * Explanation: This method generates a private and public key for the user.
+         * Explanation: This method generates a private and public key for the user in PEM format.
          * @return none
          */
         Thread keyGeneratorThread = new Thread(() -> {
@@ -187,15 +191,37 @@ public class User {
                 KeyPair keyPair = keyPairGenerator.generateKeyPair();
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
                 RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-                this.rsaPublicKey = publicKey.getModulus().toString();
-                this.rsaPrivateKey = privateKey.getPrivateExponent().toString();
-            } catch (NoSuchAlgorithmException e) {
+
+                StringWriter stringWriter = new StringWriter();
+                PemWriter pemWriter = new PemWriter(stringWriter);
+
+                // Write public key
+                PemObject pemObject = new PemObject("PUBLIC KEY", publicKey.getEncoded());
+                pemWriter.writeObject(pemObject);
+                pemWriter.flush();
+                String publicKeyString = stringWriter.toString();
+
+                // Write private key
+                pemObject = new PemObject("PRIVATE KEY", privateKey.getEncoded());
+                stringWriter = new StringWriter();
+                pemWriter = new PemWriter(stringWriter);
+                pemWriter.writeObject(pemObject);
+                pemWriter.flush();
+                String privateKeyString = stringWriter.toString();
+
+                // Set public and private keys as class variables
+                this.rsaPublicKey = publicKeyString;
+                this.rsaPrivateKey = privateKeyString;
+
+                pemWriter.close();
+            } catch (NoSuchAlgorithmException | IOException e) {
                 e.printStackTrace();
             }
         });
         keyGeneratorThread.start();
         keyGeneratorThread.join();
     }
+
 
     //********** START SWAP ITEM METHODS **********//
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {

@@ -10,8 +10,10 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Getter
@@ -22,14 +24,20 @@ public class RSA {
     private String publicKey;
     private String privateKey;
 
-    public String encrypt(String message) throws Exception {
-        byte[] publicKeyBytes = Base64.getDecoder().decode(this.publicKey);
-        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] encryptedBytes = cipher.doFinal(message.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedBytes);
+    public String encrypt(String message) {
+        try {
+            String publicKeyStr = this.publicKey.replaceAll("\\s+", "");
+            byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyStr.replaceAll("\\s+", ""));
+            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+            byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al encriptar el mensaje: " + e.getMessage(), e);
+        }
     }
+
 
     public String decrypt(String message) throws Exception {
         byte[] privateKeyBytes = Base64.getDecoder().decode(this.privateKey);
