@@ -8,14 +8,25 @@ import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
+import com.gianca1994.aowebbackend.resources.mail.Mail;
+import com.gianca1994.aowebbackend.resources.mail.utilities.AES;
 import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemWriter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -70,6 +81,15 @@ public class User {
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_mails",
+            joinColumns = @JoinColumn(name = "user_id",
+                    referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "mail_id",
+                    referencedColumnName = "id"))
+    @JsonIgnore
+    private Set<Mail> mail;
+
     @Column
     private String aClass;
     @Column
@@ -121,14 +141,22 @@ public class User {
     @Column
     private String guildName;
 
-    public User(String username, String password, String email, Inventory inventory, Equipment equipment, String aClass, int strength, int dexterity, int intelligence, int vitality, int luck) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+    @Column(columnDefinition = "text")
+    @JsonIgnore
+    private String rsaPublicKey;
+
+    @Column(columnDefinition = "text")
+    @JsonIgnore
+    private String rsaPrivateKey;
+
+    public User(UserRegisterJwtDTO userJwt) {
+        this.username = userJwt.getUsername();
+        this.password = userJwt.getPassword();
+        this.email = userJwt.getEmail();
         this.role = "STANDARD";
-        this.inventory = inventory;
-        this.equipment = equipment;
-        this.aClass = aClass;
+        this.inventory = userJwt.getInventory();
+        this.equipment = userJwt.getEquipment();
+        this.aClass = userJwt.getAClass().getName();
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
         this.experienceToNextLevel = ExpLvlConfig.getExpInitial();
@@ -138,11 +166,11 @@ public class User {
         this.minDmg = 0;
         this.maxHp = 0;
         this.hp = 0;
-        this.strength = strength;
-        this.dexterity = dexterity;
-        this.intelligence = intelligence;
-        this.vitality = vitality;
-        this.luck = luck;
+        this.strength = userJwt.getAClass().getStrength();
+        this.dexterity = userJwt.getAClass().getDexterity();
+        this.intelligence = userJwt.getAClass().getIntelligence();
+        this.vitality = userJwt.getAClass().getVitality();
+        this.luck = userJwt.getAClass().getLuck();
         this.freeSkillPoints = ModifConfig.START_FREE_SKILL_POINTS;
         this.npcKills = 0;
         this.pvpWins = 0;
@@ -152,11 +180,59 @@ public class User {
         this.guildName = "";
     }
 
+    public void generatePrivateAndPublicKey() throws InterruptedException {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method generates a private and public key for the user in PEM format.
+         * @return none
+         */
+        AES aes = new AES();
+        Thread keyGeneratorThread = new Thread(() -> {
+            try {
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                keyPairGenerator.initialize(2048);
+                KeyPair keyPair = keyPairGenerator.generateKeyPair();
+                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+                RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+
+                StringWriter stringWriter = new StringWriter();
+                PemWriter pemWriter = new PemWriter(stringWriter);
+
+                // Write public key
+                PemObject pemObject = new PemObject("PUBLIC KEY", publicKey.getEncoded());
+                pemWriter.writeObject(pemObject);
+                pemWriter.flush();
+                String publicKeyString = stringWriter.toString();
+
+                // Write private key
+                pemObject = new PemObject("PRIVATE KEY", privateKey.getEncoded());
+                stringWriter = new StringWriter();
+                pemWriter = new PemWriter(stringWriter);
+                pemWriter.writeObject(pemObject);
+                pemWriter.flush();
+                String privateKeyString = stringWriter.toString();
+
+                // Set public and private keys as class variables
+                this.rsaPublicKey = publicKeyString;
+                this.rsaPrivateKey = aes.encryptMsg(privateKeyString);
+
+                pemWriter.close();
+            } catch (NoSuchAlgorithmException | IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        keyGeneratorThread.start();
+        keyGeneratorThread.join();
+    }
+
+
     //********** START SWAP ITEM METHODS **********//
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
         /**
          * @Author: Gianca1994
-         * Explanation:
+         * Explanation: This method swaps an item from the inventory to the equipment or vice versa.
          * @param Item item
          * @param boolean toEquip
          * @return none

@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
-import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -8,12 +7,12 @@ import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.inventory.InventoryRepository;
-import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.AuthServiceValidator;
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
+import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,13 +24,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.gianca1994.aowebbackend.resources.user.dto.request.UserRegisterDTO;
 
 
 /**
@@ -57,7 +55,7 @@ public class AuthService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenUtil jwt;
+    private PlatformTransactionManager transactionManager;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFound {
@@ -73,41 +71,60 @@ public class AuthService implements UserDetailsService {
                 User(user.getUsername(), user.getPassword(), Collections.singleton(authorities));
     }
 
+    public void authenticate(String username, String password) throws Exception {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to authenticate the user.
+         * @param String username: The username of the user.
+         * @param String password: The password of the user.
+         * @return void
+         */
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        } catch (BadCredentialsException e) {
+            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+        } catch (DisabledException e) {
+            throw new Exception(JWTConst.USER_DISABLED, e);
+        }
+    }
+
     public User saveUser(UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save a new user in the database.
-         * @param UserDTO user
+         * Explanation: This method is used to save the user.
+         * @param UserRegisterDTO user
          * @return User
          */
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
-        String username = user.getUsername().toLowerCase();
-        String password = user.getPassword();
-        String email = user.getEmail().toLowerCase();
-        Class aClass = ModifConfig.CLASSES.stream().filter(
-                        c -> c.getName().equalsIgnoreCase(user.getClassName()))
-                .findFirst().orElse(null);
 
-        validator.saveUser(username, password, email, aClass, userR);
+        UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
+        validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
 
-        Inventory inventory = new Inventory();
-        Equipment equipment = new Equipment();
-        inventoryR.save(inventory);
-        equipmentR.save(equipment);
-
-        User newUser = new User(
-                username, encryptPassword(user.getPassword()), email,
-                inventory, equipment,
-                aClass.getName(),
-                aClass.getStrength(), aClass.getDexterity(), aClass.getIntelligence(),
-                aClass.getVitality(), aClass.getLuck()
-        );
+        userJwt.setInventory(new Inventory());
+        userJwt.setEquipment(new Equipment());
+        User newUser = new User(userJwt);
         newUser.calculateStats(true);
 
-        if (Objects.equals(user.getUsername(), "gianca") || Objects.equals(user.getUsername(), "lucho"))
-            newUser.setRole("ADMIN");
+        if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho")) newUser.setRole("ADMIN");
 
-        return userR.save(newUser);
+        Thread saveThread = new Thread(() -> {
+            TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+            transactionTemplate.executeWithoutResult(status -> {
+                newUser.setPassword(encryptPassword(newUser.getPassword()));
+                inventoryR.save(newUser.getInventory());
+                equipmentR.save(newUser.getEquipment());
+                try {
+                    newUser.generatePrivateAndPublicKey();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                userR.save(newUser);
+            });
+        });
+        saveThread.start();
+        return newUser;
     }
 
     private boolean validateEmail(String email) {
@@ -130,24 +147,5 @@ public class AuthService implements UserDetailsService {
          * @return String
          */
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
-    }
-
-    public void authenticate(String username, String password) throws Exception {
-        /**
-         * @Author: Gianca1994
-         * Explanation: This method is used to authenticate the user.
-         * @param String username: The username of the user.
-         * @param String password: The password of the user.
-         * @return void
-         */
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-        } catch (BadCredentialsException e) {
-            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
-        } catch (DisabledException e) {
-            throw new Exception(JWTConst.USER_DISABLED, e);
-        }
     }
 }

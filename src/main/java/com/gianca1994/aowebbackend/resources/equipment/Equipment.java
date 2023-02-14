@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.equipment;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class Equipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private Long id;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"gianca\",\r\n    \"password\": \"test\"\r\n}",
+							"raw": "{\r\n    \"username\": \"lucho\",\r\n    \"password\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"gianca\",\r\n    \"password\": \"test\", \r\n    \"email\": \"gianca@gmail.com\", \r\n    \"classId\": 2\r\n}\r\n",
+							"raw": "{\r\n    \"username\": \"gianca\",\r\n    \"password\": \"test\", \r\n    \"email\": \"gianca@gmail.com\", \r\n    \"className\": \"mage\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -210,7 +210,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQzMjcyOTMsImlhdCI6MTY3NDI0MDg5M30.cwtUE_0GckUHrJQ5h4yBM532nBAsaMQeU-ehYGO6fDWYpqTxsQKU6h5fDhgmz4lxsARUlNznTHrtm9_qr0EuRg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQxMTQ4OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzMjUwODl9.A-vRRai018EBDlAvu01vjReynRdGsr9gQ428M_7MxFNkSVm5nXHcChOz9ay8SB9jlPgFSoZvuQ26K8n2XVePjw",
 									"type": "string"
 								}
 							]
@@ -241,24 +241,15 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcwOTY0NzksImlhdCI6MTY1NzAyNDQ3OX0.kx9UE_8J7mUXBOQvlvJkLf1xd1a6Vt72ACxCTcJy31voHvbjbRYaaqQgkaZsCfxAy4fJlwPVIwlRchbi4P98rQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzUzOTEwMjUsImlhdCI6MTY3NTMwNDYyNX0.HCcKp7PxFZ3hTHko5uRrmE2P9ib_oSPeIMPrRPFXSQI1M0G8D2Z1EIlqAu5xZU5SYPfJgDLg7cJtkDImqKlQpA",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"skillPointName\": \"strength\",\r\n    \"amount\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://{{local}}/api/v1/users/add-skill-points",
+							"raw": "http://{{local}}/api/v1/users/add-skill-points/strength",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -267,29 +258,8 @@
 								"api",
 								"v1",
 								"users",
-								"add-skill-points"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Restore Hp",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://{{local}}/api/v1/auth/restore/test",
-							"protocol": "http",
-							"host": [
-								"{{local}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"auth",
-								"restore",
-								"test"
+								"add-skill-points",
+								"strength"
 							]
 						}
 					},
@@ -428,7 +398,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzQ3OTYsImlhdCI6MTY3MzY0ODM5Nn0.DSq5A3K2Xrdi5h6mNG7EBZVzYfAnktLOPitiSOpfVuA012vi09Mjg_cFmUjr43fKoRb595xmrvhgnUQhcdwBCw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzYzOTE0MTksInVzZXJJZCI6MSwiaWF0IjoxNjc2MzA1MDE5fQ.mUxVcZsYgTIJLtiiGeo3EIdLyVbhatMVEf3WM08YZwnR-S5IJThocaPNXeOZGWTCL-ck6wiB2S1TGHHeDcverg",
 									"type": "string"
 								}
 							]
@@ -836,6 +806,46 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Accpet Quest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzYxMjM4NDgsInVzZXJJZCI6MiwiaWF0IjoxNjc2MDM3NDQ4fQ.BoqXl-okDP0o07xA2DmvULVIa_MrcAquWCye-MFYvKt0oGQ7zlxljKpS0loH59jqZPAbMGnn5gsFCdsOV-1x5Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Bat\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/quests/accept",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quests",
+								"accept"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -850,7 +860,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQzMTYxNDQsImlhdCI6MTY3NDIyOTc0NH0.-gmT2GdxB-I4-k0iHoZ6D_CxlSz-jvKz-DFaMrQkqJicrqOO9orDiEtI9-7hp7JTwsdnB-fKo2mVYSCfZYCmow",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQ0Mjk3NTMsImlhdCI6MTY3NDM0MzM1M30.G_DkNPlYkgCLYmjlqUe9LNKU64pNEiEKJVBHtb_nXz-hMZMWdnin6WbE2_HqJ2zJ9fKfA6J9B5E3Q3fs7Y3VXA",
 									"type": "string"
 								}
 							]
@@ -880,7 +890,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQzMTYxNDQsImlhdCI6MTY3NDIyOTc0NH0.-gmT2GdxB-I4-k0iHoZ6D_CxlSz-jvKz-DFaMrQkqJicrqOO9orDiEtI9-7hp7JTwsdnB-fKo2mVYSCfZYCmow",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQ0Mjk3NTMsImlhdCI6MTY3NDM0MzM1M30.G_DkNPlYkgCLYmjlqUe9LNKU64pNEiEKJVBHtb_nXz-hMZMWdnin6WbE2_HqJ2zJ9fKfA6J9B5E3Q3fs7Y3VXA",
 									"type": "string"
 								}
 							]
@@ -911,7 +921,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQzMTYxNDQsImlhdCI6MTY3NDIyOTc0NH0.-gmT2GdxB-I4-k0iHoZ6D_CxlSz-jvKz-DFaMrQkqJicrqOO9orDiEtI9-7hp7JTwsdnB-fKo2mVYSCfZYCmow",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzQ0Mjk3NTMsImlhdCI6MTY3NDM0MzM1M30.G_DkNPlYkgCLYmjlqUe9LNKU64pNEiEKJVBHtb_nXz-hMZMWdnin6WbE2_HqJ2zJ9fKfA6J9B5E3Q3fs7Y3VXA",
 									"type": "string"
 								}
 							]
@@ -1009,6 +1019,183 @@
 								"guilds",
 								"remove",
 								"lucho"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check User in guild",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NDQzMTM4MCwiaWF0IjoxNjc0MzQ0OTgwfQ.hgqYjTWDgNyGz4O2ZdPkvKqbXozI5cbn7hjqo8XqV0uyPyRfifhfozIaIEGZ1b5u0kL1cpq9tTDwKAANT4tZLA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/in-guild",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"in-guild"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Donate Diamonds",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzU5MjM3MTQsInVzZXJJZCI6MywiaWF0IjoxNjc1ODM3MzE0fQ.wSs01u2Bg-Pon2zU4sCb72dkpUx7u3eXM-5Ld__q76inf4yqmncC1FFPAMXPnOlMVfjzpSfpYapEaAnrh3gBRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amountDiamonds\": 6000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/donate",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"donate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrade level",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzU5MjM3MTQsInVzZXJJZCI6MywiaWF0IjoxNjc1ODM3MzE0fQ.wSs01u2Bg-Pon2zU4sCb72dkpUx7u3eXM-5Ld__q76inf4yqmncC1FFPAMXPnOlMVfjzpSfpYapEaAnrh3gBRQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/guilds/upgrade",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"guilds",
+								"upgrade"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mail",
+			"item": [
+				{
+					"name": "Send Mail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY0MTE0NTcsInVzZXJJZCI6MSwiaWF0IjoxNjc2MzI1MDU3fQ.b0Dq1l8Pjjrmn3pkti_rtHIdYRBEoEYzuv7orfz3IGbmTFIHl38MrpSmH196rReH2a5ivBdXZf3aKSsKut-HGQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receiver\": \"lucho\",\r\n    \"subject\": \"test\",\r\n    \"message\": \"hola\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails/send",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mails",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQxMTQ4OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzMjUwODl9.A-vRRai018EBDlAvu01vjReynRdGsr9gQ428M_7MxFNkSVm5nXHcChOz9ay8SB9jlPgFSoZvuQ26K8n2XVePjw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails"
 							]
 						}
 					},
