@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail.utilities;
 
+import com.gianca1994.aowebbackend.config.SvConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.Base64;
 public class AES {
     private String algorithm = "AES";
     private String instance = "AES/ECB/PKCS5Padding";
-    private String key = "B043CF915C58E8F356E8A1EE63FF8626";
+    private String key = SvConfig.AES_KEY;
 
     public String encryptMsg(String message) throws Exception {
         /**

@@ -6,6 +6,9 @@ package com.gianca1994.aowebbackend.config;
  */
 
 public class SvConfig {
+
+    public static final String AES_KEY = "B043CF915C58E8F356E8A1EE63FF8626";
+
     /////////////////////////// BASIC STATICS ///////////////////////////
     public static final int EXPERIENCE_MULTIPLIER = 999999;
     public static final int GOLD_MULTIPLIER = 10;
