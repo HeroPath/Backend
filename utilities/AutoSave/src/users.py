@@ -32,6 +32,7 @@ def register_worker(url_register, url_login, i):
 
 
 def register(url_register, url_login):
+    print("Registered users")
     processes = []
     for i in users:
         p = Process(target=register_worker, args=(url_register, url_login, i))
@@ -40,7 +41,6 @@ def register(url_register, url_login):
 
     for process in processes:
         process.join()
-    print("Registered users")
 
 
 def login(url_login):

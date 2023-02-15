@@ -26,7 +26,7 @@ public class UserMail {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "mail_id")
     private Mail mail;
 
