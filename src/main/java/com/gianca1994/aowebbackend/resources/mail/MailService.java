@@ -10,6 +10,7 @@ import com.gianca1994.aowebbackend.resources.user.userRelations.userMail.UserMai
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -30,6 +31,7 @@ public class MailService {
 
     private final RSA rsa = new RSA();
     private final AES aes = new AES();
+
     @Autowired
     private UserMailRepository userMailR;
 
@@ -73,10 +75,14 @@ public class MailService {
         userMailR.save(newUserMail);
     }
 
-    public void deleteMail(String username, Long id) throws Exception {
+    @Transactional
+    public void deleteMail(Long userId, Long mailId) throws Exception {
         /**
          *
          */
-
+        validator.userExist(userR.existsById(userId));
+        validator.mailExist(mailR.existsById(mailId));
+        userMailR.deleteByUserIdAndMailId(userId, mailId);
+        mailR.delete(mailR.findById(mailId).get());
     }
 }

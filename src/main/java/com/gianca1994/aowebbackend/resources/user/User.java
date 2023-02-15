@@ -79,11 +79,11 @@ public class User {
                     referencedColumnName = "id"))
     private Equipment equipment;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<UserMail> userMails;
 

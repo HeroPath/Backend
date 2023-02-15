@@ -40,7 +40,7 @@ public class Mail {
     @Column(columnDefinition = "text", nullable = false)
     private String message;
 
-    @OneToMany(mappedBy = "mail", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "mail", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     private Set<UserMail> userMails;
 
