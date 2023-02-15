@@ -5,6 +5,8 @@ import com.gianca1994.aowebbackend.resources.mail.utilities.MailServiceValidator
 import com.gianca1994.aowebbackend.resources.mail.utilities.RSA;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userMail.UserMail;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userMail.UserMailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,8 @@ public class MailService {
 
     private final RSA rsa = new RSA();
     private final AES aes = new AES();
+    @Autowired
+    private UserMailRepository userMailR;
 
     public List<Mail> getMails(String username) throws Exception {
         /**
@@ -64,9 +68,9 @@ public class MailService {
         rsa.setKeys(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
 
         Mail newMail = new Mail(username, receiver, subject, rsa.encryptMsg(msg));
-        userRec.getMail().add(newMail);
+        UserMail newUserMail = new UserMail(userRec, newMail);
         mailR.save(newMail);
-        userR.save(userRec);
+        userMailR.save(newUserMail);
     }
 
     public void deleteMail(String username, Long id) throws Exception {

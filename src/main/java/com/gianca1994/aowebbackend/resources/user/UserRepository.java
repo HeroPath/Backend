@@ -25,10 +25,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     ///////////////////////////////////////////////////////////////
 
+    //////////////////// USED FOR MAIL_SERVICE ////////////////////
     @Query("SELECT u.rsaPublicKey FROM User u WHERE u.username = :username")
     String findRsaPublicK(@Param("username") String username);
     @Query("SELECT u.rsaPrivateKey FROM User u WHERE u.username = :username")
     String findRsaPrivateK(@Param("username") String username);
+    ////////////////////////////////////////////////////////////////
 
     //////////////////// USED FOR GUILD_SERVICE ////////////////////
     @Query("SELECT u.guildName FROM User u WHERE u.id = :id")
