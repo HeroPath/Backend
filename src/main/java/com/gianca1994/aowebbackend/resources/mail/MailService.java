@@ -78,7 +78,11 @@ public class MailService {
     @Transactional
     public void deleteAllMails(Long userId, String username) throws Exception {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method deletes all the mails of the user
+         * @param Long userId
+         * @param String username
+         * @return void
          */
         validator.userExist(userR.existsById(userId));
         userMailR.deleteByUserId(userId);
@@ -86,13 +90,17 @@ public class MailService {
     }
 
     @Transactional
-    public void deleteMail(Long userId, Long mailId) throws Exception {
+    public List<Mail> deleteMail(Long userId, Long mailId) throws Exception {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method deletes a mail of the user
+         * @param Long userId
+         * @return void
          */
         validator.userExist(userR.existsById(userId));
         validator.mailExist(mailR.existsById(mailId));
         userMailR.deleteByUserIdAndMailId(userId, mailId);
         mailR.delete(mailR.findById(mailId).get());
+        return mailR.findAllByReceiver(userR.findById(userId).get().getUsername());
     }
 }

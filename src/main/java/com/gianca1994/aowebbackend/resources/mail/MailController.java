@@ -57,7 +57,10 @@ public class MailController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void deleteAllMails(@RequestHeader(value = "Authorization") String token) throws Exception {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to delete all the mails of the user
+         * @param String token
+         * @return void
          */
         mailS.deleteAllMails(
                 jwt.getIdFromToken(token.substring(7)),
@@ -67,12 +70,16 @@ public class MailController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void deleteMail(@RequestHeader(value = "Authorization") String token,
-                           @PathVariable("id") Long id) throws Exception {
+    public List<Mail> deleteMail(@RequestHeader(value = "Authorization") String token,
+                                 @PathVariable("id") Long id) throws Exception {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to delete a mail
+         * @param String token
+         * @param Long id
+         * @return List<Mail>
          */
-        mailS.deleteMail(
+        return mailS.deleteMail(
                 jwt.getIdFromToken(token.substring(7)),
                 id
         );

@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to create the UserMail table in the database.
+ */
+
 @Entity
 @Table(name = "user_mails")
 @Getter

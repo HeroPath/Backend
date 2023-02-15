@@ -6,6 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @Author: Gianca1994
+ * Explanation: This class is used to create the UserMail table in the database.
+ */
+
 @Repository
 public interface UserMailRepository extends JpaRepository<UserMail, Long> {
     @Modifying
