@@ -80,6 +80,7 @@ public class MailController {
          * @return List<Mail>
          */
         return mailS.deleteMail(
+                jwt.getUsernameFromToken(token.substring(7)),
                 jwt.getIdFromToken(token.substring(7)),
                 id
         );
