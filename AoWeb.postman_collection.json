@@ -1139,7 +1139,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY0NzA5MTgsInVzZXJJZCI6MSwiaWF0IjoxNjc2Mzg0NTE4fQ.NFC7DKOixz7dcdp6SGjEBjtTZ3L-H-N55_Uabn1SzmjWVu3mntnKeELJnwpLurwp7fbb3Uoq-7xIWgjc-WIVfQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQ3ODA2OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzOTE2Njl9._ThnPQ5WDRqB1auORXy1VnqIW9zDSJ31Y-V0-soMBicN64utPy73-6gD7C-wCunJaASROpdqWyRNOLpkHMWIfw",
 									"type": "string"
 								}
 							]
@@ -1148,7 +1148,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"receiver\": \"test\",\r\n    \"subject\": \"test\",\r\n    \"message\": \"hola\"\r\n}",
+							"raw": "{\r\n    \"receiver\": \"gianca\",\r\n    \"subject\": \"saludo\",\r\n    \"message\": \"hola gianca, soy lucho\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1179,12 +1179,73 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNjc2NDcwOTQwLCJ1c2VySWQiOjIsImlhdCI6MTY3NjM4NDU0MH0.PQkjHdhTteDLqje2vIE8YZ5fRg3NCFmHo2iJz5ndUO_6Sa00QhJ1WFFsdvK34U29R4_G4qOJQ7hcrC2asEvMmA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NTg2MDEsInVzZXJJZCI6MywiaWF0IjoxNjc2NDcyMjAxfQ.axe_Cs339FNl5KDqVQm_i9jjV04M8IcpEAV_7YSzGbXjI6Zq4IPw5r-CPNz_tEj-9ojLq5Fp9ylk8SE_GYAKcQ",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Mail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NjA5NzIsInVzZXJJZCI6MSwiaWF0IjoxNjc2NDc0NTcyfQ.eE9UDjhX6s4PEf_03hETgzZb2ywvkwgPTbioISdFZ2uYbIZGyGFoC3rXhxnIZMpSpx9246X6nSQNquDMlXQ80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails/1",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Mails",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NjQ2MzMsInVzZXJJZCI6MywiaWF0IjoxNjc2NDc4MjMzfQ.o45uz47k7sxKN1DKcDFjo9NbUVPNistt_JsiRUYkruz6S3v5yyNS-etLlr4gyy0m9h-XFyndAu_KJkatQ-I4DQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "http://{{local}}/api/v1/mails",
