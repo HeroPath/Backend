@@ -11,4 +11,8 @@ public interface UserMailRepository extends JpaRepository<UserMail, Long> {
     @Modifying
     @Query("DELETE FROM UserMail um WHERE um.user.id = :userId AND um.mail.id = :mailId")
     void deleteByUserIdAndMailId(@Param("userId") Long userId, @Param("mailId") Long mailId);
+
+    @Modifying
+    @Query("DELETE FROM UserMail um WHERE um.user.id = :userId")
+    void deleteByUserId(@Param("userId") Long userId);
 }

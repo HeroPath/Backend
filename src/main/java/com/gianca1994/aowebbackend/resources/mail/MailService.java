@@ -76,6 +76,16 @@ public class MailService {
     }
 
     @Transactional
+    public void deleteAllMails(Long userId, String username) throws Exception {
+        /**
+         *
+         */
+        validator.userExist(userR.existsById(userId));
+        userMailR.deleteByUserId(userId);
+        mailR.deleteAllByReceiver(username);
+    }
+
+    @Transactional
     public void deleteMail(Long userId, Long mailId) throws Exception {
         /**
          *
