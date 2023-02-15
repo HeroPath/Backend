@@ -22,15 +22,14 @@ import java.util.List;
 public class MailService {
 
     MailServiceValidator validator = new MailServiceValidator();
+    private final RSA rsa = new RSA();
+    private final AES aes = new AES();
 
     @Autowired
     private MailRepository mailR;
 
     @Autowired
     private UserRepository userR;
-
-    private final RSA rsa = new RSA();
-    private final AES aes = new AES();
 
     @Autowired
     private UserMailRepository userMailR;
@@ -65,6 +64,7 @@ public class MailService {
         validator.messageNotEmpty(msg);
         validator.userExist(userR.existsByUsername(username));
         validator.userExist(userR.existsByUsername(receiver));
+        validator.userNotEqual(username, receiver);
 
         User userRec = userR.findByUsername(receiver);
         rsa.setKeys(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
@@ -85,6 +85,7 @@ public class MailService {
          * @return void
          */
         validator.userExist(userR.existsById(userId));
+        validator.userHaveMails(userMailR.existsByUserId(userId));
         userMailR.deleteByUserId(userId);
         mailR.deleteAllByReceiver(username);
     }
