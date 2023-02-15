@@ -70,8 +70,8 @@ public class MailController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Mail> deleteMail(@RequestHeader(value = "Authorization") String token,
-                                 @PathVariable("id") Long id) throws Exception {
+    public void deleteMail(@RequestHeader(value = "Authorization") String token,
+                           @PathVariable("id") Long id) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to delete a mail
@@ -79,8 +79,7 @@ public class MailController {
          * @param Long id
          * @return List<Mail>
          */
-        return mailS.deleteMail(
-                jwt.getUsernameFromToken(token.substring(7)),
+        mailS.deleteMail(
                 jwt.getIdFromToken(token.substring(7)),
                 id
         );

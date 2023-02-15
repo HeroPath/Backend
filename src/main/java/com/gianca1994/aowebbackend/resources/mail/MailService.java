@@ -90,7 +90,7 @@ public class MailService {
     }
 
     @Transactional
-    public List<Mail> deleteMail(String username, Long userId, Long mailId) throws Exception {
+    public void deleteMail(Long userId, Long mailId) throws Exception {
         /**
          * @Author: Gianca1994
          * Explanation: This method deletes a mail of the user
@@ -101,6 +101,5 @@ public class MailService {
         validator.mailExist(mailR.existsById(mailId));
         userMailR.deleteByUserIdAndMailId(userId, mailId);
         mailR.delete(mailR.findById(mailId).get());
-        return mailR.findAllByReceiver(username);
     }
 }
