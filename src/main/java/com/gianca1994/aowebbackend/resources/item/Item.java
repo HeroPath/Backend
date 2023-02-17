@@ -1,5 +1,7 @@
 package com.gianca1994.aowebbackend.resources.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +27,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -55,6 +57,11 @@ public class Item {
     @Column()
     private int luck;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
+
     public Item(String name, String type, int lvlMin, String classRequired, int price, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
         this.type = type;
@@ -66,5 +73,19 @@ public class Item {
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
+    }
+
+    public Item(String name, String type, String classRequired, int lvlMin, int price, int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
+        this.name = name;
+        this.type = type;
+        this.classRequired = classRequired;
+        this.lvlMin = lvlMin;
+        this.price = price;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.vitality = vitality;
+        this.luck = luck;
+        this.user = user;
     }
 }

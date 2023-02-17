@@ -36,7 +36,7 @@ public class ItemService {
          * @param String aClass
          * @return List<Item>
          */
-        return itemR.findByClassRequiredOrderByLvlMinAsc(aClass);
+        return itemR.findByClassRequiredAndUserIsNullOrderByLvlMinAsc(aClass);
     }
 
     public void saveItem(ItemDTO newItem) {
@@ -58,7 +58,7 @@ public class ItemService {
         ));
     }
 
-    public BuySellDTO buyItem(String username, String itemName) throws Conflict {
+    public BuySellDTO buyItem(String username, Long itemBuyId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
@@ -67,15 +67,25 @@ public class ItemService {
          * @return BuySellDTO
          */
         validator.userFound(userR.existsByUsername(username));
-        validator.itemFound(itemR.existsByName(itemName));
+        validator.itemFound(itemR.existsById(itemBuyId));
+        if (!itemR.isUserIdNull(itemBuyId)) throw new Conflict("ASDASDASD");
 
         User user = userR.findByUsername(username);
-        Item itemBuy = itemR.findByName(itemName);
+        Item itemBuy = itemR.findById(itemBuyId).get();
+
+        Item newItemBuy = new Item(
+                itemBuy.getName(), itemBuy.getType(), itemBuy.getClassRequired(),
+                itemBuy.getLvlMin(), itemBuy.getPrice(),
+                itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
+                itemBuy.getVitality(), itemBuy.getLuck(), user
+        );
+        itemR.save(newItemBuy);
+
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
         validator.checkInventoryFull(user.getInventory().getItems().size());
 
-        user.getInventory().getItems().add(itemBuy);
-        user.setGold(user.getGold() - itemBuy.getPrice());
+        user.getInventory().getItems().add(newItemBuy);
+        user.setGold(user.getGold() - newItemBuy.getPrice());
         userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }

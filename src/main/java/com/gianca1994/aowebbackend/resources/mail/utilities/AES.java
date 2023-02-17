@@ -1,7 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail.utilities;
 
 import com.gianca1994.aowebbackend.config.SvConfig;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,6 @@ import java.util.Base64;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class AES {
 

@@ -54,20 +54,20 @@ public class ItemController {
         itemS.saveItem(newItem);
     }
 
-    @PostMapping("/buy")
+    @PostMapping("/buy/{itemBuyId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public BuySellDTO buyItem(@RequestHeader(value = "Authorization") String token,
-                              @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                              @PathVariable Long itemBuyId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
          * @param String token
-         * @param NameRequestDTO nameRequestDTO
+         * @param Long itemBuyId
          * @return BuySellDTO
          */
         return itemS.buyItem(
                 jwt.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO.getName().toLowerCase()
+                itemBuyId
         );
     }
 
