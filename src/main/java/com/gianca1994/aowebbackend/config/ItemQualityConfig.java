@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.config;
 
 /**
  * @Author: Gianca1994
- * Explanation:
+ * Explanation: Class used to add the quality to the item.
  */
 
 public class ItemQualityConfig {

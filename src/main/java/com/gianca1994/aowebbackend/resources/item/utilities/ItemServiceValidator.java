@@ -171,4 +171,11 @@ public class ItemServiceValidator {
          */
         if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
     }
+
+    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
+        /**
+         *
+         */
+        if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
+    }
 }

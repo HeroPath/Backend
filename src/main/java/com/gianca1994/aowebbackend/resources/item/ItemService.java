@@ -168,4 +168,16 @@ public class ItemService {
         return new EquipOrUnequipDTO(user);
     }
 
+    public void upgradeItem(Long userId, Long itemId) throws Conflict {
+        /**
+         *
+         */
+        validator.userFound(userR.existsById(userId));
+        validator.itemFound(itemR.existsById(itemId));
+
+        User user = userR.getReferenceById(userId);
+
+
+    }
+
 }

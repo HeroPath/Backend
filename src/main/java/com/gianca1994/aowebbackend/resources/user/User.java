@@ -186,8 +186,8 @@ public class User {
         AES aes = new AES();
         Thread keyGeneratorThread = new Thread(() -> {
             try {
-                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(SvConfig.RSA_ALGORITHM);
-                keyPairGenerator.initialize(SvConfig.RSA_KEY_BITS);
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+                keyPairGenerator.initialize(2048);
                 KeyPair keyPair = keyPairGenerator.generateKeyPair();
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
                 RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
