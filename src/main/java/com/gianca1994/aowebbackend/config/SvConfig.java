@@ -8,7 +8,7 @@ package com.gianca1994.aowebbackend.config;
 public class SvConfig {
 
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 999999;
+    public static final int EXPERIENCE_MULTIPLIER = 99999999;
     public static final int GOLD_MULTIPLIER = 10;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
