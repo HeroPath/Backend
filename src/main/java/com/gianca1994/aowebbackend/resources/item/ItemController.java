@@ -64,7 +64,7 @@ public class ItemController {
          * @return BuySellDTO
          */
         return itemS.buyItem(
-                jwt.getUsernameFromToken(token.substring(7)),
+                jwt.getIdFromToken(token.substring(7)),
                 itemBuyId
         );
     }

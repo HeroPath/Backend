@@ -50,42 +50,39 @@ public class ItemService {
         validator.itemExists(itemR.existsByName(newItem.getName().toLowerCase()));
 
         itemR.save(new Item(
-                newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(),
+                newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(), newItem.getPrice(),
                 newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired(),
-                newItem.getPrice(),
-                newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(),
-                newItem.getVitality(), newItem.getLuck()
+                newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(), newItem.getVitality(), newItem.getLuck()
         ));
     }
 
-    public BuySellDTO buyItem(String username, Long itemBuyId) throws Conflict {
+    public BuySellDTO buyItem(Long userId, Long itemBuyId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of buying an item.
-         * @param String username
-         * @param String itemName
+         * @param long userId
+         * @param long itemBuyId
          * @return BuySellDTO
          */
-        validator.userFound(userR.existsByUsername(username));
+        validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemBuyId));
         if (!itemR.isUserIdNull(itemBuyId)) throw new Conflict("You can only buy items that come from the trader.");
 
-        User user = userR.findByUsername(username);
-        Item itemBuy = itemR.findById(itemBuyId).get();
-
-        Item newItemBuy = new Item(
-                itemBuy.getName(), itemBuy.getType(), itemBuy.getClassRequired(),
-                itemBuy.getLvlMin(), itemBuy.getPrice() / 2,
-                itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
-                itemBuy.getVitality(), itemBuy.getLuck(), user
-        );
-        itemR.save(newItemBuy);
+        User user = userR.getReferenceById(userId);
+        Item itemBuy = itemR.getReferenceById(itemBuyId);
 
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
         validator.checkInventoryFull(user.getInventory().getItems().size());
 
+        Item newItemBuy = new Item(
+                itemBuy.getName(), itemBuy.getType(), itemBuy.getLvlMin(), itemBuy.getPrice() / 2, itemBuy.getClassRequired(),
+                itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
+                itemBuy.getVitality(), itemBuy.getLuck(), user
+        );
+
         user.getInventory().getItems().add(newItemBuy);
         user.setGold(user.getGold() - itemBuy.getPrice());
+        itemR.save(newItemBuy);
         userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
@@ -94,16 +91,17 @@ public class ItemService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
-         * @param String username
-         * @param String itemName
+         * @param long userId
+         * @param long itemSellId
          * @return BuySellDTO
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemSellId));
-        if (itemR.hasItem(userId, itemSellId)) throw new Conflict("You can only sell items that you have bought from the trader.");
+        if (itemR.hasItem(userId, itemSellId))
+            throw new Conflict("You can only sell items that you have bought from the trader.");
 
-        User user = userR.findById(userId).get();
-        Item itemSell = itemR.findById(itemSellId).get();
+        User user = userR.getReferenceById(userId);
+        Item itemSell = itemR.getReferenceById(itemSellId);
         validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice()));
@@ -117,15 +115,15 @@ public class ItemService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping an item.
-         * @param String username
+         * @param long userId
          * @param long itemId
          * @return EquipOrUnequipDTO
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
 
-        User user = userR.findById(userId).get();
-        Item itemEquip = itemR.findById(itemId).get();
+        User user = userR.getReferenceById(userId);
+        Item itemEquip = itemR.getReferenceById(itemId);
 
         validator.checkItemEquipIfPermitted(itemEquip.getType());
         validator.checkEquipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
@@ -137,8 +135,7 @@ public class ItemService {
         if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
             user.setHp(user.getMaxHp());
             itemR.delete(itemEquip);
-        }
-        else {
+        } else {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         }
@@ -157,8 +154,8 @@ public class ItemService {
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
 
-        User user = userR.findById(userId).get();
-        Item itemUnequip = itemR.findById(itemId).get();
+        User user = userR.getReferenceById(userId);
+        Item itemUnequip = itemR.getReferenceById(itemId);
 
         validator.checkInventoryFull(user.getInventory().getItems().size());
         validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);

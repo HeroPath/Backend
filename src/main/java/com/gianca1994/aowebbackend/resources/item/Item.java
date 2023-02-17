@@ -33,14 +33,14 @@ public class Item {
     @Column(nullable = false)
     private String type;
 
-    @Column()
-    private String classRequired;
-
     @Column(nullable = false)
     private int lvlMin;
 
     @Column(nullable = false)
     private int price;
+
+    @Column()
+    private String classRequired;
 
     @Column()
     private int strength;
@@ -62,12 +62,12 @@ public class Item {
     @JsonIgnore
     private User user;
 
-    public Item(String name, String type, int lvlMin, String classRequired, int price, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength, int dexterity, int intelligence, int vitality, int luck) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
-        this.classRequired = classRequired;
         this.price = price;
+        this.classRequired = classRequired;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
@@ -75,12 +75,12 @@ public class Item {
         this.luck = luck;
     }
 
-    public Item(String name, String type, String classRequired, int lvlMin, int price, int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
+    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
         this.name = name;
         this.type = type;
-        this.classRequired = classRequired;
         this.lvlMin = lvlMin;
         this.price = price;
+        this.classRequired = classRequired;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
