@@ -31,11 +31,11 @@ public class Item {
     @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false)
-    private int lvlMin;
-
     @Column()
     private String classRequired;
+
+    @Column(nullable = false)
+    private int lvlMin;
 
     @Column(nullable = false)
     private int price;
