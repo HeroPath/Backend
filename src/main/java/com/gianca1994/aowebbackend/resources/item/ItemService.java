@@ -183,6 +183,8 @@ public class ItemService {
         User user = userR.getReferenceById(userId);
         Item itemUpgrade = itemR.findById(itemId).get();
         if (!itemUpgrade.getUser().equals(user)) throw new Conflict("Item not in inventory");
+        if (!ItemConst.ENABLED_EQUIP.contains(itemUpgrade.getType()) && !itemUpgrade.getType().equals(ItemConst.POTION_NAME))
+            throw new Conflict("Item not upgradable");
         if (itemUpgrade.getItemLevel() >= SvConfig.MAX_ITEM_LEVEL) throw new Conflict("Item already at max level");
 
         List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
@@ -194,11 +196,11 @@ public class ItemService {
         itemR.deleteAll(itemsToRemove);
 
         itemUpgrade.setItemLevel(itemUpgrade.getItemLevel() + 1);
-        itemUpgrade.setStrength(itemUpgrade.getStrength() + 1);
-        itemUpgrade.setDexterity(itemUpgrade.getDexterity() + 1);
-        itemUpgrade.setIntelligence(itemUpgrade.getIntelligence() + 1);
-        itemUpgrade.setVitality(itemUpgrade.getVitality() + 1);
-        itemUpgrade.setLuck(itemUpgrade.getLuck() + 1);
+        itemUpgrade.setStrength(itemUpgrade.getStrength() + 5);
+        itemUpgrade.setDexterity(itemUpgrade.getDexterity() + 5);
+        itemUpgrade.setIntelligence(itemUpgrade.getIntelligence() + 5);
+        itemUpgrade.setVitality(itemUpgrade.getVitality() + 5);
+        itemUpgrade.setLuck(itemUpgrade.getLuck() + 5);
         itemR.save(itemUpgrade);
         userR.save(user);
     }
