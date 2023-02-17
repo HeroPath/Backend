@@ -19,8 +19,6 @@ public class SvConfig {
     public static final int RSA_KEY_BITS = 2048;
     /////////////////////////// RSA ///////////////////////////
 
-
-
     /////////////////////////// BASIC STATICS ///////////////////////////
     public static final int EXPERIENCE_MULTIPLIER = 999999;
     public static final int GOLD_MULTIPLIER = 10;
