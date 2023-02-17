@@ -1,6 +1,7 @@
 package com.gianca1994.aowebbackend.resources.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gianca1994.aowebbackend.config.ItemQualityConfig;
 import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -74,7 +75,7 @@ public class Item {
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
-        this.quality = "white";
+        this.quality = ItemQualityConfig.getName(1);
         this.itemLevel = 1;
         this.strength = strength;
         this.dexterity = dexterity;
