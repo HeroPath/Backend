@@ -66,13 +66,14 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemBuyId));
-        if (!itemR.isUserIdNull(itemBuyId)) throw new Conflict("You can only buy items that come from the trader.");
+        validator.checkItemFromTrader(itemR.isUserIdNull(itemBuyId));
 
         User user = userR.getReferenceById(userId);
         Item itemBuy = itemR.getReferenceById(itemBuyId);
 
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
         validator.checkInventoryFull(user.getInventory().getItems().size());
+        user.setGold(user.getGold() - itemBuy.getPrice());
 
         Item newItemBuy = new Item(
                 itemBuy.getName(), itemBuy.getType(), itemBuy.getLvlMin(), itemBuy.getPrice() / 2, itemBuy.getClassRequired(),
@@ -81,7 +82,6 @@ public class ItemService {
         );
 
         user.getInventory().getItems().add(newItemBuy);
-        user.setGold(user.getGold() - itemBuy.getPrice());
         itemR.save(newItemBuy);
         userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
@@ -97,8 +97,9 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemSellId));
-        if (itemR.hasItem(userId, itemSellId))
-            throw new Conflict("You can only sell items that you have bought from the trader.");
+        validator.checkItemNotInPossession(itemR.isUserIdNull(itemSellId));
+        //if (!itemR.hasItem(userId, itemSellId))
+        //    throw new Conflict("You can only sell items that you have bought from the trader.");
 
         User user = userR.getReferenceById(userId);
         Item itemSell = itemR.getReferenceById(itemSellId);

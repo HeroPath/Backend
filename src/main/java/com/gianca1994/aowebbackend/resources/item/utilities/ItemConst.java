@@ -38,4 +38,6 @@ public class ItemConst {
     public static final String ITEM_NOT_EQUIPMENT = "Item not found in equipment";
     public static final String ITEM_NOT_FOR_CLASS = "The item does not correspond to your class";
     public static final String ITEM_LEVEL_REQ = "You can't equip an item that requires level ";
+    public static final String ITEM_NOT_FROM_TRADER = "You can only buy items that come from the trader.";
+    public static final String ITEM_NOT_IN_POSSESSION = "You can't sell an item you don't have in your possession.";
 }

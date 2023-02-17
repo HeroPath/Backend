@@ -151,4 +151,24 @@ public class ItemServiceValidator {
          */
         if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
     }
+
+    public void checkItemFromTrader(boolean itemFromTrader) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is from the trader.
+         * @param boolean itemFromTrader
+         * @return void
+         */
+        if (!itemFromTrader) throw new Conflict(ItemConst.ITEM_NOT_FROM_TRADER);
+    }
+
+    public void checkItemNotInPossession(boolean itemNotPossession) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is not in the possession of the user.
+         * @param boolean itemNotPossession
+         * @return void
+         */
+        if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
+    }
 }
