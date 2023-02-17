@@ -15,8 +15,6 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    Item findByName(String name);
-
     boolean existsById(@NonNull Long id);
     boolean existsByName(String name);
 
@@ -25,7 +23,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END FROM Item i WHERE i.id = :itemId AND i.user.id = :userId")
     boolean hasItem(@Param("itemId") Long itemId, @Param("userId") Long userId);
-
 
     @Query("SELECT i FROM Item i WHERE i.classRequired = :classRequired AND i.user IS NULL ORDER BY i.lvlMin ASC")
     List<Item> findByClassRequiredAndUserIsNullOrderByLvlMinAsc(@Param("classRequired") String classRequired);

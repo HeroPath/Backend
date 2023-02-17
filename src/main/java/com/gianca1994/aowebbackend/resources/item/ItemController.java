@@ -77,7 +77,7 @@ public class ItemController {
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
          * @param String token
-         * @param NameRequestDTO nameRequestDTO
+         * @param Long itemSellId
          * @return BuySellDTO
          */
         return itemS.sellItem(
@@ -94,7 +94,7 @@ public class ItemController {
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
          * @param String token
-         * @param EquipUnequipItemDTO equipUnequipItemDTO
+         * @param Long itemEquipId
          * @return EquipOrUnequipDTO
          */
         return itemS.equipItem(
@@ -111,7 +111,7 @@ public class ItemController {
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item from the user.
          * @param String token
-         * @Param EquipUnequipItemDTO equipUnequipItemDTO
+         * @Param Long itemUnequipId
          * @return EquipOrUnequipDTO
          */
         return itemS.unequipItem(
