@@ -1,17 +1,20 @@
 package com.gianca1994.aowebbackend.resources.item;
 
+import com.gianca1994.aowebbackend.config.ItemUpgradeConfig;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
+import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.aowebbackend.resources.user.User;
 import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author: Gianca1994
@@ -177,8 +180,11 @@ public class ItemService {
         validator.itemFound(itemR.existsById(itemId));
 
         User user = userR.getReferenceById(userId);
+        Item itemUpgrade = itemR.findById(itemId).get();
+        if (!itemUpgrade.getUser().equals(user)) throw new Conflict("Item not in inventory");
+        if (itemUpgrade.getItemLevel() >= SvConfig.MAX_ITEM_LEVEL) throw new Conflict("Item already at max level");
 
+        int diamondCostUpgrade = ItemUpgradeConfig.getCost(itemUpgrade.getItemLevel());
 
     }
-
 }
