@@ -43,6 +43,12 @@ public class Item {
     private String classRequired;
 
     @Column()
+    private String quality;
+
+    @Column()
+    private int itemLevel;
+
+    @Column()
     private int strength;
 
     @Column()
@@ -68,6 +74,8 @@ public class Item {
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
+        this.quality = "white";
+        this.itemLevel = 1;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
@@ -75,12 +83,15 @@ public class Item {
         this.luck = luck;
     }
 
-    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
+    public Item(String name, String type, int lvlMin, int price, String classRequired, String quality, int itemLevel,
+                int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
+        this.quality = quality;
+        this.itemLevel = itemLevel;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
