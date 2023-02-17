@@ -98,8 +98,6 @@ public class ItemService {
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemSellId));
         validator.checkItemNotInPossession(itemR.isUserIdNull(itemSellId));
-        //if (!itemR.hasItem(userId, itemSellId))
-        //    throw new Conflict("You can only sell items that you have bought from the trader.");
 
         User user = userR.getReferenceById(userId);
         Item itemSell = itemR.getReferenceById(itemSellId);
@@ -112,7 +110,7 @@ public class ItemService {
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public EquipOrUnequipDTO equipItem(Long userId, long itemId) throws Conflict {
+    public EquipOrUnequipDTO equipItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of equipping an item.
@@ -124,7 +122,7 @@ public class ItemService {
         validator.itemFound(itemR.existsById(itemId));
 
         User user = userR.getReferenceById(userId);
-        Item itemEquip = itemR.getReferenceById(itemId);
+        Item itemEquip = itemR.findById(itemId).get();
 
         validator.checkItemEquipIfPermitted(itemEquip.getType());
         validator.checkEquipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
@@ -144,7 +142,7 @@ public class ItemService {
         return new EquipOrUnequipDTO(user);
     }
 
-    public EquipOrUnequipDTO unequipItem(Long userId, long itemId) throws Conflict {
+    public EquipOrUnequipDTO unequipItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of unequipping an item.
@@ -156,7 +154,7 @@ public class ItemService {
         validator.itemFound(itemR.existsById(itemId));
 
         User user = userR.getReferenceById(userId);
-        Item itemUnequip = itemR.getReferenceById(itemId);
+        Item itemUnequip = itemR.findById(itemId).get();
 
         validator.checkInventoryFull(user.getInventory().getItems().size());
         validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
