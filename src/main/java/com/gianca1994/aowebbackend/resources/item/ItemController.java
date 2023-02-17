@@ -2,12 +2,10 @@ package com.gianca1994.aowebbackend.resources.item;
 
 
 import com.gianca1994.aowebbackend.exception.Conflict;
-import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
-import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
-import com.gianca1994.aowebbackend.resources.user.dto.request.NameRequestDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.EquipOrUnequipDTO;
+import com.gianca1994.aowebbackend.resources.jwt.config.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +52,7 @@ public class ItemController {
         itemS.saveItem(newItem);
     }
 
-    @PostMapping("/buy/{itemBuyId}")
+    @GetMapping("/buy/{itemBuyId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public BuySellDTO buyItem(@RequestHeader(value = "Authorization") String token,
                               @PathVariable Long itemBuyId) throws Conflict {
@@ -71,10 +69,10 @@ public class ItemController {
         );
     }
 
-    @PostMapping("/sell")
+    @GetMapping("/sell/{itemSellId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public BuySellDTO sellItem(@RequestHeader(value = "Authorization") String token,
-                               @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
+                               @PathVariable Long itemSellId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of selling an item.
@@ -83,15 +81,15 @@ public class ItemController {
          * @return BuySellDTO
          */
         return itemS.sellItem(
-                jwt.getUsernameFromToken(token.substring(7)),
-                nameRequestDTO.getName().toLowerCase()
+                jwt.getIdFromToken(token.substring(7)),
+                itemSellId
         );
     }
 
-    @PostMapping("/equip")
+    @GetMapping("/equip/{itemEquipId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public EquipOrUnequipDTO equipItem(@RequestHeader(value = "Authorization") String token,
-                                       @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+                                       @PathVariable Long itemEquipId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to equip an item to the user.
@@ -100,15 +98,15 @@ public class ItemController {
          * @return EquipOrUnequipDTO
          */
         return itemS.equipItem(
-                jwt.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO.getId()
+                jwt.getIdFromToken(token.substring(7)),
+                itemEquipId
         );
     }
 
-    @PostMapping("/unequip")
+    @GetMapping("/unequip/{itemUnequipId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public EquipOrUnequipDTO unequipItem(@RequestHeader(value = "Authorization") String token,
-                                         @RequestBody EquipUnequipItemDTO equipUnequipItemDTO) throws Conflict {
+                                         @PathVariable Long itemUnequipId) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method is used to unequip an item from the user.
@@ -117,8 +115,8 @@ public class ItemController {
          * @return EquipOrUnequipDTO
          */
         return itemS.unequipItem(
-                jwt.getUsernameFromToken(token.substring(7)),
-                equipUnequipItemDTO.getId()
+                jwt.getIdFromToken(token.substring(7)),
+                itemUnequipId
         );
     }
 }
