@@ -71,8 +71,9 @@ public class ItemService {
         User user = userR.getReferenceById(userId);
         Item itemBuy = itemR.getReferenceById(itemBuyId);
 
-        validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
         validator.checkInventoryFull(user.getInventory().getItems().size());
+        validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
+
         user.setGold(user.getGold() - itemBuy.getPrice());
 
         Item newItemBuy = new Item(
@@ -80,9 +81,9 @@ public class ItemService {
                 itemBuy.getQuality(), itemBuy.getItemLevel(), itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
                 itemBuy.getVitality(), itemBuy.getLuck(), user
         );
+        itemR.save(newItemBuy);
 
         user.getInventory().getItems().add(newItemBuy);
-        itemR.save(newItemBuy);
         userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
