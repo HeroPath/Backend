@@ -21,9 +21,6 @@ import java.util.Base64;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AES {
-    private String algorithm = "AES";
-    private String instance = "AES/ECB/PKCS5Padding";
-    private String key = SvConfig.AES_KEY_128BITS;
 
     public String encryptMsg(String message) throws Exception {
         /**
@@ -32,8 +29,8 @@ public class AES {
          * @param String message
          * @return String
          */
-        Cipher cipher = Cipher.getInstance(this.instance);
-        SecretKeySpec secretKey = new SecretKeySpec(this.key.getBytes(StandardCharsets.UTF_8), this.algorithm);
+        Cipher cipher = Cipher.getInstance(SvConfig.AES_INSTANCE);
+        SecretKeySpec secretKey = new SecretKeySpec(SvConfig.AES_KEY_128BITS.getBytes(StandardCharsets.UTF_8), SvConfig.AES_ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
         return Base64.getEncoder().encodeToString(encryptedBytes);
@@ -46,8 +43,8 @@ public class AES {
          * @param String encryptedMessage
          * @return String
          */
-        Cipher cipher = Cipher.getInstance(this.instance);
-        SecretKeySpec secretKey = new SecretKeySpec(this.key.getBytes(StandardCharsets.UTF_8), this.algorithm);
+        Cipher cipher = Cipher.getInstance(SvConfig.AES_INSTANCE);
+        SecretKeySpec secretKey = new SecretKeySpec(SvConfig.AES_KEY_128BITS.getBytes(StandardCharsets.UTF_8), SvConfig.AES_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
         return new String(decryptedBytes, StandardCharsets.UTF_8);

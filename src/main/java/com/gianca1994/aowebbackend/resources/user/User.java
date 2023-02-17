@@ -186,8 +186,8 @@ public class User {
         AES aes = new AES();
         Thread keyGeneratorThread = new Thread(() -> {
             try {
-                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-                keyPairGenerator.initialize(2048);
+                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(SvConfig.RSA_ALGORITHM);
+                keyPairGenerator.initialize(SvConfig.RSA_KEY_BITS);
                 KeyPair keyPair = keyPairGenerator.generateKeyPair();
                 RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
                 RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
@@ -195,13 +195,11 @@ public class User {
                 StringWriter stringWriter = new StringWriter();
                 PemWriter pemWriter = new PemWriter(stringWriter);
 
-                // Write public key
                 PemObject pemObject = new PemObject("PUBLIC KEY", publicKey.getEncoded());
                 pemWriter.writeObject(pemObject);
                 pemWriter.flush();
                 String publicKeyString = stringWriter.toString();
 
-                // Write private key
                 pemObject = new PemObject("PRIVATE KEY", privateKey.getEncoded());
                 stringWriter = new StringWriter();
                 pemWriter = new PemWriter(stringWriter);
@@ -209,7 +207,6 @@ public class User {
                 pemWriter.flush();
                 String privateKeyString = stringWriter.toString();
 
-                // Set public and private keys as class variables
                 this.rsaPublicKey = publicKeyString;
                 this.rsaPrivateKey = aes.encryptMsg(privateKeyString);
 

@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.mail.utilities;
 
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,8 +32,6 @@ import java.util.Base64;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RSA {
-    private String algorithm = "RSA";
-    private String instance = "RSA/ECB/PKCS1Padding";
     private String publicKey = "";
     private String privateKey = "";
 
@@ -57,8 +56,8 @@ public class RSA {
          */
         try {
             PemObject pemObject = pemGenerator(this.publicKey);
-            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance(this.algorithm).generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
-            Cipher cipher = Cipher.getInstance(this.instance);
+            RSAPublicKey publicKey = (RSAPublicKey) KeyFactory.getInstance(SvConfig.RSA_ALGORITHM).generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
+            Cipher cipher = Cipher.getInstance(SvConfig.RSA_INSTANCE);
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] encryptedBytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
             return Base64.getEncoder().encodeToString(encryptedBytes);
@@ -76,8 +75,8 @@ public class RSA {
          */
         try {
             PemObject pemObject = pemGenerator(this.privateKey);
-            RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance(this.algorithm).generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
-            Cipher cipher = Cipher.getInstance(this.instance);
+            RSAPrivateKey privateKey = (RSAPrivateKey) KeyFactory.getInstance(SvConfig.AES_ALGORITHM).generatePrivate(new PKCS8EncodedKeySpec(pemObject.getContent()));
+            Cipher cipher = Cipher.getInstance(SvConfig.RSA_INSTANCE);
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedMessage));
             return new String(decryptedBytes, StandardCharsets.UTF_8);

@@ -7,7 +7,18 @@ package com.gianca1994.aowebbackend.config;
 
 public class SvConfig {
 
+    /////////////////////////// AES ///////////////////////////
+    public static final String AES_ALGORITHM = "AES";
+    public static final String AES_INSTANCE = "AES/ECB/PKCS5Padding";
     public static final String AES_KEY_128BITS = "B043CF915C58E8F356E8A1EE63FF8626";
+    /////////////////////////// AES ///////////////////////////
+
+    /////////////////////////// RSA ///////////////////////////
+    public static final String RSA_ALGORITHM = "RSA";
+    public static final String RSA_INSTANCE = "RSA/ECB/PKCS1Padding";
+    public static final int RSA_KEY_BITS = 2048;
+
+
 
     /////////////////////////// BASIC STATICS ///////////////////////////
     public static final int EXPERIENCE_MULTIPLIER = 999999;
