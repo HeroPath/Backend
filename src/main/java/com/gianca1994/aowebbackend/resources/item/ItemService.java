@@ -150,7 +150,7 @@ public class ItemService {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of unequipping an item.
-         * @param String username
+         * @param long userId
          * @param long itemId
          * @return EquipOrUnequipDTO
          */
@@ -175,7 +175,11 @@ public class ItemService {
     @Transactional
     public void upgradeItem(Long userId, Long itemId) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of upgrading an item.
+         * @param long userId
+         * @param long itemId
+         * @return void
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
