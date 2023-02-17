@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.config.ItemUpgradeConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
@@ -13,6 +12,7 @@ import com.gianca1994.aowebbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -172,6 +172,7 @@ public class ItemService {
         return new EquipOrUnequipDTO(user);
     }
 
+    @Transactional
     public void upgradeItem(Long userId, Long itemId) throws Conflict {
         /**
          *
@@ -184,7 +185,21 @@ public class ItemService {
         if (!itemUpgrade.getUser().equals(user)) throw new Conflict("Item not in inventory");
         if (itemUpgrade.getItemLevel() >= SvConfig.MAX_ITEM_LEVEL) throw new Conflict("Item already at max level");
 
-        int diamondCostUpgrade = ItemUpgradeConfig.getCost(itemUpgrade.getItemLevel());
+        List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
+        int gemsNeeded = itemUpgrade.getItemLevel() + 1;
+        if (gemItems.size() < gemsNeeded) throw new Conflict("You don't have the required gem");
 
+        List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
+        user.getInventory().getItems().removeAll(itemsToRemove);
+        itemR.deleteAll(itemsToRemove);
+
+        itemUpgrade.setItemLevel(itemUpgrade.getItemLevel() + 1);
+        itemUpgrade.setStrength(itemUpgrade.getStrength() + 1);
+        itemUpgrade.setDexterity(itemUpgrade.getDexterity() + 1);
+        itemUpgrade.setIntelligence(itemUpgrade.getIntelligence() + 1);
+        itemUpgrade.setVitality(itemUpgrade.getVitality() + 1);
+        itemUpgrade.setLuck(itemUpgrade.getLuck() + 1);
+        itemR.save(itemUpgrade);
+        userR.save(user);
     }
 }

@@ -60,7 +60,7 @@ public class ItemServiceValidator {
         if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
             throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
-        if (!ItemConst.ENABLED_EQUIP.contains(newItem.getType()))
+        if (!ItemConst.ENABLED_ITEM_TYPE_SAVE.contains(newItem.getType()))
             throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
     }
 

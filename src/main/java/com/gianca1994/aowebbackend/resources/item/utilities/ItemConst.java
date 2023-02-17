@@ -10,6 +10,8 @@ import java.util.List;
 
 public class ItemConst {
     public static final String POTION_NAME = "potion";
+    public static final String GEM_ITEM_LVL_NAME = "progress gem";
+
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String ALREADY_EXISTS = "Item already exists";
@@ -18,16 +20,12 @@ public class ItemConst {
     public static final String LVL_NOT_LESS_0 = "LvlMin cannot be less than 0";
     public static final String PRICE_NOT_LESS_0 = "Price cannot be less than 0";
     public static final String STATS_NOT_LESS_0 = "Stats cannot be less than 0";
+    public static final List<String> ENABLED_ITEM_TYPE_SAVE = Arrays.asList(
+            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings",
+            "potion", "gem"
+    );
     public static final List<String> ENABLED_EQUIP = Arrays.asList(
-            "weapon",
-            "shield",
-            "helmet",
-            "armor",
-            "pants",
-            "gloves",
-            "boots",
-            "ship",
-            "wings",
+            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings",
             "potion"
     );
     public static final String ITEM_EQUIP_NOT_PERMITTED = "You can't equip this item";

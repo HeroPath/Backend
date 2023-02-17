@@ -119,4 +119,17 @@ public class ItemController {
                 itemUnequipId
         );
     }
+
+    @GetMapping("/upgrade/{itemUpgradeId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void upgradeItem(@RequestHeader(value = "Authorization") String token,
+                            @PathVariable Long itemUpgradeId) throws Conflict {
+        /**
+         *
+         */
+        itemS.upgradeItem(
+                jwt.getIdFromToken(token.substring(7)),
+                itemUpgradeId
+        );
+    }
 }
