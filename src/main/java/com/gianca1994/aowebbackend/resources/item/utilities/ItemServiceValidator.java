@@ -178,4 +178,13 @@ public class ItemServiceValidator {
          */
         if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
     }
+
+    public void checkItemLevelMax(int itemLevel) throws BadRequest {
+        /**
+         *
+         */
+        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadRequest(ItemConst.ITEM_ALREADY_MAX_LVL);
+    }
+
+
 }

@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.aowebbackend.resources.item.dto.response.BuySellDTO;
@@ -183,17 +182,24 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
+        if (itemR.existsByIdAndUserId(itemId, userId)) throw new Conflict("Item not in inventory");
+
+        int itemLevel = itemR.findItemLevelById(itemId);
+        validator.checkItemLevelMax(itemLevel);
+
+
+        List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
+        int gemsNeeded = itemLevel + 1;
+        if (gemItems.size() < gemsNeeded) throw new Conflict("You don't have the required gem");
+
 
         User user = userR.getReferenceById(userId);
         Item itemUpgrade = itemR.findById(itemId).get();
-        if (!itemUpgrade.getUser().equals(user)) throw new Conflict("Item not in inventory");
+
         if (!ItemConst.ENABLED_EQUIP.contains(itemUpgrade.getType()) && !itemUpgrade.getType().equals(ItemConst.POTION_NAME))
             throw new Conflict("Item not upgradable");
-        if (itemUpgrade.getItemLevel() >= SvConfig.MAX_ITEM_LEVEL) throw new Conflict("Item already at max level");
 
-        List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
-        int gemsNeeded = itemUpgrade.getItemLevel() + 1;
-        if (gemItems.size() < gemsNeeded) throw new Conflict("You don't have the required gem");
+
 
         List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
         user.getInventory().getItems().removeAll(itemsToRemove);

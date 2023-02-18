@@ -42,7 +42,7 @@ public class PveSystem {
                 npcHp = 0;
 
                 long currentExp = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
-                expGain = currentExp > Integer.MAX_VALUE ? Integer.MAX_VALUE - 100000 : (int) currentExp;
+                expGain = currentExp > Integer.MAX_VALUE ? Integer.MAX_VALUE - 999999 : (int) currentExp;
                 goldGain = (int) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
                 if (diamondLuck) diamondWin = pveFunctions.amountDiamondsDrop(user);
 

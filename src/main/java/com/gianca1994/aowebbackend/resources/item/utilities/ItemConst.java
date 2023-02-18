@@ -39,4 +39,5 @@ public class ItemConst {
     public static final String ITEM_NOT_FROM_TRADER = "You can only buy items that come from the trader.";
     public static final String ITEM_NOT_IN_POSSESSION = "You can't sell an item you don't have in your possession.";
     public static final String NOT_ENOUGH_ITEMS_TO_UPGRADE = "You don't have enough items to upgrade";
+    public static final String ITEM_ALREADY_MAX_LVL = "Item already at max level";
 }
