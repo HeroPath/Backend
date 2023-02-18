@@ -214,14 +214,13 @@ public class ItemServiceValidator {
         if (userGems < gemsNeeded) throw new Conflict(String.format(ItemConst.NOT_ENOUGH_GEMS, gemsNeeded));
     }
 
-    public void checkItemIsUpgradeable(String itemType) throws Conflict {
+    public void checkItemIsUpgradeable(boolean isUpgradeable) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method check if the item is upgradeable.
          * @param String itemType
          * @return void
          */
-        if (!ItemConst.ENABLED_EQUIP.contains(itemType) && !itemType.equals(ItemConst.POTION_NAME))
-            throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
+        if (!isUpgradeable) throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
     }
 }

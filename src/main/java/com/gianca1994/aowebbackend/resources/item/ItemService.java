@@ -183,6 +183,7 @@ public class ItemService {
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
         validator.checkItemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
+        validator.checkItemIsUpgradeable(itemR.isItemUpgradeable(itemId, ItemConst.ENABLED_EQUIP, ItemConst.POTION_NAME));
 
         int itemLevel = itemR.findItemLevelById(itemId);
         validator.checkItemLevelMax(itemLevel);
@@ -193,7 +194,6 @@ public class ItemService {
 
         User user = userR.getReferenceById(userId);
         Item itemUpgrade = itemR.findById(itemId).get();
-        validator.checkItemIsUpgradeable(itemUpgrade.getType());
 
         List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
         user.getInventory().getItems().removeAll(itemsToRemove);
