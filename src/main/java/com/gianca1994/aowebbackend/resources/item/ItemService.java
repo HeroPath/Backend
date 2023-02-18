@@ -189,27 +189,17 @@ public class ItemService {
 
         List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
         int gemsNeeded = itemLevel + 1;
-        if (gemItems.size() < gemsNeeded) throw new Conflict("You don't have the required gem");
-
+        validator.checkUserHaveAmountGem(gemItems.size(), gemsNeeded);
 
         User user = userR.getReferenceById(userId);
         Item itemUpgrade = itemR.findById(itemId).get();
-
-        if (!ItemConst.ENABLED_EQUIP.contains(itemUpgrade.getType()) && !itemUpgrade.getType().equals(ItemConst.POTION_NAME))
-            throw new Conflict("Item not upgradable");
-
-
+        validator.checkItemIsUpgradeable(itemUpgrade.getType());
 
         List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
         user.getInventory().getItems().removeAll(itemsToRemove);
         itemR.deleteAll(itemsToRemove);
 
-        itemUpgrade.setItemLevel(itemUpgrade.getItemLevel() + 1);
-        itemUpgrade.setStrength(itemUpgrade.getStrength() + 5);
-        itemUpgrade.setDexterity(itemUpgrade.getDexterity() + 5);
-        itemUpgrade.setIntelligence(itemUpgrade.getIntelligence() + 5);
-        itemUpgrade.setVitality(itemUpgrade.getVitality() + 5);
-        itemUpgrade.setLuck(itemUpgrade.getLuck() + 5);
+        itemUpgrade.itemUpgrade();
         itemR.save(itemUpgrade);
         userR.save(user);
     }

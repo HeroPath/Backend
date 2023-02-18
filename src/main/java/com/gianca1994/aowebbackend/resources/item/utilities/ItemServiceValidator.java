@@ -202,4 +202,26 @@ public class ItemServiceValidator {
          */
         if (!userHaveItem) throw new Conflict(ItemConst.USER_NOT_HAVE_ITEM);
     }
+
+    public void checkUserHaveAmountGem(int userGems, int gemsNeeded) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have enough gems to upgrade the item.
+         * @param int userGems
+         * @param int gemsNeeded
+         * @return void
+         */
+        if (userGems < gemsNeeded) throw new Conflict(ItemConst.NOT_ENOUGH_GEMS + gemsNeeded);
+    }
+
+    public void checkItemIsUpgradeable(String itemType) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is upgradeable.
+         * @param String itemType
+         * @return void
+         */
+        if (!ItemConst.ENABLED_EQUIP.contains(itemType) && !itemType.equals(ItemConst.POTION_NAME))
+            throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
+    }
 }

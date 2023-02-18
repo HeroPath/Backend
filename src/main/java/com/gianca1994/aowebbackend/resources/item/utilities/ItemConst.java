@@ -41,4 +41,6 @@ public class ItemConst {
     public static final String NOT_ENOUGH_ITEMS_TO_UPGRADE = "You don't have enough items to upgrade";
     public static final String ITEM_ALREADY_MAX_LVL = "Item already at max level";
     public static final String USER_NOT_HAVE_ITEM = "You don't have this item";
+    public static final String NOT_ENOUGH_GEMS = "You don't have enough gems, you need: %d gems to upgrade the item";
+    public static final String ITEM_NOT_UPGRADEABLE = "You can't upgrade this item";
 }

@@ -100,4 +100,13 @@ public class Item {
         this.luck = luck;
         this.user = user;
     }
+
+    public void itemUpgrade() {
+        this.itemLevel++;
+        this.strength += itemLevel;
+        this.dexterity += itemLevel;
+        this.intelligence += itemLevel;
+        this.vitality += itemLevel;
+        this.luck += itemLevel;
+    }
 }
