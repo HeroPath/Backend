@@ -134,7 +134,7 @@ public class ItemService {
         validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_NAME)) {
+        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_TYPE)) {
             user.setHp(user.getMaxHp());
             itemR.delete(itemEquip);
         } else {
@@ -183,7 +183,7 @@ public class ItemService {
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
         validator.checkItemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
-        validator.checkItemIsUpgradeable(itemR.isItemUpgradeable(itemId, ItemConst.ENABLED_EQUIP, ItemConst.POTION_NAME));
+        validator.checkItemIsUpgradeable(itemR.isItemUpgradeable(itemId, ItemConst.ENABLED_EQUIP, ItemConst.POTION_TYPE));
 
         int itemLevel = itemR.findItemLevelById(itemId);
         validator.checkItemLevelMax(itemLevel);

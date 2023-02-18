@@ -9,7 +9,8 @@ import java.util.List;
  */
 
 public class ItemConst {
-    public static final String POTION_NAME = "potion";
+    public static final String POTION_TYPE = "potion";
+    public static final String GEM_TYPE = "gem";
     public static final String GEM_ITEM_LVL_NAME = "progress gem";
 
     public static final String ITEM_NOT_FOUND = "Item not found";
