@@ -211,7 +211,7 @@ public class ItemServiceValidator {
          * @param int gemsNeeded
          * @return void
          */
-        if (userGems < gemsNeeded) throw new Conflict(ItemConst.NOT_ENOUGH_GEMS + gemsNeeded);
+        if (userGems < gemsNeeded) throw new Conflict(String.format(ItemConst.NOT_ENOUGH_GEMS, gemsNeeded));
     }
 
     public void checkItemIsUpgradeable(String itemType) throws Conflict {
