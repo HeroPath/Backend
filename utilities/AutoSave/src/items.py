@@ -3,6 +3,7 @@ from src import api_request
 
 
 def save_items(url, token):
+    print("Registered Items...")
     items = pd.read_excel("data/items.xlsx")
     itemsDataFrame = pd.DataFrame(items, columns=[
         "name", "type", "lvlMin", "classRequired", "price", "strength", "dexterity", "intelligence",
@@ -13,5 +14,3 @@ def save_items(url, token):
         if pd.isna(i["classRequired"]):
             i["classRequired"] = ""
         api_request.post(url=url, data=i, token=token)
-
-    print("Registered Items...")

@@ -7,11 +7,9 @@ package com.gianca1994.aowebbackend.config;
 
 public class SvConfig {
 
-    public static final String AES_KEY_128BITS = "B043CF915C58E8F356E8A1EE63FF8626";
-
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 999999;
-    public static final int GOLD_MULTIPLIER = 10;
+    public static final int EXPERIENCE_MULTIPLIER = 9999999;
+    public static final int GOLD_MULTIPLIER = 100;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
@@ -38,6 +36,7 @@ public class SvConfig {
 
     /////////////////////////// ITEM ///////////////////////////
     public static final int MAX_ITEMS_INVENTORY = 24;
+    public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 
     /////////////////////////// QUEST ///////////////////////////

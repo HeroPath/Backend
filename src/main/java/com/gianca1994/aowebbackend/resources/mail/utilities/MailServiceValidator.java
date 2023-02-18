@@ -48,4 +48,35 @@ public class MailServiceValidator {
          */
         if (message.isEmpty()) throw new Conflict(MailConst.MESSAGE_EMPTY);
     }
+
+    public void mailExist(boolean exist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the mail exists
+         * @param boolean exist
+         * @return void
+         */
+        if (!exist) throw new Conflict(MailConst.MAIL_NOT_FOUND);
+    }
+
+    public void userNotEqual(String username, String receiver) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user is equal to the receiver
+         * @param String username
+         * @param String receiver
+         * @return void
+         */
+        if (username.equals(receiver)) throw new Conflict(MailConst.USER_NOT_EQUAL);
+    }
+
+    public void userHaveMails(boolean exist) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method checks if the user has mails
+         * @param boolean exist
+         * @return void
+         */
+        if (!exist) throw new Conflict(MailConst.USER_NOT_HAVE_MAILS);
+    }
 }

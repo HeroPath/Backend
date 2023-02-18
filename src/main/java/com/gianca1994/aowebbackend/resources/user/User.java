@@ -9,9 +9,9 @@ import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
-import com.gianca1994.aowebbackend.resources.mail.Mail;
 import com.gianca1994.aowebbackend.resources.mail.utilities.AES;
 import com.gianca1994.aowebbackend.resources.title.Title;
+import com.gianca1994.aowebbackend.resources.user.userRelations.userMail.UserMail;
 import com.gianca1994.aowebbackend.resources.user.userRelations.userQuest.UserQuest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,15 +19,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bouncycastle.util.io.pem.PemObject;
 import org.bouncycastle.util.io.pem.PemWriter;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.security.*;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -77,18 +79,13 @@ public class User {
                     referencedColumnName = "id"))
     private Equipment equipment;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<UserQuest> userQuests;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_mails",
-            joinColumns = @JoinColumn(name = "user_id",
-                    referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "mail_id",
-                    referencedColumnName = "id"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnore
-    private Set<Mail> mail;
+    private Set<UserMail> userMails;
 
     @Column
     private String aClass;
@@ -198,13 +195,11 @@ public class User {
                 StringWriter stringWriter = new StringWriter();
                 PemWriter pemWriter = new PemWriter(stringWriter);
 
-                // Write public key
                 PemObject pemObject = new PemObject("PUBLIC KEY", publicKey.getEncoded());
                 pemWriter.writeObject(pemObject);
                 pemWriter.flush();
                 String publicKeyString = stringWriter.toString();
 
-                // Write private key
                 pemObject = new PemObject("PRIVATE KEY", privateKey.getEncoded());
                 stringWriter = new StringWriter();
                 pemWriter = new PemWriter(stringWriter);
@@ -212,7 +207,6 @@ public class User {
                 pemWriter.flush();
                 String privateKeyString = stringWriter.toString();
 
-                // Set public and private keys as class variables
                 this.rsaPublicKey = publicKeyString;
                 this.rsaPrivateKey = aes.encryptMsg(privateKeyString);
 

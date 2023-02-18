@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"lucho\",\r\n    \"password\": \"test\"\r\n}",
+							"raw": "{\r\n    \"username\": \"gianca\",\r\n    \"password\": \"test\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -210,7 +210,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQxMTQ4OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzMjUwODl9.A-vRRai018EBDlAvu01vjReynRdGsr9gQ428M_7MxFNkSVm5nXHcChOz9ay8SB9jlPgFSoZvuQ26K8n2XVePjw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3MTYzNTUsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjI5OTU1fQ.nK502GUV6E_EspSysdbzRLTC8QpYDz4eIixs1vYZnLfHlvrUe6pg8zgK0q7_wwkwNVmVDj9RECnaOZzpR9VMaw",
 									"type": "string"
 								}
 							]
@@ -599,7 +599,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxNDM2NDksImlhdCI6MTY1NzA3MTY0OX0.ezgOPzUaErEujuGLwf8quXf-kbQ0DSAG09DwPlu3zuN6eM1WljiTLvCHR0EY8cxgx8Gd0cQe5HoQFp8vsJx6GA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3MTYzNTUsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjI5OTU1fQ.nK502GUV6E_EspSysdbzRLTC8QpYDz4eIixs1vYZnLfHlvrUe6pg8zgK0q7_wwkwNVmVDj9RECnaOZzpR9VMaw",
 									"type": "string"
 								}
 							]
@@ -631,24 +631,15 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTcxNDM2NDksImlhdCI6MTY1NzA3MTY0OX0.ezgOPzUaErEujuGLwf8quXf-kbQ0DSAG09DwPlu3zuN6eM1WljiTLvCHR0EY8cxgx8Gd0cQe5HoQFp8vsJx6GA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3MTYzNTUsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjI5OTU1fQ.nK502GUV6E_EspSysdbzRLTC8QpYDz4eIixs1vYZnLfHlvrUe6pg8zgK0q7_wwkwNVmVDj9RECnaOZzpR9VMaw",
 									"type": "string"
 								}
 							]
 						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"demon wings\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://{{local}}/api/v1/users/buyitem",
+							"raw": "http://{{local}}/api/v1/items/buy/52",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -656,8 +647,9 @@
 							"path": [
 								"api",
 								"v1",
-								"users",
-								"buyitem"
+								"items",
+								"buy",
+								"52"
 							]
 						}
 					},
@@ -666,8 +658,64 @@
 				{
 					"name": "Sell Item",
 					"request": {
-						"method": "POST",
-						"header": []
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3MTYzNTUsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjI5OTU1fQ.nK502GUV6E_EspSysdbzRLTC8QpYDz4eIixs1vYZnLfHlvrUe6pg8zgK0q7_wwkwNVmVDj9RECnaOZzpR9VMaw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/items/sell/10",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"sell",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upgrade Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3NTM2NDYsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjY3MjQ2fQ.ZO8bNhYjr2N8QJ5M9OevhdEGMEQU6fSaUS4orCYy-GmlvLCdu4P0fXa8AhHEmjIU5n4uetNtOsGYbhw8HvUdZQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/items/upgrade/54",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"items",
+								"upgrade",
+								"54"
+							]
+						}
 					},
 					"response": []
 				}
@@ -1139,7 +1187,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY0MTE0NTcsInVzZXJJZCI6MSwiaWF0IjoxNjc2MzI1MDU3fQ.b0Dq1l8Pjjrmn3pkti_rtHIdYRBEoEYzuv7orfz3IGbmTFIHl38MrpSmH196rReH2a5ivBdXZf3aKSsKut-HGQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQ3ODA2OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzOTE2Njl9._ThnPQ5WDRqB1auORXy1VnqIW9zDSJ31Y-V0-soMBicN64utPy73-6gD7C-wCunJaASROpdqWyRNOLpkHMWIfw",
 									"type": "string"
 								}
 							]
@@ -1148,7 +1196,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"receiver\": \"lucho\",\r\n    \"subject\": \"test\",\r\n    \"message\": \"hola\"\r\n}",
+							"raw": "{\r\n    \"receiver\": \"gianca\",\r\n    \"subject\": \"saludo\",\r\n    \"message\": \"hola gianca, soy lucho\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1179,12 +1227,73 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3NjQxMTQ4OSwidXNlcklkIjoyLCJpYXQiOjE2NzYzMjUwODl9.A-vRRai018EBDlAvu01vjReynRdGsr9gQ428M_7MxFNkSVm5nXHcChOz9ay8SB9jlPgFSoZvuQ26K8n2XVePjw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NTg2MDEsInVzZXJJZCI6MywiaWF0IjoxNjc2NDcyMjAxfQ.axe_Cs339FNl5KDqVQm_i9jjV04M8IcpEAV_7YSzGbXjI6Zq4IPw5r-CPNz_tEj-9ojLq5Fp9ylk8SE_GYAKcQ",
 									"type": "string"
 								}
 							]
 						},
 						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Mail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NjA5NzIsInVzZXJJZCI6MSwiaWF0IjoxNjc2NDc0NTcyfQ.eE9UDjhX6s4PEf_03hETgzZb2ywvkwgPTbioISdFZ2uYbIZGyGFoC3rXhxnIZMpSpx9246X6nSQNquDMlXQ80Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/mails/1",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mails",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete All Mails",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY1NjQ2MzMsInVzZXJJZCI6MywiaWF0IjoxNjc2NDc4MjMzfQ.o45uz47k7sxKN1DKcDFjo9NbUVPNistt_JsiRUYkruz6S3v5yyNS-etLlr4gyy0m9h-XFyndAu_KJkatQ-I4DQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "http://{{local}}/api/v1/mails",

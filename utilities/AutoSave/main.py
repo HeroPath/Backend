@@ -3,6 +3,7 @@ from src.users import register, login
 from src.items import save_items
 from src.npcs import save_npcs
 from src.quests import save_quests
+from time import sleep
 
 address_port = "localhost:8000"
 
@@ -15,6 +16,7 @@ url_quests = f"http://{address_port}/api/v1/quests"
 
 def main():
     register(url_register, url_login)
+    sleep(3)
     token = login(url_login)
 
     processes = [

@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.resources.item.dto.request.EquipUnequipItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

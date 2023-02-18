@@ -3,6 +3,7 @@ from src import api_request
 
 
 def save_npcs(url, token):
+    print("Registered Npcs...")
     npcs = pd.read_excel("data/npcs.xlsx")
     npcsDataFrame = pd.DataFrame(npcs, columns=[
         "name", "level", "giveMaxExp", "giveMinExp", "giveMaxGold", "giveMinGold",
@@ -10,5 +11,3 @@ def save_npcs(url, token):
     ])
     for i in npcsDataFrame.to_dict('records'):
         api_request.post(url=url, data=i, token=token)
-
-    print("Registered Npcs...")
