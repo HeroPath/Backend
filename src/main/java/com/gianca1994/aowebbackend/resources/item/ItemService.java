@@ -182,11 +182,10 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
-        if (itemR.existsByIdAndUserId(itemId, userId)) throw new Conflict("Item not in inventory");
+        validator.checkItemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
 
         int itemLevel = itemR.findItemLevelById(itemId);
         validator.checkItemLevelMax(itemLevel);
-
 
         List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
         int gemsNeeded = itemLevel + 1;

@@ -174,17 +174,32 @@ public class ItemServiceValidator {
 
     public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have enough items to upgrade the item.
+         * @param int upgradeAmount
+         * @param int requirementAmount
+         * @return void
          */
         if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
     }
 
     public void checkItemLevelMax(int itemLevel) throws BadRequest {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is already at the max level.
+         * @param int itemLevel
+         * @return void
          */
         if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadRequest(ItemConst.ITEM_ALREADY_MAX_LVL);
     }
 
-
+    public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have the item to upgrade.
+         * @param boolean userHaveItem
+         * @return void
+         */
+        if (!userHaveItem) throw new Conflict(ItemConst.USER_NOT_HAVE_ITEM);
+    }
 }
