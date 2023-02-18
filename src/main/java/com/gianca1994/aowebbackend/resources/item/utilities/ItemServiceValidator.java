@@ -60,7 +60,7 @@ public class ItemServiceValidator {
         if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
             throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
-        if (!ItemConst.ENABLED_EQUIP.contains(newItem.getType()))
+        if (!ItemConst.ENABLED_ITEM_TYPE_SAVE.contains(newItem.getType()))
             throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
     }
 
@@ -150,5 +150,77 @@ public class ItemServiceValidator {
          * @return void
          */
         if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
+    }
+
+    public void checkItemFromTrader(boolean itemFromTrader) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is from the trader.
+         * @param boolean itemFromTrader
+         * @return void
+         */
+        if (!itemFromTrader) throw new Conflict(ItemConst.ITEM_NOT_FROM_TRADER);
+    }
+
+    public void checkItemNotInPossession(boolean itemNotPossession) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is not in the possession of the user.
+         * @param boolean itemNotPossession
+         * @return void
+         */
+        if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
+    }
+
+    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have enough items to upgrade the item.
+         * @param int upgradeAmount
+         * @param int requirementAmount
+         * @return void
+         */
+        if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
+    }
+
+    public void checkItemLevelMax(int itemLevel) throws BadRequest {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is already at the max level.
+         * @param int itemLevel
+         * @return void
+         */
+        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadRequest(ItemConst.ITEM_ALREADY_MAX_LVL);
+    }
+
+    public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have the item to upgrade.
+         * @param boolean userHaveItem
+         * @return void
+         */
+        if (!userHaveItem) throw new Conflict(ItemConst.USER_NOT_HAVE_ITEM);
+    }
+
+    public void checkUserHaveAmountGem(int userGems, int gemsNeeded) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the user have enough gems to upgrade the item.
+         * @param int userGems
+         * @param int gemsNeeded
+         * @return void
+         */
+        if (userGems < gemsNeeded) throw new Conflict(String.format(ItemConst.NOT_ENOUGH_GEMS, gemsNeeded));
+    }
+
+    public void checkItemIsUpgradeable(boolean isUpgradeable) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is upgradeable.
+         * @param String itemType
+         * @return void
+         */
+        if (!isUpgradeable) throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
     }
 }

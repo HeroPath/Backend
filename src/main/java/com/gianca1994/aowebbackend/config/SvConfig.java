@@ -7,21 +7,9 @@ package com.gianca1994.aowebbackend.config;
 
 public class SvConfig {
 
-    /////////////////////////// AES ///////////////////////////
-    public static final String AES_ALGORITHM = "AES";
-    public static final String AES_INSTANCE = "AES/ECB/PKCS5Padding";
-    public static final String AES_KEY_128BITS = "B043CF915C58E8F356E8A1EE63FF8626";
-    /////////////////////////// AES ///////////////////////////
-
-    /////////////////////////// RSA ///////////////////////////
-    public static final String RSA_ALGORITHM = "RSA";
-    public static final String RSA_INSTANCE = "RSA/ECB/PKCS1Padding";
-    public static final int RSA_KEY_BITS = 2048;
-    /////////////////////////// RSA ///////////////////////////
-
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 999999;
-    public static final int GOLD_MULTIPLIER = 10;
+    public static final int EXPERIENCE_MULTIPLIER = 9999999;
+    public static final int GOLD_MULTIPLIER = 100;
     public static final short LEVEL_MAX = 300;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
@@ -48,6 +36,7 @@ public class SvConfig {
 
     /////////////////////////// ITEM ///////////////////////////
     public static final int MAX_ITEMS_INVENTORY = 24;
+    public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 
     /////////////////////////// QUEST ///////////////////////////
