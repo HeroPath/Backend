@@ -129,13 +129,14 @@ public class ItemService {
         validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        if (!itemEquip.getType().equals(ItemConst.POTION_TYPE)){
+        boolean isPotion = itemEquip.getType().equals(ItemConst.POTION_TYPE);
+
+        if (!isPotion) {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
         } else user.setHp(user.getMaxHp());
-
         userR.save(user);
-        itemR.delete(itemEquip);
+        if (isPotion) itemR.delete(itemEquip);
         return new EquipOrUnequipDTO(user);
     }
 

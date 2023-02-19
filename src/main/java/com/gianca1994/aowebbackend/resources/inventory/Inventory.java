@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -36,6 +36,6 @@ public class Inventory {
             joinColumns = {@JoinColumn(name = "inventory_id")},
             inverseJoinColumns = {@JoinColumn(name = "items_id")}
     )
-    private List<Item> items = new ArrayList<>();
+    private Set<Item> items = new HashSet<>();
 
 }

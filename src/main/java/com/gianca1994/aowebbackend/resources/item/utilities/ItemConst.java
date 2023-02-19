@@ -26,7 +26,7 @@ public class ItemConst {
             "potion", "gem"
     );
     public static final List<String> ENABLED_EQUIP = Arrays.asList(
-            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings"
+            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion"
     );
     public static final String ITEM_EQUIP_NOT_PERMITTED = "You can't equip this item";
     public static final String CANT_EQUIP_MORE_ITEM = "You can't equip two items of the same type";

@@ -7,7 +7,6 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -85,7 +84,7 @@ public class ItemServiceValidator {
         if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 
-    public void inventoryContainsItem(List<Item> userInventory, Item item) throws Conflict {
+    public void inventoryContainsItem(Set<Item> userInventory, Item item) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method check if the user inventory contains the item.
