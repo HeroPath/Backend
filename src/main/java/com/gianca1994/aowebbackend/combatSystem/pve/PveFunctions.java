@@ -25,14 +25,14 @@ public class PveFunctions {
         return userDefense >= npcDmg ? 0 : npcDmg - userDefense;
     }
 
-    public int CalculateUserExperienceGain(Npc npc) {
+    public long CalculateUserExperienceGain(Npc npc) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of calculating the experience gain.
          * @param Npc npc
          * @return long
          */
-        return (int) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp()) * SvConfig.EXPERIENCE_MULTIPLIER);
+        return (long) (Math.floor(Math.random() * (npc.getGiveMaxExp() - npc.getGiveMinExp() + 1) + npc.getGiveMinExp()) * SvConfig.EXPERIENCE_MULTIPLIER);
     }
 
     public boolean checkIfNpcDied(int npcHp) {
@@ -105,7 +105,7 @@ public class PveFunctions {
         }
     }
 
-    public void updateExpAndGold(User user, int experienceGain, long goldGain) {
+    public void updateExpAndGold(User user, long experienceGain, long goldGain) {
         /**
          * @Author: Gianca1994
          * Explanation: This function is in charge of updating the experience, gold and npcs killed.

@@ -92,9 +92,9 @@ public class User {
     @Column
     private short level;
     @Column
-    private int experience;
+    private Long experience;
     @Column
-    private int experienceToNextLevel;
+    private Long experienceToNextLevel;
     @Column
     private long gold;
     @Column
@@ -317,8 +317,8 @@ public class User {
             } else levelUp = false;
         } while (levelUp);
         if (this.level >= SvConfig.LEVEL_MAX) {
-            this.experience = 0;
-            this.experienceToNextLevel = 0;
+            this.experience = 0L;
+            this.experienceToNextLevel = 0L;
         }
         return userLevelUp;
     }

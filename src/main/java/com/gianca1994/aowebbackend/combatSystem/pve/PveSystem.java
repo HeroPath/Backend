@@ -28,8 +28,9 @@ public class PveSystem {
          * @return PveModel
          */
         CombatModel pveModel = new CombatModel(new ArrayList<>(), user, npc);
-        int roundCount = 0, diamondWin = 0, expGain = 0, goldGain = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userDef = user.getDefense(), npcDef = npc.getDefense();
+        int roundCount = 0, diamondWin = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userDef = user.getDefense(), npcDef = npc.getDefense();
         boolean lvlUp = false, stopPve = false, diamondLuck = pveFunctions.chanceDropDiamonds();
+        long expGain = 0, goldGain = 0;
 
         while (!stopPve) {
             roundCount++;
@@ -41,9 +42,8 @@ public class PveSystem {
                 npcDmg = 0;
                 npcHp = 0;
 
-                long currentExp = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
-                expGain = currentExp > Integer.MAX_VALUE ? Integer.MAX_VALUE - 999999 : (int) currentExp;
-                goldGain = (int) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
+                expGain = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
+                goldGain = (long) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
                 if (diamondLuck) diamondWin = pveFunctions.amountDiamondsDrop(user);
 
                 pveFunctions.updateExpAndGold(user, expGain, goldGain);
