@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @Author: Gianca1994
@@ -69,13 +68,11 @@ public class ItemService {
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemBuyId));
         validator.checkItemFromTrader(itemR.isUserIdNull(itemBuyId));
-
-        User user = userR.getReferenceById(userId);
-        Item itemBuy = itemR.getReferenceById(itemBuyId);
+        User user = userR.findById(userId).get();
+        Item itemBuy = itemR.findById(itemBuyId).get();
 
         validator.checkInventoryFull(user.getInventory().getItems().size());
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
-
         user.setGold(user.getGold() - itemBuy.getPrice());
 
         Item newItemBuy = new Item(
@@ -83,9 +80,8 @@ public class ItemService {
                 itemBuy.getQuality(), itemBuy.getItemLevel(), itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
                 itemBuy.getVitality(), itemBuy.getLuck(), user
         );
-        itemR.save(newItemBuy);
-
         user.getInventory().getItems().add(newItemBuy);
+        itemR.save(newItemBuy);
         userR.save(user);
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
@@ -102,8 +98,8 @@ public class ItemService {
         validator.itemFound(itemR.existsById(itemSellId));
         validator.checkItemNotInPossession(itemR.isUserIdNull(itemSellId));
 
-        User user = userR.getReferenceById(userId);
-        Item itemSell = itemR.getReferenceById(itemSellId);
+        User user = userR.findById(userId).get();
+        Item itemSell = itemR.findById(itemSellId).get();
         validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice()));
@@ -123,8 +119,7 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
-
-        User user = userR.getReferenceById(userId);
+        User user = userR.findById(userId).get();
         Item itemEquip = itemR.findById(itemId).get();
 
         validator.checkItemEquipIfPermitted(itemEquip.getType());
@@ -134,14 +129,15 @@ public class ItemService {
         validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        if (Objects.equals(itemEquip.getType(), ItemConst.POTION_TYPE)) {
-            user.setHp(user.getMaxHp());
-            itemR.delete(itemEquip);
-        } else {
+        boolean isPotion = itemEquip.getType().equals(ItemConst.POTION_TYPE);
+
+        if (!isPotion) {
             user.getEquipment().getItems().add(itemEquip);
             user.swapItemToEquipmentOrInventory(itemEquip, true);
-        }
+        } else user.setHp(user.getMaxHp());
+
         userR.save(user);
+        if (isPotion) itemR.delete(itemEquip);
         return new EquipOrUnequipDTO(user);
     }
 
@@ -155,8 +151,7 @@ public class ItemService {
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
-
-        User user = userR.getReferenceById(userId);
+        User user = userR.findById(userId).get();
         Item itemUnequip = itemR.findById(itemId).get();
 
         validator.checkInventoryFull(user.getInventory().getItems().size());
@@ -167,7 +162,6 @@ public class ItemService {
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userR.save(user);
-
         return new EquipOrUnequipDTO(user);
     }
 
@@ -192,7 +186,7 @@ public class ItemService {
         int gemsNeeded = itemLevel + 1;
         validator.checkUserHaveAmountGem(gemItems.size(), gemsNeeded);
 
-        User user = userR.getReferenceById(userId);
+        User user = userR.findById(userId).get();
         Item itemUpgrade = itemR.findById(itemId).get();
 
         List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
