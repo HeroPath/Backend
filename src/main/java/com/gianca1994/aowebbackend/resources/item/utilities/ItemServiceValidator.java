@@ -223,4 +223,14 @@ public class ItemServiceValidator {
          */
         if (!isUpgradeable) throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
     }
+
+    public void checkItemIsNotPotionType(boolean isPotion) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method check if the item is not a potion.
+         * @param boolean isPotion
+         * @return void
+         */
+        if (!isPotion) throw new Conflict(ItemConst.ITEM_NOT_POTION);
+    }
 }

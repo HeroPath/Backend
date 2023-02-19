@@ -129,15 +129,9 @@ public class ItemService {
         validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        boolean isPotion = itemEquip.getType().equals(ItemConst.POTION_TYPE);
-
-        if (!isPotion) {
-            user.getEquipment().getItems().add(itemEquip);
-            user.swapItemToEquipmentOrInventory(itemEquip, true);
-        } else user.setHp(user.getMaxHp());
-
+        user.getEquipment().getItems().add(itemEquip);
+        user.swapItemToEquipmentOrInventory(itemEquip, true);
         userR.save(user);
-        if (isPotion) itemR.delete(itemEquip);
         return new EquipOrUnequipDTO(user);
     }
 
@@ -162,6 +156,27 @@ public class ItemService {
         user.swapItemToEquipmentOrInventory(itemUnequip, false);
         if (user.getHp() > user.getMaxHp()) user.setHp(user.getMaxHp());
         userR.save(user);
+        return new EquipOrUnequipDTO(user);
+    }
+
+    @Transactional
+    public EquipOrUnequipDTO usePotion(Long userId, Long itemId) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This function is in charge of using a potion.
+         * @param long userId
+         * @param long itemId
+         * @return void
+         */
+        validator.userFound(userR.existsById(userId));
+        validator.itemFound(itemR.existsById(itemId));
+        validator.checkItemIsNotPotionType(itemR.isPotionItem(itemId));
+        Item potion = itemR.findById(itemId).get();
+        User user = userR.findById(userId).get();
+
+        user.getInventory().getItems().remove(potion);
+        userR.save(user);
+        itemR.delete(potion);
         return new EquipOrUnequipDTO(user);
     }
 

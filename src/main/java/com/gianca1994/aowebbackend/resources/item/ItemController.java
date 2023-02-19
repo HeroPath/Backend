@@ -120,12 +120,33 @@ public class ItemController {
         );
     }
 
+    @GetMapping("/use/{potionId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public EquipOrUnequipDTO usePotion(@RequestHeader(value = "Authorization") String token,
+                                       @PathVariable Long potionId) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * Explanation: This method is used to use a potion.
+         * @param String token
+         * @Param Long potionId
+         * @return EquipOrUnequipDTO
+         */
+        return itemS.usePotion(
+                jwt.getIdFromToken(token.substring(7)),
+                potionId
+        );
+    }
+
     @GetMapping("/upgrade/{itemUpgradeId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void upgradeItem(@RequestHeader(value = "Authorization") String token,
                             @PathVariable Long itemUpgradeId) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to upgrade an item.
+         * @param String token
+         * @Param Long itemUpgradeId
+         * @return void
          */
         itemS.upgradeItem(
                 jwt.getIdFromToken(token.substring(7)),
