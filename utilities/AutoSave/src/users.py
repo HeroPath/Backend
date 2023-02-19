@@ -4,16 +4,10 @@ from multiprocessing import Process
 
 users = [
     {
-        "username": "gianca",
+        "username": "admin",
         "password": "test",
-        "email": "gianca@gmail.com",
+        "email": "admin@gmail.com",
         "className": "mage"
-    },
-    {
-        "username": "lucho",
-        "password": "test",
-        "email": "lucho@gmail.com",
-        "className": "archer"
     },
     {
         "username": "test",

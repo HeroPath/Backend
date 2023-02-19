@@ -107,7 +107,7 @@ public class AuthService implements UserDetailsService {
         User newUser = new User(userJwt);
         newUser.calculateStats(true);
 
-        if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho") || user.getUsername().equals("renzo")) newUser.setRole("ADMIN");
+        if (user.getUsername().equals("admin")) newUser.setRole("ADMIN");
 
         Thread saveThread = new Thread(() -> {
             TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
