@@ -1,12 +1,7 @@
 package com.gianca1994.aowebbackend.resources.user;
 
-import com.gianca1994.aowebbackend.config.ModifConfig;
-import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
-import com.gianca1994.aowebbackend.resources.item.Item;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.title.Title;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

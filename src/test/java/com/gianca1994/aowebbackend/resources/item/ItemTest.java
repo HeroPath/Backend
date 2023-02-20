@@ -33,13 +33,13 @@ class ItemTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Item item = new Item(1L,"Test", "Test", 1, "Test", 1, 1, 1, 1, 1, 1);
+        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null);
         assertThat(item).isNotNull();
     }
 
     @Test
     public void constructorAllArgsWithoutIdTest() {
-        Item item = new Item("Test", "Test", 1, "Test", 1, 1, 1, 1, 1, 1);
+        Item item = new Item("Test", "Test", 1, 1, "Test", 1, 1, 1, 1, 1);
         assertThat(item).isNotNull();
     }
 
@@ -100,7 +100,7 @@ class ItemTest {
 
     @Test
     public void givenItem_whenEquals_thenReturnFalse() {
-        Item item = new Item(1L,"Test", "Test", 1, "Test", 1, 1, 1, 1, 1, 1);
+        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null);
         assertThat(itemTest.equals(item)).isFalse();
     }
 }

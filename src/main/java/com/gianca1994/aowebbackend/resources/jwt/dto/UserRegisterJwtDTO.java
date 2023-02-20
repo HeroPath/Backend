@@ -32,12 +32,4 @@ public class UserRegisterJwtDTO {
         this.email = email.toLowerCase();
         this.aClass = ModifConfig.CLASSES.stream().filter(c -> c.getName().equalsIgnoreCase(className)).findFirst().orElse(null);
     }
-
-    public void setAClassAttributes() {
-        this.strength = this.aClass.getStrength();
-        this.dexterity = this.aClass.getDexterity();
-        this.intelligence = this.aClass.getIntelligence();
-        this.vitality = this.aClass.getVitality();
-        this.luck = this.aClass.getLuck();
-    }
 }

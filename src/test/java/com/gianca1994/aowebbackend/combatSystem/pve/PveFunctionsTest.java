@@ -5,6 +5,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.classes.Class;
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.role.Role;
 import com.gianca1994.aowebbackend.resources.title.Title;
@@ -30,11 +31,7 @@ class PveFunctionsTest {
             "test"
     );
     private User userTest = new User(
-            "testusername", "testpassword", "testusername@test.com",
-            new Inventory(),
-            new Equipment(),
-            "mage",
-            1, 1, 1, 1, 1
+            new UserRegisterJwtDTO(
     );
 
     private final PveFunctions pveFunctionsTest = new PveFunctions();
