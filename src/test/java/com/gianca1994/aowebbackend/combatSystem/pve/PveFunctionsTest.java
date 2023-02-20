@@ -1,17 +1,10 @@
 package com.gianca1994.aowebbackend.combatSystem.pve;
 
-import com.gianca1994.aowebbackend.config.ModifConfig;
 import com.gianca1994.aowebbackend.config.SvConfig;
-import com.gianca1994.aowebbackend.resources.classes.Class;
-import com.gianca1994.aowebbackend.resources.equipment.Equipment;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
 import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.npc.Npc;
-import com.gianca1994.aowebbackend.resources.role.Role;
-import com.gianca1994.aowebbackend.resources.title.Title;
 import com.gianca1994.aowebbackend.resources.user.User;
 import org.junit.jupiter.api.Test;
-
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -30,9 +23,9 @@ class PveFunctionsTest {
             1,
             "test"
     );
-    private User userTest = new User(
-            new UserRegisterJwtDTO(
-    );
+    private User userTest = new User(new UserRegisterJwtDTO(
+            "testusername", "testpassword", "testusername@test.com", "mage"
+    ));
 
     private final PveFunctions pveFunctionsTest = new PveFunctions();
 

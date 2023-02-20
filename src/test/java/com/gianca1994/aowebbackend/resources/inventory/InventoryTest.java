@@ -3,7 +3,6 @@ package com.gianca1994.aowebbackend.resources.inventory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -38,7 +37,7 @@ class InventoryTest {
 
     @Test
     public void givenInventory_whenGetItems_thenReturnItems() {
-        assertThat(inventoryTest.getItems()).isEqualTo(new ArrayList<>());
+        assertThat(inventoryTest.getItems()).isEqualTo(new HashSet<>());
     }
 
     @Test

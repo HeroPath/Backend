@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.user;
 
 import com.gianca1994.aowebbackend.resources.equipment.Equipment;
 import com.gianca1994.aowebbackend.resources.inventory.Inventory;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +25,8 @@ class UserTest {
         user.setInventory(new Inventory());
         user.setEquipment(new Equipment());
         user.setLevel((short) 1);
-        user.setExperience(0);
-        user.setExperienceToNextLevel(100);
+        user.setExperience(0L);
+        user.setExperienceToNextLevel(100L);
         user.setGold(0);
         user.setDiamond(0);
         user.setMaxDmg(0);
@@ -56,19 +57,9 @@ class UserTest {
 
     @Test
     void constructorNotAllArgsTest() {
-        User user = new User(
-                "test",
-                "test",
-                "test@test.com",
-                new Inventory(),
-                new Equipment(),
-                "test",
-                0,
-                0,
-                0,
-                0,
-                0
-        );
+        User user = new User(new UserRegisterJwtDTO(
+                "testusername", "testpassword", "testemail", "mage"
+        ));
         assertNotNull(user);
     }
 
