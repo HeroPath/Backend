@@ -59,7 +59,7 @@ public class GenericFunctions {
          * @param int dmg
          * @return int
          */
-        if (user.getRole().equals("ADMIN")) dmg = 0;
+        if (user.getRole().equals(SvConfig.ADMIN_ROLE)) dmg = 0;
         return userHp - dmg;
     }
 
@@ -116,17 +116,13 @@ public class GenericFunctions {
             finalRound.put("Win", defenderName);
             finalRound.put("Lose", attackerName);
         }
-        // If PVP Combat
         if (mmrWinAndLose > 0) finalRound.put("TitlePtsLose", mmrWinAndLose);
         if (goldAmountWin > 0) finalRound.put("GoldWin", goldAmountWin);
         if (goldLoseCombat > 0) finalRound.put("GoldLose", goldLoseCombat);
-
-        // If PVE Combat
         if (experienceGain > 0) finalRound.put("ExperienceWin", experienceGain);
         if (goldGain > 0) finalRound.put("GoldWin", goldGain);
         if (diamondsGain > 0) finalRound.put("DiamondsWin", diamondsGain);
         if (levelUp) finalRound.put("LevelUP", true);
-
         return finalRound;
     }
 
