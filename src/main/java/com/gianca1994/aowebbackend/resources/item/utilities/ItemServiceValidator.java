@@ -55,7 +55,7 @@ public class ItemServiceValidator {
          */
         if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
         if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
-        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
+        if (newItem.getLvlMin() < 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
         if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
             throw new BadRequest(ItemConst.STATS_NOT_LESS_0);

@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.config.ItemUpgradeConfig;
+import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -75,8 +76,8 @@ public class Item {
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
-        this.quality = ItemUpgradeConfig.getName(1);
-        this.itemLevel = 1;
+        this.quality = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? ItemUpgradeConfig.getName(1) : "";
+        this.itemLevel = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? 1 : 0;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;

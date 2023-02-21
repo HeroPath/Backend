@@ -12,6 +12,9 @@ public class ItemConst {
     public static final String POTION_TYPE = "potion";
     public static final String GEM_TYPE = "gem";
     public static final String GEM_ITEM_LVL_NAME = "progress gem";
+    public static final List<String> ITEM_NOT_LEVEL_AND_QUALITY = Arrays.asList(
+            "potion", "gem"
+    );
 
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";
