@@ -105,7 +105,7 @@ public class UserServiceValidator {
          * @param User defender
          * @return void
          */
-        if (defender.getRole().equals("ADMIN")) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
+        if (defender.getRole().equals(SvConfig.ADMIN_ROLE)) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
     }
 
     public void checkLifeStartCombat(User user) {

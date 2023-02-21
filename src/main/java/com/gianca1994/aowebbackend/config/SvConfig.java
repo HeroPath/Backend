@@ -1,5 +1,8 @@
 package com.gianca1994.aowebbackend.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @Author: Gianca1994
  * Explanation: This class contains all the statics of the server.
@@ -53,5 +56,13 @@ public class SvConfig {
     public static final int GUILD_LVL_MAX = 10;
     public static final int USER_PER_PAGE = 5;
     /////////////////////////// GUILD ///////////////////////////
+
+    ////////////////////////// ROLE //////////////////////////
+    public static final String STANDARD_ROLE = "STANDARD";
+    public static final String ADMIN_ROLE = "ADMIN";
+    public static final List<String> ADMIN_LIST = Arrays.asList(
+            "admin", "gianca", "lucho", "renzo"
+    );
+    ////////////////////////// ROLE //////////////////////////
 
 }

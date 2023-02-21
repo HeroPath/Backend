@@ -34,14 +34,12 @@ public class PveSystem {
 
         while (!stopPve) {
             roundCount++;
-            userDmg = user.getRole().equals("ADMIN") ? 9999999 : genericFunctions.getUserDmg(user, npcDef);
+            userDmg = user.getRole().equals(SvConfig.ADMIN_ROLE) ? 999999 : genericFunctions.getUserDmg(user, npcDef);
             npcDmg = pveFunctions.calculateNpcDmg(npc, userDef);
             npcHp -= userDmg;
 
             if (pveFunctions.checkIfNpcDied(npcHp)) {
-                npcDmg = 0;
-                npcHp = 0;
-
+                npcHp = npcDmg = 0;
                 expGain = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
                 goldGain = (long) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
                 if (diamondLuck) diamondWin = pveFunctions.amountDiamondsDrop(user);
@@ -55,8 +53,7 @@ public class PveSystem {
             } else {
                 userHp = genericFunctions.reduceUserHp(user, userHp, npcDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
-                    userHp = 0;
-                    userDmg = 0;
+                    userDmg = userHp = 0;
                     stopPve = true;
                 }
             }

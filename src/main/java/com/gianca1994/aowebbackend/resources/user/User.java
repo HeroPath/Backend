@@ -150,7 +150,7 @@ public class User {
         this.username = userJwt.getUsername();
         this.password = userJwt.getPassword();
         this.email = userJwt.getEmail();
-        this.role = "STANDARD";
+        this.role = SvConfig.STANDARD_ROLE;
         this.inventory = userJwt.getInventory();
         this.equipment = userJwt.getEquipment();
         this.aClass = userJwt.getAClass().getName();
