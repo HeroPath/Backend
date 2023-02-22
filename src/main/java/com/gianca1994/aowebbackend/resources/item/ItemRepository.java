@@ -30,10 +30,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END FROM Item i WHERE i.id = :itemId AND i.user.id IS NULL")
     boolean isUserIdNull(@Param("itemId") Long itemId);
 
-    @Query("SELECT i FROM Item i WHERE i.classRequired = :classRequired AND i.user IS NULL ORDER BY i.lvlMin ASC")
-    List<Item> findByClassRequiredAndUserIsNullOrderByLvlMinAsc(@Param("classRequired") String classRequired);
+    @Query("SELECT i FROM Item i WHERE i.classRequired = :classRequired AND i.user IS NULL AND i.shop = true ORDER BY i.lvlMin ASC")
+    List<Item> findByClassRequiredAndUserIsNullAndShopIsTrueOrderByLvlMinAsc(@Param("classRequired") String classRequired);
 
     @Query("SELECT i FROM Item i WHERE i.user.id = :userId AND i.name = :gemName")
     List<Item> findGemByUserId(@Param("userId") Long userId, @Param("gemName") String gemName);
-
 }

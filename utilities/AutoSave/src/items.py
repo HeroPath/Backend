@@ -7,10 +7,12 @@ def save_items(url, token):
     items = pd.read_excel("data/items.xlsx")
     itemsDataFrame = pd.DataFrame(items, columns=[
         "name", "type", "lvlMin", "classRequired", "price", "strength", "dexterity", "intelligence",
-        "vitality", "luck"
+        "vitality", "luck", "shop"
     ])
 
     for i in itemsDataFrame.to_dict('records'):
         if pd.isna(i["classRequired"]):
             i["classRequired"] = ""
+
+        i["shop"] = True if i["shop"] == 1 else False
         api_request.post(url=url, data=i, token=token)

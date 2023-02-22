@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.resources.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.config.ItemUpgradeConfig;
+import com.gianca1994.aowebbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.aowebbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,23 +70,29 @@ public class Item {
     @JsonIgnore
     private User user;
 
-    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    @Column(nullable = false)
+    @JsonIgnore
+    private boolean shop;
+
+    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength,
+                int dexterity, int intelligence, int vitality, int luck, boolean shop) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
-        this.quality = ItemUpgradeConfig.getName(1);
-        this.itemLevel = 1;
+        this.quality = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? ItemUpgradeConfig.getName(1) : "";
+        this.itemLevel = 0;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
+        this.shop = shop;
     }
 
     public Item(String name, String type, int lvlMin, int price, String classRequired, String quality, int itemLevel,
-                int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
+                int strength, int dexterity, int intelligence, int vitality, int luck, boolean shop, User user) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
@@ -98,6 +105,7 @@ public class Item {
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
+        this.shop = shop;
         this.user = user;
     }
 

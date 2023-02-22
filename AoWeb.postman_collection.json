@@ -695,7 +695,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3NTM2NDYsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjY3MjQ2fQ.ZO8bNhYjr2N8QJ5M9OevhdEGMEQU6fSaUS4orCYy-GmlvLCdu4P0fXa8AhHEmjIU5n4uetNtOsGYbhw8HvUdZQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY4MTkwNjAsInVzZXJJZCI6MiwiaWF0IjoxNjc2NzMyNjYwfQ.W4p1LhVCgrf_55kjAAReZKAwPOwPAldUDisGMf9NF-gTAZ8sSao-E2JqTS8iHSml8fKrh87HD8FYpK4K1ddkbQ",
 									"type": "string"
 								}
 							]
@@ -703,7 +703,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/items/upgrade/54",
+							"raw": "http://{{local}}/api/v1/items/upgrade/56",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -713,7 +713,7 @@
 								"v1",
 								"items",
 								"upgrade",
-								"54"
+								"56"
 							]
 						}
 					},

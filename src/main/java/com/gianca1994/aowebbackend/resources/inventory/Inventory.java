@@ -1,7 +1,5 @@
 package com.gianca1994.aowebbackend.resources.inventory;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import lombok.AllArgsConstructor;
@@ -9,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.*;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -30,12 +30,12 @@ public class Inventory {
     @JsonIgnore
     private Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "inventory_items",
             joinColumns = {@JoinColumn(name = "inventory_id")},
             inverseJoinColumns = {@JoinColumn(name = "items_id")}
     )
-    private List<Item> items = new ArrayList<>();
+    private Set<Item> items = new HashSet<>();
 
 }

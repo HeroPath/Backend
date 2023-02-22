@@ -25,5 +25,5 @@ public class ItemDTO {
     private int intelligence;
     private int vitality;
     private int luck;
-
+    private boolean shop;
 }

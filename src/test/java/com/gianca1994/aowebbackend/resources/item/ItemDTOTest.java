@@ -24,6 +24,7 @@ class ItemDTOTest {
         itemDTO.setIntelligence(1);
         itemDTO.setVitality(1);
         itemDTO.setLuck(1);
+        itemDTO.setShop(true);
     }
 
     @Test
@@ -34,7 +35,7 @@ class ItemDTOTest {
 
     @Test
     public void constructorAllArgsTest() {
-        ItemDTO item = new ItemDTO("Test", "Test", 1, "Test", 1, 1, 1, 1, 1, 1);
+        ItemDTO item = new ItemDTO("Test", "Test", 1, "Test", 1, 1, 1, 1, 1, 1, true);
         assertThat(item).isNotNull();
     }
 
@@ -90,7 +91,7 @@ class ItemDTOTest {
 
     @Test
     public void givenItem_whenEquals_thenReturnFalse() {
-        ItemDTO itemDTO2 = new ItemDTO("Test2", "Test2", 2, "Test2", 2, 2, 2, 2, 2, 2);
+        ItemDTO itemDTO2 = new ItemDTO("Test2", "Test2", 2, "Test2", 2, 2, 2, 2, 2, 2, false);
         assertThat(itemDTO.equals(itemDTO2)).isFalse();
     }
 }

@@ -1,5 +1,6 @@
 package com.gianca1994.aowebbackend.resources.jwt;
 
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.exception.BadRequest;
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
@@ -107,8 +108,7 @@ public class AuthService implements UserDetailsService {
         User newUser = new User(userJwt);
         newUser.calculateStats(true);
 
-        if (user.getUsername().equals("gianca") || user.getUsername().equals("lucho")) newUser.setRole("ADMIN");
-
+        if (SvConfig.ADMIN_LIST.contains(user.getUsername())) newUser.setRole(SvConfig.ADMIN_ROLE);
         Thread saveThread = new Thread(() -> {
             TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
             transactionTemplate.executeWithoutResult(status -> {

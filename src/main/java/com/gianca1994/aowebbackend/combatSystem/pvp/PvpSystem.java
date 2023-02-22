@@ -2,6 +2,7 @@ package com.gianca1994.aowebbackend.combatSystem.pvp;
 
 import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.GenericFunctions;
+import com.gianca1994.aowebbackend.config.SvConfig;
 import com.gianca1994.aowebbackend.resources.guild.GuildRepository;
 import com.gianca1994.aowebbackend.resources.user.User;
 
@@ -36,15 +37,14 @@ public class PvpSystem {
 
         while (!stopPvp) {
             roundCounter++;
-            if (user.getRole().equals("ADMIN")) userDmg = 9999999;
+            if (user.getRole().equals(SvConfig.ADMIN_ROLE)) userDmg = 999999;
             else userDmg = genericFunctions.getUserDmg(user, attackedDef);
 
             attackedDmg = genericFunctions.getUserDmg(attacked, userDef);
             attackedHp -= userDmg;
 
             if (genericFunctions.checkIfUserDied(attackedHp)) {
-                attackedDmg = 0;
-                attackedHp = 0;
+                attackedHp = attackedDmg = 0;
                 goldAmountWin = pvpFunctions.getUserGoldThief(attacked.getGold());
                 pvpFunctions.updateStatsUserWin(user, attacked, goldAmountWin, mmrWinAndLose);
                 pvpFunctions.updateGuilds(user, attacked, guildRepository, mmrWinAndLose);
@@ -53,8 +53,7 @@ public class PvpSystem {
             } else {
                 userHp = genericFunctions.reduceUserHp(user, userHp, attackedDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
-                    userDmg = 0;
-                    userHp = 0;
+                    userHp = userDmg = 0;
                     goldLoseForLoseCombat = pvpFunctions.getUserGoldLoseForLoseCombat(user);
                     pvpFunctions.updateStatsUserLose(user, attacked, goldLoseForLoseCombat, mmrWinAndLose);
                     stopPvp = true;

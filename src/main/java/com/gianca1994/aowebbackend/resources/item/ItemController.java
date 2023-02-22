@@ -125,7 +125,11 @@ public class ItemController {
     public void upgradeItem(@RequestHeader(value = "Authorization") String token,
                             @PathVariable Long itemUpgradeId) throws Conflict {
         /**
-         *
+         * @Author: Gianca1994
+         * Explanation: This method is used to upgrade an item.
+         * @param String token
+         * @Param Long itemUpgradeId
+         * @return void
          */
         itemS.upgradeItem(
                 jwt.getIdFromToken(token.substring(7)),

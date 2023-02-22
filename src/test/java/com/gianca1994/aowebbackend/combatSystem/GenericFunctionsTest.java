@@ -1,20 +1,15 @@
 package com.gianca1994.aowebbackend.combatSystem;
 
-import com.gianca1994.aowebbackend.resources.equipment.Equipment;
-import com.gianca1994.aowebbackend.resources.inventory.Inventory;
+import com.gianca1994.aowebbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.aowebbackend.resources.user.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GenericFunctionsTest {
-
-    private final User userTest = new User(
-            "tesusername", "testpassword", "testemail",
-            new Inventory(), new Equipment(),
-            "mage",
-            1, 1, 1, 1, 1
-    );
+    private final User userTest = new User(new UserRegisterJwtDTO(
+            "testusername", "testpassword", "testemail", "mage"
+    ));
 
     private final GenericFunctions genericFunctionsTest = new GenericFunctions();
 

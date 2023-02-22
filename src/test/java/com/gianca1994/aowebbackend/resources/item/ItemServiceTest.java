@@ -1,6 +1,5 @@
 package com.gianca1994.aowebbackend.resources.item;
 
-import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
@@ -26,11 +26,10 @@ class ItemServiceTest {
     @BeforeEach
     void setUp() {
         itemRepository.deleteAll();
-
         itemRepository.save(new Item(
                 "testitem", "testtype", 1,
-                "none", 1,
-                1, 1, 1, 1, 1
+                1, "none",
+                1, 1, 1, 1, 1, true
         ));
     }
 
@@ -40,11 +39,11 @@ class ItemServiceTest {
     }
 
     @Test
-    void givenItemDTO_whenSaveItem_thenReturnItem() throws Conflict {
+    void givenItemDTO_whenSaveItem_thenReturnItem() {
         ItemDTO itemDTO = new ItemDTO(
                 "testitem2", "armor", 1,
                 "none", 1,
-                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1, true
         );
 
 

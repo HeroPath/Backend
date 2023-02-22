@@ -7,7 +7,6 @@ import com.gianca1994.aowebbackend.exception.NotFound;
 import com.gianca1994.aowebbackend.resources.item.Item;
 import com.gianca1994.aowebbackend.resources.item.dto.request.ItemDTO;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -56,7 +55,7 @@ public class ItemServiceValidator {
          */
         if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
         if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
-        if (newItem.getLvlMin() <= 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
+        if (newItem.getLvlMin() < 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
         if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
             throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
@@ -85,7 +84,7 @@ public class ItemServiceValidator {
         if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
     }
 
-    public void inventoryContainsItem(List<Item> userInventory, Item item) throws Conflict {
+    public void inventoryContainsItem(Set<Item> userInventory, Item item) throws Conflict {
         /**
          * @Author: Gianca1994
          * Explanation: This method check if the user inventory contains the item.

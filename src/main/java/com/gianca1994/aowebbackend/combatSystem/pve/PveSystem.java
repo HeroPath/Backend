@@ -28,22 +28,20 @@ public class PveSystem {
          * @return PveModel
          */
         CombatModel pveModel = new CombatModel(new ArrayList<>(), user, npc);
-        int roundCount = 0, diamondWin = 0, expGain = 0, goldGain = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userDef = user.getDefense(), npcDef = npc.getDefense();
+        int roundCount = 0, diamondWin = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userDef = user.getDefense(), npcDef = npc.getDefense();
         boolean lvlUp = false, stopPve = false, diamondLuck = pveFunctions.chanceDropDiamonds();
+        long expGain = 0, goldGain = 0;
 
         while (!stopPve) {
             roundCount++;
-            userDmg = user.getRole().equals("ADMIN") ? 9999999 : genericFunctions.getUserDmg(user, npcDef);
+            userDmg = user.getRole().equals(SvConfig.ADMIN_ROLE) ? 999999 : genericFunctions.getUserDmg(user, npcDef);
             npcDmg = pveFunctions.calculateNpcDmg(npc, userDef);
             npcHp -= userDmg;
 
             if (pveFunctions.checkIfNpcDied(npcHp)) {
-                npcDmg = 0;
-                npcHp = 0;
-
-                long currentExp = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
-                expGain = currentExp > Integer.MAX_VALUE ? Integer.MAX_VALUE - 999999 : (int) currentExp;
-                goldGain = (int) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
+                npcHp = npcDmg = 0;
+                expGain = (long) (pveFunctions.CalculateUserExperienceGain(npc) * bonusExpGold);
+                goldGain = (long) (pveFunctions.calculateUserGoldGain(npc) * bonusExpGold);
                 if (diamondLuck) diamondWin = pveFunctions.amountDiamondsDrop(user);
 
                 pveFunctions.updateExpAndGold(user, expGain, goldGain);
@@ -55,8 +53,7 @@ public class PveSystem {
             } else {
                 userHp = genericFunctions.reduceUserHp(user, userHp, npcDmg);
                 if (genericFunctions.checkIfUserDied(userHp)) {
-                    userHp = 0;
-                    userDmg = 0;
+                    userDmg = userHp = 0;
                     stopPve = true;
                 }
             }

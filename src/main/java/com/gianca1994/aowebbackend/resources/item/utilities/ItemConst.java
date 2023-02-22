@@ -12,6 +12,9 @@ public class ItemConst {
     public static final String POTION_TYPE = "potion";
     public static final String GEM_TYPE = "gem";
     public static final String GEM_ITEM_LVL_NAME = "progress gem";
+    public static final List<String> ITEM_NOT_LEVEL_AND_QUALITY = Arrays.asList(
+            "potion", "gem"
+    );
 
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";
@@ -26,8 +29,7 @@ public class ItemConst {
             "potion", "gem"
     );
     public static final List<String> ENABLED_EQUIP = Arrays.asList(
-            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings",
-            "potion"
+            "weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion"
     );
     public static final String ITEM_EQUIP_NOT_PERMITTED = "You can't equip this item";
     public static final String CANT_EQUIP_MORE_ITEM = "You can't equip two items of the same type";
@@ -44,4 +46,5 @@ public class ItemConst {
     public static final String USER_NOT_HAVE_ITEM = "You don't have this item";
     public static final String NOT_ENOUGH_GEMS = "You don't have enough gems, you need: %d gems to upgrade the item";
     public static final String ITEM_NOT_UPGRADEABLE = "You can't upgrade this item";
+    public static final String ITEM_NOT_POTION = "You can't use this item";
 }
