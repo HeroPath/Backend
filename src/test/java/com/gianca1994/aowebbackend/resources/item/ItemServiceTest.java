@@ -29,7 +29,7 @@ class ItemServiceTest {
         itemRepository.save(new Item(
                 "testitem", "testtype", 1,
                 1, "none",
-                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1, true
         ));
     }
 
@@ -43,7 +43,7 @@ class ItemServiceTest {
         ItemDTO itemDTO = new ItemDTO(
                 "testitem2", "armor", 1,
                 "none", 1,
-                1, 1, 1, 1, 1
+                1, 1, 1, 1, 1, true
         );
 
 

@@ -53,7 +53,8 @@ public class ItemService {
         itemR.save(new Item(
                 newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(), newItem.getPrice(),
                 newItem.getClassRequired().equals("") ? "none" : newItem.getClassRequired(),
-                newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(), newItem.getVitality(), newItem.getLuck()
+                newItem.getStrength(), newItem.getDexterity(), newItem.getIntelligence(), newItem.getVitality(), newItem.getLuck(),
+                newItem.isShop()
         ));
     }
 
@@ -78,7 +79,7 @@ public class ItemService {
         Item newItemBuy = new Item(
                 itemBuy.getName(), itemBuy.getType(), itemBuy.getLvlMin(), itemBuy.getPrice() / 2, itemBuy.getClassRequired(),
                 itemBuy.getQuality(), itemBuy.getItemLevel(), itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
-                itemBuy.getVitality(), itemBuy.getLuck(), user
+                itemBuy.getVitality(), itemBuy.getLuck(), itemBuy.isShop() , user
         );
         user.getInventory().getItems().add(newItemBuy);
         itemR.save(newItemBuy);

@@ -70,7 +70,11 @@ public class Item {
     @JsonIgnore
     private User user;
 
-    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength, int dexterity, int intelligence, int vitality, int luck) {
+    @Column(nullable = false)
+    private boolean shop;
+
+    public Item(String name, String type, int lvlMin, int price, String classRequired, int strength,
+                int dexterity, int intelligence, int vitality, int luck, boolean shop) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
@@ -83,10 +87,11 @@ public class Item {
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
+        this.shop = shop;
     }
 
     public Item(String name, String type, int lvlMin, int price, String classRequired, String quality, int itemLevel,
-                int strength, int dexterity, int intelligence, int vitality, int luck, User user) {
+                int strength, int dexterity, int intelligence, int vitality, int luck, boolean shop, User user) {
         this.name = name;
         this.type = type;
         this.lvlMin = lvlMin;
@@ -99,6 +104,7 @@ public class Item {
         this.intelligence = intelligence;
         this.vitality = vitality;
         this.luck = luck;
+        this.shop = shop;
         this.user = user;
     }
 
