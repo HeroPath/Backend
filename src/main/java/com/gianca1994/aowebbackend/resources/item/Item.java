@@ -77,7 +77,7 @@ public class Item {
         this.price = price;
         this.classRequired = classRequired;
         this.quality = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? ItemUpgradeConfig.getName(1) : "";
-        this.itemLevel = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? 1 : 0;
+        this.itemLevel = 0;
         this.strength = strength;
         this.dexterity = dexterity;
         this.intelligence = intelligence;

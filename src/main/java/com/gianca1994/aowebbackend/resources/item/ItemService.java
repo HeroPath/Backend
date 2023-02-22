@@ -189,7 +189,7 @@ public class ItemService {
         Item itemUpgrade = itemR.findById(itemId).get();
 
         List<Item> itemsToRemove = gemItems.subList(0, gemsNeeded);
-        user.getInventory().getItems().removeAll(itemsToRemove);
+        itemsToRemove.forEach(user.getInventory().getItems()::remove);
         itemR.deleteAll(itemsToRemove);
 
         itemUpgrade.itemUpgrade();
