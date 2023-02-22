@@ -71,6 +71,7 @@ public class Item {
     private User user;
 
     @Column(nullable = false)
+    @JsonIgnore
     private boolean shop;
 
     public Item(String name, String type, int lvlMin, int price, String classRequired, int strength,

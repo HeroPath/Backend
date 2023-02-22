@@ -37,7 +37,7 @@ public class ItemService {
          * @param String aClass
          * @return List<Item>
          */
-        return itemR.findByClassRequiredAndUserIsNullOrderByLvlMinAsc(aClass);
+        return itemR.findByClassRequiredAndUserIsNullAndShopIsTrueOrderByLvlMinAsc(aClass);
     }
 
     public void saveItem(ItemDTO newItem) {
