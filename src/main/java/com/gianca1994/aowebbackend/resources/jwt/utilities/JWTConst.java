@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.resources.jwt.utilities;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the JWT package
+ * @Explanation: This class contains all the constants used in the JWT package
  */
 
 public class JWTConst {

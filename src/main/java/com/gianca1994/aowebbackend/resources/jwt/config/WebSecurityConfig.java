@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to configure the web security.
+ * @Explanation: This class is used to configure the web security.
  */
 
 @Configuration
@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to configure the authentication manager.
+         * @Explanation: This method is used to configure the authentication manager.
          * @param AuthenticationManagerBuilder auth
          * @return void
          */
@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to encode the password.
+         * @Explanation: This method is used to encode the password.
          * @param void
          * @return PasswordEncoder
          */
@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to configure the authentication manager.
+         * @Explanation: This method is used to configure the authentication manager.
          * @param void
          * @return AuthenticationManager
          */
@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to configure the http security.
+         * @Explanation: This method is used to configure the http security.
          * @param HttpSecurity http
          * @return void
          */

@@ -1,19 +1,18 @@
 package com.gianca1994.aowebbackend.resources.jwt.config;
 
-import java.io.IOException;
-import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.gianca1994.aowebbackend.resources.jwt.utilities.JWTConst;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Serializable;
+
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to handle the case when the user is not authenticated.
+ * @Explanation: This class is used to handle the case when the user is not authenticated.
  */
 
 @Component
@@ -26,7 +25,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
                          AuthenticationException authException) throws IOException {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to handle the case when the user is not authenticated.
+         * @Explanation: This method is used to handle the case when the user is not authenticated.
          * @param HttpServletRequest request
          * @param HttpServletResponse response
          * @param AuthenticationException authException

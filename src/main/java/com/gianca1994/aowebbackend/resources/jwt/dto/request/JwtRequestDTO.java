@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to receive the username and password from the client
+ * @Explanation: This class is used to receive the username and password from the client
  */
 
 @Getter

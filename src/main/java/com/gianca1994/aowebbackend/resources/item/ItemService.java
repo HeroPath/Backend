@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the business logic of the items.
+ * @Explanation: This class is in charge of the business logic of the items.
  */
 
 @Service
@@ -33,7 +33,7 @@ public class ItemService {
     public List<Item> getClassShop(String aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of returning a list of items that are available for a class.
+         * @Explanation: This function is in charge of returning a list of items that are available for a class.
          * @param String aClass
          * @return List<Item>
          */
@@ -43,7 +43,7 @@ public class ItemService {
     public void saveItem(ItemDTO newItem) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving an item.
+         * @Explanation: This function is in charge of saving an item.
          * @param ItemDTO newItem
          * @return none
          */
@@ -61,7 +61,7 @@ public class ItemService {
     public BuySellDTO buyItem(Long userId, Long itemBuyId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of buying an item.
+         * @Explanation: This function is in charge of buying an item.
          * @param long userId
          * @param long itemBuyId
          * @return BuySellDTO
@@ -90,7 +90,7 @@ public class ItemService {
     public BuySellDTO sellItem(Long userId, Long itemSellId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of selling an item.
+         * @Explanation: This function is in charge of selling an item.
          * @param long userId
          * @param long itemSellId
          * @return BuySellDTO
@@ -113,7 +113,7 @@ public class ItemService {
     public EquipOrUnequipDTO equipItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of equipping an item.
+         * @Explanation: This function is in charge of equipping an item.
          * @param long userId
          * @param long itemId
          * @return EquipOrUnequipDTO
@@ -144,7 +144,7 @@ public class ItemService {
     public EquipOrUnequipDTO unequipItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of unequipping an item.
+         * @Explanation: This function is in charge of unequipping an item.
          * @param long userId
          * @param long itemId
          * @return EquipOrUnequipDTO
@@ -169,7 +169,7 @@ public class ItemService {
     public void upgradeItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of upgrading an item.
+         * @Explanation: This function is in charge of upgrading an item.
          * @param long userId
          * @param long itemId
          * @return void

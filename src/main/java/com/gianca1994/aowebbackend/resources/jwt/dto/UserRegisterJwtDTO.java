@@ -9,6 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is used to register the user.
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

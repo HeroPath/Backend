@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to return the user's gold and inventory after a buy or sell action
+ * @Explanation: This class is used to return the user's gold and inventory after a buy or sell action
  */
 
 @Getter

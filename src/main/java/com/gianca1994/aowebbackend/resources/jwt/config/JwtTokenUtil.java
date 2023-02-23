@@ -1,24 +1,23 @@
 package com.gianca1994.aowebbackend.resources.jwt.config;
 
+import com.gianca1994.aowebbackend.resources.user.UserRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import com.gianca1994.aowebbackend.resources.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to generate the token.
+ * @Explanation: This class is used to generate the token.
  */
 
 @Component
@@ -38,7 +37,7 @@ public class JwtTokenUtil implements Serializable {
     public String getUsernameFromToken(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the username from the token.
+         * @Explanation: This method is used to get the username from the token.
          * @param String token
          * @return String
          */
@@ -48,7 +47,7 @@ public class JwtTokenUtil implements Serializable {
     public long getIdFromToken(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the id from the token.
+         * @Explanation: This method is used to get the id from the token.
          * @param String token
          * @return long
          */
@@ -58,7 +57,7 @@ public class JwtTokenUtil implements Serializable {
     public Date getExpirationDateFromToken(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the expiration date from the token.
+         * @Explanation: This method is used to get the expiration date from the token.
          * @param String token
          * @return Date
          */
@@ -68,7 +67,7 @@ public class JwtTokenUtil implements Serializable {
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the claim from the token.
+         * @Explanation: This method is used to get the claim from the token.
          * @param String token
          * @param Function<Claims, T> claimsResolver
          * @return User user
@@ -80,7 +79,7 @@ public class JwtTokenUtil implements Serializable {
     private Claims getAllClaimsFromToken(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the all claims from the token.
+         * @Explanation: This method is used to get the all claims from the token.
          * @param String token
          * @return Claims
          */
@@ -90,7 +89,7 @@ public class JwtTokenUtil implements Serializable {
     private Boolean isTokenExpired(String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to check if the token is expired.
+         * @Explanation: This method is used to check if the token is expired.
          * @param String token
          * @return Boolean
          */
@@ -101,7 +100,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to generate the token.
+         * @Explanation: This method is used to generate the token.
          * @param UserDetails userDetails
          * @return String
          */
@@ -114,7 +113,7 @@ public class JwtTokenUtil implements Serializable {
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to generate the token.
+         * @Explanation: This method is used to generate the token.
          * @param Map<String, Object> claims
          * @param String subject
          * @return String
@@ -128,7 +127,7 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the token.
+         * @Explanation: This method is used to validate the token.
          * @param String token
          * @param UserDetails userDetails
          * @return Boolean

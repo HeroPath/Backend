@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to return the JWT token to the user
+ * @Explanation: This class is used to return the JWT token to the user
  */
 
 @Getter

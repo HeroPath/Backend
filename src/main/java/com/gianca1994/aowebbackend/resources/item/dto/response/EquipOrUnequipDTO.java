@@ -10,7 +10,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to send the user's data to the client after an item is equipped or unequipped.
+ * @Explanation: This class is used to send the user's data to the client after an item is equipped or unequipped.
  */
 
 @Getter

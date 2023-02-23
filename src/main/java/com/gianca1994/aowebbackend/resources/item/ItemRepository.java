@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of handling the requests related to the items.
+ * @Explanation: This class is in charge of handling the requests related to the items.
  */
 
 @Repository

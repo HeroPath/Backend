@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.resources.user.UserRepository;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to validate the user.
+ * @Explanation: This class is used to validate the user.
  */
 
 public class AuthServiceValidator {
@@ -15,7 +15,7 @@ public class AuthServiceValidator {
     public void saveUser(String username, String password, String email, Class aClass, UserRepository userRepository) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save the user.
+         * @Explanation: This method is used to save the user.
          * @param String username
          * @param String email
          * @param String password

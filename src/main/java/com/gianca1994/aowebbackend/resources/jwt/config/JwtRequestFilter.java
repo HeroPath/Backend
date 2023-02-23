@@ -23,7 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to filter the request and check if the token is valid or not.
+ * @Explanation: This class is used to filter the request and check if the token is valid or not.
  */
 
 @Component
@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to check if the request is ajax or not.
+         * @Explanation: This method is used to check if the request is ajax or not.
          * @param HttpServletRequest request
          * @param HttpServletResponse response
          * @param FilterChain chain

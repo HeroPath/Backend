@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of validating the data sent to the ItemService.
+ * @Explanation: This class is in charge of validating the data sent to the ItemService.
  */
 
 public class ItemServiceValidator {
@@ -19,7 +19,7 @@ public class ItemServiceValidator {
     public void userFound(boolean userExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of checking if a user exists.
+         * @Explanation: This function is in charge of checking if a user exists.
          * @param boolean userExist
          * @return void
          */
@@ -29,7 +29,7 @@ public class ItemServiceValidator {
     public void itemFound(boolean itemExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of checking if an item exists.
+         * @Explanation: This function is in charge of checking if an item exists.
          * @param boolean itemExist
          * @return void
          */
@@ -39,7 +39,7 @@ public class ItemServiceValidator {
     public void itemExists(boolean itemExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of checking if an item already exists.
+         * @Explanation: This function is in charge of checking if an item already exists.
          * @param boolean itemExist
          * @return void
          */
@@ -49,7 +49,7 @@ public class ItemServiceValidator {
     public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of checking if the data sent to save an item is correct.
+         * @Explanation: This function is in charge of checking if the data sent to save an item is correct.
          * @param ItemDTO newItem
          * @return void
          */
@@ -66,7 +66,7 @@ public class ItemServiceValidator {
     public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user have enough gold to buy the item.
+         * @Explanation: This method check if the user have enough gold to buy the item.
          * @param long goldUser
          * @param int itemPrice
          * @return void
@@ -77,7 +77,7 @@ public class ItemServiceValidator {
     public void checkInventoryFull(int inventorySize) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user inventory is full.
+         * @Explanation: This method check if the user inventory is full.
          * @param int inventorySize
          * @return void
          */
@@ -87,7 +87,7 @@ public class ItemServiceValidator {
     public void inventoryContainsItem(Set<Item> userInventory, Item item) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user inventory contains the item.
+         * @Explanation: This method check if the user inventory contains the item.
          * @param List<Item> userInventory
          * @param Item item
          * @return void
@@ -98,7 +98,7 @@ public class ItemServiceValidator {
     public void checkItemClassEquip(String userClass, String itemClass) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user class is the same of the item class.
+         * @Explanation: This method check if the user class is the same of the item class.
          * @param String userClass
          * @param String itemClass
          * @return void
@@ -109,7 +109,7 @@ public class ItemServiceValidator {
     public void checkItemLevelEquip(int userLevel, int itemLevel) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user level is enough to equip the item.
+         * @Explanation: This method check if the user level is enough to equip the item.
          * @param int userLevel
          * @param int itemLevel
          * @return void
@@ -120,7 +120,7 @@ public class ItemServiceValidator {
     public void checkItemEquipIfPermitted(String itemType) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item can be equipped.
+         * @Explanation: This method check if the item can be equipped.
          * @param String itemType
          * @return void
          */
@@ -130,7 +130,7 @@ public class ItemServiceValidator {
     public void checkEquipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user can equip more items of the same type.
+         * @Explanation: This method check if the user can equip more items of the same type.
          * @param Set<Item> equipment
          * @param String itemType
          * @return void
@@ -143,7 +143,7 @@ public class ItemServiceValidator {
     public void checkItemInEquipment(Set<Item> equipment, Item item) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item is in the equipment of the user.
+         * @Explanation: This method check if the item is in the equipment of the user.
          * @param Set<Item> equipment
          * @param Item item
          * @return void
@@ -154,7 +154,7 @@ public class ItemServiceValidator {
     public void checkItemFromTrader(boolean itemFromTrader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item is from the trader.
+         * @Explanation: This method check if the item is from the trader.
          * @param boolean itemFromTrader
          * @return void
          */
@@ -164,7 +164,7 @@ public class ItemServiceValidator {
     public void checkItemNotInPossession(boolean itemNotPossession) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item is not in the possession of the user.
+         * @Explanation: This method check if the item is not in the possession of the user.
          * @param boolean itemNotPossession
          * @return void
          */
@@ -174,7 +174,7 @@ public class ItemServiceValidator {
     public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user have enough items to upgrade the item.
+         * @Explanation: This method check if the user have enough items to upgrade the item.
          * @param int upgradeAmount
          * @param int requirementAmount
          * @return void
@@ -185,7 +185,7 @@ public class ItemServiceValidator {
     public void checkItemLevelMax(int itemLevel) throws BadRequest {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item is already at the max level.
+         * @Explanation: This method check if the item is already at the max level.
          * @param int itemLevel
          * @return void
          */
@@ -195,7 +195,7 @@ public class ItemServiceValidator {
     public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user have the item to upgrade.
+         * @Explanation: This method check if the user have the item to upgrade.
          * @param boolean userHaveItem
          * @return void
          */
@@ -205,7 +205,7 @@ public class ItemServiceValidator {
     public void checkUserHaveAmountGem(int userGems, int gemsNeeded) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the user have enough gems to upgrade the item.
+         * @Explanation: This method check if the user have enough gems to upgrade the item.
          * @param int userGems
          * @param int gemsNeeded
          * @return void
@@ -216,7 +216,7 @@ public class ItemServiceValidator {
     public void checkItemIsUpgradeable(boolean isUpgradeable) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method check if the item is upgradeable.
+         * @Explanation: This method check if the item is upgradeable.
          * @param String itemType
          * @return void
          */

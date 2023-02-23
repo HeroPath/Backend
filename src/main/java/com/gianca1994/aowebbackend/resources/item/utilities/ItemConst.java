@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the Item class
+ * @Explanation: This class contains all the constants used in the Item class
  */
 
 public class ItemConst {

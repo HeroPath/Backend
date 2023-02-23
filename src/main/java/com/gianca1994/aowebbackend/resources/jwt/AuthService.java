@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to authenticate the user.
+ * @Explanation: This class is used to authenticate the user.
  */
 
 @Service
@@ -62,7 +62,7 @@ public class AuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to load the user by username.
+         * @Explanation: This method is used to load the user by username.
          * @param String username
          * @return UserDetails
          */
@@ -75,7 +75,7 @@ public class AuthService implements UserDetailsService {
     public void authenticate(String username, String password) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to authenticate the user.
+         * @Explanation: This method is used to authenticate the user.
          * @param String username: The username of the user.
          * @param String password: The password of the user.
          * @return void
@@ -94,7 +94,7 @@ public class AuthService implements UserDetailsService {
     public User saveUser(UserRegisterDTO user) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to save the user.
+         * @Explanation: This method is used to save the user.
          * @param UserRegisterDTO user
          * @return User
          */
@@ -130,7 +130,7 @@ public class AuthService implements UserDetailsService {
     private boolean validateEmail(String email) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the email address.
+         * @Explanation: This method is used to validate the email address.
          * @param String email
          * @return boolean
          */
@@ -142,7 +142,7 @@ public class AuthService implements UserDetailsService {
     private String encryptPassword(String password) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method encrypts the password using BCrypt.
+         * @Explanation: This method encrypts the password using BCrypt.
          * @param String password
          * @return String
          */

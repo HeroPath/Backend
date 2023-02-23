@@ -14,7 +14,7 @@ import javax.persistence.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the model of the item table in the database.
+ * @Explanation: This class is the model of the item table in the database.
  */
 
 @Entity

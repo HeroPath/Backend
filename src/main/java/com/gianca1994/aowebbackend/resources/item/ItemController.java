@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of handling the requests related to the items.
+ * @Explanation: This class is in charge of handling the requests related to the items.
  */
 
 @RestController
@@ -33,7 +33,7 @@ public class ItemController {
     public List<Item> getClassShop(@PathVariable String aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the items of a specific class.
+         * @Explanation: This function is in charge of getting the items of a specific class.
          * @param String aClass
          * @return List<Item>
          */
@@ -45,7 +45,7 @@ public class ItemController {
     public void saveItem(@RequestBody ItemDTO newItem) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving an item.
+         * @Explanation: This function is in charge of saving an item.
          * @param ItemDTO newItem
          * @return void
          */
@@ -58,7 +58,7 @@ public class ItemController {
                               @PathVariable Long itemBuyId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of buying an item.
+         * @Explanation: This function is in charge of buying an item.
          * @param String token
          * @param Long itemBuyId
          * @return BuySellDTO
@@ -75,7 +75,7 @@ public class ItemController {
                                @PathVariable Long itemSellId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of selling an item.
+         * @Explanation: This function is in charge of selling an item.
          * @param String token
          * @param Long itemSellId
          * @return BuySellDTO
@@ -92,7 +92,7 @@ public class ItemController {
                                        @PathVariable Long itemEquipId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to equip an item to the user.
+         * @Explanation: This method is used to equip an item to the user.
          * @param String token
          * @param Long itemEquipId
          * @return EquipOrUnequipDTO
@@ -109,7 +109,7 @@ public class ItemController {
                                          @PathVariable Long itemUnequipId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to unequip an item from the user.
+         * @Explanation: This method is used to unequip an item from the user.
          * @param String token
          * @Param Long itemUnequipId
          * @return EquipOrUnequipDTO
@@ -126,7 +126,7 @@ public class ItemController {
                             @PathVariable Long itemUpgradeId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to upgrade an item.
+         * @Explanation: This method is used to upgrade an item.
          * @param String token
          * @Param Long itemUpgradeId
          * @return void
