@@ -11,7 +11,7 @@ import javax.persistence.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the entity of the user_quest table
+ * @Explanation: This class is the entity of the user_quest table
  */
 
 @Entity

@@ -10,7 +10,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to store the attributes of the user
+ * @Explanation: This class is used to store the attributes of the user
  */
 
 @Getter
@@ -64,7 +64,7 @@ public class UserAttributes {
     public void updateStats() {
         /**
          * @Author: Gianca1994
-         * Explanation: Calculates the stats of the user
+         * @Explanation: Calculates the stats of the user
          * @param boolean fullMinHp
          * @return void
          */
@@ -83,7 +83,7 @@ public class UserAttributes {
     private void setStats(int minMaxDmg, int defense, int evasion) {
         /**
          * @Author: Gianca1994
-         * Explanation: Sets the stats of the user
+         * @Explanation: Sets the stats of the user
          * @param int minMaxDmg
          * @param int defense
          * @param int evasion
@@ -98,7 +98,7 @@ public class UserAttributes {
     private void applyModifiers(Class aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: Applies the modifiers of the class to the stats of the user
+         * @Explanation: Applies the modifiers of the class to the stats of the user
          * @param Class aClass
          * @return void
          */

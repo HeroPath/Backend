@@ -12,7 +12,7 @@ import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of validating the user service.
+ * @Explanation: This class is in charge of validating the user service.
  */
 
 public class UserServiceValidator {
@@ -22,7 +22,7 @@ public class UserServiceValidator {
     public void userExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user.
+         * @Explanation: This function is in charge of validating the user.
          * @param boolean exist
          * @return void
          */
@@ -32,7 +32,7 @@ public class UserServiceValidator {
     public void npcExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the npc.
+         * @Explanation: This function is in charge of validating the npc.
          * @param boolean exist
          * @return void
          */
@@ -42,7 +42,7 @@ public class UserServiceValidator {
     public void getUserForGuild(UserGuildDTO userGuildDTO) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user for guild.
+         * @Explanation: This function is in charge of validating the user for guild.
          * @param UserGuildDTO userGuildDTO
          * @return void
          */
@@ -52,7 +52,7 @@ public class UserServiceValidator {
     public void setFreeSkillPoint(UserAttributes uAttr, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the free skill point.
+         * @Explanation: This function is in charge of validating the free skill point.
          * @param UserAttributes uAttr
          * @param String skillName
          * @return void
@@ -66,7 +66,7 @@ public class UserServiceValidator {
     public void checkAutoAttack(User attacker, User defender) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the auto attack.
+         * @Explanation: This function is in charge of validating the auto attack.
          * @param User attacker
          * @param User defender
          * @return void
@@ -77,7 +77,7 @@ public class UserServiceValidator {
     public void checkDifferenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the difference level pvp.
+         * @Explanation: This function is in charge of validating the difference level pvp.
          * @param short attackerLvl
          * @param short defenderLvl
          * @return void
@@ -89,7 +89,7 @@ public class UserServiceValidator {
     public void checkDifferenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the difference level pve.
+         * @Explanation: This function is in charge of validating the difference level pve.
          * @param short userLvl
          * @param short npcLvl
          * @return void
@@ -101,7 +101,7 @@ public class UserServiceValidator {
     public void checkDefenderNotAdmin(User defender) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the defender not admin.
+         * @Explanation: This function is in charge of validating the defender not admin.
          * @param User defender
          * @return void
          */
@@ -111,7 +111,7 @@ public class UserServiceValidator {
     public void checkLifeStartCombat(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the life start combat.
+         * @Explanation: This function is in charge of validating the life start combat.
          * @param User user
          * @return void
          */
@@ -122,7 +122,7 @@ public class UserServiceValidator {
     public void checkUserItemReqZoneSea(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user item req zone sea.
+         * @Explanation: This function is in charge of validating the user item req zone sea.
          * @param Equipment userEquip
          * @return void
          */
@@ -133,7 +133,7 @@ public class UserServiceValidator {
     public void checkUserItemReqZoneHell(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the user item req zone hell.
+         * @Explanation: This function is in charge of validating the user item req zone hell.
          * @param Equipment userEquip
          * @return void
          */

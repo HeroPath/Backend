@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the user package
+ * @Explanation: This class contains all the constants used in the user package
  */
 
 public class UserConst {

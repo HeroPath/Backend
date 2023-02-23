@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the User entity.
+ * @Explanation: This class is the User entity.
  */
 
 @Entity
@@ -180,7 +180,7 @@ public class User {
     public void generatePrivateAndPublicKey() throws InterruptedException {
         /**
          * @Author: Gianca1994
-         * Explanation: This method generates a private and public key for the user in PEM format.
+         * @Explanation: This method generates a private and public key for the user in PEM format.
          * @return none
          */
         AES aes = new AES();
@@ -226,7 +226,7 @@ public class User {
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method swaps an item from the inventory to the equipment or vice versa.
+         * @Explanation: This method swaps an item from the inventory to the equipment or vice versa.
          * @param Item item
          * @param boolean toEquip
          * @return none
@@ -247,7 +247,7 @@ public class User {
     public void updateTitle() {
         /**
          * @Author: Gianca1994
-         * Explanation: Checks if the user has enough points to change title
+         * @Explanation: Checks if the user has enough points to change title
          * @param none
          * @return none
          */
@@ -270,7 +270,7 @@ public class User {
     public void addTitlePoints(int amount) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to add title points to the user.
+         * @Explanation: This method is used to add title points to the user.
          * @param int amount
          * @return none
          */
@@ -281,7 +281,7 @@ public class User {
     public void removeTitlePoints(int amount) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to remove title points from the user.
+         * @Explanation: This method is used to remove title points from the user.
          * @param int amount
          * @return none
          */
@@ -295,7 +295,7 @@ public class User {
     public boolean userLevelUp() {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to level up the user.
+         * @Explanation: This method is used to level up the user.
          * @return boolean
          */
         boolean userLevelUp = false;
@@ -322,7 +322,7 @@ public class User {
     public void calculateStats(boolean fullMinHp) {
         /**
          * @Author: Gianca1994
-         * Explanation: Calculates the stats of the user
+         * @Explanation: Calculates the stats of the user
          * @param boolean fullMinHp
          * @return void
          */
@@ -340,7 +340,7 @@ public class User {
     private void setStats(int minMaxDmg, int defense, int evasion) {
         /**
          * @Author: Gianca1994
-         * Explanation: Sets the stats of the user
+         * @Explanation: Sets the stats of the user
          * @param int minMaxDmg
          * @param int defense
          * @param int evasion
@@ -355,7 +355,7 @@ public class User {
     private void applyModifiers(Class aClass) {
         /**
          * @Author: Gianca1994
-         * Explanation: Applies the modifiers of the class to the stats of the user
+         * @Explanation: Applies the modifiers of the class to the stats of the user
          * @param Class aClass
          * @return void
          */
@@ -372,7 +372,7 @@ public class User {
     public void userCreateGuild(String guildName, long goldCost, int diamondsCost) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to create a guild
+         * @Explanation: This method is used to create a guild
          * @param String guildName
          * @param long goldCost
          * @param int diamondsCost

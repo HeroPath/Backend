@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the main application.
+ * @Explanation: This class is in charge of the main application.
  */
 
 @SpringBootApplication

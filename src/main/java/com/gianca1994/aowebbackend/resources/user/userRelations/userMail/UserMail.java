@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create the UserMail table in the database.
+ * @Explanation: This class is used to create the UserMail table in the database.
  */
 
 @Entity

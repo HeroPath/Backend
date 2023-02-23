@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for the user ranking
+ * @Explanation: DTO for the user ranking
  */
 
 @Getter

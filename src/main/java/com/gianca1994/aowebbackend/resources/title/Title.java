@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create a title object
+ * @Explanation: This class is used to create a title object
  */
 
 @Getter

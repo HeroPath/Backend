@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to return the user's guild information
+ * @Explanation: This class is used to return the user's guild information
  */
 
 @Getter

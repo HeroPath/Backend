@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to manage the user's requests.
+ * @Explanation: This class is used to manage the user's requests.
  */
 
 @RestController
@@ -33,7 +33,7 @@ public class UserController {
     public User getProfile(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the profile of the user.
+         * @Explanation: This method is used to get the profile of the user.
          * @param String token
          * @return User
          */
@@ -51,7 +51,7 @@ public class UserController {
     public RankingResponseDTO getRankingAll(@RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get the ranking of all the users.
+         * @Explanation: This method is used to get the ranking of all the users.
          * @param int page
          * @return RankingResponseDTO
          */
@@ -64,7 +64,7 @@ public class UserController {
                                             @PathVariable String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to add a skill point to a skill.
+         * @Explanation: This method is used to add a skill point to a skill.
          * @param String token
          * @param String skillName
          * @return UserAttributes
@@ -80,7 +80,7 @@ public class UserController {
                                             @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to attack a user.
+         * @Explanation: This method is used to attack a user.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>
@@ -97,7 +97,7 @@ public class UserController {
                                            @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to attack a npc.
+         * @Explanation: This method is used to attack a npc.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
          * @return ArrayList<ObjectNode>

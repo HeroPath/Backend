@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This is the repository for the UserQuest entity.
+ * @Explanation: This is the repository for the UserQuest entity.
  */
 
 @Repository

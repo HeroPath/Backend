@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for the ranking response
+ * @Explanation: DTO for the ranking response
  */
 
 @Getter

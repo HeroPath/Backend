@@ -1,9 +1,5 @@
 package com.gianca1994.aowebbackend.resources.user;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.aowebbackend.combatSystem.CombatModel;
 import com.gianca1994.aowebbackend.combatSystem.pve.PveSystem;
@@ -20,18 +16,22 @@ import com.gianca1994.aowebbackend.resources.user.dto.response.RankingResponseDT
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.aowebbackend.resources.user.dto.response.UserRankingDTO;
 import com.gianca1994.aowebbackend.resources.user.utilities.UserServiceValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the user service.
+ * @Explanation: This class is in charge of the user service.
  */
 
 @Service
@@ -57,7 +57,7 @@ public class UserService {
     public User getProfile(String username) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the profile of the user.
+         * @Explanation: This function is in charge of getting the profile of the user.
          * @param String username
          * @return User
          */
@@ -68,7 +68,7 @@ public class UserService {
     public UserGuildDTO getUserForGuild(long userId) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the user for the guild.
+         * @Explanation: This function is in charge of getting the user for the guild.
          * @param long userId
          * @return UserGuildDTO
          */
@@ -80,7 +80,7 @@ public class UserService {
     public RankingResponseDTO getRankingAll(int page) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the ranking of all the users.
+         * @Explanation: This function is in charge of getting the ranking of all the users.
          * @param int page
          * @return RankingResponseDTO
          */
@@ -108,7 +108,7 @@ public class UserService {
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of setting the free skill point.
+         * @Explanation: This function is in charge of setting the free skill point.
          * @param long userId
          * @param String skillName
          * @return UserAttributes
@@ -133,7 +133,7 @@ public class UserService {
     public ArrayList<ObjectNode> userVsUserCombatSystem(String username, String nameDefender) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the user vs user combat system.
+         * @Explanation: This function is in charge of the user vs user combat system.
          * @param String username
          * @param String nameDefender
          * @return ArrayList<ObjectNode>
@@ -160,7 +160,7 @@ public class UserService {
     public ArrayList<ObjectNode> userVsNpcCombatSystem(String username, String npcName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the user vs npc combat system.
+         * @Explanation: This function is in charge of the user vs npc combat system.
          * @param String username
          * @param String npcName
          * @return ArrayList<ObjectNode>
@@ -184,7 +184,7 @@ public class UserService {
     private float calculateBonusGuild(String guildName) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the bonus of the guild.
+         * @Explanation: This function is in charge of calculating the bonus of the guild.
          * @param String guildName
          * @return float
          */
