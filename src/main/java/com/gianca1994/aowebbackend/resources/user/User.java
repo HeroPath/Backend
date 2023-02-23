@@ -251,17 +251,11 @@ public class User {
          * @param none
          * @return none
          */
-        Title currentTitle = ModifConfig.TITLES.stream().filter(
-                title -> title.getName().equals(this.titleName)).findFirst().orElse(null);
+        Title currentTitle = ModifConfig.TITLES.stream().filter(title -> title.getName().equals(this.titleName)).findFirst().orElse(null);
         if (currentTitle == null) return;
 
-        List<Title> filteredTitles = ModifConfig.TITLES.stream()
-                .filter(title -> title.getMinPts() <= this.titlePoints && title.getMinLvl() <= this.level)
-                .collect(Collectors.toList());
-
-        Title newTitle = filteredTitles.stream()
-                .reduce((t1, t2) -> t1.getMinPts() > t2.getMinPts() ? t1 : t2)
-                .orElse(currentTitle);
+        List<Title> filteredTitles = ModifConfig.TITLES.stream().filter(title -> title.getMinPts() <= this.titlePoints && title.getMinLvl() <= this.level).collect(Collectors.toList());
+        Title newTitle = filteredTitles.stream().reduce((t1, t2) -> t1.getMinPts() > t2.getMinPts() ? t1 : t2).orElse(currentTitle);
         if (currentTitle.equals(newTitle)) return;
 
         this.strength += newTitle.getStrength() - currentTitle.getStrength();
@@ -332,9 +326,7 @@ public class User {
          * @param boolean fullMinHp
          * @return void
          */
-        Class aClass = ModifConfig.CLASSES.stream()
-                .filter(c -> c.getName().equals(this.getAClass()))
-                .findFirst().orElse(null);
+        Class aClass = ModifConfig.CLASSES.stream().filter(c -> c.getName().equals(this.getAClass())).findFirst().orElse(null);
         if (aClass == null) return;
 
         if (aClass.getName().equals("mage")) setStats(this.intelligence, this.strength, this.dexterity);

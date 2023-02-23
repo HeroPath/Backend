@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the Inventory entity, it is used to store the items that the user has in his inventory.
+ * @Explanation: This class is the Inventory entity, it is used to store the items that the user has in his inventory.
  */
 
 @Entity

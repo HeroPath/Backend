@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for the request of donating diamonds to the guild
+ * @Explanation: DTO for the request of donating diamonds to the guild
  */
 
 @Getter

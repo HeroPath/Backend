@@ -4,7 +4,7 @@ import com.gianca1994.aowebbackend.config.SvConfig;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the guild package
+ * @Explanation: This class contains all the constants used in the guild package
  */
 
 public class GuildConst {

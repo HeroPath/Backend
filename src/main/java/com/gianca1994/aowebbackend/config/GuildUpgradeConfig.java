@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.config;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains the cost of upgrading a guild
+ * @Explanation: This class contains the cost of upgrading a guild
  */
 
 public class GuildUpgradeConfig {

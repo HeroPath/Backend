@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to send the ranking of the guilds
+ * @Explanation: This class is used to send the ranking of the guilds
  */
 
 @Getter

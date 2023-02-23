@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.config;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains the experience needed to level up.
+ * @Explanation: This class contains the experience needed to level up.
  */
 
 public class ExpLvlConfig {

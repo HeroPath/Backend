@@ -13,7 +13,7 @@ import java.util.Objects;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the methods to validate the guild service
+ * @Explanation: This class contains all the methods to validate the guild service
  */
 
 public class GuildServiceValidator {
@@ -21,7 +21,7 @@ public class GuildServiceValidator {
     public void userFound(boolean userExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a user exists
+         * @Explanation: This method checks if a user exists
          * @param boolean userExist
          * @return void
          */
@@ -31,7 +31,7 @@ public class GuildServiceValidator {
     public void userFoundByObject(User user) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a user exists
+         * @Explanation: This method checks if a user exists
          * @param User user
          * @return void
          */
@@ -41,7 +41,7 @@ public class GuildServiceValidator {
     public void guildFound(Guild guild) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a guild exists
+         * @Explanation: This method checks if a guild exists
          * @param Guild guild
          * @return void
          */
@@ -51,7 +51,7 @@ public class GuildServiceValidator {
     public void guildFoundByName(boolean guildExist) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a guild exists
+         * @Explanation: This method checks if a guild exists
          * @param boolean guildExist
          * @return void
          */
@@ -61,7 +61,7 @@ public class GuildServiceValidator {
     public void checkUserInGuild(String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a user is in a guild
+         * @Explanation: This method checks if a user is in a guild
          * @param String guildName
          * @return void
          */
@@ -71,7 +71,7 @@ public class GuildServiceValidator {
     public void checkUserNotInGuild(String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a user is not in a guild
+         * @Explanation: This method checks if a user is not in a guild
          * @param String guildName
          * @return void
          */
@@ -81,7 +81,7 @@ public class GuildServiceValidator {
     public void guildNameExist(boolean guildExist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a guild exists
+         * @Explanation: This method checks if a guild exists
          * @param boolean guildExist
          * @return void
          */
@@ -91,7 +91,7 @@ public class GuildServiceValidator {
     public void guildTagExist(boolean tagExist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if a guild tag exists
+         * @Explanation: This method checks if a guild tag exists
          * @param boolean tagExist
          * @return void
          */
@@ -101,7 +101,7 @@ public class GuildServiceValidator {
     public void guildDtoReqToSaveGuild(GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the guildDTO has the required fields to save a guild
+         * @Explanation: This method checks if the guildDTO has the required fields to save a guild
          * @param GuildDTO guildDTO
          * @return void
          */
@@ -113,7 +113,7 @@ public class GuildServiceValidator {
     public void guildReqToCreate(int level, long gold, int diamond) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user has the required level, gold and diamond to create a guild
+         * @Explanation: This method checks if the user has the required level, gold and diamond to create a guild
          * @param int level
          * @param long gold
          * @param int diamond
@@ -127,7 +127,7 @@ public class GuildServiceValidator {
     public void reqLvlToReqGuild(int level) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user has the required level to request a guild
+         * @Explanation: This method checks if the user has the required level to request a guild
          * @param int level
          * @return void
          */
@@ -137,7 +137,7 @@ public class GuildServiceValidator {
     public void checkGuildIsFull(int membersSize) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the guild is full
+         * @Explanation: This method checks if the guild is full
          * @param int membersSize
          * @return void
          */
@@ -147,7 +147,7 @@ public class GuildServiceValidator {
     public void checkGuildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is the leader or sub leader of the guild
+         * @Explanation: This method checks if the user is the leader or sub leader of the guild
          * @param boolean isLeaderOrSubLeader
          * @return void
          */
@@ -157,7 +157,7 @@ public class GuildServiceValidator {
     public void checkOtherUserInGuild(String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is in a guild
+         * @Explanation: This method checks if the user is in a guild
          * @param String guildName
          * @return void
          */
@@ -167,7 +167,7 @@ public class GuildServiceValidator {
     public void checkUserInReqGuild(boolean userInRequest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is in the guild requests
+         * @Explanation: This method checks if the user is in the guild requests
          * @param boolean userInRequest
          * @return void
          */
@@ -177,7 +177,7 @@ public class GuildServiceValidator {
     public void checkUserIsLeader(String username, String leader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is the leader of the guild
+         * @Explanation: This method checks if the user is the leader of the guild
          * @param String username
          * @param String leader
          * @return void
@@ -188,7 +188,7 @@ public class GuildServiceValidator {
     public void checkUserRemoveLeader(String nameRemove, String leader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is the leader of the guild
+         * @Explanation: This method checks if the user is the leader of the guild
          * @param String username
          * @param String nameRemove
          * @param String leader
@@ -201,7 +201,7 @@ public class GuildServiceValidator {
                                               int memberSize) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is the leader of the guild
+         * @Explanation: This method checks if the user is the leader of the guild
          * @param String nameRemove
          * @param String leader
          * @param String subLeader
@@ -215,7 +215,7 @@ public class GuildServiceValidator {
     public void checkUserDiamondsForDonate(int userDiamonds, int diamonds) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user has enough diamonds to donate
+         * @Explanation: This method checks if the user has enough diamonds to donate
          * @param int userDiamonds
          * @param int diamonds
          * @return void
@@ -226,7 +226,7 @@ public class GuildServiceValidator {
     public void checkGuildLvlMax(int guildLevel) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the guild is at the maximum level
+         * @Explanation: This method checks if the guild is at the maximum level
          * @param int guildLevel
          * @return void
          */
@@ -236,7 +236,7 @@ public class GuildServiceValidator {
     public void checkGuildDiamondsForUpgrade(int guildDiamonds, int guildLevel) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the guild has enough diamonds to upgrade
+         * @Explanation: This method checks if the guild has enough diamonds to upgrade
          * @param int guildDiamonds
          * @param int guildLevel
          * @return void

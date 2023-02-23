@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the combat between two users.
+ * @Explanation: This class is in charge of the combat between two users.
  */
 
 public class PvpSystem {
@@ -21,7 +21,7 @@ public class PvpSystem {
     public static CombatModel PvpUserVsUser(User user, User attacked, GuildRepository guildRepository) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat between two users.
+         * @Explanation: This function is in charge of the combat between two users.
          * @param User user
          * @param User attacked
          * @param GuildRepository guildRepository

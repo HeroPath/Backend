@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create a model for the exceptions.
+ * @Explanation: This class is used to create a model for the exceptions.
  */
 
 public class ExceptionModel {

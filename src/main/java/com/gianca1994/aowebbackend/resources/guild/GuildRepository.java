@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This is the repository for the Guild entity.
+ * @Explanation: This is the repository for the Guild entity.
  */
 
 @Repository

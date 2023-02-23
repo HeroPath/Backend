@@ -11,7 +11,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class represents the guild entity
+ * @Explanation: This class represents the guild entity
  */
 
 @Entity
@@ -77,7 +77,7 @@ public class Guild {
     public void userAddGuild(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method adds a user to the guild
+         * @Explanation: This method adds a user to the guild
          * @param user - User to be added
          * @return void
          */
@@ -89,7 +89,7 @@ public class Guild {
     public void userRemoveGuild(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method removes a user from the guild
+         * @Explanation: This method removes a user from the guild
          * @param user - User to be removed
          * @return void
          */

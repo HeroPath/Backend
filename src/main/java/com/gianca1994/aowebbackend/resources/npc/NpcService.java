@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the business logic of the npc.
+ * @Explanation: This class is in charge of the business logic of the npc.
  */
 
 @Service
@@ -24,7 +24,7 @@ public class NpcService {
     public ArrayList<Npc> getAllNpcs() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all npcs.
+         * @Explanation: This function is in charge of getting all npcs.
          * @param none
          * @return ArrayList<Npc>
          */
@@ -34,7 +34,7 @@ public class NpcService {
     public Npc getNpcByName(String name) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the npc by name.
+         * @Explanation: This function is in charge of getting the npc by name.
          * @param String name
          * @return Npc
          */
@@ -45,7 +45,7 @@ public class NpcService {
     public ArrayList<Npc> filterNpcByZone(String zone) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of filtering the npcs by zone.
+         * @Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
          * @return Set<Npc>
          */
@@ -57,7 +57,7 @@ public class NpcService {
     public Npc saveNpc(NpcDTO npc) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving the npc.
+         * @Explanation: This function is in charge of saving the npc.
          * @param NpcDTO npc
          * @return Npc
          */

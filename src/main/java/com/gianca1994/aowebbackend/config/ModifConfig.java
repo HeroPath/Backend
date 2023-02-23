@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to modify the configuration of the application.
+ * @Explanation: This class is used to modify the configuration of the application.
  */
 
 public class ModifConfig {

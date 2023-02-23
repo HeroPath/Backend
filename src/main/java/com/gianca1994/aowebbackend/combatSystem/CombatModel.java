@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create a combat model.
+ * @Explanation: This class is used to create a combat model.
  */
 
 @Getter
@@ -47,7 +47,7 @@ public class CombatModel {
                             int defenderHp, int defenderDmg) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to create a basic round node.
+         * @Explanation: This method is used to create a basic round node.
          * @param int roundCounter
          * @param int attackerHp
          * @param int attackerDmg
@@ -67,7 +67,7 @@ public class CombatModel {
                              long goldAmountLoseCombat, boolean levelUp) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to create a basic round finish node.
+         * @Explanation: This method is used to create a basic round finish node.
          * @param int attackerHp
          * @param long experienceGain
          * @param long goldGain

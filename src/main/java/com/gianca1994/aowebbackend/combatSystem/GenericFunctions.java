@@ -7,7 +7,7 @@ import com.gianca1994.aowebbackend.resources.user.User;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the generic functions that are used in the combat system.
+ * @Explanation: This class contains all the generic functions that are used in the combat system.
  */
 
 public class GenericFunctions {
@@ -15,7 +15,7 @@ public class GenericFunctions {
     public boolean checkLifeStartCombat(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user has enough
+         * @Explanation: This function is in charge of verifying if the user has enough
          * life to start a combat.
          * @param User user
          * @return boolean
@@ -26,7 +26,7 @@ public class GenericFunctions {
     public int getUserDmg(User user, int defense) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the damage that the user.
+         * @Explanation: This function is in charge of calculating the damage that the user.
          * @param User user
          * @param int defense
          * @return int
@@ -40,7 +40,7 @@ public class GenericFunctions {
     private int calculateCriticalDmg(User user, int dmg) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the critical damage.
+         * @Explanation: This function is in charge of calculating the critical damage.
          * @param User user
          * @param int dmg
          * @return int
@@ -54,7 +54,7 @@ public class GenericFunctions {
     public int reduceUserHp(User user, int userHp, int dmg) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the damage that the user.
+         * @Explanation: This function is in charge of calculating the damage that the user.
          * @param User user
          * @param int dmg
          * @return int
@@ -66,7 +66,7 @@ public class GenericFunctions {
     public boolean checkIfUserDied(int userHp) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user has died.
+         * @Explanation: This function is in charge of verifying if the user has died.
          * @param User user
          * @return boolean
          */
@@ -77,7 +77,7 @@ public class GenericFunctions {
                                          String defender, int defenderHp, int defenderDmg) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to create a basic round node.
+         * @Explanation: This method is used to create a basic round node.
          * @param int roundCounter
          * @param int attackerDmg
          * @param int defenderDmg
@@ -100,7 +100,7 @@ public class GenericFunctions {
                                                long goldGain, int diamondsGain, boolean levelUp) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to create a basic round finish node.
+         * @Explanation: This method is used to create a basic round finish node.
          * @param long goldAmountWin
          * @param long goldAmountLoseCombat
          * @param int amountPointsTitleWinOrLose

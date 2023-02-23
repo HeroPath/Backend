@@ -79,7 +79,7 @@ public class ItemService {
         Item newItemBuy = new Item(
                 itemBuy.getName(), itemBuy.getType(), itemBuy.getLvlMin(), itemBuy.getPrice() / 2, itemBuy.getClassRequired(),
                 itemBuy.getQuality(), itemBuy.getItemLevel(), itemBuy.getStrength(), itemBuy.getDexterity(), itemBuy.getIntelligence(),
-                itemBuy.getVitality(), itemBuy.getLuck(), itemBuy.isShop() , user
+                itemBuy.getVitality(), itemBuy.getLuck(), false, user
         );
         user.getInventory().getItems().add(newItemBuy);
         itemR.save(newItemBuy);

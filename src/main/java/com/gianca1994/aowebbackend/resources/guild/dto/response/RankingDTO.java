@@ -10,7 +10,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to send the ranking of the guilds
+ * @Explanation: This class is used to send the ranking of the guilds
  */
 
 @Getter
@@ -31,7 +31,7 @@ public class RankingDTO {
     public RankingDTO guildRankingDTO(Guild guild) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method converts a Guild object into a GuildRankingDTO object
+         * @Explanation: This method converts a Guild object into a GuildRankingDTO object
          * @param guild: Guild object
          * @return GuildRankingDTO
          */

@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the statics of the server.
+ * @Explanation: This class contains all the statics of the server.
  */
 
 public class SvConfig {

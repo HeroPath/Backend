@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the combat between the user and the npc.
+ * @Explanation: This class is in charge of the combat between the user and the npc.
  */
 
 public class PveSystem {
@@ -21,7 +21,7 @@ public class PveSystem {
     public static CombatModel PveUserVsNpc(User user, Npc npc, float bonusExpGold) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of the combat between the user and the npc.
+         * @Explanation: This function is in charge of the combat between the user and the npc.
          * @param User user
          * @param Npc npc
          * @param TitleRepository titleRepository

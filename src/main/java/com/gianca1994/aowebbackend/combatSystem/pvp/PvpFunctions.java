@@ -10,14 +10,14 @@ import java.util.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the functions of the pvp.
+ * @Explanation: This class is in charge of the functions of the pvp.
  */
 
 public class PvpFunctions {
     public long getUserGoldThief(long userGold) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the gold theft.
+         * @Explanation: This function is in charge of calculating the gold theft.
          * @param User user
          * @return long
          */
@@ -27,7 +27,7 @@ public class PvpFunctions {
     public long getUserGoldAmountLose(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the gold that the attacker.
+         * @Explanation: This function is in charge of calculating the gold that the attacker.
          * @param User user
          * @return long
          */
@@ -37,7 +37,7 @@ public class PvpFunctions {
     public long getUserGoldLoseForLoseCombat(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the gold that the attacker.
+         * @Explanation: This function is in charge of calculating the gold that the attacker.
          * @param User user
          * @return long
          */
@@ -47,7 +47,7 @@ public class PvpFunctions {
     public boolean checkBothUsersAlive(User attacker, User defender) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if both fighters are alive.
+         * @Explanation: This function is in charge of verifying if both fighters are alive.
          * @param User user
          * @param User defender
          * @return boolean
@@ -58,7 +58,7 @@ public class PvpFunctions {
     public int calculatePointsTitleWinOrLose(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the points that the attacker.
+         * @Explanation: This function is in charge of calculating the points that the attacker.
          * @param none
          * @return int
          */
@@ -72,7 +72,7 @@ public class PvpFunctions {
                              GuildRepository guildRepository, int mmrWinAndLose) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the guilds.
+         * @Explanation: This function is in charge of updating the guilds.
          * @param User attacker
          * @param User defender
          * @param GuildRepository guildRepository
@@ -101,7 +101,7 @@ public class PvpFunctions {
     public void updateQuests(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the quests.
+         * @Explanation: This function is in charge of updating the quests.
          * @param User user
          * @return void
          */
@@ -119,7 +119,7 @@ public class PvpFunctions {
                                    int mmrWinAndLose) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the stats of the winner.
+         * @Explanation: This function is in charge of updating the stats of the winner.
          * @param User user
          * @param User attacked
          * @param long goldAmountWin
@@ -139,7 +139,7 @@ public class PvpFunctions {
                                     int mmrWinAndLose) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the stats of the loser.
+         * @Explanation: This function is in charge of updating the stats of the loser.
          * @param User user
          * @param User attacked
          * @param long goldLoseForLoseCombat

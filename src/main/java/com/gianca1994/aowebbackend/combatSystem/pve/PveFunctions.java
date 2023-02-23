@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the functions of the pve combat system.
+ * @Explanation: This class is in charge of the functions of the pve combat system.
  */
 
 public class PveFunctions {
     public int calculateNpcDmg(Npc npc, int userDefense) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the damage that the npc.
+         * @Explanation: This function is in charge of calculating the damage that the npc.
          * @param Npc npc
          * @return int
          */
@@ -28,7 +28,7 @@ public class PveFunctions {
     public long CalculateUserExperienceGain(Npc npc) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the experience gain.
+         * @Explanation: This function is in charge of calculating the experience gain.
          * @param Npc npc
          * @return long
          */
@@ -38,7 +38,7 @@ public class PveFunctions {
     public boolean checkIfNpcDied(int npcHp) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the npc has died.
+         * @Explanation: This function is in charge of verifying if the npc has died.
          * @param Npc npc
          * @return boolean
          */
@@ -48,7 +48,7 @@ public class PveFunctions {
     public long calculateUserGoldGain(Npc npc) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the gold gain.
+         * @Explanation: This function is in charge of calculating the gold gain.
          * @param User user
          * @param Npc npc
          * @return long
@@ -59,7 +59,7 @@ public class PveFunctions {
     public boolean checkUserAndNpcAlive(boolean userAlive, boolean npcAlive) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of verifying if the user and the npc are alive.
+         * @Explanation: This function is in charge of verifying if the user and the npc are alive.
          * @param boolean userAlive
          * @param boolean npcAlive
          * @return boolean
@@ -70,7 +70,7 @@ public class PveFunctions {
     public boolean chanceDropDiamonds() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the chance of dropping diamonds.
+         * @Explanation: This function is in charge of calculating the chance of dropping diamonds.
          * @return boolean
          */
         return ((Math.random() * 100) + 1) > (100 - SvConfig.DIAMOND_DROP_CHANCE_PERCENTAGE);
@@ -79,7 +79,7 @@ public class PveFunctions {
     public int amountDiamondsDrop(User user) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
+         * @Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
          * @return int
          */
         int diamondsDrop = (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
@@ -90,7 +90,7 @@ public class PveFunctions {
     public void updateQuestProgress(User user, Npc npc) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the quest progress.
+         * @Explanation: This function is in charge of updating the quest progress.
          * @param User user
          * @param Npc npc
          * @return none
@@ -108,7 +108,7 @@ public class PveFunctions {
     public void updateExpAndGold(User user, long experienceGain, long goldGain) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of updating the experience, gold and npcs killed.
+         * @Explanation: This function is in charge of updating the experience, gold and npcs killed.
          * @param User user
          * @param long experienceGain
          * @param long goldGain

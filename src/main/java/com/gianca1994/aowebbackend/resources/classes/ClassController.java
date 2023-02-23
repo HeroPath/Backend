@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to manage the classes.
+ * @Explanation: This class is used to manage the classes.
  */
 
 @RestController
@@ -20,7 +20,7 @@ public class ClassController {
     public List<Class> getAllClasses() throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get all the classes.
+         * @Explanation: This method is used to get all the classes.
          * @param none
          * @return List<Class>
          */

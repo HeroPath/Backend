@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the controller of the guilds
+ * @Explanation: This class is the controller of the guilds
  */
 
 @RestController
@@ -35,7 +35,7 @@ public class GuildController {
     public List<RankingDTO> getAllGuilds() throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns all the guilds in the database
+         * @Explanation: This method returns all the guilds in the database
          * @return List<RankingDTO>
          */
         try {
@@ -50,7 +50,7 @@ public class GuildController {
     public UserDTO getUserGuild(@RequestHeader("Authorization") String token) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns the guild of the user
+         * @Explanation: This method returns the guild of the user
          * @param String token
          * @return UserDTO
          */
@@ -66,7 +66,7 @@ public class GuildController {
                           @RequestBody GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method saves a guild in the database
+         * @Explanation: This method saves a guild in the database
          * @param String token
          * @param GuildDTO guildDTO
          * @return void
@@ -84,7 +84,7 @@ public class GuildController {
                                  @RequestBody RequestGuildNameDTO requestGuildNameDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method requests a user to a guild
+         * @Explanation: This method requests a user to a guild
          * @param String token
          * @param RequestGuildNameDTO requestGuildNameDTO
          * @return void
@@ -102,7 +102,7 @@ public class GuildController {
                                 @PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method accepts a user to a guild
+         * @Explanation: This method accepts a user to a guild
          * @param String token
          * @param String name
          * @return void
@@ -119,7 +119,7 @@ public class GuildController {
                                 @PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method rejects a user to a guild
+         * @Explanation: This method rejects a user to a guild
          * @param String token
          * @param String name
          * @return void
@@ -136,7 +136,7 @@ public class GuildController {
                                   @PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method makes a user subleader
+         * @Explanation: This method makes a user subleader
          * @param String token
          * @param String name
          * @return void
@@ -154,7 +154,7 @@ public class GuildController {
                                 @PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method removes a user from a guild
+         * @Explanation: This method removes a user from a guild
          * @param String token
          * @param String name
          * @return void
@@ -172,7 +172,7 @@ public class GuildController {
                                         @RequestBody GuildDonateDiamondsDTO guildDonateDiamondsDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method donates diamonds to the guild
+         * @Explanation: This method donates diamonds to the guild
          * @param String token
          * @param GuildDonateDiamondsDTO guildDonateDiamondsDTO
          * @return UpgradeDonateDTO
@@ -188,7 +188,7 @@ public class GuildController {
     public UpgradeDonateDTO upgradeGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method upgrades the guild level
+         * @Explanation: This method upgrades the guild level
          * @param String token
          * @return UpgradeDonateDTO
          */

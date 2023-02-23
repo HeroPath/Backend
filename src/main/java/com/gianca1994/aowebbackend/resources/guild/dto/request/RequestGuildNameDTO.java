@@ -8,7 +8,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for the guild resource
+ * @Explanation: DTO for the guild resource
  */
 
 @Getter

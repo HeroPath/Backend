@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the methods to manage the guilds
+ * @Explanation: This class contains all the methods to manage the guilds
  */
 
 @Service
@@ -42,7 +42,7 @@ public class GuildService {
     public List<RankingDTO> getAll() {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns a list of all guilds
+         * @Explanation: This method returns a list of all guilds
          * @return List<ObjectNode>
          */
         return guildR.findAllByOrderByTitlePointsDesc().stream()
@@ -53,7 +53,7 @@ public class GuildService {
     public UserDTO getUser(long userId, String username) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns a userDTO
+         * @Explanation: This method returns a userDTO
          * @param long userId
          * @param String username
          * @return UserDTO
@@ -79,7 +79,7 @@ public class GuildService {
     public void save(long userId, String username, GuildDTO guildDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method creates a guild
+         * @Explanation: This method creates a guild
          * @param long userId
          * @param String username
          * @param GuildDTO guildDTO
@@ -108,7 +108,7 @@ public class GuildService {
     public void requestUser(long userId, String username, String guildName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method requests a user to a guild
+         * @Explanation: This method requests a user to a guild
          * @param long userId
          * @param String username
          * @param String guildName
@@ -131,7 +131,7 @@ public class GuildService {
     public void acceptUser(long userId, String username, String nameAccept) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method accepts a user to a guild
+         * @Explanation: This method accepts a user to a guild
          * @param long userId
          * @param String username
          * @param String nameAccept
@@ -158,7 +158,7 @@ public class GuildService {
     public void rejectUser(long userId, String username, String nameReject) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method rejects a user to a guild
+         * @Explanation: This method rejects a user to a guild
          * @param long userId
          * @param String username
          * @param String nameReject
@@ -178,7 +178,7 @@ public class GuildService {
     public void makeUserSubLeader(long userId, String username, String nameNewSubLeader) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method makes a user sub leader
+         * @Explanation: This method makes a user sub leader
          * @param long userId
          * @param String username
          * @param String nameNewSubLeader
@@ -202,7 +202,7 @@ public class GuildService {
     public void removeUser(long userId, String username, String nameRemove) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method removes a user from a guild
+         * @Explanation: This method removes a user from a guild
          * @param long userId
          * @param String username
          * @param String nameRemove
@@ -238,7 +238,7 @@ public class GuildService {
     public UpgradeDonateDTO donateDiamonds(long userId, int diamonds) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method donates diamonds to a guild
+         * @Explanation: This method donates diamonds to a guild
          * @param long userId
          * @param int diamonds
          * @return UpgradeDonateDTO
@@ -261,7 +261,7 @@ public class GuildService {
     public UpgradeDonateDTO upgradeLevel(long userId, String username) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method upgrades the level of a guild
+         * @Explanation: This method upgrades the level of a guild
          * @param long userId
          * @param String username
          * @return UpgradeDonateDTO

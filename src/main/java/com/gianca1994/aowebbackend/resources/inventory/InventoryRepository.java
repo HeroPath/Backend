@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @Author: Gianca1994
- * Explanation: This is the repository for the Inventory entity.
+ * @Explanation: This is the repository for the Inventory entity.
  */
 
 @Repository

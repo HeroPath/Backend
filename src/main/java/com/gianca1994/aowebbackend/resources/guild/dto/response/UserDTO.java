@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to send the guild information to the user.
+ * @Explanation: This class is used to send the guild information to the user.
  */
 
 @Getter
@@ -43,7 +43,7 @@ public class UserDTO {
     public void updateDTO(String username, String name, String tag, String description, String leader, String subLeader, int memberAmount, int level, int diamonds, int titlePoints, int maxMembers) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method updates the guild DTO.
+         * @Explanation: This method updates the guild DTO.
          * @param String username, String name, String tag, String description, String leader, String subLeader, int memberAmount, int level, int diamonds, int titlePoints, int maxMembers
          * @return void
          */
@@ -63,7 +63,7 @@ public class UserDTO {
     public void createMembersList(Guild guild, UserService userService) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method creates a list of users sorted by title points and level.
+         * @Explanation: This method creates a list of users sorted by title points and level.
          * @param Guild guild
          * @param UserService userService
          * @return void
@@ -84,7 +84,7 @@ public class UserDTO {
     public void createRequestList(Guild guild, UserService userService){
         /**
          * @Author: Gianca1994
-         * Explanation: This method creates a list of users that have requested to join the guild.
+         * @Explanation: This method creates a list of users that have requested to join the guild.
          * @param Guild guild
          * @param UserService userService
          * @return void
