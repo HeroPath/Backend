@@ -4,7 +4,7 @@ import com.gianca1994.aowebbackend.exception.Conflict;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the methods that validate the data
+ * @Explanation: This class contains all the methods that validate the data
  */
 
 public class MailServiceValidator {
@@ -12,7 +12,7 @@ public class MailServiceValidator {
     public void userExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user exists
+         * @Explanation: This method checks if the user exists
          * @param boolean exist
          * @return void
          */
@@ -22,7 +22,7 @@ public class MailServiceValidator {
     public void receiverNotEmpty(String receiver) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the receiver is empty
+         * @Explanation: This method checks if the receiver is empty
          * @param String receiver
          * @return void
          */
@@ -32,7 +32,7 @@ public class MailServiceValidator {
     public void subjectNotEmpty(String subject) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the subject is empty
+         * @Explanation: This method checks if the subject is empty
          * @param String subject
          * @return void
          */
@@ -42,7 +42,7 @@ public class MailServiceValidator {
     public void messageNotEmpty(String message) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the message is empty
+         * @Explanation: This method checks if the message is empty
          * @param String message
          * @return void
          */
@@ -52,7 +52,7 @@ public class MailServiceValidator {
     public void mailExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the mail exists
+         * @Explanation: This method checks if the mail exists
          * @param boolean exist
          * @return void
          */
@@ -62,7 +62,7 @@ public class MailServiceValidator {
     public void userNotEqual(String username, String receiver) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user is equal to the receiver
+         * @Explanation: This method checks if the user is equal to the receiver
          * @param String username
          * @param String receiver
          * @return void
@@ -73,7 +73,7 @@ public class MailServiceValidator {
     public void userHaveMails(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method checks if the user has mails
+         * @Explanation: This method checks if the user has mails
          * @param boolean exist
          * @return void
          */

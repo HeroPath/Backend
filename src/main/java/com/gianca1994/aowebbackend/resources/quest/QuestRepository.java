@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * @Author: Gianca1994
- * Explanation: QuestRepository is a repository that extends JpaRepository
+ * @Explanation: QuestRepository is a repository that extends JpaRepository
  */
 
 @Repository

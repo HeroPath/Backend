@@ -2,12 +2,11 @@ package com.gianca1994.aowebbackend.resources.npc.utilities;
 
 import com.gianca1994.aowebbackend.exception.Conflict;
 import com.gianca1994.aowebbackend.exception.NotFound;
-import com.gianca1994.aowebbackend.resources.npc.Npc;
 import com.gianca1994.aowebbackend.resources.npc.dto.request.NpcDTO;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the methods used to validate the npc before saving it
+ * @Explanation: This class contains all the methods used to validate the npc before saving it
  */
 
 public class NpcServiceValidator {
@@ -15,7 +14,7 @@ public class NpcServiceValidator {
     public void npcFound(boolean npcExist) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the npc before saving it
+         * @Explanation: This method is used to validate the npc before saving it
          * @param boolean npcExist
          * @return void
          */
@@ -25,7 +24,7 @@ public class NpcServiceValidator {
     public void npcNotFoundZone(int npcSize) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the npc before saving it
+         * @Explanation: This method is used to validate the npc before saving it
          * @param int npcSize
          * @return void
          */
@@ -35,7 +34,7 @@ public class NpcServiceValidator {
     public void saveNpc(NpcDTO npc) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to validate the npc before saving it
+         * @Explanation: This method is used to validate the npc before saving it
          * @param NpcDTO npc
          * @return void
          */

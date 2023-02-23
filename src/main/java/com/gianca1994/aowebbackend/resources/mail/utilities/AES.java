@@ -11,7 +11,7 @@ import java.util.Base64;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the service of the mail
+ * @Explanation: This class is the service of the mail
  */
 
 @Getter
@@ -25,7 +25,7 @@ public class AES {
     public String encryptMsg(String message) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method encrypts the message
+         * @Explanation: This method encrypts the message
          * @param String message
          * @return String
          */
@@ -39,7 +39,7 @@ public class AES {
     public String decryptMsg(String encryptedMessage) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method decrypts the message
+         * @Explanation: This method decrypts the message
          * @param String encryptedMessage
          * @return String
          */

@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.resources.npc.utilities;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the NpcResource class
+ * @Explanation: This class contains all the constants used in the NpcResource class
  */
 
 public class NpcConst {

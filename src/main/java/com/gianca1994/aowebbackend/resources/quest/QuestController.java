@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of handling the requests related to the quests.
+ * @Explanation: This class is in charge of handling the requests related to the quests.
  */
 
 @RestController
@@ -31,7 +31,7 @@ public class QuestController {
                                   @RequestParam("page") int page) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @param String token
          * @param int page
          * @return QuestListDTO
@@ -47,7 +47,7 @@ public class QuestController {
     public Quest getQuestByName(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting a quest by name.
+         * @Explanation: This function is in charge of getting a quest by name.
          * @param String name
          * @return Quest
          */
@@ -59,7 +59,7 @@ public class QuestController {
     public void saveQuest(@RequestBody QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving a quest.
+         * @Explanation: This function is in charge of saving a quest.
          * @param QuestDTO quest
          * @return none
          */
@@ -71,7 +71,7 @@ public class QuestController {
     public void deleteQuest(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of deleting a quest.
+         * @Explanation: This function is in charge of deleting a quest.
          * @param String name
          * @return none
          */
@@ -84,7 +84,7 @@ public class QuestController {
                             @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to accept a quest.
+         * @Explanation: This method is used to accept a quest.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
          * @return none
@@ -101,7 +101,7 @@ public class QuestController {
                                @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to complete a quest.
+         * @Explanation: This method is used to complete a quest.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
          * @return Quest
@@ -118,7 +118,7 @@ public class QuestController {
                             @RequestBody NameRequestDTO nameRequestDTO) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to cancel a quest.
+         * @Explanation: This method is used to cancel a quest.
          * @param String token
          * @param NameRequestDTO nameRequestDTO
          * @return none

@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for the list of quests
+ * @Explanation: DTO for the list of quests
  */
 
 @Getter

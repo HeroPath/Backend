@@ -23,7 +23,7 @@ import java.util.Base64;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the service of the mail
+ * @Explanation: This class is the service of the mail
  */
 
 @Getter
@@ -40,7 +40,7 @@ public class RSA {
     public void setKeys(String publicKey, String privateKey) {
         /**
          * @Author: Gianca1994
-         * Explanation: This method sets the keys
+         * @Explanation: This method sets the keys
          * @param String publicKey
          * @param String privateKey
          * @return void
@@ -52,7 +52,7 @@ public class RSA {
     public String encryptMsg(String message) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method encrypts the message
+         * @Explanation: This method encrypts the message
          * @param String message
          * @return String
          */
@@ -71,7 +71,7 @@ public class RSA {
     public String decryptMsg(String encryptedMessage) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This method decrypts the message
+         * @Explanation: This method decrypts the message
          * @param String encryptedMessage
          * @return String
          */
@@ -90,7 +90,7 @@ public class RSA {
     public PemObject pemGenerator(String key) throws IOException {
         /**
          * @Author: Gianca1994
-         * Explanation: This method generates the pem object
+         * @Explanation: This method generates the pem object
          * @param String key
          * @return PemObject
          */

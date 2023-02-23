@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of getting all the quests.
+ * @Explanation: This class is in charge of getting all the quests.
  */
 
 @Getter
@@ -38,7 +38,7 @@ public class PageFilterQuest {
     public void unacceptedQuests() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @return void
          */
         this.unacceptedQuests = allQuests.stream()
@@ -55,7 +55,7 @@ public class PageFilterQuest {
     private void generatePage() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @return void
          */
         int questPerPage = SvConfig.QUEST_PER_PAGE;
@@ -68,7 +68,7 @@ public class PageFilterQuest {
     public void unacceptedResult() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @return void
          */
         this.unacceptedResult = unacceptedQuestsPage.stream()
@@ -82,7 +82,7 @@ public class PageFilterQuest {
     public void acceptedQuests() {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @return void
          */
         this.acceptedResult = userQuests.stream()

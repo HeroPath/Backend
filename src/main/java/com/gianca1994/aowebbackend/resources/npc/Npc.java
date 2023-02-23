@@ -1,17 +1,17 @@
 package com.gianca1994.aowebbackend.resources.npc;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
+
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the entity of the table npcs in the database.
+ * @Explanation: This class is the entity of the table npcs in the database.
  */
 
 @Entity

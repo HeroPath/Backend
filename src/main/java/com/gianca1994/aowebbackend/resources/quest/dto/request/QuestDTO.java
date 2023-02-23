@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: DTO for Quest
+ * @Explanation: DTO for Quest
  */
 
 @Getter

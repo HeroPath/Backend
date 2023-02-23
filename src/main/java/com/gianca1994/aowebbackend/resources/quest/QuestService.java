@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the business logic of the quest.
+ * @Explanation: This class is in charge of the business logic of the quest.
  */
 
 @Service
@@ -35,7 +35,7 @@ public class QuestService {
     public QuestListDTO getQuests(String username, int page) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all the quests.
+         * @Explanation: This function is in charge of getting all the quests.
          * @param String username
          * @param int page
          * @return QuestListDTO
@@ -54,7 +54,7 @@ public class QuestService {
     public Quest getQuestByName(String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting a quest by name.
+         * @Explanation: This function is in charge of getting a quest by name.
          * @param String name
          * @return Quest
          */
@@ -65,7 +65,7 @@ public class QuestService {
     public void saveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving a quest.
+         * @Explanation: This function is in charge of saving a quest.
          * @param QuestDTO quest
          * @return none
          */
@@ -83,7 +83,7 @@ public class QuestService {
     public void deleteQuest(String name) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of deleting a quest.
+         * @Explanation: This function is in charge of deleting a quest.
          * @param String name
          * @return none
          */
@@ -95,7 +95,7 @@ public class QuestService {
     public void acceptQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of accepting a quest.
+         * @Explanation: This function is in charge of accepting a quest.
          * @param String username
          * @param String nameQuest
          * @return none
@@ -120,7 +120,7 @@ public class QuestService {
     public Quest completeQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of completing a quest.
+         * @Explanation: This function is in charge of completing a quest.
          * @param String username
          * @param String nameQuest
          * @return Quest
@@ -150,7 +150,7 @@ public class QuestService {
     public void cancelQuest(String username, String nameQuest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of canceling a quest.
+         * @Explanation: This function is in charge of canceling a quest.
          * @param String username
          * @param String nameQuest
          * @return none

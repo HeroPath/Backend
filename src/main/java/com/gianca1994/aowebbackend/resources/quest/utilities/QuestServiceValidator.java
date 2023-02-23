@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of validating the data of a quest.
+ * @Explanation: This class is in charge of validating the data of a quest.
  */
 
 public class QuestServiceValidator {
@@ -18,7 +18,7 @@ public class QuestServiceValidator {
     public void questFound(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a quest exists.
+         * @Explanation: This function is in charge of validating if a quest exists.
          * @param boolean exist
          * @return void
          */
@@ -28,7 +28,7 @@ public class QuestServiceValidator {
     public void questExist(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a quest exists.
+         * @Explanation: This function is in charge of validating if a quest exists.
          * @param boolean exist
          * @return void
          */
@@ -38,7 +38,7 @@ public class QuestServiceValidator {
     public void userQuestFound(UserQuest userQuest) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user quest exists.
+         * @Explanation: This function is in charge of validating if a user quest exists.
          * @param UserQuest userQuest
          * @return void
          */
@@ -48,7 +48,7 @@ public class QuestServiceValidator {
     public void userFound(boolean exist) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user exists.
+         * @Explanation: This function is in charge of validating if a user exists.
          * @param boolean exist
          * @return void
          */
@@ -58,7 +58,7 @@ public class QuestServiceValidator {
     public void validPage(int page) throws NotFound {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a page exists.
+         * @Explanation: This function is in charge of validating if a page exists.
          * @param int page
          * @return void
          */
@@ -68,7 +68,7 @@ public class QuestServiceValidator {
     public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating the data of a quest.
+         * @Explanation: This function is in charge of validating the data of a quest.
          * @param QuestDTO quest
          * @return void
          */
@@ -84,7 +84,7 @@ public class QuestServiceValidator {
     public void checkUserMaxQuests(int amountQuests) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user has reached the maximum number of quests.
+         * @Explanation: This function is in charge of validating if a user has reached the maximum number of quests.
          * @param int amountQuests
          * @return void
          */
@@ -94,7 +94,7 @@ public class QuestServiceValidator {
     public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user has already accepted a quest.
+         * @Explanation: This function is in charge of validating if a user has already accepted a quest.
          * @param List<UserQuest> userQuests
          * @param String questName
          * @return void
@@ -107,7 +107,7 @@ public class QuestServiceValidator {
     public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user has completed a quest.
+         * @Explanation: This function is in charge of validating if a user has completed a quest.
          * @param int amountKill
          * @param int amountNeeded
          * @return void
@@ -118,7 +118,7 @@ public class QuestServiceValidator {
     public void questAlreadyCompleted(long userQuestId) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of validating if a user has already completed a quest.
+         * @Explanation: This function is in charge of validating if a user has already completed a quest.
          * @param long userQuestId
          * @return void
          */

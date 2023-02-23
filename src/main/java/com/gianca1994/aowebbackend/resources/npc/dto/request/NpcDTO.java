@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create a new NPC
+ * @Explanation: This class is used to create a new NPC
  */
 
 @Getter

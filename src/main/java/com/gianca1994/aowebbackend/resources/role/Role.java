@@ -7,7 +7,7 @@ import lombok.Setter;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to represent the role of a user.
+ * @Explanation: This class is used to represent the role of a user.
  */
 
 @Getter

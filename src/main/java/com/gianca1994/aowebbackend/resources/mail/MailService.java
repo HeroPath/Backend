@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the service of the mail
+ * @Explanation: This class is the service of the mail
  */
 
 @Service
@@ -37,7 +37,7 @@ public class MailService {
     public List<Mail> getMails(String username) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method returns all the mails of the user
+         * @Explanation: This method returns all the mails of the user
          * @param String username
          * @return List<Mail>
          */
@@ -52,7 +52,7 @@ public class MailService {
     public void sendMail(String username, String receiver, String subject, String msg) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method sends a mail to the receiver
+         * @Explanation: This method sends a mail to the receiver
          * @param String username
          * @param String receiver
          * @param String subject
@@ -79,7 +79,7 @@ public class MailService {
     public void deleteAllMails(Long userId, String username) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method deletes all the mails of the user
+         * @Explanation: This method deletes all the mails of the user
          * @param Long userId
          * @param String username
          * @return void
@@ -94,7 +94,7 @@ public class MailService {
     public void deleteMail(Long userId, Long mailId) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method deletes a mail of the user
+         * @Explanation: This method deletes a mail of the user
          * @param Long userId
          * @return void
          */

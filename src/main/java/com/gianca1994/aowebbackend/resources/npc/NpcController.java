@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of the npc controller.
+ * @Explanation: This class is in charge of the npc controller.
  */
 
 @RestController
@@ -26,7 +26,7 @@ public class NpcController {
     public ArrayList<Npc> getAllNpcs() throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting all npcs.
+         * @Explanation: This function is in charge of getting all npcs.
          * @param String token
          * @return ArrayList<Npc>
          */
@@ -42,7 +42,7 @@ public class NpcController {
     public Npc getNpcByName(@PathVariable String name) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of getting the npc by name.
+         * @Explanation: This function is in charge of getting the npc by name.
          * @param String token
          * @param String name
          * @return Npc
@@ -55,7 +55,7 @@ public class NpcController {
     public ArrayList<Npc> filterNpcByZone(@PathVariable String zone) {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of filtering the npcs by zone.
+         * @Explanation: This function is in charge of filtering the npcs by zone.
          * @param String zone
          * @return ArrayList<Npc>
          */
@@ -67,7 +67,7 @@ public class NpcController {
     public Npc saveNpc(@RequestBody NpcDTO npc) throws Conflict {
         /**
          * @Author: Gianca1994
-         * Explanation: This function is in charge of saving the npc.
+         * @Explanation: This function is in charge of saving the npc.
          * @param String token
          * @param Npc npc
          * @return Npc

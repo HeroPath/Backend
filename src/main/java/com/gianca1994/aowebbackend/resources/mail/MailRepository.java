@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This interface is used to make the connection with the database
+ * @Explanation: This interface is used to make the connection with the database
  */
 
 @Repository

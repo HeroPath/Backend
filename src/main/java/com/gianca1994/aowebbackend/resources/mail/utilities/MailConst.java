@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.resources.mail.utilities;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class contains all the constants used in the mail service
+ * @Explanation: This class contains all the constants used in the mail service
  */
 
 public class MailConst {

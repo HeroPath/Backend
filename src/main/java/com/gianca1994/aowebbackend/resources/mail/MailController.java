@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to manage the mails
+ * @Explanation: This class is used to manage the mails
  */
 
 @RestController
@@ -29,7 +29,7 @@ public class MailController {
     public List<Mail> getAllMails(@RequestHeader(value = "Authorization") String token) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to get all the mails of the user
+         * @Explanation: This method is used to get all the mails of the user
          * @param String token
          * @return List<Mail>
          */
@@ -42,7 +42,7 @@ public class MailController {
                          @RequestBody SendMailDTO mail) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to send a mail to another user
+         * @Explanation: This method is used to send a mail to another user
          * @param String token
          * @param SendMailDTO mail
          * @return void
@@ -58,7 +58,7 @@ public class MailController {
     public void deleteAllMails(@RequestHeader(value = "Authorization") String token) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to delete all the mails of the user
+         * @Explanation: This method is used to delete all the mails of the user
          * @param String token
          * @return void
          */
@@ -74,7 +74,7 @@ public class MailController {
                            @PathVariable("id") Long id) throws Exception {
         /**
          * @Author: Gianca1994
-         * Explanation: This method is used to delete a mail
+         * @Explanation: This method is used to delete a mail
          * @param String token
          * @param Long id
          * @return List<Mail>

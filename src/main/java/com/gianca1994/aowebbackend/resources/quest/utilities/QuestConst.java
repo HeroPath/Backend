@@ -2,7 +2,7 @@ package com.gianca1994.aowebbackend.resources.quest.utilities;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is in charge of getting all the quests.
+ * @Explanation: This class is in charge of getting all the quests.
  */
 
 public class QuestConst {

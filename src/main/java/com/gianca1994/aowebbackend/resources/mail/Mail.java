@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is used to create the mail object
+ * @Explanation: This class is used to create the mail object
  */
 
 @Entity

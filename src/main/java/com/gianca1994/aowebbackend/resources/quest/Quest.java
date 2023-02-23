@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  * @Author: Gianca1994
- * Explanation: This class is the Quest entity, it is used to create the Quest table in the database.
+ * @Explanation: This class is the Quest entity, it is used to create the Quest table in the database.
  */
 
 @Entity
