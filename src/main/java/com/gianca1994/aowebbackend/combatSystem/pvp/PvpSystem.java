@@ -31,8 +31,7 @@ public class PvpSystem {
         int mmrWinAndLose = pvpFunctions.calculatePointsTitleWinOrLose(attacked);
 
         long goldAmountWin = 0, goldLoseForLoseCombat = 0;
-        int roundCounter = 0, userDmg, attackedDmg, userHp = user.getHp(), attackedHp = attacked.getHp(),
-                userDef = user.getDefense(), attackedDef = attacked.getDefense();
+        int roundCounter = 0, userDmg, attackedDmg, userHp = user.getHp(), userMaxDmg = user.getMaxDmg(), attackedHp = attacked.getHp(), attackedMaxDmg = attacked.getMaxDmg(), userDef = user.getDefense(), attackedDef = attacked.getDefense();
         boolean stopPvp = false;
 
         while (!stopPvp) {
@@ -59,7 +58,7 @@ public class PvpSystem {
                     stopPvp = true;
                 }
             }
-            pvpModel.roundCombat(roundCounter, userHp, userDmg, attackedHp, attackedDmg);
+            pvpModel.roundCombat(roundCounter, userHp, userDmg, userMaxDmg, attackedHp, attackedDmg, attackedMaxDmg);
         }
         pvpModel.finishCombat(userHp, 0, 0, 0, mmrWinAndLose, goldAmountWin, goldLoseForLoseCombat, false);
         user.setHp(userHp);

@@ -43,8 +43,8 @@ public class CombatModel {
         this.isPvP = true;
     }
 
-    public void roundCombat(int roundCounter, int attackerHp, int attackerDmg,
-                            int defenderHp, int defenderDmg) {
+    public void roundCombat(int roundCounter, int attackerHp, int attackerDmg, int attackerMaxDmg,
+                            int defenderHp, int defenderDmg, int defenderMaxDmg) {
         /**
          * @Author: Gianca1994
          * @Explanation: This method is used to create a basic round node.
@@ -58,7 +58,7 @@ public class CombatModel {
         String attackerName = "Attacker";
         String defenderName = this.isPvP() ? "Defender" : "Npc";
         this.getHistoryCombat().add(genericFunctions.roundJsonGenerator(roundCounter, attackerName,
-                attackerHp, attackerDmg, defenderName, defenderHp, defenderDmg)
+                attackerHp, attackerDmg, attackerMaxDmg, defenderName, defenderHp, defenderDmg, defenderMaxDmg)
         );
     }
 

@@ -28,7 +28,7 @@ public class PveSystem {
          * @return PveModel
          */
         CombatModel pveModel = new CombatModel(new ArrayList<>(), user, npc);
-        int roundCount = 0, diamondWin = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userDef = user.getDefense(), npcDef = npc.getDefense();
+        int roundCount = 0, diamondWin = 0, userDmg, npcDmg, userHp = user.getHp(), npcHp = npc.getMaxHp(), userMaxDmg = user.getMaxDmg(), userDef = user.getDefense(), npcDef = npc.getDefense(), npcMaxDmg = npc.getMaxDmg();
         boolean lvlUp = false, stopPve = false, diamondLuck = pveFunctions.chanceDropDiamonds();
         long expGain = 0, goldGain = 0;
 
@@ -57,7 +57,7 @@ public class PveSystem {
                     stopPve = true;
                 }
             }
-            pveModel.roundCombat(roundCount, userHp, userDmg, npcHp, npcDmg);
+            pveModel.roundCombat(roundCount, userHp, userDmg, userMaxDmg, npcHp, npcDmg, npcMaxDmg);
         }
         pveModel.finishCombat(userHp, expGain, goldGain, diamondWin, 0, 0, 0, lvlUp);
         user.updateTitle();

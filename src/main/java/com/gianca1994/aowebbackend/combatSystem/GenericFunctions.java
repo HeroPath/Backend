@@ -74,7 +74,8 @@ public class GenericFunctions {
     }
 
     public ObjectNode roundJsonGenerator(int roundCounter, String attacker, int attackerHp, int attackerDmg,
-                                         String defender, int defenderHp, int defenderDmg) {
+                                         int attackerMaxDmg, String defender, int defenderHp, int defenderDmg,
+                                         int defenderMaxDmg) {
         /**
          * @Author: Gianca1994
          * @Explanation: This method is used to create a basic round node.
@@ -89,8 +90,10 @@ public class GenericFunctions {
         round.put("round", roundCounter);
         round.put(attacker + "Life", attackerHp);
         round.put(attacker + "Dmg", attackerDmg);
+        if (attackerDmg > attackerMaxDmg) round.put(attacker + "Critical", true);
         round.put(defender + "Life", defenderHp);
         round.put(defender + "Dmg", defenderDmg);
+        if (defenderDmg > defenderMaxDmg) round.put(defender + "Critical", true);
         return round;
     }
 
