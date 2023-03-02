@@ -7,7 +7,6 @@ services:
             - "8080:8080"
         depends_on:
             - db
-
         environment:
             - spring.main.banner-mode=off
             - spring.output.ansi.enabled=ALWAYS
@@ -18,7 +17,7 @@ services:
             - jwt.authorizeRequests.patterns.classes=/api/v1/classes/**
             - spring.main.allow-circular-references=true
             - spring.datasource.driverClassName=org.postgresql.Driver
-            - spring.datasource.url=jdbc:postgresql://db:5432/aoweb
+            - spring.datasource.url=jdbc:postgresql://db:5432/hero-path
             - spring.datasource.username=postgres
             - spring.datasource.password=root
             - spring.jpa.show-sql=true
