@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "727a4dcd-9dfc-4d82-b766-5fe223b187cc",
-		"name": "AoWeb",
+		"name": "HeroPath",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16694054"
 	},
@@ -179,7 +179,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzM3MzA4ODAsImlhdCI6MTY3MzY0NDQ4MH0.Z-T2trNAlPGvWQJTP2CQPhzOeoeyDbyzUH1haHg56a8O-a4CuaeX4W9Z_yaBdlnYQcGBtdwFo5-6BhhlmeXztA",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzc2ODU4MjIsInVzZXJJZCI6MTIsImlhdCI6MTY3NzU5OTQyMn0.ag1mMYwhVdAHN7FXgAPfWVlOJmpcY4SNG_wDRTaCa_a7kjjpEawNNRCPzYOfjptrWc3qvaPf11TyBf9vWdqUyA",
 									"type": "string"
 								}
 							]
@@ -187,7 +187,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/users/ranking",
+							"raw": "http://{{local}}/api/v1/users/ranking?page=0",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -197,6 +197,12 @@
 								"v1",
 								"users",
 								"ranking"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
 							]
 						}
 					},
@@ -210,7 +216,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY3MTYzNTUsInVzZXJJZCI6MSwiaWF0IjoxNjc2NjI5OTU1fQ.nK502GUV6E_EspSysdbzRLTC8QpYDz4eIixs1vYZnLfHlvrUe6pg8zgK0q7_wwkwNVmVDj9RECnaOZzpR9VMaw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzc2ODU4MjIsInVzZXJJZCI6MTIsImlhdCI6MTY3NzU5OTQyMn0.ag1mMYwhVdAHN7FXgAPfWVlOJmpcY4SNG_wDRTaCa_a7kjjpEawNNRCPzYOfjptrWc3qvaPf11TyBf9vWdqUyA",
 									"type": "string"
 								}
 							]
@@ -398,7 +404,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzYzOTE0MTksInVzZXJJZCI6MSwiaWF0IjoxNjc2MzA1MDE5fQ.mUxVcZsYgTIJLtiiGeo3EIdLyVbhatMVEf3WM08YZwnR-S5IJThocaPNXeOZGWTCL-ck6wiB2S1TGHHeDcverg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY3NzY3Nzc3NiwidXNlcklkIjoyMSwiaWF0IjoxNjc3NTkxMzc2fQ.T3UoHpqT5GAWc8s6iGgEZrwiWqcxvh3VXwStZ1Xmbh6BIbtlx3tpxKlvnoNtBGOCJug8DthbkmK13geFL2x-0Q",
 									"type": "string"
 								}
 							]
@@ -498,7 +504,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NTYyNzg3OTYsImlhdCI6MTY1NjI3MTU5Nn0.BuTh7Ih66VERHKXeU5u_6p8S96IDcCK0fxxY9zD_ayoAqEYgmYYSlFpQlPythqBrTOsmeYt5T2aUekVfNBYoGg",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY3NzY3Nzc3NiwidXNlcklkIjoyMSwiaWF0IjoxNjc3NTkxMzc2fQ.T3UoHpqT5GAWc8s6iGgEZrwiWqcxvh3VXwStZ1Xmbh6BIbtlx3tpxKlvnoNtBGOCJug8DthbkmK13geFL2x-0Q",
 									"type": "string"
 								}
 							]
@@ -506,7 +512,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/npcs/zone/hell",
+							"raw": "http://{{local}}/api/v1/npcs/zone/forest",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -516,7 +522,7 @@
 								"v1",
 								"npcs",
 								"zone",
-								"hell"
+								"forest"
 							]
 						}
 					},
@@ -695,7 +701,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2NzY4MTkwNjAsInVzZXJJZCI6MiwiaWF0IjoxNjc2NzMyNjYwfQ.W4p1LhVCgrf_55kjAAReZKAwPOwPAldUDisGMf9NF-gTAZ8sSao-E2JqTS8iHSml8fKrh87HD8FYpK4K1ddkbQ",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY3NzE1ODUzNSwidXNlcklkIjoxLCJpYXQiOjE2NzcwNzIxMzV9.9sn15AQvXPXeMHtvdR2I0CZLHjuaG69WNew_0GNlcnB6dWbKschzHm57LkrgepMHWWu1rC-UXeb4DoNCnbCklw",
 									"type": "string"
 								}
 							]
@@ -703,7 +709,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{local}}/api/v1/items/upgrade/56",
+							"raw": "http://{{local}}/api/v1/items/upgrade/54",
 							"protocol": "http",
 							"host": [
 								"{{local}}"
@@ -713,7 +719,7 @@
 								"v1",
 								"items",
 								"upgrade",
-								"56"
+								"54"
 							]
 						}
 					},
