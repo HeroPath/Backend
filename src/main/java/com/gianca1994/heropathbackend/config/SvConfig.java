@@ -17,8 +17,8 @@ public class SvConfig {
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
-    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
+    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 50;
+    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 100;
     /////////////////////////// DIAMONDS ///////////////////////////
 
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
