@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.gianca1994.heropathbackend.resources.stats.StatsConfig.statsModel;
+
 /**
  * @Author: Gianca1994
  * @Explanation:
@@ -23,11 +25,12 @@ public class StatsController {
 
     @GetMapping()
     public StatsModel getStats() {
-        return new StatsModel(
-                userRepository.countUsers(),
-                SvConfig.LEVEL_MAX,
-                SvConfig.EXPERIENCE_MULTIPLIER,
-                SvConfig.GOLD_MULTIPLIER
-        );
+        if (statsModel.getLvlMax() == SvConfig.LEVEL_MAX) return statsModel;
+
+        statsModel.setLvlMax(SvConfig.LEVEL_MAX);
+        statsModel.setExpMultiplier(SvConfig.EXPERIENCE_MULTIPLIER);
+        statsModel.setGoldMultiplier(SvConfig.GOLD_MULTIPLIER);
+        statsModel.setUserRegistered((int) userRepository.count());
+        return statsModel;
     }
 }
