@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.heropathbackend.config.ItemUpgradeConfig;
+import com.gianca1994.heropathbackend.config.ItemQualityConfig;
 import com.gianca1994.heropathbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.heropathbackend.resources.user.User;
 import lombok.AllArgsConstructor;
@@ -81,7 +81,7 @@ public class Item {
         this.lvlMin = lvlMin;
         this.price = price;
         this.classRequired = classRequired;
-        this.quality = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? ItemUpgradeConfig.getName(1) : "";
+        this.quality = !ItemConst.ITEM_NOT_LEVEL_AND_QUALITY.contains(type) ? ItemQualityConfig.getName(1) : "";
         this.itemLevel = 0;
         this.strength = strength;
         this.dexterity = dexterity;
