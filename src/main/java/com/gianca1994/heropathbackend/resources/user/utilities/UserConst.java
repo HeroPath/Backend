@@ -28,4 +28,6 @@ public class UserConst {
     public static final String CANT_ATTACK_NPC_LVL_HIGHER_5 = "You can't attack an npc with level higher than 5 levels higher than you";
     public static final String CANT_ATTACK_NPC_SEA = "You can't attack an npc in the sea without a ship";
     public static final String CANT_ATTACK_NPC_HELL = "You can't attack an npc in hell without wings";
+    public static final String DONT_HAVE_PVE_PTS = "You don't have any free pve points";
+    public static final String DONT_HAVE_PVP_PTS = "You don't have any free pvp points";
 }

@@ -143,6 +143,8 @@ public class UserService {
 
         User attacker = userR.findByUsername(username);
         validator.checkLifeStartCombat(attacker);
+        validator.checkPvpPtsEnough(attacker);
+
         User defender = userR.findByUsername(nameDefender);
         validator.checkDefenderNotAdmin(defender);
         validator.checkLifeStartCombat(defender);
@@ -170,6 +172,7 @@ public class UserService {
 
         User user = userR.findByUsername(username);
         validator.checkLifeStartCombat(user);
+        validator.checkPvePtsEnough(user);
 
         Npc npc = npcR.findByName(npcName);
         validator.checkUserItemReqZoneSea(user.getEquipment(), npc.getZone());

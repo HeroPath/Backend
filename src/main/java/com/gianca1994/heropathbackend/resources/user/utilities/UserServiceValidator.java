@@ -140,4 +140,24 @@ public class UserServiceValidator {
         if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")) && npcZone.equals("hell"))
             throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
     }
+
+    public void checkPvePtsEnough(User user) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This function is in charge of validating the pve pts enough.
+         * @param User user
+         * @return void
+         */
+        if (user.getPvePts() <= 0) throw new Conflict(UserConst.DONT_HAVE_PVE_PTS);
+    }
+
+    public void checkPvpPtsEnough(User user) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This function is in charge of validating the pvp pts enough.
+         * @param User user
+         * @return void
+         */
+        if (user.getPvpPts() <= 0) throw new Conflict(UserConst.DONT_HAVE_PVP_PTS);
+    }
 }
