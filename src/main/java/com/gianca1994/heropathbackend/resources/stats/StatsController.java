@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: Gianca1994
- * @Explanation:
+ * @Explanation: This Class is used to manage the stats of the server.
  */
 
 @RestController
@@ -23,6 +23,11 @@ public class StatsController {
 
     @GetMapping()
     public StatsModel getStats() {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This method returns the stats of the server.
+         * @return StatsModel
+         */
         return new StatsModel(
                 userRepository.count(),
                 SvConfig.LEVEL_MAX,

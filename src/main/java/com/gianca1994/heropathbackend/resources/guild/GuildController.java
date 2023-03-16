@@ -1,10 +1,12 @@
 package com.gianca1994.heropathbackend.resources.guild;
 
+import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDonateDiamondsDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.request.RequestGuildNameDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.RankingDTO;
+import com.gianca1994.heropathbackend.resources.guild.dto.response.RequirementsCreateDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.UpgradeDonateDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.UserDTO;
 import com.gianca1994.heropathbackend.resources.jwt.config.JwtTokenUtil;
@@ -29,6 +31,21 @@ public class GuildController {
 
     @Autowired
     private JwtTokenUtil jwt;
+
+    @GetMapping("/requirements")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public RequirementsCreateDTO getRequirements() {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This method returns the requirements to create a guild
+         * @return RequirementsCreateDTO
+         */
+        return new RequirementsCreateDTO(
+                SvConfig.LEVEL_TO_CREATE_GUILD,
+                SvConfig.GOLD_TO_CREATE_GUILD,
+                SvConfig.DIAMOND_TO_CREATE_GUILD
+        );
+    }
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
