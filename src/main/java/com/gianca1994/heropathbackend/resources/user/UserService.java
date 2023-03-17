@@ -152,6 +152,7 @@ public class UserService {
         validator.checkDifferenceLevelPVP(attacker.getLevel(), defender.getLevel());
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
+        pvpSystem.getAttacker().setPvpPts(pvpSystem.getAttacker().getPvpPts() - 1);
         userR.save(pvpSystem.getAttacker());
 
         if (defender.getUsername().equals("test")) pvpSystem.getDefender().setHp(defender.getMaxHp());
@@ -180,6 +181,7 @@ public class UserService {
         validator.checkDifferenceLevelPVE(user.getLevel(), npc.getLevel());
 
         CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));
+        pveSystem.getAttacker().setPvePts(pveSystem.getAttacker().getPvePts() - 1);
         userR.save(pveSystem.getAttacker());
         return pveSystem.getHistoryCombat();
     }
