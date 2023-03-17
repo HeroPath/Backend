@@ -15,7 +15,7 @@ public class RestorePvePvpPts {
     @Autowired
     private UserRepository userRepository;
 
-    @Scheduled(cron = "0 37 1 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?") // reset daily at 00:00:00
     public void resetDailyAttacks() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
