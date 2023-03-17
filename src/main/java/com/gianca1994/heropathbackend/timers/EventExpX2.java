@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class EventExpX2 {
 
     @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 0 21 * * ?")
     public void startEventExpX2() {
         /**
          * @Author: Gianca1994
@@ -24,6 +25,7 @@ public class EventExpX2 {
     }
 
     @Scheduled(cron = "0 0 11 * * ?")
+    @Scheduled(cron = "0 0 22 * * ?")
     public void stopEventExpX2() {
         /**
          * @Author: Gianca1994
