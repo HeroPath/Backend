@@ -11,14 +11,16 @@ import java.util.List;
 public class SvConfig {
 
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static final int EXPERIENCE_MULTIPLIER = 999999;
-    public static final int GOLD_MULTIPLIER = 1000;
+    public static int EXPERIENCE_MULTIPLIER = 999999;
+    public static int GOLD_MULTIPLIER = 1000;
     public static final short LEVEL_MAX = 300;
+    public static final int PVE_PTS_MAX = 10000;
+    public static final int PVP_PTS_MAX = 10000;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
-    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
+    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 50;
+    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 100;
     /////////////////////////// DIAMONDS ///////////////////////////
 
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
@@ -50,7 +52,7 @@ public class SvConfig {
     /////////////////////////// GUILD ///////////////////////////
     public static final int MAX_MEMBERS_IN_GUILD = 5;
     public static final int LEVEL_TO_CREATE_GUILD = 100;
-    public static final int GOLD_TO_CREATE_GUILD = 500000;
+    public static final int GOLD_TO_CREATE_GUILD = 5000000;
     public static final int DIAMOND_TO_CREATE_GUILD = 100;
     public static final int LEVEL_TO_JOIN_GUILD = 10;
     public static final int GUILD_LVL_MAX = 10;
@@ -64,5 +66,9 @@ public class SvConfig {
             "admin", "gianca", "lucho", "renzo"
     );
     ////////////////////////// ROLE //////////////////////////
+
+    /////////////////////////// EVENT ///////////////////////////
+    public static String EVENT_ACTIVE = "NONE";
+    /////////////////////////// EVENT ///////////////////////////
 
 }

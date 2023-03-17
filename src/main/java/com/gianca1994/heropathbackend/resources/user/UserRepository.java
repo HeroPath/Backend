@@ -25,6 +25,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     ///////////////////////////////////////////////////////////////
 
+    //////////////////// USED FOR STATS_SERVICE ////////////////////
+    @Query("SELECT COUNT(u) FROM User u")
+    int countUsers();
+    ////////////////////////////////////////////////////////////////
+
     //////////////////// USED FOR MAIL_SERVICE ////////////////////
     @Query("SELECT u.rsaPublicKey FROM User u WHERE u.username = :username")
     String findRsaPublicK(@Param("username") String username);

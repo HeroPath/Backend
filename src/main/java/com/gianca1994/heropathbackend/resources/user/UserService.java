@@ -143,6 +143,8 @@ public class UserService {
 
         User attacker = userR.findByUsername(username);
         validator.checkLifeStartCombat(attacker);
+        validator.checkPvpPtsEnough(attacker);
+
         User defender = userR.findByUsername(nameDefender);
         validator.checkDefenderNotAdmin(defender);
         validator.checkLifeStartCombat(defender);
@@ -150,6 +152,7 @@ public class UserService {
         validator.checkDifferenceLevelPVP(attacker.getLevel(), defender.getLevel());
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
+        pvpSystem.getAttacker().setPvpPts(pvpSystem.getAttacker().getPvpPts() - 1);
         userR.save(pvpSystem.getAttacker());
 
         if (defender.getUsername().equals("test")) pvpSystem.getDefender().setHp(defender.getMaxHp());
@@ -170,6 +173,7 @@ public class UserService {
 
         User user = userR.findByUsername(username);
         validator.checkLifeStartCombat(user);
+        validator.checkPvePtsEnough(user);
 
         Npc npc = npcR.findByName(npcName);
         validator.checkUserItemReqZoneSea(user.getEquipment(), npc.getZone());
@@ -177,6 +181,7 @@ public class UserService {
         validator.checkDifferenceLevelPVE(user.getLevel(), npc.getLevel());
 
         CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));
+        pveSystem.getAttacker().setPvePts(pveSystem.getAttacker().getPvePts() - 1);
         userR.save(pveSystem.getAttacker());
         return pveSystem.getHistoryCombat();
     }

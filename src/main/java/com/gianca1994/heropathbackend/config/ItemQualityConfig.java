@@ -5,7 +5,7 @@ package com.gianca1994.heropathbackend.config;
  * @Explanation: Class used to add the quality to the item.
  */
 
-public class ItemUpgradeConfig {
+public class ItemQualityConfig {
 
     public static final String[] QUALITY_NAME = new String[]{
             "white", "green", "blue", "purple", "orange", "red"

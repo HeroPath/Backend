@@ -146,6 +146,11 @@ public class User {
     @JsonIgnore
     private String rsaPrivateKey;
 
+    @Column
+    private int pvePts;
+    @Column
+    private int pvpPts;
+
     public User(UserRegisterJwtDTO userJwt) {
         this.username = userJwt.getUsername();
         this.password = userJwt.getPassword();
@@ -175,6 +180,8 @@ public class User {
         this.titleName = ModifConfig.TITLES.get(0).getName();
         this.titlePoints = 0;
         this.guildName = "";
+        this.pvePts = SvConfig.PVE_PTS_MAX;
+        this.pvpPts = SvConfig.PVP_PTS_MAX;
     }
 
     public void generatePrivateAndPublicKey() throws InterruptedException {
