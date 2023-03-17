@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventExpX2 {
 
-    @Scheduled(cron = "0 17 2 * * ?")
+    @Scheduled(cron = "0 0 10 * * ?")
     public void startEventExpX2() {
         /**
          * @Author: Gianca1994
@@ -23,7 +23,7 @@ public class EventExpX2 {
         SvConfig.EXPERIENCE_MULTIPLIER = SvConfig.EXPERIENCE_MULTIPLIER * 2;
     }
 
-    @Scheduled(cron = "0 20 2 * * ?")
+    @Scheduled(cron = "0 0 11 * * ?")
     public void stopEventExpX2() {
         /**
          * @Author: Gianca1994

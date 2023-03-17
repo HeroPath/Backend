@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventGoldX2 {
 
-    @Scheduled(cron = "0 2 2 * * ?")
+    @Scheduled(cron = "0 0 11 * * ?")
     public void startEventGoldX2() {
         /**
          * @Author: Gianca1994
@@ -23,7 +23,7 @@ public class EventGoldX2 {
         SvConfig.GOLD_MULTIPLIER = SvConfig.GOLD_MULTIPLIER * 2;
     }
 
-    @Scheduled(cron = "0 5 2 * * ?")
+    @Scheduled(cron = "0 0 12 * * ?")
     public void stopEventGoldX2() {
         /**
          * @Author: Gianca1994
