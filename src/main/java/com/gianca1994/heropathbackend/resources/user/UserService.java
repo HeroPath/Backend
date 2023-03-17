@@ -98,7 +98,6 @@ public class UserService {
         return new RankingResponseDTO(ranking, totalPages);
     }
 
-
     @Transactional
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
         /**
