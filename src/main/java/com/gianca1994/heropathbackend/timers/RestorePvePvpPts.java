@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is used to restore the PVE and PVP points of all users
+ */
+
 @Component
 public class RestorePvePvpPts {
 
@@ -17,6 +22,11 @@ public class RestorePvePvpPts {
 
     @Scheduled(cron = "0 0 0 * * ?") // reset daily at 00:00:00
     public void resetDailyAttacks() {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This method is used to restore the PVE and PVP points of all users
+         * @return void
+         */
         List<User> users = userRepository.findAll();
         for (User user : users) {
             user.setPvePts(SvConfig.PVE_PTS_MAX);
