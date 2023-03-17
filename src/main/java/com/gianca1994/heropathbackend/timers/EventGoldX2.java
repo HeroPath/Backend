@@ -9,11 +9,13 @@ public class EventGoldX2 {
 
     @Scheduled(cron = "0 2 2 * * ?")
     public void startEventGoldX2() {
+        SvConfig.EVENT_ACTIVE = "GOLD X2";
         SvConfig.GOLD_MULTIPLIER = SvConfig.GOLD_MULTIPLIER * 2;
     }
 
     @Scheduled(cron = "0 5 2 * * ?")
     public void stopEventGoldX2() {
+        SvConfig.EVENT_ACTIVE = "NONE";
         SvConfig.GOLD_MULTIPLIER = SvConfig.GOLD_MULTIPLIER / 2;
     }
 }

@@ -1,6 +1,7 @@
 package com.gianca1994.heropathbackend.resources.stats;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
+import com.gianca1994.heropathbackend.resources.stats.models.StatsEvent;
 import com.gianca1994.heropathbackend.resources.stats.models.StatsPvePvpPts;
 import com.gianca1994.heropathbackend.resources.stats.models.StatsServer;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
@@ -50,6 +51,17 @@ public class StatsController {
         return new StatsPvePvpPts(
                 SvConfig.PVE_PTS_MAX,
                 SvConfig.PVP_PTS_MAX
+        );
+    }
+
+    @GetMapping("/active-event")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public StatsEvent getActiveEvent() {
+        /**
+         *
+         */
+        return new StatsEvent(
+                SvConfig.EVENT_ACTIVE
         );
     }
 }
