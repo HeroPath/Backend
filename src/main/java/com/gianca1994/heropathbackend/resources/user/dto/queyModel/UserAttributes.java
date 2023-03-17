@@ -75,7 +75,7 @@ public class UserAttributes {
 
         if (aClass.getName().equals("mage")) setStats(this.intelligence, this.strength, this.dexterity);
         else if (aClass.getName().equals("warrior")) setStats(this.strength, this.intelligence, this.dexterity);
-        else if (aClass.getName().equals("archer")) setStats(this.dexterity, this.intelligence, this.strength);
+        else if (aClass.getName().equals("archer")) setStats(this.dexterity, this.strength, this.intelligence);
 
         applyModifiers(aClass);
     }
