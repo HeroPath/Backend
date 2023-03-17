@@ -11,11 +11,11 @@ import java.util.List;
 public class SvConfig {
 
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static int EXPERIENCE_MULTIPLIER = 10;
-    public static int GOLD_MULTIPLIER = 10;
+    public static int EXPERIENCE_MULTIPLIER = 100000;
+    public static int GOLD_MULTIPLIER = 1000;
     public static final short LEVEL_MAX = 300;
-    public static final int PVE_PTS_MAX = 20;
-    public static final int PVP_PTS_MAX = 10;
+    public static final int PVE_PTS_MAX = 2000;
+    public static final int PVP_PTS_MAX = 1000;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
