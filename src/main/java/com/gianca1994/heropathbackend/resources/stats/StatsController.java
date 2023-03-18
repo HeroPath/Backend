@@ -58,7 +58,9 @@ public class StatsController {
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public StatsEvent getActiveEvent() {
         /**
-         *
+         * @Author: Gianca1994
+         * @Explanation: This method returns the stats of the server.
+         * @return StatsEvent
          */
         return new StatsEvent(
                 SvConfig.EVENT_ACTIVE_MSG
