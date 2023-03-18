@@ -17,10 +17,10 @@ public class EventGoldX2 {
     public void startEventGoldX2() {
         /**
          * @Author: Gianca1994
-         * @Explanation: This method is called every day
+         * @Explanation: This method is used to start the x2 gold event.
          * @return void
          */
-        SvConfig.EVENT_ACTIVE = "GOLD X2";
+        SvConfig.EVENT_ACTIVE_MSG = SvConfig.EVENT_GOLD_X2;
         SvConfig.GOLD_MULTIPLIER = SvConfig.GOLD_MULTIPLIER * 2;
     }
 
@@ -29,10 +29,10 @@ public class EventGoldX2 {
     public void stopEventGoldX2() {
         /**
          * @Author: Gianca1994
-         * @Explanation: This method is called every day
+         * @Explanation: This method is used to end the x2 gold event.
          * @return void
          */
-        SvConfig.EVENT_ACTIVE = "NONE";
+        SvConfig.EVENT_ACTIVE_MSG = SvConfig.EVENT_NONE;
         SvConfig.GOLD_MULTIPLIER = SvConfig.GOLD_MULTIPLIER / 2;
     }
 }

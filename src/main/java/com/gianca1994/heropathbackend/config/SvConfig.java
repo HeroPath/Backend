@@ -68,7 +68,18 @@ public class SvConfig {
     ////////////////////////// ROLE //////////////////////////
 
     /////////////////////////// EVENT ///////////////////////////
-    public static String EVENT_ACTIVE = "NONE";
+    public static String EVENT_ACTIVE_MSG = "NONE";
+    public static final String EVENT_NONE = "NONE";
+
+    public static final String EVENT_EXP_X2 = "EXP X2";
+    public static final boolean EVENT_EXP_X2_ACTIVE = true;
+    public static final String EVENT_EXP_X2_DATE_START = "0 0 0 ? * SAT";
+    public static final String EVENT_EXP_X2_DATE_END = "0 0 0 ? * SUN";
+
+    public static final String EVENT_GOLD_X2 = "GOLD X2";
+    public static final boolean EVENT_GOLD_X2_ACTIVE = false;
+    public static final String EVENT_GOLD_X2_DATE_START = "0 0 0 ? * SAT";
+    public static final String EVENT_GOLD_X2_DATE_END = "0 0 0 ? * SUN";
     /////////////////////////// EVENT ///////////////////////////
 
 }

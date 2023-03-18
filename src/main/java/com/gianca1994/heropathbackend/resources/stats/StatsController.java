@@ -61,7 +61,7 @@ public class StatsController {
          *
          */
         return new StatsEvent(
-                SvConfig.EVENT_ACTIVE
+                SvConfig.EVENT_ACTIVE_MSG
         );
     }
 }

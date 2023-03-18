@@ -12,27 +12,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventExpX2 {
 
-    @Scheduled(cron = "0 0 10 * * ?")
-    @Scheduled(cron = "0 0 21 * * ?")
+    @Scheduled(cron = SvConfig.EVENT_EXP_X2_DATE_START)
     public void startEventExpX2() {
         /**
          * @Author: Gianca1994
-         * @Explanation: This method is called every day
+         * @Explanation: This method is used to start the x2 experience event.
          * @return void
          */
-        SvConfig.EVENT_ACTIVE = "EXP X2";
-        SvConfig.EXPERIENCE_MULTIPLIER = SvConfig.EXPERIENCE_MULTIPLIER * 2;
+        if (SvConfig.EVENT_EXP_X2_ACTIVE) {
+            SvConfig.EVENT_ACTIVE_MSG = SvConfig.EVENT_EXP_X2;
+            SvConfig.EXPERIENCE_MULTIPLIER = SvConfig.EXPERIENCE_MULTIPLIER * 2;
+        }
+
     }
 
-    @Scheduled(cron = "0 0 11 * * ?")
-    @Scheduled(cron = "0 0 22 * * ?")
+    @Scheduled(cron = SvConfig.EVENT_EXP_X2_DATE_END)
     public void stopEventExpX2() {
         /**
          * @Author: Gianca1994
-         * @Explanation: This method is called every day
+         * @Explanation: This method is used to end the x2 experience event.
          * @return void
          */
-        SvConfig.EVENT_ACTIVE = "NONE";
-        SvConfig.EXPERIENCE_MULTIPLIER = SvConfig.EXPERIENCE_MULTIPLIER / 2;
+        if (SvConfig.EVENT_EXP_X2_ACTIVE) {
+            SvConfig.EVENT_ACTIVE_MSG = SvConfig.EVENT_NONE;
+            SvConfig.EXPERIENCE_MULTIPLIER = SvConfig.EXPERIENCE_MULTIPLIER / 2;
+        }
     }
 }
