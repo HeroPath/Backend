@@ -73,13 +73,13 @@ public class SvConfig {
 
     public static final String EVENT_EXP_X2 = "EXP X2";
     public static final boolean EVENT_EXP_X2_ACTIVE = true;
-    public static final String EVENT_EXP_X2_DATE_START = "0 0 0 ? * SAT";
-    public static final String EVENT_EXP_X2_DATE_END = "0 0 0 ? * SUN";
+    public static final String EVENT_EXP_X2_DATE_START = "0 0 0 ? * SAT"; // SATURDAY
+    public static final String EVENT_EXP_X2_DATE_END = "0 0 0 ? * SUN"; // SUNDAY
 
     public static final String EVENT_GOLD_X2 = "GOLD X2";
     public static final boolean EVENT_GOLD_X2_ACTIVE = false;
-    public static final String EVENT_GOLD_X2_DATE_START = "0 0 0 ? * SAT";
-    public static final String EVENT_GOLD_X2_DATE_END = "0 0 0 ? * SUN";
+    public static final String EVENT_GOLD_X2_DATE_START = "0 0 0 ? * SUN"; // SUNDAY
+    public static final String EVENT_GOLD_X2_DATE_END = "0 0 0 ? * MON"; // MONDAY
     /////////////////////////// EVENT ///////////////////////////
 
 }
