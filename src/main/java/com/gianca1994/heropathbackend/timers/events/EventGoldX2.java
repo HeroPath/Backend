@@ -1,4 +1,4 @@
-package com.gianca1994.heropathbackend.timers;
+package com.gianca1994.heropathbackend.timers.events;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
 import org.springframework.scheduling.annotation.Scheduled;
