@@ -11,16 +11,16 @@ import java.util.List;
 public class SvConfig {
 
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static int EXPERIENCE_MULTIPLIER = 100;
+    public static int EXPERIENCE_MULTIPLIER = 1000;
     public static int GOLD_MULTIPLIER = 100;
     public static final short LEVEL_MAX = 350;
-    public static final int PVE_PTS_MAX = 2000;
-    public static final int PVP_PTS_MAX = 1000;
+    public static final int PVE_PTS_MAX = 5000;
+    public static final int PVP_PTS_MAX = 5000;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
-    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 50;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 100;
+    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
+    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
     /////////////////////////// DIAMONDS ///////////////////////////
 
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////

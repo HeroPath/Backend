@@ -136,6 +136,10 @@ public class User {
     @Column
     private int titlePoints;
     @Column
+    private int titlePointsToNextLevel;
+    @Column
+    private int titleLevelToUnlock;
+    @Column
     private String guildName;
 
     @Column(columnDefinition = "text")
@@ -179,6 +183,8 @@ public class User {
         this.pvpLosses = 0;
         this.titleName = ModifConfig.TITLES.get(0).getName();
         this.titlePoints = 0;
+        this.titlePointsToNextLevel = ModifConfig.TITLES.get(1).getMinPts();
+        this.titleLevelToUnlock = ModifConfig.TITLES.get(1).getMinLvl();
         this.guildName = "";
         this.pvePts = SvConfig.PVE_PTS_MAX;
         this.pvpPts = SvConfig.PVP_PTS_MAX;
@@ -271,6 +277,8 @@ public class User {
         this.vitality += newTitle.getVitality() - currentTitle.getVitality();
         this.luck += newTitle.getLuck() - currentTitle.getLuck();
         this.titleName = newTitle.getName();
+        this.titlePointsToNextLevel = ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinPts();
+        this.titleLevelToUnlock = ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinLvl();
         calculateStats(false);
     }
 
