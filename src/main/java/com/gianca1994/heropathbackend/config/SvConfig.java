@@ -44,6 +44,10 @@ public class SvConfig {
     public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 
+    /////////////////////////// RANKING ///////////////////////////
+    public static final int USER_PER_PAGE = 20;
+    /////////////////////////// RANKING ///////////////////////////
+
     /////////////////////////// QUEST ///////////////////////////
     public static final int MAX_ACTIVE_QUESTS = 3;
     public static final int QUEST_PER_PAGE = 5;
@@ -56,7 +60,6 @@ public class SvConfig {
     public static final int DIAMOND_TO_CREATE_GUILD = 100;
     public static final int LEVEL_TO_JOIN_GUILD = 10;
     public static final int GUILD_LVL_MAX = 10;
-    public static final int USER_PER_PAGE = 5;
     /////////////////////////// GUILD ///////////////////////////
 
     ////////////////////////// ROLE //////////////////////////
