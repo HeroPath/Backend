@@ -31,7 +31,7 @@ public class Quest {
     @Column(unique = true)
     private String name;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String description;
 
     @Column
