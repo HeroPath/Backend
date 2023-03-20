@@ -73,7 +73,7 @@ public class QuestService {
         validator.checkDtoSaveQuest(quest);
         questR.save(
                 new Quest(
-                        quest.getName(), quest.getNameNpcKill().toLowerCase(),
+                        quest.getName(), quest.getDescription(), quest.getNameNpcKill().toLowerCase(),
                         quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
                         quest.getGiveExp(), quest.getGiveGold(), quest.getGiveDiamonds()
                 )

@@ -16,6 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class QuestDTO {
     private String name;
+    private String description;
     private String nameNpcKill;
     private int npcAmountNeed;
     private int userAmountNeed;
