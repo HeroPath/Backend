@@ -55,16 +55,6 @@ public class QuestServiceValidator {
         if (!exist) throw new Conflict(QuestConst.USER_NOT_FOUND);
     }
 
-    public void validPage(int page) throws NotFound {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a page exists.
-         * @param int page
-         * @return void
-         */
-        if (page < 0) throw new NotFound(QuestConst.PAGE_NOT_AVAILABLE);
-    }
-
     public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994

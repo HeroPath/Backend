@@ -32,7 +32,7 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestR;
 
-    public QuestListDTO getQuests(String username, int page) {
+    public QuestListDTO getQuests(String username) {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
@@ -40,14 +40,17 @@ public class QuestService {
          * @param int page
          * @return QuestListDTO
          */
-        validator.validPage(page);
+        User user = userR.findByUsername(username);
+
+        List<Quest> allQuestsAvailable = questR.findAllAvailableQuestsForUser(user.getLevel());
+
         PageFilterQuest pageFilterM = new PageFilterQuest(
-                page, questR.findAll(), userQuestR.findByUserUsername(username)
+                allQuestsAvailable, userQuestR.findByUserUsername(username)
         );
         pageFilterM.unacceptedQuests();
         pageFilterM.acceptedQuests();
         return new QuestListDTO(
-                pageFilterM.getAcceptedResult(), pageFilterM.getUnacceptedResult(), pageFilterM.getTotalPages()
+                pageFilterM.getAcceptedResult(), pageFilterM.getUnacceptedResult()
         );
     }
 

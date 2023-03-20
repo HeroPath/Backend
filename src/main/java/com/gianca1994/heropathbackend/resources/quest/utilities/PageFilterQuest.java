@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Getter
 @AllArgsConstructor
 public class PageFilterQuest {
-    private int page;
     private List<Quest> allQuests;
     private List<UserQuest> userQuests;
 
@@ -27,10 +26,8 @@ public class PageFilterQuest {
     private List<Quest> unacceptedQuestsPage;
     List<ObjectNode> unacceptedResult;
     List<ObjectNode> acceptedResult;
-    private int totalPages;
 
-    public PageFilterQuest(int page, List<Quest> allQuests, List<UserQuest> userQuests) {
-        this.page = page;
+    public PageFilterQuest(List<Quest> allQuests, List<UserQuest> userQuests) {
         this.allQuests = allQuests;
         this.userQuests = userQuests;
     }
@@ -48,21 +45,7 @@ public class PageFilterQuest {
                     }
                     return true;
                 }).collect(Collectors.toList());
-        generatePage();
         unacceptedResult();
-    }
-
-    private void generatePage() {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of getting all the quests.
-         * @return void
-         */
-        int questPerPage = SvConfig.QUEST_PER_PAGE;
-        this.totalPages = (int) Math.ceil((double) unacceptedQuests.size() / questPerPage);
-        int fromIndex = page * questPerPage;
-        int toIndex = Math.min(fromIndex + questPerPage, unacceptedQuests.size());
-        this.unacceptedQuestsPage = unacceptedQuests.subList(fromIndex, toIndex);
     }
 
     public void unacceptedResult() {

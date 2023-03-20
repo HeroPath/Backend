@@ -27,8 +27,7 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token,
-                                  @RequestParam("page") int page) {
+    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token) {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
@@ -36,10 +35,7 @@ public class QuestController {
          * @param int page
          * @return QuestListDTO
          */
-        return questS.getQuests(
-                jwt.getUsernameFromToken(token.substring(7)),
-                page
-        );
+        return questS.getQuests(jwt.getUsernameFromToken(token.substring(7)));
     }
 
     @GetMapping("/{name}")
