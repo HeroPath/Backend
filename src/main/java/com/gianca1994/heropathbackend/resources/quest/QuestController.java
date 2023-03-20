@@ -27,7 +27,7 @@ public class QuestController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token) {
+    public QuestListDTO getQuests(@RequestHeader(value = "Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
