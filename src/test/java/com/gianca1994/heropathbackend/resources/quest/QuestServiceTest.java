@@ -52,6 +52,7 @@ class QuestServiceTest {
         questRepository.save(
                 new Quest(
                         "testquest",
+                        "testquestdescription",
                         "testnpc",
                         1,
                         1,

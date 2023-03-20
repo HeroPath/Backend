@@ -11,16 +11,16 @@ import java.util.List;
 public class SvConfig {
 
     /////////////////////////// BASIC STATICS ///////////////////////////
-    public static int EXPERIENCE_MULTIPLIER = 999999;
-    public static int GOLD_MULTIPLIER = 1000;
-    public static final short LEVEL_MAX = 300;
-    public static final int PVE_PTS_MAX = 10000;
-    public static final int PVP_PTS_MAX = 10000;
+    public static int EXPERIENCE_MULTIPLIER = 1000;
+    public static int GOLD_MULTIPLIER = 100;
+    public static final short LEVEL_MAX = 350;
+    public static final int PVE_PTS_MAX = 5000;
+    public static final int PVP_PTS_MAX = 5000;
     /////////////////////////// BASIC STATICS ///////////////////////////
 
     /////////////////////////// DIAMONDS ///////////////////////////
-    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 50;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 100;
+    public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
+    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
     /////////////////////////// DIAMONDS ///////////////////////////
 
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
@@ -44,9 +44,13 @@ public class SvConfig {
     public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 
+    /////////////////////////// RANKING ///////////////////////////
+    public static final int USER_PER_PAGE = 10;
+    /////////////////////////// RANKING ///////////////////////////
+
     /////////////////////////// QUEST ///////////////////////////
     public static final int MAX_ACTIVE_QUESTS = 3;
-    public static final int QUEST_PER_PAGE = 5;
+    public static final int QUEST_PER_PAGE = 15;
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////
@@ -56,7 +60,6 @@ public class SvConfig {
     public static final int DIAMOND_TO_CREATE_GUILD = 100;
     public static final int LEVEL_TO_JOIN_GUILD = 10;
     public static final int GUILD_LVL_MAX = 10;
-    public static final int USER_PER_PAGE = 5;
     /////////////////////////// GUILD ///////////////////////////
 
     ////////////////////////// ROLE //////////////////////////
@@ -68,7 +71,18 @@ public class SvConfig {
     ////////////////////////// ROLE //////////////////////////
 
     /////////////////////////// EVENT ///////////////////////////
-    public static String EVENT_ACTIVE = "NONE";
+    public static String EVENT_ACTIVE_MSG = "NONE";
+    public static final String EVENT_NONE = "NONE";
+
+    public static final String EVENT_EXP_X2 = "EXP X2";
+    public static final boolean EVENT_EXP_X2_ACTIVE = true;
+    public static final String EVENT_EXP_X2_DATE_START = "0 0 0 ? * SAT"; // SATURDAY
+    public static final String EVENT_EXP_X2_DATE_END = "0 0 0 ? * SUN"; // SUNDAY
+
+    public static final String EVENT_GOLD_X2 = "GOLD X2";
+    public static final boolean EVENT_GOLD_X2_ACTIVE = false;
+    public static final String EVENT_GOLD_X2_DATE_START = "0 0 0 ? * SUN"; // SUNDAY
+    public static final String EVENT_GOLD_X2_DATE_END = "0 0 0 ? * MON"; // MONDAY
     /////////////////////////// EVENT ///////////////////////////
 
 }

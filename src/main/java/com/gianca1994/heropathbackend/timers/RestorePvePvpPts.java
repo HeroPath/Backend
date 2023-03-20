@@ -31,6 +31,7 @@ public class RestorePvePvpPts {
         for (User user : users) {
             user.setPvePts(SvConfig.PVE_PTS_MAX);
             user.setPvpPts(SvConfig.PVP_PTS_MAX);
+            user.setHp(user.getMaxHp());
         }
         userRepository.saveAll(users);
     }

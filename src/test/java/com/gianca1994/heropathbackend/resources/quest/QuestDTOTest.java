@@ -32,6 +32,7 @@ class QuestDTOTest {
     public void constructorAllArgsTest() {
        QuestDTO questDTO = new QuestDTO(
                 "name",
+                "description",
                 "nameNpcKill", 1,
                 1,
                 1,
@@ -81,6 +82,7 @@ class QuestDTOTest {
     void givenQuestDTO_whenNotEquals_thenReturnFalse() {
         QuestDTO questDTO2 = new QuestDTO(
                 "name",
+                "description",
                 "nameNpcKill", 1,
                 1,
                 1,

@@ -19,10 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RankingDTO {
     private String name;
-    private String description;
     private String tag;
     private String leader;
-    private String subLeader;
     private int memberAmount;
     private int maxMembers;
     private int titlePoints;
@@ -37,10 +35,8 @@ public class RankingDTO {
          */
         return new RankingDTO(
                 guild.getName(),
-                guild.getDescription(),
                 guild.getTag(),
                 guild.getLeader(),
-                guild.getSubLeader(),
                 guild.getMembers().size(),
                 SvConfig.MAX_MEMBERS_IN_GUILD,
                 guild.getTitlePoints(),

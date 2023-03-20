@@ -22,11 +22,5 @@ public class UserRankingDTO {
     private int level;
     private String titleName;
     private int titlePoints;
-    private int strength;
-    private int dexterity;
-    private int vitality;
-    private int intelligence;
-    private int luck;
     private int pvpWins;
-    private int pvpLosses;
 }

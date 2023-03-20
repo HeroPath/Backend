@@ -90,19 +90,13 @@ public class UserService {
         AtomicInteger pos = new AtomicInteger((page * SvConfig.USER_PER_PAGE) + 1);
 
         List<UserRankingDTO> ranking = users.stream().map(user -> new UserRankingDTO(
-                pos.getAndIncrement(),
-                user.getUsername(),
+                pos.getAndIncrement(), user.getUsername(),
                 !Objects.equals(user.getGuildName(), "") ? user.getGuildName() : "---",
-                user.getAClass(),
-                user.getLevel(),
-                user.getTitleName(), user.getTitlePoints(),
-                user.getStrength(), user.getDexterity(), user.getVitality(), user.getIntelligence(), user.getLuck(),
-                user.getPvpWins(), user.getPvpLosses()
+                user.getAClass(), user.getLevel(), user.getTitleName(), user.getTitlePoints(), user.getPvpWins()
         )).collect(Collectors.toList());
 
         return new RankingResponseDTO(ranking, totalPages);
     }
-
 
     @Transactional
     public UserAttributes setFreeSkillPoint(long userId, String skillName) throws Conflict {
