@@ -113,7 +113,7 @@ public class QuestService {
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
 
-        validator.checkUserHaveLvlRequired(quest.getLevelRequired(), user.getLevel());
+        validator.checkUserHaveLvlRequired(user.getLevel(), quest.getLevelRequired());
 
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);

@@ -54,7 +54,7 @@ public class PageFilterQuest {
          * @Explanation: This function is in charge of getting all the quests.
          * @return void
          */
-        this.unacceptedResult = unacceptedQuestsPage.stream()
+        this.unacceptedResult = unacceptedQuests.stream()
                 .map(quest -> {
                     ObjectNode questON = new ObjectMapper().createObjectNode();
                     questON.putPOJO("quest", quest);
