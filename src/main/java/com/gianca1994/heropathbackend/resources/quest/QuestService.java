@@ -1,9 +1,11 @@
 package com.gianca1994.heropathbackend.resources.quest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.quest.dto.response.QuestListDTO;
-import com.gianca1994.heropathbackend.resources.quest.utilities.PageFilterQuest;
+import com.gianca1994.heropathbackend.resources.quest.utilities.FilterQuest;
 import com.gianca1994.heropathbackend.resources.quest.utilities.QuestServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.*;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
@@ -37,21 +39,15 @@ public class QuestService {
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
          * @param String username
-         * @param int page
          * @return QuestListDTO
          */
         User user = userR.findByUsername(username);
-
         List<Quest> allQuestsAvailable = questR.findAllAvailableQuestsForUser(user.getLevel());
 
-        PageFilterQuest pageFilterM = new PageFilterQuest(
-                allQuestsAvailable, userQuestR.findByUserUsername(username)
-        );
+        FilterQuest pageFilterM = new FilterQuest(allQuestsAvailable, userQuestR.findByUserUsername(username));
         pageFilterM.unacceptedQuests();
         pageFilterM.acceptedQuests();
-        return new QuestListDTO(
-                pageFilterM.getAcceptedResult(), pageFilterM.getUnacceptedResult()
-        );
+        return new QuestListDTO(pageFilterM.getAcceptedQuests(), pageFilterM.getUnacceptedQuests());
     }
 
     public Quest getQuestByName(String name) throws Conflict {
