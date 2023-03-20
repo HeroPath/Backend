@@ -50,7 +50,7 @@ public class SvConfig {
 
     /////////////////////////// QUEST ///////////////////////////
     public static final int MAX_ACTIVE_QUESTS = 3;
-    public static final int QUEST_PER_PAGE = 10;
+    public static final int QUEST_PER_PAGE = 15;
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////
