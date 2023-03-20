@@ -33,7 +33,7 @@ class QuestTest {
     @Test
     public void constructorAllArgsTest() {
         Quest quest = new Quest(
-                1L, "name", "description","nameNpcKill",
+                1L, "name", "description", 1,"nameNpcKill",
                 1, 1,
                 1, 1L, (short) 1, new HashSet<>()
         );
@@ -45,6 +45,7 @@ class QuestTest {
         Quest quest = new Quest(
                 "name",
                 "description",
+                1,
                 "nameNpcKill", 1,
                 1,
                 1,
@@ -97,7 +98,7 @@ class QuestTest {
     @Test
     void givenQuest_whenNotEquals_thenNotEquals() {
         Quest quest2 = new Quest(
-                2L, "name2", "description","nameNpcKill2",
+                2L, "name2", "description", 1,"nameNpcKill2",
                 2, 2,
                 2, 2L, (short) 2,
                 new HashSet<>()

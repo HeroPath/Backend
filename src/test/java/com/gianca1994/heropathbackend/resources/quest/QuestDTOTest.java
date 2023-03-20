@@ -33,6 +33,7 @@ class QuestDTOTest {
        QuestDTO questDTO = new QuestDTO(
                 "name",
                 "description",
+                1,
                 "nameNpcKill", 1,
                 1,
                 1,
@@ -83,6 +84,7 @@ class QuestDTOTest {
         QuestDTO questDTO2 = new QuestDTO(
                 "name",
                 "description",
+                1,
                 "nameNpcKill", 1,
                 1,
                 1,
