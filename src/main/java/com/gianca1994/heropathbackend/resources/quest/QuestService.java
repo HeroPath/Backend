@@ -34,13 +34,14 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestR;
 
-    public QuestListDTO getQuests(String username) {
+    public QuestListDTO getQuests(String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
          * @param String username
          * @return QuestListDTO
          */
+        validator.userFound(userR.existsByUsername(username));
         User user = userR.findByUsername(username);
         List<Quest> allQuestsAvailable = questR.findAllAvailableQuestsForUser(user.getLevel());
 
