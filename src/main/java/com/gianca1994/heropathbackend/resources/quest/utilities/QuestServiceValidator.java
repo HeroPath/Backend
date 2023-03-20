@@ -124,4 +124,15 @@ public class QuestServiceValidator {
          */
         if (userQuestId == 0) throw new Conflict(QuestConst.QUEST_ALREADY_COMPLETED);
     }
+
+    public void checkUserHaveLvlRequired(int userLvl, int questLvl) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This function is in charge of validating if a user has the level required to accept a quest.
+         * @param int userLvl
+         * @param int questLvl
+         * @return void
+         */
+        if (userLvl < questLvl) throw new Conflict(QuestConst.USER_LVL_NOT_ENOUGH);
+    }
 }

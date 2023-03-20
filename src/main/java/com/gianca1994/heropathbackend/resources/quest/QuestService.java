@@ -73,8 +73,8 @@ public class QuestService {
         validator.checkDtoSaveQuest(quest);
         questR.save(
                 new Quest(
-                        quest.getName(), quest.getDescription(), quest.getNameNpcKill().toLowerCase(),
-                        quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
+                        quest.getName(), quest.getDescription(), quest.getLevelRequired(),
+                        quest.getNameNpcKill().toLowerCase(), quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
                         quest.getGiveExp(), quest.getGiveGold(), quest.getGiveDiamonds()
                 )
         );
@@ -109,6 +109,9 @@ public class QuestService {
 
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
+
+        validator.checkUserHaveLvlRequired(quest.getLevelRequired(), user.getLevel());
+
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
         userQuest.setQuest(quest);
