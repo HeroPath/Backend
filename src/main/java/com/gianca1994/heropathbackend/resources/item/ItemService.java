@@ -1,6 +1,7 @@
 package com.gianca1994.heropathbackend.resources.item;
 
 import com.gianca1994.heropathbackend.exception.Conflict;
+import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.EquipOrUnequipDTO;
@@ -166,7 +167,7 @@ public class ItemService {
     }
 
     @Transactional
-    public void upgradeItem(Long userId, Long itemId) throws Conflict {
+    public Inventory upgradeItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of upgrading an item.
@@ -196,5 +197,6 @@ public class ItemService {
         itemUpgrade.itemUpgrade();
         itemR.save(itemUpgrade);
         userR.save(user);
+        return user.getInventory();
     }
 }
