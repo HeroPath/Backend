@@ -130,7 +130,7 @@ public class ItemController {
          * @Explanation: This method is used to upgrade an item.
          * @param String token
          * @Param Long itemUpgradeId
-         * @return void
+         * @return Inventory
          */
         return itemS.upgradeItem(
                 jwt.getIdFromToken(token.substring(7)),

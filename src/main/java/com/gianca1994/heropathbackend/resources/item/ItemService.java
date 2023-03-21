@@ -173,7 +173,7 @@ public class ItemService {
          * @Explanation: This function is in charge of upgrading an item.
          * @param long userId
          * @param long itemId
-         * @return void
+         * @return Inventory
          */
         validator.userFound(userR.existsById(userId));
         validator.itemFound(itemR.existsById(itemId));
