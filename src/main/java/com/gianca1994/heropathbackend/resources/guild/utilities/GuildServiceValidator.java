@@ -134,14 +134,14 @@ public class GuildServiceValidator {
         if (level < SvConfig.LEVEL_TO_JOIN_GUILD) throw new Conflict(GuildConst.GUILD_LVL_REQUEST);
     }
 
-    public void checkGuildIsFull(int membersSize) throws Conflict {
+    public void checkGuildIsFull(int membersSize, int maxMembers) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This method checks if the guild is full
          * @param int membersSize
          * @return void
          */
-        if (membersSize >= SvConfig.MAX_MEMBERS_IN_GUILD) throw new Conflict(GuildConst.GUILD_FULL);
+        if (membersSize >= maxMembers) throw new Conflict(GuildConst.GUILD_FULL);
     }
 
     public void checkGuildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
