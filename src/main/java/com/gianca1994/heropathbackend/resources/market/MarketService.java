@@ -30,7 +30,7 @@ public class MarketService {
     }
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
-        Market market = new Market();
+
 
         if (!itemR.existsById(marketRegisterDTO.getItemId())) throw new BadRequest("Item not found");
 
@@ -43,23 +43,16 @@ public class MarketService {
         Inventory userInventory = userR.findInventoryById(userId);
         userInventory.getItems().remove(item);
 
-        market.setUserId(userId);
-        market.setItem(item);
-        market.setUsernameSeller(usernameSeller);
-        market.setGoldPrice(marketRegisterDTO.getGoldPrice());
-        market.setDiamondPrice(marketRegisterDTO.getDiamondPrice());
-
         userR.updateInventoryById(userId, userInventory);
         itemR.save(item);
-        marketR.save(market);
+
+        marketR.save(new Market(
+                userId,
+                item,
+                usernameSeller,
+                marketRegisterDTO.getGoldPrice(),
+                marketRegisterDTO.getDiamondPrice()
+        ));
     }
 
-    public void buyItem(Long userId, Long marketId) {
-        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
-        Market market = marketR.findById(marketId).get();
-        if (Objects.equals(market.getUserId(), userId)) throw new BadRequest("You can't buy your own item");
-        if (market.getItem().isInMarket()) throw new BadRequest("Item already sold");
-        market.getItem().setInMarket(true);
-        marketR.save(market);
-    }
 }
