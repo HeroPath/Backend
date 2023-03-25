@@ -15,4 +15,5 @@ public class MarketService {
         return marketRepository.findAll();
     }
 
+
 }
