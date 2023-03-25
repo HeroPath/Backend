@@ -1,5 +1,6 @@
 package com.gianca1994.heropathbackend.resources.user;
 
+import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
 
 /**
  * @Author: Gianca1994
@@ -19,6 +22,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
+
+    //////////////////// USED FOR MARKET_SERVICE ////////////////////
+    @Query("SELECT u.inventory FROM User u WHERE u.id = :id")
+    Inventory findInventoryById(@Param("id") long id);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.inventory = :inventory WHERE u.id = :id")
+    void updateInventoryById(@Param("id") long id, @Param("inventory") Inventory inventory);
+    /////////////////////////////////////////////////////////////////
 
     //////////////////// USED FOR AUTH_SERVICE ////////////////////
     boolean existsByUsername(String username);
