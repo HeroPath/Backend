@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MarketRegisterDTO {
-    private long itemId;
+    private Long itemId;
     private Long goldPrice;
     private int diamondPrice;
 }
