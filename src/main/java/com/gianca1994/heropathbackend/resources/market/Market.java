@@ -1,5 +1,7 @@
 package com.gianca1994.heropathbackend.resources.market;
 
+import com.gianca1994.heropathbackend.resources.inventory.Inventory;
+import com.gianca1994.heropathbackend.resources.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,12 @@ public class Market {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private Long goldPrice;
+
+    @Column
+    private int diamondPrice;
+
+    @Column
+    private String usernameSeller;
 }
