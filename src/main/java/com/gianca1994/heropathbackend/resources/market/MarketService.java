@@ -29,6 +29,5 @@ public class MarketService {
         market.setGoldPrice(marketRegisterDTO.getGoldPrice());
         market.setDiamondPrice(marketRegisterDTO.getDiamondPrice());
         marketR.save(market);
-
     }
 }
