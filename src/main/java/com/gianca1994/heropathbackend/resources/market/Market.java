@@ -37,5 +37,6 @@ public class Market {
     private Item item;
 
     @Column
+    @JsonIgnore
     private Long userId;
 }
