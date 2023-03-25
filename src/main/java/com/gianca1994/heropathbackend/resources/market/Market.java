@@ -29,4 +29,5 @@ public class Market {
 
     @Column
     private String usernameSeller;
+
 }
