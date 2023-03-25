@@ -1,5 +1,6 @@
 package com.gianca1994.heropathbackend.resources.market;
 
+import com.gianca1994.heropathbackend.resources.item.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class Market {
     private int diamondPrice;
 
     @Column
-    private Long itemId;
+    private Item item;
 
     @Column
     private Long userId;
