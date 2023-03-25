@@ -14,4 +14,5 @@ public class MarketService {
     public List<Market> getAllMarkets() {
         return marketRepository.findAll();
     }
+
 }
