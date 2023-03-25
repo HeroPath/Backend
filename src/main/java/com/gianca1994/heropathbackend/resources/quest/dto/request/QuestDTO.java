@@ -17,6 +17,7 @@ import lombok.Setter;
 public class QuestDTO {
     private String name;
     private String description;
+    private int levelRequired;
     private String nameNpcKill;
     private int npcAmountNeed;
     private int userAmountNeed;

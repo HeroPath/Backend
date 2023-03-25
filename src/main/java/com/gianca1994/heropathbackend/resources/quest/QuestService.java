@@ -1,9 +1,11 @@
 package com.gianca1994.heropathbackend.resources.quest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.quest.dto.response.QuestListDTO;
-import com.gianca1994.heropathbackend.resources.quest.utilities.PageFilterQuest;
+import com.gianca1994.heropathbackend.resources.quest.utilities.FilterQuest;
 import com.gianca1994.heropathbackend.resources.quest.utilities.QuestServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.*;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
@@ -32,23 +34,21 @@ public class QuestService {
     @Autowired
     private UserQuestRepository userQuestR;
 
-    public QuestListDTO getQuests(String username, int page) {
+    public QuestListDTO getQuests(String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting all the quests.
          * @param String username
-         * @param int page
          * @return QuestListDTO
          */
-        validator.validPage(page);
-        PageFilterQuest pageFilterM = new PageFilterQuest(
-                page, questR.findAll(), userQuestR.findByUserUsername(username)
-        );
+        validator.userFound(userR.existsByUsername(username));
+        User user = userR.findByUsername(username);
+        List<Quest> allQuestsAvailable = questR.findAllAvailableQuestsForUser(user.getLevel());
+
+        FilterQuest pageFilterM = new FilterQuest(allQuestsAvailable, userQuestR.findByUserUsername(username));
         pageFilterM.unacceptedQuests();
         pageFilterM.acceptedQuests();
-        return new QuestListDTO(
-                pageFilterM.getAcceptedResult(), pageFilterM.getUnacceptedResult(), pageFilterM.getTotalPages()
-        );
+        return new QuestListDTO(pageFilterM.getAcceptedQuests(), pageFilterM.getUnacceptedQuests());
     }
 
     public Quest getQuestByName(String name) throws Conflict {
@@ -73,8 +73,8 @@ public class QuestService {
         validator.checkDtoSaveQuest(quest);
         questR.save(
                 new Quest(
-                        quest.getName(), quest.getDescription(), quest.getNameNpcKill().toLowerCase(),
-                        quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
+                        quest.getName(), quest.getDescription(), quest.getLevelRequired(),
+                        quest.getNameNpcKill().toLowerCase(), quest.getNpcAmountNeed(), quest.getUserAmountNeed(),
                         quest.getGiveExp(), quest.getGiveGold(), quest.getGiveDiamonds()
                 )
         );
@@ -109,6 +109,9 @@ public class QuestService {
 
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
+
+        validator.checkUserHaveLvlRequired(user.getLevel(), quest.getLevelRequired());
+
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
         userQuest.setQuest(quest);

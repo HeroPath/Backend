@@ -29,8 +29,8 @@ public class SvConfig {
     /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
 
     /////////////////////////// TITLE POINTS ///////////////////////////
-    public static final int PVP_MIN_RATE_POINT_TITLE = 50;
-    public static final int PVP_MAX_RATE_POINT_TITLE = 100;
+    public static final int PVP_MIN_RATE_POINT_TITLE = 20;
+    public static final int PVP_MAX_RATE_POINT_TITLE = 40;
     /////////////////////////// TITLE POINTS ///////////////////////////
 
     /////////////////////////// PVP ///////////////////////////
@@ -49,12 +49,11 @@ public class SvConfig {
     /////////////////////////// RANKING ///////////////////////////
 
     /////////////////////////// QUEST ///////////////////////////
-    public static final int MAX_ACTIVE_QUESTS = 3;
-    public static final int QUEST_PER_PAGE = 15;
+    public static final int MAX_ACTIVE_QUESTS = 5;
     /////////////////////////// QUEST ///////////////////////////
 
     /////////////////////////// GUILD ///////////////////////////
-    public static final int MAX_MEMBERS_IN_GUILD = 5;
+    public static final int NUMBER_INITIAL_MEMBERS_GUILD = 5;
     public static final int LEVEL_TO_CREATE_GUILD = 100;
     public static final int GOLD_TO_CREATE_GUILD = 5000000;
     public static final int DIAMOND_TO_CREATE_GUILD = 100;

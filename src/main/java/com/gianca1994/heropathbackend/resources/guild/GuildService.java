@@ -68,7 +68,7 @@ public class GuildService {
         userDTO.updateDTO(userInGuild.getUsername(), guild.getName(), guild.getTag(), guild.getDescription(),
                 guild.getLeader(), guild.getSubLeader(), guild.getMembers().size(),
                 guild.getLevel(), guild.getDiamonds(), guild.getTitlePoints(),
-                SvConfig.MAX_MEMBERS_IN_GUILD
+                guild.getMaxMembers()
         );
 
         userDTO.createMembersList(guild, userS);
@@ -122,7 +122,7 @@ public class GuildService {
 
         Guild guild = guildR.findByName(guildName);
         validator.guildFound(guild);
-        validator.checkGuildIsFull(guild.getMembers().size());
+        validator.checkGuildIsFull(guild.getMembers().size(), guild.getMaxMembers());
 
         guild.getRequests().add(user);
         guildR.save(guild);
@@ -142,7 +142,7 @@ public class GuildService {
 
         Guild guild = guildR.findByName(guildName);
         validator.guildFound(guild);
-        validator.checkGuildIsFull(guild.getMembers().size());
+        validator.checkGuildIsFull(guild.getMembers().size(), guild.getMaxMembers());
 
         User userAccept = userR.findByUsername(nameAccept);
         validator.userFoundByObject(userAccept);
@@ -271,14 +271,17 @@ public class GuildService {
 
         int guildLevel = guildR.findLevelByName(guildName);
         validator.checkGuildLvlMax(guildLevel);
-
         int guildDiamonds = guildR.findDiamondsByName(guildName);
         validator.checkGuildDiamondsForUpgrade(guildDiamonds, guildLevel);
+        int guildMaxMembers = guildR.findMaxMembersByName(guildName);
 
         guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
         guildLevel++;
+        guildMaxMembers++;
+
         guildR.updateDiamondsByName(guildDiamonds, guildName);
         guildR.updateLevelByName((short) guildLevel, guildName);
+        guildR.updateMaxMembersByName(guildMaxMembers, guildName);
         return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
 

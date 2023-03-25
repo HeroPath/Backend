@@ -55,16 +55,6 @@ public class QuestServiceValidator {
         if (!exist) throw new Conflict(QuestConst.USER_NOT_FOUND);
     }
 
-    public void validPage(int page) throws NotFound {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a page exists.
-         * @param int page
-         * @return void
-         */
-        if (page < 0) throw new NotFound(QuestConst.PAGE_NOT_AVAILABLE);
-    }
-
     public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
         /**
          * @Author: Gianca1994
@@ -123,5 +113,16 @@ public class QuestServiceValidator {
          * @return void
          */
         if (userQuestId == 0) throw new Conflict(QuestConst.QUEST_ALREADY_COMPLETED);
+    }
+
+    public void checkUserHaveLvlRequired(int userLvl, int questLvl) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This function is in charge of validating if a user has the level required to accept a quest.
+         * @param int userLvl
+         * @param int questLvl
+         * @return void
+         */
+        if (userLvl < questLvl) throw new Conflict(QuestConst.USER_LVL_NOT_ENOUGH);
     }
 }

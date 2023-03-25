@@ -53,6 +53,7 @@ class QuestServiceTest {
                 new Quest(
                         "testquest",
                         "testquestdescription",
+                        1,
                         "testnpc",
                         1,
                         1,

@@ -20,5 +20,4 @@ import java.util.List;
 public class QuestListDTO {
     private List<ObjectNode> acceptedQuests;
     private List<ObjectNode> quests;
-    private int totalPages;
 }

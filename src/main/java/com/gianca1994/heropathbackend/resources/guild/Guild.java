@@ -1,5 +1,6 @@
 package com.gianca1994.heropathbackend.resources.guild;
 
+import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.resources.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,9 @@ public class Guild {
     @Column
     private int titlePoints;
 
+    @Column
+    private int maxMembers;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "guilds_users",
             joinColumns = @JoinColumn(name = "guild_id"),
@@ -70,6 +74,7 @@ public class Guild {
         this.subLeader = "";
         this.level = 1;
         this.diamonds = 0;
+        this.maxMembers = SvConfig.NUMBER_INITIAL_MEMBERS_GUILD;
         this.titlePoints = titlePoints;
         this.members.add(userLeader);
     }

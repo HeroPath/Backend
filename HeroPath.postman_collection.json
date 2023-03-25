@@ -1317,6 +1317,80 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Market",
+			"item": [
+				{
+					"name": "Markets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/market",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegisterItem",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"itemId\": 97,\r\n    \"goldPrice\": 500,\r\n    \"diamondPrice\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{local}}/api/v1/market",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [

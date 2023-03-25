@@ -277,8 +277,8 @@ public class User {
         this.vitality += newTitle.getVitality() - currentTitle.getVitality();
         this.luck += newTitle.getLuck() - currentTitle.getLuck();
         this.titleName = newTitle.getName();
-        this.titlePointsToNextLevel = ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinPts();
-        this.titleLevelToUnlock = ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinLvl();
+        this.titlePointsToNextLevel = ModifConfig.TITLES.indexOf(newTitle) + 1 > ModifConfig.TITLES.size() - 1 ? 0 : ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinPts();
+        this.titleLevelToUnlock = ModifConfig.TITLES.indexOf(newTitle) + 1 > ModifConfig.TITLES.size() - 1 ? 0 : ModifConfig.TITLES.get(ModifConfig.TITLES.indexOf(newTitle) + 1).getMinLvl();
         calculateStats(false);
     }
 

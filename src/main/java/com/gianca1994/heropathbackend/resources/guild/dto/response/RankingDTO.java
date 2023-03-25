@@ -38,7 +38,7 @@ public class RankingDTO {
                 guild.getTag(),
                 guild.getLeader(),
                 guild.getMembers().size(),
-                SvConfig.MAX_MEMBERS_IN_GUILD,
+                guild.getMaxMembers(),
                 guild.getTitlePoints(),
                 guild.getLevel()
         );

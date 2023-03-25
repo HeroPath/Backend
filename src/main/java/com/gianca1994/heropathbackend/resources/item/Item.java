@@ -74,6 +74,10 @@ public class Item {
     @JsonIgnore
     private boolean shop;
 
+    @Column(columnDefinition = "boolean default false")
+    @JsonIgnore
+    private boolean inMarket;
+
     public Item(String name, String type, int lvlMin, int price, String classRequired, int strength,
                 int dexterity, int intelligence, int vitality, int luck, boolean shop) {
         this.name = name;

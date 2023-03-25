@@ -2,6 +2,7 @@ package com.gianca1994.heropathbackend.resources.item;
 
 
 import com.gianca1994.heropathbackend.exception.Conflict;
+import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.EquipOrUnequipDTO;
@@ -122,16 +123,16 @@ public class ItemController {
 
     @GetMapping("/upgrade/{itemUpgradeId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public void upgradeItem(@RequestHeader(value = "Authorization") String token,
-                            @PathVariable Long itemUpgradeId) throws Conflict {
+    public Inventory upgradeItem(@RequestHeader(value = "Authorization") String token,
+                                 @PathVariable Long itemUpgradeId) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This method is used to upgrade an item.
          * @param String token
          * @Param Long itemUpgradeId
-         * @return void
+         * @return Inventory
          */
-        itemS.upgradeItem(
+        return itemS.upgradeItem(
                 jwt.getIdFromToken(token.substring(7)),
                 itemUpgradeId
         );
