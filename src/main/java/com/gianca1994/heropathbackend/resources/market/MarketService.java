@@ -1,6 +1,7 @@
 package com.gianca1994.heropathbackend.resources.market;
 
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
+import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +11,20 @@ import java.util.List;
 public class MarketService {
 
     @Autowired
-    private MarketRepository marketRepository;
+    private MarketRepository marketR;
 
     public List<Market> getAllMarkets() {
-        return marketRepository.findAll();
+        return marketR.findAll();
     }
 
-    public void registerItem(MarketRegisterDTO marketRegisterDTO) {
+    public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
         Market market = new Market();
-        market.setUserId();
+        market.setUserId(userId);
         market.setItemId(marketRegisterDTO.getItemId());
-        market.setUsernameSeller();
+        market.setUsernameSeller(usernameSeller);
         market.setGoldPrice(marketRegisterDTO.getGoldPrice());
         market.setDiamondPrice(marketRegisterDTO.getDiamondPrice());
-        marketRepository.save(market);
+        marketR.save(market);
 
     }
 }
