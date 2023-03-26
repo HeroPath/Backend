@@ -10,6 +10,7 @@ import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +54,42 @@ public class MarketService {
                 marketRegisterDTO.getGoldPrice(),
                 marketRegisterDTO.getDiamondPrice()
         ));
+    }
+
+    @Transactional
+    public void buyItem(Long userId, Long marketId) {
+        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
+        Market market = marketR.findById(marketId).get();
+
+        if (!userR.existsById(userId)) throw new BadRequest("User not found");
+        if (!userR.existsById(market.getUserId())) throw new BadRequest("Seller not found");
+
+        // GOLD ITEM
+        Long itemGoldPrice = market.getGoldPrice();
+        Long userBuyerGold = userR.findGoldByUserId(userId);
+        if (userBuyerGold < itemGoldPrice) throw new BadRequest("You don't have enough gold");
+
+        userBuyerGold -= itemGoldPrice;
+        userR.updateGoldByUserId(userId, userBuyerGold);
+
+        // DIAMOND ITEM
+        int itemDiamondPrice = market.getDiamondPrice();
+        int userBuyerDiamond = userR.findDiamondByUserId(userId);
+        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest("You don't have enough diamond");
+
+        userBuyerDiamond -= itemDiamondPrice;
+        userR.updateUserDiamond(userId, userBuyerDiamond);
+
+        // The gold and diamonds of the sold item are added to the seller user
+        Long userSellerId = market.getUserId();
+        Long userSellerGold = userR.findGoldByUserId(userSellerId) + itemGoldPrice;
+        userR.updateGoldByUserId(userSellerId, userSellerGold);
+        int userSellerDiamond = userR.findDiamondByUserId(userSellerId) + itemDiamondPrice;
+        userR.updateUserDiamond(userSellerId, userSellerDiamond);
+
+        System.out.println("USER BUYER: " + userId);
+        System.out.println("USER SELLER: " + userSellerId);
+
     }
 
 }

@@ -24,6 +24,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
 
     //////////////////// USED FOR MARKET_SERVICE ////////////////////
+    @Query("SELECT u.gold FROM User u WHERE u.id = :userId")
+    Long findGoldByUserId(@Param("userId") Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.gold = :gold WHERE u.id = :userId")
+    void updateGoldByUserId(@Param("userId") Long userId, @Param("gold") Long gold);
+
     @Query("SELECT u.inventory FROM User u WHERE u.id = :id")
     Inventory findInventoryById(@Param("id") long id);
 
@@ -55,7 +63,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query("UPDATE User u SET u.diamond = :diamond WHERE u.id = :id")
-    void updateUserDiamond(@Param("diamond") int diamond, @Param("id") Long id);
+    void updateUserDiamond(@Param("id") Long id, @Param("diamond") int diamond);
     ////////////////////////////////////////////////////////////////
 
     //////////////////// USED FOR USER_SERVICE ////////////////////

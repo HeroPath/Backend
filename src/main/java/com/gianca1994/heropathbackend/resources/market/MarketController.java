@@ -35,4 +35,14 @@ public class MarketController {
                 marketRegisterDTO
         );
     }
+
+    @GetMapping("/buy/{marketId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void buyItem(@RequestHeader(value = "Authorization") String token,
+                        @PathVariable Long marketId) {
+        marketS.buyItem(
+                jwt.getIdFromToken(token.substring(7)),
+                marketId
+        );
+    }
 }

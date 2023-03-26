@@ -252,7 +252,7 @@ public class GuildService {
         int guildDiamonds = guildR.findDiamondsByName(guildName);
         guildDiamonds += diamonds;
 
-        userR.updateUserDiamond(userDiamonds, userId);
+        userR.updateUserDiamond(userId, userDiamonds);
         guildR.updateDiamondsByName(guildDiamonds, guildName);
         return new UpgradeDonateDTO(guildLevel, guildDiamonds);
     }
