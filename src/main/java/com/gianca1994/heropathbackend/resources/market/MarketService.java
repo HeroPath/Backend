@@ -68,28 +68,31 @@ public class MarketService {
         Long itemGoldPrice = market.getGoldPrice();
         Long userBuyerGold = userR.findGoldByUserId(userId);
         if (userBuyerGold < itemGoldPrice) throw new BadRequest("You don't have enough gold");
-
-        userBuyerGold -= itemGoldPrice;
-        userR.updateGoldByUserId(userId, userBuyerGold);
+        userR.updateGoldByUserId(userId, userBuyerGold - itemGoldPrice);
 
         // DIAMOND ITEM
         int itemDiamondPrice = market.getDiamondPrice();
         int userBuyerDiamond = userR.findDiamondByUserId(userId);
         if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest("You don't have enough diamond");
-
-        userBuyerDiamond -= itemDiamondPrice;
-        userR.updateUserDiamond(userId, userBuyerDiamond);
+        userR.updateUserDiamond(userId, userBuyerDiamond - itemDiamondPrice);
 
         // The gold and diamonds of the sold item are added to the seller user
         Long userSellerId = market.getUserId();
         Long userSellerGold = userR.findGoldByUserId(userSellerId) + itemGoldPrice;
         userR.updateGoldByUserId(userSellerId, userSellerGold);
+
         int userSellerDiamond = userR.findDiamondByUserId(userSellerId) + itemDiamondPrice;
         userR.updateUserDiamond(userSellerId, userSellerDiamond);
 
-        System.out.println("USER BUYER: " + userId);
-        System.out.println("USER SELLER: " + userSellerId);
+        Item item = market.getItem();
+        item.setUser(userR.findById(userId).get());
+        item.setInMarket(false);
+        itemR.save(item);
 
+        Inventory userBuyerInventory = userR.findInventoryById(userId);
+        userBuyerInventory.getItems().add(market.getItem());
+        userR.updateInventoryById(userId, userBuyerInventory);
+
+        marketR.delete(market);
     }
-
 }
