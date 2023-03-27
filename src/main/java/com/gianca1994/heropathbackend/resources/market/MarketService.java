@@ -39,15 +39,15 @@ public class MarketService {
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
         if (!itemR.existsById(marketRegisterDTO.getItemId())) throw new BadRequest(MarketConst.ITEM_NOT_FOUND);
         if (marketR.countItemsPublishedByUserId(userId) >= SvConfig.MAXIMUM_ITEMS_PUBLISHED)
-            throw new BadRequest(MarketConst.MAXIMUM_ITEMS_PUBLISHED);
+            throw new BadRequest(MarketConst.MAX_ITEMS_PUBLISHED);
         if (marketRegisterDTO.getGoldPrice() >= SvConfig.MAXIMUM_GOLD_PRICE)
-            throw new BadRequest(MarketConst.MAXIMUM_GOLD_PRICE);
+            throw new BadRequest(MarketConst.MAX_GOLD_PRICE);
         if (marketRegisterDTO.getDiamondPrice() >= SvConfig.MAXIMUM_DIAMOND_PRICE)
-            throw new BadRequest(MarketConst.MAXIMUM_DIAMOND_PRICE);
+            throw new BadRequest(MarketConst.MAX_DIAMOND_PRICE);
 
         Item item = itemR.findById(marketRegisterDTO.getItemId()).get();
         if (item.isInMarket()) throw new BadRequest(MarketConst.ITEM_ALREADY_IN_MARKET);
-        if (!Objects.equals(item.getUser().getId(), userId)) throw new BadRequest(MarketConst.YOU_DONT_OWN_THIS_ITEM);
+        if (!Objects.equals(item.getUser().getId(), userId)) throw new BadRequest(MarketConst.ITEM_NOT_OWNED);
         item.setInMarket(true);
         item.setUser(null);
 
@@ -71,7 +71,8 @@ public class MarketService {
         Market market = marketR.findById(marketId).get();
         Inventory userInventory = userR.findInventoryById(userId);
 
-        if (userInventory.getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY) throw new BadRequest(MarketConst.INVENTORY_FULL);
+        if (userInventory.getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
+            throw new BadRequest(MarketConst.INVENTORY_FULL);
         userInventory.getItems().add(market.getItem());
         marketR.delete(market);
     }
@@ -100,7 +101,7 @@ public class MarketService {
         Long itemGoldPrice = market.getGoldPrice();
         Long userBuyerGold = userR.findGoldByUserId(userId);
 
-        if (userBuyerGold < itemGoldPrice) throw new BadRequest(MarketConst.YOU_DONT_HAVE_ENOUGH_GOLD);
+        if (userBuyerGold < itemGoldPrice) throw new BadRequest(MarketConst.NOT_ENOUGH_GOLD);
 
         userR.updateGoldByUserId(userId, userBuyerGold - itemGoldPrice);
     }
@@ -109,7 +110,7 @@ public class MarketService {
         int itemDiamondPrice = market.getDiamondPrice();
         int userBuyerDiamond = userR.findDiamondByUserId(userId);
 
-        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest(MarketConst.YOU_DONT_HAVE_ENOUGH_DIAMOND);
+        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest(MarketConst.NOT_ENOUGH_DIAMOND);
 
         userR.updateUserDiamond(userId, userBuyerDiamond - itemDiamondPrice);
     }
