@@ -112,11 +112,11 @@ public class MarketService {
         Long userSellerId = market.getUserId();
 
         Long itemGoldPrice = market.getGoldPrice();
-        Long userSellerGold = userR.findGoldByUserId(userSellerId) + itemGoldPrice;
+        Long userSellerGold = (long) (userR.findGoldByUserId(userSellerId) + (itemGoldPrice * 0.9));
         userR.updateGoldByUserId(userSellerId, userSellerGold);
 
         int itemDiamondPrice = market.getDiamondPrice();
-        int userSellerDiamond = userR.findDiamondByUserId(userSellerId) + itemDiamondPrice;
+        int userSellerDiamond = (int) (userR.findDiamondByUserId(userSellerId) + (itemDiamondPrice * 0.9));
         userR.updateUserDiamond(userSellerId, userSellerDiamond);
     }
 
