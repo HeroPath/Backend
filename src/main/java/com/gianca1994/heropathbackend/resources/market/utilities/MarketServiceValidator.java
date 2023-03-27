@@ -3,6 +3,11 @@ package com.gianca1994.heropathbackend.resources.market.utilities;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.BadRequest;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is used to validate the data sent by the client.
+ */
+
 public class MarketServiceValidator {
 
     public void checkItemExists(boolean exists) {

@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is the Market Repository
+ */
+
 @Repository
 public interface MarketRepository extends JpaRepository<Market, Long> {
 

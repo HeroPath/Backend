@@ -1,5 +1,10 @@
 package com.gianca1994.heropathbackend.resources.market.utilities;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class contains all the constants used in the market
+ */
+
 public class MarketConst {
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String MAX_ITEMS_PUBLISHED = "Maximum items published";

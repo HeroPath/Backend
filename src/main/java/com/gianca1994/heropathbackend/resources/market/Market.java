@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is the Market entity
+ */
+
 @Entity
 @Table(name = "market")
 @Getter

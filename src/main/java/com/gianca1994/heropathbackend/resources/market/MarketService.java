@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is the Market Service
+ */
+
 @Service
 public class MarketService {
 
