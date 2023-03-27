@@ -160,4 +160,16 @@ public class UserServiceValidator {
          */
         if (user.getPvpPts() <= 0) throw new Conflict(UserConst.DONT_HAVE_PVP_PTS);
     }
+
+    public void checkAttackerAndDefenderInSameGuild(User attacker, User defender) throws Conflict {
+        /**
+         * @Author: Gianca1994
+         * @Explanation: This function is in charge of validating the attacker and defender in same guild.
+         * @param User attacker
+         * @param User defender
+         * @return void
+         */
+        if (attacker.getGuildName().equals(defender.getGuildName()))
+            throw new Conflict(UserConst.CANT_ATTACK_GUILD_MEMBER);
+    }
 }

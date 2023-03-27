@@ -144,6 +144,7 @@ public class UserService {
         validator.checkLifeStartCombat(defender);
         validator.checkAutoAttack(attacker, defender);
         validator.checkDifferenceLevelPVP(attacker.getLevel(), defender.getLevel());
+        validator.checkAttackerAndDefenderInSameGuild(attacker, defender);
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
         pvpSystem.getAttacker().setPvpPts(pvpSystem.getAttacker().getPvpPts() - 1);

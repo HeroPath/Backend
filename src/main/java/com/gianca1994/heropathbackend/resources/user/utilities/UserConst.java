@@ -20,7 +20,6 @@ public class UserConst {
     );
     public static final String SKILL_POINT_NAME_MUST_ONE_FOLLOWING = "Skill point name must be one of the following: ";
     public static final String IMPOSSIBLE_ATTACK_LESS_HP = "Impossible to attack with less than 15% of life";
-    public static final String IMPOSSIBLE_ATTACK_15_ENEMY = "Unable to attack, enemy has less than 15% health";
     public static final String CANT_ATTACK_LVL_LOWER_5 = "You can't attack with a level lower than 5";
     public static final String CANT_ATTACK_YOURSELF = "You can't fight yourself";
     public static final String CANT_ATTACK_ADMIN = "You can't attack an admin";
@@ -30,4 +29,5 @@ public class UserConst {
     public static final String CANT_ATTACK_NPC_HELL = "You can't attack an npc in hell without wings";
     public static final String DONT_HAVE_PVE_PTS = "You don't have any free pve points";
     public static final String DONT_HAVE_PVP_PTS = "You don't have any free pvp points";
+    public static final String CANT_ATTACK_GUILD_MEMBER = "You can't attack a guild member";
 }
