@@ -1,6 +1,7 @@
 package com.gianca1994.heropathbackend.resources.market;
 
 import com.gianca1994.heropathbackend.exception.BadRequest;
+import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
@@ -32,7 +33,6 @@ public class MarketService {
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
 
-
         if (!itemR.existsById(marketRegisterDTO.getItemId())) throw new BadRequest("Item not found");
 
         Item item = itemR.findById(marketRegisterDTO.getItemId()).get();
@@ -57,33 +57,58 @@ public class MarketService {
     }
 
     @Transactional
-    public void buyItem(Long userId, Long marketId) {
-        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
+    public void buyItem(Long userId, Long marketId) throws Conflict {
+        validateMarketAndUsersExist(marketId, userId);
+
         Market market = marketR.findById(marketId).get();
+        if (!userR.existsById(market.getUserId())) throw new Conflict("Seller not found");
 
+        buyItemWithGold(userId, market);
+        buyItemWithDiamond(userId, market);
+        addGoldAndDiamondToSeller(market);
+        saveItemAndInventory(userId, market);
+        marketR.delete(market);
+    }
+
+
+
+    /////////////////////////// PRIVATE METHODS ///////////////////////////
+    private void validateMarketAndUsersExist(Long marketId, Long userId) {
+        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
         if (!userR.existsById(userId)) throw new BadRequest("User not found");
-        if (!userR.existsById(market.getUserId())) throw new BadRequest("Seller not found");
+    }
 
-        // GOLD ITEM
+    private void buyItemWithGold(Long userId, Market market) {
         Long itemGoldPrice = market.getGoldPrice();
         Long userBuyerGold = userR.findGoldByUserId(userId);
-        if (userBuyerGold < itemGoldPrice) throw new BadRequest("You don't have enough gold");
-        userR.updateGoldByUserId(userId, userBuyerGold - itemGoldPrice);
 
-        // DIAMOND ITEM
+        if (userBuyerGold < itemGoldPrice) throw new BadRequest("You don't have enough gold");
+
+        userR.updateGoldByUserId(userId, userBuyerGold - itemGoldPrice);
+    }
+
+    private void buyItemWithDiamond(Long userId, Market market) {
         int itemDiamondPrice = market.getDiamondPrice();
         int userBuyerDiamond = userR.findDiamondByUserId(userId);
-        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest("You don't have enough diamond");
-        userR.updateUserDiamond(userId, userBuyerDiamond - itemDiamondPrice);
 
-        // The gold and diamonds of the sold item are added to the seller user
+        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest("You don't have enough diamond");
+
+        userR.updateUserDiamond(userId, userBuyerDiamond - itemDiamondPrice);
+    }
+
+    private void addGoldAndDiamondToSeller(Market market) {
         Long userSellerId = market.getUserId();
+
+        Long itemGoldPrice = market.getGoldPrice();
         Long userSellerGold = userR.findGoldByUserId(userSellerId) + itemGoldPrice;
         userR.updateGoldByUserId(userSellerId, userSellerGold);
 
+        int itemDiamondPrice = market.getDiamondPrice();
         int userSellerDiamond = userR.findDiamondByUserId(userSellerId) + itemDiamondPrice;
         userR.updateUserDiamond(userSellerId, userSellerDiamond);
+    }
 
+    private void saveItemAndInventory(Long userId, Market market) {
         Item item = market.getItem();
         item.setUser(userR.findById(userId).get());
         item.setInMarket(false);
@@ -92,7 +117,5 @@ public class MarketService {
         Inventory userBuyerInventory = userR.findInventoryById(userId);
         userBuyerInventory.getItems().add(market.getItem());
         userR.updateInventoryById(userId, userBuyerInventory);
-
-        marketR.delete(market);
     }
 }

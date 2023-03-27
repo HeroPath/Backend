@@ -1,5 +1,6 @@
 package com.gianca1994.heropathbackend.resources.market;
 
+import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class MarketController {
     @GetMapping("/buy/{marketId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void buyItem(@RequestHeader(value = "Authorization") String token,
-                        @PathVariable Long marketId) {
+                        @PathVariable Long marketId) throws Conflict {
         marketS.buyItem(
                 jwt.getIdFromToken(token.substring(7)),
                 marketId
