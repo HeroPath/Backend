@@ -3,7 +3,7 @@ package com.gianca1994.heropathbackend.resources.market.utilities;
 public class MarketConst {
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String MAX_ITEMS_PUBLISHED = "Maximum items published";
-    public static final String MAX_GOLD_PRICE  = "Maximum gold price";
+    public static final String MAX_GOLD_PRICE = "Maximum gold price";
     public static final String MAX_DIAMOND_PRICE = "Maximum diamond price";
     public static final String ITEM_ALREADY_IN_MARKET = "Item already in market";
     public static final String ITEM_NOT_OWNED = "You don't own this item";

@@ -1,23 +1,22 @@
 package com.gianca1994.heropathbackend.resources.market;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
-import com.gianca1994.heropathbackend.exception.BadRequest;
-import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
-import com.gianca1994.heropathbackend.resources.market.utilities.MarketConst;
+import com.gianca1994.heropathbackend.resources.market.utilities.MarketServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class MarketService {
+
+    MarketServiceValidator validator = new MarketServiceValidator();
 
     @Autowired
     private MarketRepository marketR;
@@ -37,17 +36,14 @@ public class MarketService {
     }
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
-        if (!itemR.existsById(marketRegisterDTO.getItemId())) throw new BadRequest(MarketConst.ITEM_NOT_FOUND);
-        if (marketR.countItemsPublishedByUserId(userId) >= SvConfig.MAXIMUM_ITEMS_PUBLISHED)
-            throw new BadRequest(MarketConst.MAX_ITEMS_PUBLISHED);
-        if (marketRegisterDTO.getGoldPrice() >= SvConfig.MAXIMUM_GOLD_PRICE)
-            throw new BadRequest(MarketConst.MAX_GOLD_PRICE);
-        if (marketRegisterDTO.getDiamondPrice() >= SvConfig.MAXIMUM_DIAMOND_PRICE)
-            throw new BadRequest(MarketConst.MAX_DIAMOND_PRICE);
+        validator.checkItemExists(itemR.existsById(marketRegisterDTO.getItemId()));
+        validator.checkMaxItemsPublished(marketR.countItemsPublishedByUserId(userId));
+        validator.checkMaxGoldPrice(marketRegisterDTO.getGoldPrice());
+        validator.checkMaxDiamondPrice(marketRegisterDTO.getDiamondPrice());
 
         Item item = itemR.findById(marketRegisterDTO.getItemId()).get();
-        if (item.isInMarket()) throw new BadRequest(MarketConst.ITEM_ALREADY_IN_MARKET);
-        if (!Objects.equals(item.getUser().getId(), userId)) throw new BadRequest(MarketConst.ITEM_NOT_OWNED);
+        validator.checkItemAlreadyInMarket(item.isInMarket());
+        validator.checkItemOwned(item.getUser().getId(), userId);
         item.setInMarket(true);
         item.setUser(null);
 
@@ -67,22 +63,23 @@ public class MarketService {
     }
 
     public void removeItemMarket(Long userId, Long marketId) {
-        validateMarketAndUsersExist(userId, marketId);
+        validator.checkUserExists(userR.existsById(userId));
+        validator.checkItemExists(marketR.existsById(marketId));
         Market market = marketR.findById(marketId).get();
         Inventory userInventory = userR.findInventoryById(userId);
 
-        if (userInventory.getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY)
-            throw new BadRequest(MarketConst.INVENTORY_FULL);
+        validator.checkInventoryFull(userInventory.getItems().size());
         userInventory.getItems().add(market.getItem());
         marketR.delete(market);
     }
 
     @Transactional
-    public void buyItem(Long userId, Long marketId) throws Conflict {
-        validateMarketAndUsersExist(userId, marketId);
+    public void buyItem(Long userId, Long marketId) {
+        validator.checkUserExists(userR.existsById(userId));
+        validator.checkItemExists(marketR.existsById(marketId));
 
         Market market = marketR.findById(marketId).get();
-        if (!userR.existsById(market.getUserId())) throw new Conflict(MarketConst.SELLER_NOT_FOUND);
+        validator.checkSellerExists(userR.existsById(market.getUserId()));
 
         buyItemWithGold(userId, market);
         buyItemWithDiamond(userId, market);
@@ -92,26 +89,17 @@ public class MarketService {
     }
 
     /////////////////////////// PRIVATE METHODS ///////////////////////////
-    private void validateMarketAndUsersExist(Long userId, Long marketId) {
-        if (!userR.existsById(userId)) throw new BadRequest(MarketConst.USER_NOT_FOUND);
-        if (!marketR.existsById(marketId)) throw new BadRequest(MarketConst.ITEM_NOT_FOUND);
-    }
-
     private void buyItemWithGold(Long userId, Market market) {
-        Long itemGoldPrice = market.getGoldPrice();
         Long userBuyerGold = userR.findGoldByUserId(userId);
-
-        if (userBuyerGold < itemGoldPrice) throw new BadRequest(MarketConst.NOT_ENOUGH_GOLD);
-
+        Long itemGoldPrice = market.getGoldPrice();
+        validator.checkEnoughGold(userBuyerGold, itemGoldPrice);
         userR.updateGoldByUserId(userId, userBuyerGold - itemGoldPrice);
     }
 
     private void buyItemWithDiamond(Long userId, Market market) {
-        int itemDiamondPrice = market.getDiamondPrice();
         int userBuyerDiamond = userR.findDiamondByUserId(userId);
-
-        if (userBuyerDiamond < itemDiamondPrice) throw new BadRequest(MarketConst.NOT_ENOUGH_DIAMOND);
-
+        int itemDiamondPrice = market.getDiamondPrice();
+        validator.checkEnoughDiamond(userBuyerDiamond, itemDiamondPrice);
         userR.updateUserDiamond(userId, userBuyerDiamond - itemDiamondPrice);
     }
 
