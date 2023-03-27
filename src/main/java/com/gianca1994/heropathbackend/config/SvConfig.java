@@ -23,20 +23,14 @@ public class SvConfig {
     public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
     /////////////////////////// DIAMONDS ///////////////////////////
 
-    /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
+    /////////////////////////// PVP ///////////////////////////
     public static final float PVP_GOLD_WIN_RATE = 0.25f;
     public static final float PVP_GOLD_LOSS_RATE = 0.1f;
-    /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
-
-    /////////////////////////// TITLE POINTS ///////////////////////////
-    public static final int PVP_MIN_RATE_POINT_TITLE = 20;
-    public static final int PVP_MAX_RATE_POINT_TITLE = 40;
-    /////////////////////////// TITLE POINTS ///////////////////////////
-
-    /////////////////////////// PVP ///////////////////////////
     public static final float MIN_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.15f;
     public static final int CRITICAL_DAMAGE_MULTIPLIER = 2;
     public static final int MAX_LEVEL_DIFFERENCE = 5;
+    public static final int PVP_MIN_RATE_POINT_TITLE = 20;
+    public static final int PVP_MAX_RATE_POINT_TITLE = 40;
     /////////////////////////// PVP ///////////////////////////
 
     /////////////////////////// ITEM ///////////////////////////
