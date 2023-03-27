@@ -27,8 +27,8 @@ public class MarketService {
     @Autowired
     private UserRepository userR;
 
-    public List<Market> getAllMarkets() {
-        return marketR.findAll();
+    public List<Market> getAllMarkets(Long userId) {
+        return marketR.findAllExceptUserId(userId);
     }
 
     public List<Market> getMyMarkets(Long userId) {

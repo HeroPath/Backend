@@ -22,8 +22,10 @@ public class MarketController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Market> getAllMarkets() {
-        return marketS.getAllMarkets();
+    public List<Market> getAllMarkets(@RequestHeader(value = "Authorization") String token) {
+        return marketS.getAllMarkets(
+                jwt.getIdFromToken(token.substring(7))
+        );
     }
 
     @GetMapping("/me")
