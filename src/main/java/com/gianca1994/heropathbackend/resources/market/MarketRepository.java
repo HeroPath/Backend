@@ -17,5 +17,9 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     boolean existsById(@Param("marketId") Long marketId);
 
     List<Market> findAllByUserId(Long userId);
+
+    @Query("SELECT COUNT(m) FROM Market m WHERE m.userId = :userId")
+    int countItemsPublishedByUserId(@Param("userId") Long userId);
+
 }
 
