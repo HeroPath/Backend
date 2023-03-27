@@ -36,8 +36,12 @@ public class MarketService {
     }
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
-
         if (!itemR.existsById(marketRegisterDTO.getItemId())) throw new BadRequest("Item not found");
+        if (marketR.countItemsPublishedByUserId(userId) >= SvConfig.MAXIMUM_ITEMS_PUBLISHED)
+            throw new BadRequest("Maximum items published");
+        if (marketRegisterDTO.getGoldPrice() >= SvConfig.MAXIMUM_GOLD_PRICE) throw new BadRequest("Maximum gold price");
+        if (marketRegisterDTO.getDiamondPrice() >= SvConfig.MAXIMUM_DIAMOND_PRICE)
+            throw new BadRequest("Maximum diamond price");
 
         Item item = itemR.findById(marketRegisterDTO.getItemId()).get();
         if (item.isInMarket()) throw new BadRequest("Item already in market");
