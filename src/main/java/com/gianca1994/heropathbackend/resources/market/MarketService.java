@@ -7,7 +7,6 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
-import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,10 @@ public class MarketService {
 
     public List<Market> getAllMarkets() {
         return marketR.findAll();
+    }
+
+    public List<Market> getMyMarkets(Long userId) {
+        return marketR.findAllByUserId(userId);
     }
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
@@ -56,7 +59,6 @@ public class MarketService {
                 marketRegisterDTO.getDiamondPrice()
         ));
     }
-
 
     public void removeItemMarket(Long userId, Long marketId) {
         validateMarketAndUsersExist(userId, marketId);
