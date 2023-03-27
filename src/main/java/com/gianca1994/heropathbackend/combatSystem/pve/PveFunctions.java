@@ -118,5 +118,4 @@ public class PveFunctions {
         user.setGold(user.getGold() + goldGain);
         user.setNpcKills(user.getNpcKills() + 1);
     }
-
 }
