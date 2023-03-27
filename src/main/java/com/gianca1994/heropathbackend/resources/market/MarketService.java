@@ -1,5 +1,6 @@
 package com.gianca1994.heropathbackend.resources.market;
 
+import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.BadRequest;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
@@ -56,9 +57,20 @@ public class MarketService {
         ));
     }
 
+
+    public void removeItemMarket(Long userId, Long marketId) {
+        validateMarketAndUsersExist(userId, marketId);
+        Market market = marketR.findById(marketId).get();
+        Inventory userInventory = userR.findInventoryById(userId);
+
+        if (userInventory.getItems().size() >= SvConfig.MAX_ITEMS_INVENTORY) throw new BadRequest("Inventory full");
+        userInventory.getItems().add(market.getItem());
+        marketR.delete(market);
+    }
+
     @Transactional
     public void buyItem(Long userId, Long marketId) throws Conflict {
-        validateMarketAndUsersExist(marketId, userId);
+        validateMarketAndUsersExist(userId, marketId);
 
         Market market = marketR.findById(marketId).get();
         if (!userR.existsById(market.getUserId())) throw new Conflict("Seller not found");
@@ -70,12 +82,10 @@ public class MarketService {
         marketR.delete(market);
     }
 
-
-
     /////////////////////////// PRIVATE METHODS ///////////////////////////
-    private void validateMarketAndUsersExist(Long marketId, Long userId) {
-        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
+    private void validateMarketAndUsersExist(Long userId, Long marketId) {
         if (!userR.existsById(userId)) throw new BadRequest("User not found");
+        if (!marketR.existsById(marketId)) throw new BadRequest("Item not found");
     }
 
     private void buyItemWithGold(Long userId, Market market) {
