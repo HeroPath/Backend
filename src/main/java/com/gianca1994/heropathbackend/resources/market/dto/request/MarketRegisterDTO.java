@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: DTO for register a new item in the market
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

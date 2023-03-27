@@ -84,4 +84,12 @@ public class SvConfig {
     public static final String EVENT_GOLD_X2_DATE_END = "0 0 0 ? * MON"; // MONDAY
     /////////////////////////// EVENT ///////////////////////////
 
+    /////////////////////////// MARKET ///////////////////////////
+    public static final int MAXIMUM_ITEMS_PUBLISHED = 5;
+    public static final float GOLD_FEES_PERCENTAGE = 0.1F;
+    public static final float DIAMOND_FEES_PERCENTAGE = 0.1F;
+    public static final int MAXIMUM_GOLD_PRICE = 1000000000;
+    public static final int MAXIMUM_DIAMOND_PRICE = 100000000;
+    /////////////////////////// MARKET ///////////////////////////
+
 }

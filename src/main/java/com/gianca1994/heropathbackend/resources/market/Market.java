@@ -10,6 +10,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * @Author: Gianca1994
+ * @Explanation: This class is the Market entity
+ */
+
 @Entity
 @Table(name = "market")
 @Getter
@@ -39,4 +44,12 @@ public class Market {
     @Column
     @JsonIgnore
     private Long userId;
+
+    public Market(Long userId, Item item, String usernameSeller, Long goldPrice, int diamondPrice) {
+        this.userId = userId;
+        this.item = item;
+        this.usernameSeller = usernameSeller;
+        this.goldPrice = goldPrice;
+        this.diamondPrice = diamondPrice;
+    }
 }

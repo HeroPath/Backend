@@ -1329,7 +1329,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk5NzkxMjcsInVzZXJJZCI6MiwiaWF0IjoxNjc5ODkyNzI3fQ.EtfFu3a65u9PJM9JL-0muzRtNjnvwDiRFRhrZmvp6KUWvbDJBDlilPmR_rbqcfmOZCYi1cfBcLJraSi5Vu3cnQ",
 									"type": "string"
 								}
 							]
@@ -1359,7 +1359,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsdWNobyIsImV4cCI6MTY3OTk3OTA5NSwidXNlcklkIjo1LCJpYXQiOjE2Nzk4OTI2OTV9.IY2AZMzPtVhUARef237OHC_ulDxKAsi7W_g09RNbTOWLeFekpIOIy8XkTTVrGSPcug6CbigY9h_qA_pN4HzCTg",
 									"type": "string"
 								}
 							]
@@ -1368,7 +1368,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itemId\": 97,\r\n    \"goldPrice\": 500,\r\n    \"diamondPrice\": 0\r\n}",
+							"raw": "{\r\n    \"itemId\": 105,\r\n    \"goldPrice\": 350000,\r\n    \"diamondPrice\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1385,6 +1385,100 @@
 								"api",
 								"v1",
 								"market"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZW56byIsImV4cCI6MTY3OTk1MDI5MywidXNlcklkIjoxLCJpYXQiOjE2Nzk4NjM4OTN9.jtUFErkqvB76LrqgFwOdG1JSnN-V-nlkUcqkdefc_tXhcEMk_kQc03aJ7z7ziH7gwJsc4fxlcCM-Nate3EB8jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/market/buy/3",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market",
+								"buy",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Markets",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk5NzkxMjcsInVzZXJJZCI6MiwiaWF0IjoxNjc5ODkyNzI3fQ.EtfFu3a65u9PJM9JL-0muzRtNjnvwDiRFRhrZmvp6KUWvbDJBDlilPmR_rbqcfmOZCYi1cfBcLJraSi5Vu3cnQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/market/me",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Market",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk5NzkxMjcsInVzZXJJZCI6MiwiaWF0IjoxNjc5ODkyNzI3fQ.EtfFu3a65u9PJM9JL-0muzRtNjnvwDiRFRhrZmvp6KUWvbDJBDlilPmR_rbqcfmOZCYi1cfBcLJraSi5Vu3cnQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/market/1",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market",
+								"1"
 							]
 						}
 					},
