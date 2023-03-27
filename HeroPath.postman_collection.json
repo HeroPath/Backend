@@ -1329,7 +1329,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk5NDg1NzYsInVzZXJJZCI6NCwiaWF0IjoxNjc5ODYyMTc2fQ.2bkHEughe7ik6JoSwq-XXrKi1lvNJjkYQhpCWuEDYweYFeosfWlSVv6ZsGssMieNm4I7Dxm3frqDllLdWD6mnw",
 									"type": "string"
 								}
 							]
@@ -1359,7 +1359,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk4NTU5OTgsInVzZXJJZCI6MSwiaWF0IjoxNjc5NzY5NTk4fQ.yRMDJIvic2kg_l9jCD8DYfv7bkx1pyu9ml7n-nxkD_2sDciNgSXYuJ9ePgUDiDjgPzT0joMVBHOCNLT70APlNw",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnaWFuY2EiLCJleHAiOjE2Nzk5NjY1MDIsInVzZXJJZCI6MiwiaWF0IjoxNjc5ODgwMTAyfQ.gha1EBn7MWlUT1PebDk8klyuM8UfdDO2H84CP6DO2isGH2tNXe1WVKiKaqOxKNoGV1FOo8p1KBleb5k-shubXQ",
 									"type": "string"
 								}
 							]
@@ -1368,7 +1368,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"itemId\": 97,\r\n    \"goldPrice\": 500,\r\n    \"diamondPrice\": 0\r\n}",
+							"raw": "{\r\n    \"itemId\": 113,\r\n    \"goldPrice\": 350000,\r\n    \"diamondPrice\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1385,6 +1385,38 @@
 								"api",
 								"v1",
 								"market"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Item",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyZW56byIsImV4cCI6MTY3OTk1MDI5MywidXNlcklkIjoxLCJpYXQiOjE2Nzk4NjM4OTN9.jtUFErkqvB76LrqgFwOdG1JSnN-V-nlkUcqkdefc_tXhcEMk_kQc03aJ7z7ziH7gwJsc4fxlcCM-Nate3EB8jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{local}}/api/v1/market/buy/3",
+							"protocol": "http",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"market",
+								"buy",
+								"3"
 							]
 						}
 					},
