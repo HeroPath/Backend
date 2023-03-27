@@ -71,10 +71,8 @@ public class MarketService {
         validator.checkUserExists(userR.existsById(userId));
         validator.checkItemExists(marketR.existsById(marketId));
         Market market = marketR.findById(marketId).get();
-        Inventory userInventory = userR.findInventoryById(userId);
 
-        validator.checkInventoryFull(userInventory.getItems().size());
-        userInventory.getItems().add(market.getItem());
+        saveItemAndInventory(userId, market);
         marketR.delete(market);
     }
 
@@ -121,13 +119,15 @@ public class MarketService {
     }
 
     private void saveItemAndInventory(Long userId, Market market) {
+        Inventory userInventory = userR.findInventoryById(userId);
+        validator.checkInventoryFull(userInventory.getItems().size());
+
         Item item = market.getItem();
         item.setUser(userR.findById(userId).get());
         item.setInMarket(false);
         itemR.save(item);
 
-        Inventory userBuyerInventory = userR.findInventoryById(userId);
-        userBuyerInventory.getItems().add(market.getItem());
-        userR.updateInventoryById(userId, userBuyerInventory);
+        userInventory.getItems().add(market.getItem());
+        userR.updateInventoryById(userId, userInventory);
     }
 }
