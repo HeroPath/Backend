@@ -3,6 +3,7 @@ package com.gianca1994.heropathbackend.resources.market;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.jwt.config.JwtTokenUtil;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
+import com.gianca1994.heropathbackend.resources.market.dto.response.MarketAllDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class MarketController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public List<Market> getAllMarkets(@RequestHeader(value = "Authorization") String token) {
+    public MarketAllDTO getAllMarkets(@RequestHeader(value = "Authorization") String token) {
         return marketS.getAllMarkets(
                 jwt.getIdFromToken(token.substring(7))
         );

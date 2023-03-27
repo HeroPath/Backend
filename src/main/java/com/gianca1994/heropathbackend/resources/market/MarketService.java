@@ -5,6 +5,7 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
+import com.gianca1994.heropathbackend.resources.market.dto.response.MarketAllDTO;
 import com.gianca1994.heropathbackend.resources.market.utilities.MarketServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,12 @@ public class MarketService {
     @Autowired
     private UserRepository userR;
 
-    public List<Market> getAllMarkets(Long userId) {
-        return marketR.findAllExceptUserId(userId);
+    public MarketAllDTO getAllMarkets(Long userId) {
+        return new MarketAllDTO(
+                userR.findGoldByUserId(userId),
+                userR.findDiamondByUserId(userId),
+                marketR.findAllExceptUserId(userId)
+        );
     }
 
     public List<Market> getMyMarkets(Long userId) {
