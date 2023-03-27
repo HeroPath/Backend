@@ -13,7 +13,6 @@ public interface MarketRepository extends JpaRepository<Market, Long> {
     @Query("SELECT CASE WHEN COUNT(m) > 0 THEN true ELSE false END FROM Market m WHERE m.id = :marketId")
     boolean existsById(@Param("marketId") Long marketId);
 
-    @Query("SELECT m FROM Market m WHERE m.user.id = :userId")
-    List<Market> findAllByUserId(@Param("userId") Long userId);
+    List<Market> findAllByUserId(Long userId);
 }
 
