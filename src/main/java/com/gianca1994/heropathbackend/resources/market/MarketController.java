@@ -37,6 +37,16 @@ public class MarketController {
         );
     }
 
+    @DeleteMapping("/{marketId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
+    public void removeItemMarket(@RequestHeader(value = "Authorization") String token,
+                                 @PathVariable Long marketId) {
+        marketS.removeItemMarket(
+                jwt.getIdFromToken(token.substring(7)),
+                marketId
+        );
+    }
+
     @GetMapping("/buy/{marketId}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
     public void buyItem(@RequestHeader(value = "Authorization") String token,
