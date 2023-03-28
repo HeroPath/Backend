@@ -73,19 +73,15 @@ public class MarketService {
     }
 
     public void removeItemMarket(Long userId, Long marketId) {
-        validator.checkUserExists(userR.existsById(userId));
-        validator.checkItemExists(marketR.existsById(marketId));
+        checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
-
         saveItemAndInventory(userId, market);
         marketR.delete(market);
     }
 
     @Transactional
     public void buyItem(Long userId, Long marketId) {
-        validator.checkUserExists(userR.existsById(userId));
-        validator.checkItemExists(marketR.existsById(marketId));
-
+        checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
         validator.checkSellerExists(userR.existsById(market.getUserId()));
 
@@ -97,6 +93,11 @@ public class MarketService {
     }
 
     /////////////////////////// PRIVATE METHODS ///////////////////////////
+    private void checkUserAndItemExists(Long userId, Long marketId) {
+        validator.checkUserExists(userR.existsById(userId));
+        validator.checkItemExists(marketR.existsById(marketId));
+    }
+
     private void buyItemWithGold(Long userId, Market market) {
         Long userBuyerGold = userR.findGoldByUserId(userId);
         Long itemGoldPrice = market.getGoldPrice();
