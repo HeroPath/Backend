@@ -11,7 +11,6 @@ public class Const {
 
     @Getter
     public enum USER {
-        // TODO: Continue with the user constants.
         NOT_FOUND("User not found"),
         DONT_HAVE_SKILLPTS("You don't have any free skill points"),
         SKILLS_ENABLED(Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck")),
