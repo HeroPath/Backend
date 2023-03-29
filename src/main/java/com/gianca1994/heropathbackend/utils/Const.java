@@ -94,7 +94,6 @@ public class Const {
     @Getter
     @AllArgsConstructor
     public enum JWT {
-        USER_NOT_FOUND("User not found"),
         PASS_INCORRECT("Password incorrect"),
         TOKEN_PREFIX("Bearer "),
         HEADER_STRING("Authorization"),

@@ -43,7 +43,7 @@ public class AuthController {
         String username = authenticationRequest.getUsername().toLowerCase();
         String password = authenticationRequest.getPassword();
 
-        if (!userR.existsByUsername(username)) throw new NotFound(Const.JWT.USER_NOT_FOUND.getMsg());
+        if (!userR.existsByUsername(username)) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
         authS.authenticate(username, password);
 
         final UserDetails userDetails = authS.loadUserByUsername(username);

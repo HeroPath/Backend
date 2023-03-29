@@ -36,7 +36,7 @@ public class GuildServiceValidator {
          * @param User user
          * @return void
          */
-        if (user == null) throw new NotFound(ItemConst.USER_NOT_FOUND);
+        if (user == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void guildFound(Guild guild) throws NotFound {
