@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.item;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.heropathbackend.config.ItemQualityConfig;
+import com.gianca1994.heropathbackend.utils.ItemQualityConfig;
 import com.gianca1994.heropathbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.heropathbackend.resources.user.User;
 import lombok.AllArgsConstructor;

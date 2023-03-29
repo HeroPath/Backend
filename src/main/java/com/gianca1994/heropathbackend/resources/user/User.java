@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.heropathbackend.config.ExpLvlConfig;
+import com.gianca1994.heropathbackend.utils.ExpLvlConfig;
 import com.gianca1994.heropathbackend.config.ModifConfig;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.resources.classes.Class;

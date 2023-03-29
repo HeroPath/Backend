@@ -1,6 +1,6 @@
 package com.gianca1994.heropathbackend.resources.guild;
 
-import com.gianca1994.heropathbackend.config.GuildUpgradeConfig;
+import com.gianca1994.heropathbackend.utils.GuildUpgradeConfig;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDTO;

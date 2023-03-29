@@ -1,4 +1,6 @@
-package com.gianca1994.heropathbackend.config;
+package com.gianca1994.heropathbackend.utils;
+
+import com.gianca1994.heropathbackend.config.ModifConfig;
 
 /**
  * @Author: Gianca1994

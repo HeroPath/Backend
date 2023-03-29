@@ -1,4 +1,4 @@
-package com.gianca1994.heropathbackend.config;
+package com.gianca1994.heropathbackend.utils;
 
 /**
  * @Author: Gianca1994
