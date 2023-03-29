@@ -1,7 +1,5 @@
 package com.gianca1994.heropathbackend.resources.quest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.quest.dto.response.QuestListDTO;
@@ -41,7 +39,7 @@ public class QuestService {
          * @param String username
          * @return QuestListDTO
          */
-        validator.userFound(userR.existsByUsername(username));
+        validator.userExist(userR.existsByUsername(username));
         User user = userR.findByUsername(username);
         List<Quest> allQuestsAvailable = questR.findAllAvailableQuestsForUser(user.getLevel());
 
@@ -58,7 +56,7 @@ public class QuestService {
          * @param String name
          * @return Quest
          */
-        validator.questFound(questR.existsByName(name));
+        validator.questExist(questR.existsByName(name));
         return questR.findByName(name);
     }
 
@@ -69,7 +67,7 @@ public class QuestService {
          * @param QuestDTO quest
          * @return none
          */
-        validator.questExist(questR.existsByName(quest.getName()));
+        validator.questAlreadyExist(questR.existsByName(quest.getName()));
         validator.checkDtoSaveQuest(quest);
         questR.save(
                 new Quest(
@@ -87,7 +85,7 @@ public class QuestService {
          * @param String name
          * @return none
          */
-        validator.questFound(questR.existsByName(name));
+        validator.questExist(questR.existsByName(name));
         Quest quest = questR.findByName(name);
         questR.delete(quest);
     }
@@ -100,8 +98,8 @@ public class QuestService {
          * @param String nameQuest
          * @return none
          */
-        validator.userFound(userR.existsByUsername(username));
-        validator.questFound(questR.existsByName(nameQuest));
+        validator.userExist(userR.existsByUsername(username));
+        validator.questExist(questR.existsByName(nameQuest));
 
         List<UserQuest> userQuests = userQuestR.findByUserUsername(username);
         validator.checkUserMaxQuests(userQuests.size());
@@ -128,13 +126,13 @@ public class QuestService {
          * @param String nameQuest
          * @return Quest
          */
-        validator.userFound(userR.existsByUsername(username));
-        validator.questFound(questR.existsByName(nameQuest));
+        validator.userExist(userR.existsByUsername(username));
+        validator.questExist(questR.existsByName(nameQuest));
 
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
         UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
-        validator.userQuestFound(userQuest);
+        validator.userQuestExist(userQuest);
         validator.checkQuestCompleted(userQuest.getNpcAmountNeed(), quest.getNpcAmountNeed());
         validator.checkQuestCompleted(userQuest.getUserAmountNeed(), quest.getUserAmountNeed());
 
@@ -158,11 +156,11 @@ public class QuestService {
          * @param String nameQuest
          * @return none
          */
-        validator.userFound(userR.existsByUsername(username));
-        validator.questFound(questR.existsByName(nameQuest));
+        validator.userExist(userR.existsByUsername(username));
+        validator.questExist(questR.existsByName(nameQuest));
 
         UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
-        validator.userQuestFound(userQuest);
+        validator.userQuestExist(userQuest);
         userQuestR.delete(userQuest);
     }
 }

@@ -5,6 +5,7 @@ import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
+import com.gianca1994.heropathbackend.utils.Const;
 
 import java.util.List;
 
@@ -15,114 +16,51 @@ import java.util.List;
 
 public class QuestServiceValidator {
 
-    public void questFound(boolean exist) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a quest exists.
-         * @param boolean exist
-         * @return void
-         */
-        if (!exist) throw new Conflict(QuestConst.QUEST_NOT_FOUND);
+    public void userExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void questExist(boolean exist) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a quest exists.
-         * @param boolean exist
-         * @return void
-         */
-        if (exist) throw new Conflict(QuestConst.QUEST_ALREADY_EXISTS);
+        if (!exist) throw new Conflict(Const.QUEST.NOT_FOUND.getMsg());
     }
 
-    public void userQuestFound(UserQuest userQuest) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user quest exists.
-         * @param UserQuest userQuest
-         * @return void
-         */
-        if (userQuest == null) throw new NotFound(QuestConst.USER_QUEST_NOT_FOUND);
+    public void questAlreadyExist(boolean alreadyExist) throws Conflict {
+        if (alreadyExist) throw new Conflict(Const.QUEST.ALREADY_EXIST.getMsg());
     }
 
-    public void userFound(boolean exist) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user exists.
-         * @param boolean exist
-         * @return void
-         */
-        if (!exist) throw new Conflict(QuestConst.USER_NOT_FOUND);
+    public void userQuestExist(UserQuest userQuest) {
+        if (userQuest == null) throw new NotFound(Const.QUEST.USER_QUEST_NOT_FOUND.getMsg());
     }
 
     public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating the data of a quest.
-         * @param QuestDTO quest
-         * @return void
-         */
-        if (quest.getName().isEmpty()) throw new Conflict(QuestConst.NAME_EMPTY);
-        if (quest.getNameNpcKill().isEmpty()) throw new Conflict(QuestConst.NAME_NPC_KILL_EMPTY);
-        if (quest.getNpcAmountNeed() < 0) throw new Conflict(QuestConst.NPC_KILL_AMOUNT_LT0);
-        if (quest.getUserAmountNeed() < 0) throw new Conflict(QuestConst.USER_KILL_AMOUNT_LT0);
-        if (quest.getGiveExp() < 0) throw new Conflict(QuestConst.GIVE_EXP_LT0);
-        if (quest.getGiveGold() < 0) throw new Conflict(QuestConst.GIVE_GOLD_LT0);
-        if (quest.getGiveDiamonds() < 0) throw new Conflict(QuestConst.GIVE_DIAMONDS_LT0);
+        if (quest.getName().isEmpty()) throw new Conflict(Const.QUEST.NAME_EMPTY.getMsg());
+        if (quest.getNameNpcKill().isEmpty()) throw new Conflict(Const.QUEST.NAME_NPC_EMPTY.getMsg());
+        if (quest.getNpcAmountNeed() < 0) throw new Conflict(Const.QUEST.NPC_AMOUNT_LT0.getMsg());
+        if (quest.getUserAmountNeed() < 0) throw new Conflict(Const.QUEST.USER_AMOUNT_LT0.getMsg());
+        if (quest.getGiveExp() < 0) throw new Conflict(Const.QUEST.GIVE_EXP_LT0.getMsg());
+        if (quest.getGiveGold() < 0) throw new Conflict(Const.QUEST.GIVE_GOLD_LT0.getMsg());
+        if (quest.getGiveDiamonds() < 0) throw new Conflict(Const.QUEST.GIVE_DIAMOND_LT0.getMsg());
     }
 
     public void checkUserMaxQuests(int amountQuests) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user has reached the maximum number of quests.
-         * @param int amountQuests
-         * @return void
-         */
-        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(QuestConst.MAX_ACTIVE_QUESTS);
+        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(Const.QUEST.MAX_ACTIVE.getMsg());
     }
 
     public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user has already accepted a quest.
-         * @param List<UserQuest> userQuests
-         * @param String questName
-         * @return void
-         */
         if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
-            throw new Conflict(QuestConst.QUEST_ALREADY_ACCEPTED);
+            throw new Conflict(Const.QUEST.ALREADY_ACCEPTED.getMsg());
         }
     }
 
     public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user has completed a quest.
-         * @param int amountKill
-         * @param int amountNeeded
-         * @return void
-         */
-        if (amountKill < amountNeeded) throw new Conflict(QuestConst.QUEST_AMOUNT_CHECK);
+        if (amountKill < amountNeeded) throw new Conflict(Const.QUEST.AMOUNT_CHECK.getMsg());
     }
 
     public void questAlreadyCompleted(long userQuestId) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user has already completed a quest.
-         * @param long userQuestId
-         * @return void
-         */
-        if (userQuestId == 0) throw new Conflict(QuestConst.QUEST_ALREADY_COMPLETED);
+        if (userQuestId == 0) throw new Conflict(Const.QUEST.ALREADY_COMPLETED.getMsg());
     }
 
     public void checkUserHaveLvlRequired(int userLvl, int questLvl) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of validating if a user has the level required to accept a quest.
-         * @param int userLvl
-         * @param int questLvl
-         * @return void
-         */
-        if (userLvl < questLvl) throw new Conflict(QuestConst.USER_LVL_NOT_ENOUGH);
+        if (userLvl < questLvl) throw new Conflict(Const.QUEST.LVL_NOT_ENOUGH.getMsg());
     }
 }

@@ -186,4 +186,26 @@ public class Const {
 
         private final String msg;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum QUEST {
+        NOT_FOUND("Quest not found"),
+        ALREADY_EXIST("Quest already exists"),
+        USER_QUEST_NOT_FOUND("User quest not found"),
+        NAME_EMPTY("Name cannot be empty"),
+        NAME_NPC_EMPTY("Name NPC Kill cannot be empty"),
+        NPC_AMOUNT_LT0("NPC Kill Amount Needed cannot be negative"),
+        USER_AMOUNT_LT0("User Kill Amount Needed cannot be negative"),
+        GIVE_EXP_LT0("Experience cannot be negative"),
+        GIVE_GOLD_LT0("Gold cannot be negative"),
+        GIVE_DIAMOND_LT0("Diamonds cannot be negative"),
+        MAX_ACTIVE("You can't accept more than %d quests"),
+        ALREADY_ACCEPTED("You already accepted this quest"),
+        AMOUNT_CHECK("You have not killed enough NPCs or users"),
+        ALREADY_COMPLETED("You already completed this quest"),
+        LVL_NOT_ENOUGH("You don't have the required level to accept this quest");
+
+        private final String msg;
+    }
 }
