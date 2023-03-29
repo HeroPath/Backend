@@ -163,8 +163,8 @@ public class Const {
         private final String msg;
         private final List<String> list;
 
-        ITEM(String message) {
-            this.msg = message;
+        ITEM(String msg) {
+            this.msg = msg;
             list = null;
         }
 
@@ -172,6 +172,18 @@ public class Const {
             this.msg = "";
             this.list = skills;
         }
+    }
 
+    @Getter
+    @AllArgsConstructor
+    public enum MAIL {
+        NOT_FOUND("Mail not found"),
+        RECEIVER_EMPTY("Receiver can't be empty"),
+        SUBJECT_EMPTY("Subject can't be empty"),
+        MSG_EMPTY("Message can't be empty"),
+        USER_NOT_EQUAL("You can't send a mail to yourself"),
+        USER_NOT_HAVE_MAILS("User doesn't have mails");
+
+        private final String msg;
     }
 }
