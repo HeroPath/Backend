@@ -4,7 +4,43 @@ import com.gianca1994.heropathbackend.config.SvConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Const {
+
+    @Getter
+    public enum USER {
+        USER_NOT_FOUND("User not found"),
+        DONT_HAVE_SKILL_POINTS("You don't have any free skill points"),
+        SKILLS_ENABLED(Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck")),
+        SKILL_POINT_NAME_MUST_ONE_FOLLOWING("Skill point name must be one of the following: "),
+        IMPOSSIBLE_ATTACK_LESS_HP("Impossible to attack with less than 15% of life"),
+        CANT_ATTACK_LVL_LOWER_5("You can't attack with a level lower than 5"),
+        CANT_ATTACK_YOURSELF("You can't fight yourself"),
+        CANT_ATTACK_ADMIN("You can't attack an admin"),
+        NPC_NOT_FOUND("Npc not found"),
+        CANT_ATTACK_NPC_LVL_HIGHER_5("You can't attack an npc with level higher than 5 levels higher than you"),
+        CANT_ATTACK_NPC_SEA("You can't attack an npc in the sea without a ship"),
+        CANT_ATTACK_NPC_HELL("You can't attack an npc in hell without wings"),
+        DONT_HAVE_PVE_PTS("You don't have any free pve points"),
+        DONT_HAVE_PVP_PTS("You don't have any free pvp points"),
+        CANT_ATTACK_GUILD_MEMBER("You can't attack a guild member");
+
+        private final String msg;
+        private final List<String> skills;
+
+        USER(String message) {
+            this.msg = message;
+            skills = null;
+        }
+
+        USER(List<String> skills) {
+            this.msg = "";
+            this.skills = skills;
+        }
+    }
+
     @Getter
     @AllArgsConstructor
     public enum NPC {

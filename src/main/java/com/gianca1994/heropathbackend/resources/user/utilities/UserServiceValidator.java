@@ -9,6 +9,7 @@ import com.gianca1994.heropathbackend.resources.equipment.Equipment;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
+import com.gianca1994.heropathbackend.utils.Const;
 
 /**
  * @Author: Gianca1994
@@ -59,7 +60,7 @@ public class UserServiceValidator {
          */
         if (uAttr == null) throw new NotFound(UserConst.USER_NOT_FOUND);
         if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
-        if (!UserConst.SKILLS_ENABLED.contains(skillName.toLowerCase()))
+        if (!Const.USER.SKILLS_ENABLED.getSkills().contains(skillName.toLowerCase()))
             throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
     }
 
