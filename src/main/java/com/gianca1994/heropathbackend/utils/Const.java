@@ -27,16 +27,16 @@ public class Const {
         CANT_ATTACK_GUILD_MEMBER("You can't attack a guild member");
 
         private final String msg;
-        private final List<String> skills;
+        private final List<String> list;
 
         USER(String message) {
             this.msg = message;
-            skills = null;
+            list = null;
         }
 
-        USER(List<String> skills) {
+        USER(List<String> list) {
             this.msg = "";
-            this.skills = skills;
+            this.list = list;
         }
     }
 
@@ -168,9 +168,9 @@ public class Const {
             list = null;
         }
 
-        ITEM(List<String> skills) {
+        ITEM(List<String> list) {
             this.msg = "";
-            this.list = skills;
+            this.list = list;
         }
     }
 

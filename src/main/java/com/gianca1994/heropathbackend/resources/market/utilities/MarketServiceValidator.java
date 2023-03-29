@@ -12,11 +12,11 @@ import com.gianca1994.heropathbackend.utils.Const;
 public class MarketServiceValidator {
 
     public void checkItemExists(boolean exists) {
-        if (!exists) throw new BadReq(MarketConst.ITEM_NOT_FOUND);
+        if (!exists) throw new BadReq(Const.ITEM.NOT_FOUND.getMsg());
     }
 
     public void checkUserExists(boolean exists) {
-        if (!exists) throw new BadReq(MarketConst.USER_NOT_FOUND);
+        if (!exists) throw new BadReq(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void checkSellerExists(boolean exists) {
