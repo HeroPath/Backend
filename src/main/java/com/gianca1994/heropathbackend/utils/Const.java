@@ -136,14 +136,13 @@ public class Const {
         POTION_TYPE("potion"),
         GEM_ITEM_LVL_NAME("progress gem"),
         ITEM_NOT_LEVEL_AND_QUALITY(Arrays.asList("potion", "gem")),
-        ITEM_NOT_FOUND("Item not found"),
-        USER_NOT_FOUND("User not found"),
-        ALREADY_EXISTS("Item already exists"),
-        NAME_NOT_EMPTY("Name cannot be empty"),
-        TYPE_NOT_EMPTY("Type cannot be empty"),
-        LVL_NOT_LESS_0("LvlMin cannot be less than 0"),
-        PRICE_NOT_LESS_0("Price cannot be less than 0"),
-        STATS_NOT_LESS_0("Stats cannot be less than 0"),
+        NOT_FOUND("Item not found"),
+        ALREADY_EXIST("Item already exists"),
+        NAME_EMPTY("Name cannot be empty"),
+        TYPE_EMPTY("Type cannot be empty"),
+        LVL_LESS_0("LvlMin cannot be less than 0"),
+        PRICE_LESS_0("Price cannot be less than 0"),
+        STATS_LESS_0("Stats cannot be less than 0"),
         ENABLED_ITEM_TYPE_SAVE(Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion", "gem")),
         ENABLED_EQUIP(Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion")),
         ITEM_EQUIP_NOT_PERMITTED("You can't equip this item"),
@@ -162,14 +161,18 @@ public class Const {
         NOT_ENOUGH_GEMS("You don't have enough gems, you need: %d gems to upgrade the item"),
         ITEM_NOT_UPGRADEABLE("You can't upgrade this item");
 
-        private final Object value;
+        private final String msg;
+        private final List<String> list;
 
-        ITEM(Object value) {
-            this.value = value;
+        ITEM(String message) {
+            this.msg = message;
+            list = null;
         }
 
-        public Object getValue() {
-            return value;
+        ITEM(List<String> skills) {
+            this.msg = "";
+            this.list = skills;
         }
+
     }
 }

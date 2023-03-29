@@ -21,23 +21,23 @@ public class ItemServiceValidator {
         if (!exist) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
 
-    public void itemFound(boolean itemExist) throws NotFound {
-        if (!itemExist) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+    public void itemExist(boolean exist) throws NotFound {
+        if (!exist) throw new NotFound(Const.ITEM.NOT_FOUND.getMsg());
     }
 
-    public void itemExists(boolean itemExist) throws NotFound {
-        if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
+    public void itemAlreadyExist(boolean itemExist) throws NotFound {
+        if (itemExist) throw new NotFound(Const.ITEM.ALREADY_EXIST.getMsg());
     }
 
-    public void checkDtoToSaveItem(ItemDTO newItem) throws BadReq {
-        if (newItem.getName().isEmpty()) throw new BadReq(ItemConst.NAME_NOT_EMPTY);
-        if (newItem.getType().isEmpty()) throw new BadReq(ItemConst.TYPE_NOT_EMPTY);
-        if (newItem.getLvlMin() < 0) throw new BadReq(ItemConst.LVL_NOT_LESS_0);
-        if (newItem.getPrice() < 0) throw new BadReq(ItemConst.PRICE_NOT_LESS_0);
+    public void dtoSaveItem(ItemDTO newItem) throws BadReq {
+        if (newItem.getName().isEmpty()) throw new BadReq(Const.ITEM.NAME_EMPTY.getMsg());
+        if (newItem.getType().isEmpty()) throw new BadReq(Const.ITEM.TYPE_EMPTY.getMsg());
+        if (newItem.getLvlMin() < 0) throw new BadReq(Const.ITEM.LVL_LESS_0.getMsg());
+        if (newItem.getPrice() < 0) throw new BadReq(Const.ITEM.PRICE_LESS_0.getMsg());
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
-            throw new BadReq(ItemConst.STATS_NOT_LESS_0);
-        if (!ItemConst.ENABLED_ITEM_TYPE_SAVE.contains(newItem.getType()))
-            throw new BadReq(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
+            throw new BadReq(Const.ITEM.STATS_LESS_0.getMsg());
+        if (!Const.ITEM.ENABLED_ITEM_TYPE_SAVE.getList().contains(newItem.getType()))
+            throw new BadReq(Const.ITEM.CANT_EQUIP_MORE_ITEM.getMsg() + newItem.getType());
     }
 
     public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {

@@ -48,8 +48,8 @@ public class ItemService {
          * @param ItemDTO newItem
          * @return none
          */
-        validator.checkDtoToSaveItem(newItem);
-        validator.itemExists(itemR.existsByName(newItem.getName().toLowerCase()));
+        validator.dtoSaveItem(newItem);
+        validator.itemAlreadyExist(itemR.existsByName(newItem.getName().toLowerCase()));
 
         itemR.save(new Item(
                 newItem.getName().toLowerCase(), newItem.getType(), newItem.getLvlMin(), newItem.getPrice(),
@@ -197,6 +197,6 @@ public class ItemService {
 
     private void checkUserAndItemExist(Long userId, Long itemId) throws Conflict {
         validator.userExist(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemId));
+        validator.itemExist(itemR.existsById(itemId));
     }
 }
