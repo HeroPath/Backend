@@ -1,6 +1,6 @@
 package com.gianca1994.heropathbackend.resources.guild;
 
-import com.gianca1994.heropathbackend.utils.GuildUpgradeConfig;
+import com.gianca1994.heropathbackend.utils.GuildUpgrade;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDTO;
@@ -275,7 +275,7 @@ public class GuildService {
         validator.checkGuildDiamondsForUpgrade(guildDiamonds, guildLevel);
         int guildMaxMembers = guildR.findMaxMembersByName(guildName);
 
-        guildDiamonds -= GuildUpgradeConfig.getDiamondCost(guildLevel);
+        guildDiamonds -= GuildUpgrade.getDiamondCost(guildLevel);
         guildLevel++;
         guildMaxMembers++;
 

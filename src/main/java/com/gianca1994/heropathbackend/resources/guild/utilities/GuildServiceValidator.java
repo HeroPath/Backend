@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.guild.utilities;
 
 import com.gianca1994.heropathbackend.utils.Constants;
-import com.gianca1994.heropathbackend.utils.GuildUpgradeConfig;
+import com.gianca1994.heropathbackend.utils.GuildUpgrade;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
@@ -242,7 +242,7 @@ public class GuildServiceValidator {
          * @param int guildLevel
          * @return void
          */
-        if (guildDiamonds < GuildUpgradeConfig.getDiamondCost(guildLevel))
+        if (guildDiamonds < GuildUpgrade.getDiamondCost(guildLevel))
             throw new Conflict(Constants.GUILD.NOT_ENOUGH_DIAMONDS.getMsg());
     }
 }
