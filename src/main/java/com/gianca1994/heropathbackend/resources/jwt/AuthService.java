@@ -115,11 +115,6 @@ public class AuthService implements UserDetailsService {
                 newUser.setPassword(encryptPassword(newUser.getPassword()));
                 inventoryR.save(newUser.getInventory());
                 equipmentR.save(newUser.getEquipment());
-                try {
-                    newUser.generatePrivateAndPublicKey();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 userR.save(newUser);
             });
         });
