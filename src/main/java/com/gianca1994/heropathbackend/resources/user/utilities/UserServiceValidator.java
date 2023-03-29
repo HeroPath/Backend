@@ -27,7 +27,7 @@ public class UserServiceValidator {
          * @param boolean exist
          * @return void
          */
-        if (!exist) throw new Conflict(UserConst.USER_NOT_FOUND);
+        if (!exist) throw new Conflict(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void npcExist(boolean exist) throws Conflict {
@@ -37,7 +37,7 @@ public class UserServiceValidator {
          * @param boolean exist
          * @return void
          */
-        if (!exist) throw new Conflict(UserConst.NPC_NOT_FOUND);
+        if (!exist) throw new Conflict(Const.NPC.NOT_FOUND.getMsg());
     }
 
     public void getUserForGuild(UserGuildDTO userGuildDTO) throws NotFound {
@@ -47,7 +47,7 @@ public class UserServiceValidator {
          * @param UserGuildDTO userGuildDTO
          * @return void
          */
-        if (userGuildDTO == null) throw new NotFound(UserConst.USER_NOT_FOUND);
+        if (userGuildDTO == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void setFreeSkillPoint(UserAttributes uAttr, String skillName) throws Conflict {
@@ -58,10 +58,10 @@ public class UserServiceValidator {
          * @param String skillName
          * @return void
          */
-        if (uAttr == null) throw new NotFound(UserConst.USER_NOT_FOUND);
-        if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(UserConst.DONT_HAVE_SKILL_POINTS);
+        if (uAttr == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
+        if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(Const.USER.DONT_HAVE_SKILLPTS.getMsg());
         if (!Const.USER.SKILLS_ENABLED.getSkills().contains(skillName.toLowerCase()))
-            throw new Conflict(UserConst.SKILL_POINT_NAME_MUST_ONE_FOLLOWING + UserConst.SKILLS_ENABLED);
+            throw new Conflict(Const.USER.ALLOWED_SKILLPTS.getMsg() + Const.USER.SKILLS_ENABLED.getSkills());
     }
 
     public void checkAutoAttack(User attacker, User defender) throws Conflict {
@@ -72,7 +72,7 @@ public class UserServiceValidator {
          * @param User defender
          * @return void
          */
-        if (attacker == defender) throw new Conflict(UserConst.CANT_ATTACK_YOURSELF);
+        if (attacker == defender) throw new Conflict(Const.USER.CANT_ATTACK_YOURSELF.getMsg());
     }
 
     public void checkDifferenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
@@ -84,7 +84,7 @@ public class UserServiceValidator {
          * @return void
          */
         if (attackerLvl - defenderLvl > SvConfig.MAX_LEVEL_DIFFERENCE)
-            throw new Conflict(UserConst.CANT_ATTACK_LVL_LOWER_5);
+            throw new Conflict(Const.USER.CANT_ATTACK_LVL_LOWER_5.getMsg());
     }
 
     public void checkDifferenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
@@ -96,7 +96,7 @@ public class UserServiceValidator {
          * @return void
          */
         if (npcLvl > userLvl + SvConfig.MAX_LEVEL_DIFFERENCE)
-            throw new Conflict(UserConst.CANT_ATTACK_NPC_LVL_HIGHER_5);
+            throw new Conflict(Const.USER.CANT_ATTACK_NPC_LVL_HIGHER_5.getMsg());
     }
 
     public void checkDefenderNotAdmin(User defender) throws Conflict {
@@ -106,7 +106,7 @@ public class UserServiceValidator {
          * @param User defender
          * @return void
          */
-        if (defender.getRole().equals(SvConfig.ADMIN_ROLE)) throw new Conflict(UserConst.CANT_ATTACK_ADMIN);
+        if (defender.getRole().equals(SvConfig.ADMIN_ROLE)) throw new Conflict(Const.USER.CANT_ATTACK_ADMIN.getMsg());
     }
 
     public void checkLifeStartCombat(User user) {
@@ -116,7 +116,8 @@ public class UserServiceValidator {
          * @param User user
          * @return void
          */
-        if (genericFunctions.checkLifeStartCombat(user)) throw new BadReq(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
+        if (genericFunctions.checkLifeStartCombat(user))
+            throw new BadReq(Const.USER.IMPOSSIBLE_ATTACK_LESS_HP.getMsg());
 
     }
 
@@ -128,7 +129,7 @@ public class UserServiceValidator {
          * @return void
          */
         if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("ship")) && npcZone.equals("sea"))
-            throw new Conflict(UserConst.CANT_ATTACK_NPC_SEA);
+            throw new Conflict(Const.USER.CANT_ATTACK_NPC_SEA.getMsg());
     }
 
     public void checkUserItemReqZoneHell(Equipment userEquip, String npcZone) throws Conflict {
@@ -139,7 +140,7 @@ public class UserServiceValidator {
          * @return void
          */
         if (userEquip.getItems().stream().noneMatch(item -> item.getType().equals("wings")) && npcZone.equals("hell"))
-            throw new Conflict(UserConst.CANT_ATTACK_NPC_HELL);
+            throw new Conflict(Const.USER.CANT_ATTACK_NPC_HELL.getMsg());
     }
 
     public void checkPvePtsEnough(User user) throws Conflict {
@@ -149,7 +150,7 @@ public class UserServiceValidator {
          * @param User user
          * @return void
          */
-        if (user.getPvePts() <= 0) throw new Conflict(UserConst.DONT_HAVE_PVE_PTS);
+        if (user.getPvePts() <= 0) throw new Conflict(Const.USER.DONT_HAVE_PVE_PTS.getMsg());
     }
 
     public void checkPvpPtsEnough(User user) throws Conflict {
@@ -159,7 +160,7 @@ public class UserServiceValidator {
          * @param User user
          * @return void
          */
-        if (user.getPvpPts() <= 0) throw new Conflict(UserConst.DONT_HAVE_PVP_PTS);
+        if (user.getPvpPts() <= 0) throw new Conflict(Const.USER.DONT_HAVE_PVP_PTS.getMsg());
     }
 
     public void checkAttackerAndDefenderInSameGuild(User attacker, User defender) throws Conflict {
@@ -171,6 +172,6 @@ public class UserServiceValidator {
          * @return void
          */
         if (attacker.getGuildName().equals(defender.getGuildName()))
-            throw new Conflict(UserConst.CANT_ATTACK_GUILD_MEMBER);
+            throw new Conflict(Const.USER.CANT_ATTACK_GUILD_MEMBER.getMsg());
     }
 }

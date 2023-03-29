@@ -15,7 +15,7 @@ public class Const {
         NOT_FOUND("User not found"),
         DONT_HAVE_SKILLPTS("You don't have any free skill points"),
         SKILLS_ENABLED(Arrays.asList("strength", "dexterity", "intelligence", "vitality", "luck")),
-        SKILL_POINT_NAME_MUST_ONE_FOLLOWING("Skill point name must be one of the following: "),
+        ALLOWED_SKILLPTS("Skill point name must be one of the following: "),
         IMPOSSIBLE_ATTACK_LESS_HP("Impossible to attack with less than 15% of life"),
         CANT_ATTACK_LVL_LOWER_5("You can't attack with a level lower than 5"),
         CANT_ATTACK_YOURSELF("You can't fight yourself"),
