@@ -19,7 +19,7 @@ public class NpcServiceValidator {
          * @param boolean npcExist
          * @return void
          */
-        if (!npcExist) throw new NotFound(Constants.NPC.NOT_FOUND.msg());
+        if (!npcExist) throw new NotFound(Constants.NPC.NOT_FOUND.getMsg());
     }
 
     public void npcNotFoundZone(int npcSize) {
@@ -29,7 +29,7 @@ public class NpcServiceValidator {
          * @param int npcSize
          * @return void
          */
-        if (npcSize <= 0) throw new NotFound(Constants.NPC.NOT_IN_ZONE.msg());
+        if (npcSize <= 0) throw new NotFound(Constants.NPC.NOT_IN_ZONE.getMsg());
     }
 
     public void saveNpc(NpcDTO npc) throws Conflict {
@@ -39,17 +39,17 @@ public class NpcServiceValidator {
          * @param NpcDTO npc
          * @return void
          */
-        if (npc.getName().isEmpty()) throw new Conflict(Constants.NPC.NAME_EMPTY.msg());
-        if (npc.getLevel() < 1) throw new Conflict(Constants.NPC.LVL_LT_1.msg());
-        if (npc.getGiveMinExp() < 0) throw new Conflict(Constants.NPC.GIVE_MIN_EXP_LT_0.msg());
-        if (npc.getGiveMaxExp() < 0) throw new Conflict(Constants.NPC.GIVE_MAX_EXP_LT_0.msg());
-        if (npc.getGiveMinGold() < 0) throw new Conflict(Constants.NPC.GIVE_MIN_GOLD_LT_0.msg());
-        if (npc.getGiveMaxGold() < 0) throw new Conflict(Constants.NPC.GIVE_MAX_GOLD_LT_0.msg());
-        if (npc.getHp() < 0) throw new Conflict(Constants.NPC.HP_LT_0.msg());
-        if (npc.getMaxHp() < 0) throw new Conflict(Constants.NPC.MAX_HP_LT_0.msg());
-        if (npc.getMinDmg() < 0) throw new Conflict(Constants.NPC.MIN_DMG_LT_0.msg());
-        if (npc.getMaxDmg() < 0) throw new Conflict(Constants.NPC.MAX_DMG_LT_0.msg());
-        if (npc.getDefense() < 0) throw new Conflict(Constants.NPC.MIN_DEF_LT_0.msg());
-        if (npc.getZone().isEmpty()) throw new Conflict(Constants.NPC.ZONE_EMPTY.msg());
+        if (npc.getName().isEmpty()) throw new Conflict(Constants.NPC.NAME_EMPTY.getMsg());
+        if (npc.getLevel() < 1) throw new Conflict(Constants.NPC.LVL_LT_1.getMsg());
+        if (npc.getGiveMinExp() < 0) throw new Conflict(Constants.NPC.GIVE_MIN_EXP_LT_0.getMsg());
+        if (npc.getGiveMaxExp() < 0) throw new Conflict(Constants.NPC.GIVE_MAX_EXP_LT_0.getMsg());
+        if (npc.getGiveMinGold() < 0) throw new Conflict(Constants.NPC.GIVE_MIN_GOLD_LT_0.getMsg());
+        if (npc.getGiveMaxGold() < 0) throw new Conflict(Constants.NPC.GIVE_MAX_GOLD_LT_0.getMsg());
+        if (npc.getHp() < 0) throw new Conflict(Constants.NPC.HP_LT_0.getMsg());
+        if (npc.getMaxHp() < 0) throw new Conflict(Constants.NPC.MAX_HP_LT_0.getMsg());
+        if (npc.getMinDmg() < 0) throw new Conflict(Constants.NPC.MIN_DMG_LT_0.getMsg());
+        if (npc.getMaxDmg() < 0) throw new Conflict(Constants.NPC.MAX_DMG_LT_0.getMsg());
+        if (npc.getDefense() < 0) throw new Conflict(Constants.NPC.MIN_DEF_LT_0.getMsg());
+        if (npc.getZone().isEmpty()) throw new Conflict(Constants.NPC.ZONE_EMPTY.getMsg());
     }
 }

@@ -1,8 +1,12 @@
 package com.gianca1994.heropathbackend.utils;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public class Constants {
+    @Getter
+    @AllArgsConstructor
     public enum NPC {
         NOT_FOUND("Npc not found"),
         NOT_IN_ZONE("No npcs found in that area"),
@@ -19,17 +23,11 @@ public class Constants {
         MIN_DEF_LT_0("MinDefense cannot be less than 0"),
         ZONE_EMPTY("Zone cannot be empty");
 
-        private final String message;
-
-        NPC(String message) {
-            this.message = message;
-        }
-
-        public String msg() {
-            return message;
-        }
+        private final String msg;
     }
 
+    @Getter
+    @AllArgsConstructor
     public enum GUILD {
         NOT_FOUND("Guild not found"),
         NAME_ALREADY_EXIST("Guild name already exist"),
@@ -54,14 +52,6 @@ public class Constants {
         GOLD_REQ("You need " + SvConfig.GOLD_TO_CREATE_GUILD + " gold to create a guild"),
         DIAMOND_REQ("You need " + SvConfig.DIAMOND_TO_CREATE_GUILD + " diamonds to create a guild");
 
-        private final String message;
-
-        GUILD(String message) {
-            this.message = message;
-        }
-
-        public String msg() {
-            return message;
-        }
+        private final String msg;
     }
 }
