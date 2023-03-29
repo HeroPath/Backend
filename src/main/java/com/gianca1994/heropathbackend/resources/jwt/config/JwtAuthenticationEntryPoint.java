@@ -1,6 +1,6 @@
 package com.gianca1994.heropathbackend.resources.jwt.config;
 
-import com.gianca1994.heropathbackend.resources.jwt.utilities.JWTConst;
+import com.gianca1994.heropathbackend.utils.Constants;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -31,7 +31,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
          * @param AuthenticationException authException
          * @return void
          */
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, JWTConst.UNAUTHORIZED);
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, Constants.JWT.UNAUTHORIZED.getMsg());
 
     }
 

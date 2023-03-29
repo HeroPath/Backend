@@ -54,4 +54,29 @@ public class Constants {
 
         private final String msg;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum JWT {
+        USER_NOT_FOUND("User not found"),
+        PASS_INCORRECT("Password incorrect"),
+        TOKEN_PREFIX("Bearer "),
+        HEADER_STRING("Authorization"),
+        EMAIL_PATTERN("^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)@[A-Za-z0-9-]+(.[A-Za-z0-9]+)(.[A-Za-z]{2,})$"),
+        USER_DISABLED("USER_DISABLED"),
+        UNAUTHORIZED("Unauthorized"),
+        UNABLE_GET_TOKEN("Unable to get JWT Token"),
+        TOKEN_EXPIRED("JWT Token has expired"),
+        TOKEN_ADULTERATED("JWT adulterated"),
+        EMAIL_NOT_VALID("Invalid email address"),
+        USER_NOT_VALID("Username must be alphanumeric"),
+        USER_PATTERN("^[a-zA-Z0-9]*$"),
+        USER_EXISTS("Username already exists"),
+        EMAIL_EXISTS("Email already exists"),
+        USER_LENGTH("Username must be between 3 and 20 characters"),
+        PASS_LENGTH("Password must be between 3 and 20 characters"),
+        CLASS_NOT_FOUND("Class not found");
+
+        private final String msg;
+    }
 }

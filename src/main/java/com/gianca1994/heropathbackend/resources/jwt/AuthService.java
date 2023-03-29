@@ -14,6 +14,7 @@ import com.gianca1994.heropathbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
+import com.gianca1994.heropathbackend.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -85,9 +86,9 @@ public class AuthService implements UserDetailsService {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
         } catch (BadCredentialsException e) {
-            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+            throw new NotFound(Constants.JWT.PASS_INCORRECT.getMsg(), e);
         } catch (DisabledException e) {
-            throw new Exception(JWTConst.USER_DISABLED, e);
+            throw new Exception(Constants.JWT.USER_DISABLED.getMsg(), e);
         }
     }
 
@@ -98,7 +99,7 @@ public class AuthService implements UserDetailsService {
          * @param UserRegisterDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
+        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(Constants.JWT.EMAIL_NOT_VALID.getMsg());
 
         UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
         validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
@@ -129,7 +130,7 @@ public class AuthService implements UserDetailsService {
          * @param String email
          * @return boolean
          */
-        Pattern pattern = Pattern.compile(JWTConst.EMAIL_PATTERN);
+        Pattern pattern = Pattern.compile(Constants.JWT.EMAIL_PATTERN.getMsg());
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
