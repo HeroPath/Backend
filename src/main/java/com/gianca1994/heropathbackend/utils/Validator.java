@@ -28,15 +28,32 @@ import java.util.Set;
 public class Validator {
     GenericFunctions genericFunctions = new GenericFunctions();
 
-    /* USER */
     public void userExist(boolean exist) throws Conflict {
         if (!exist) throw new Conflict(Const.USER.NOT_FOUND.getMsg());
+    }
+
+    public void questExist(boolean exist) throws Conflict {
+        if (exist) throw new Conflict(QuestConst.QUEST_ALREADY_EXISTS);
     }
 
     public void npcExist(boolean exist) throws Conflict {
         if (!exist) throw new Conflict(Const.NPC.NOT_FOUND.getMsg());
     }
 
+    public void mailExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(MailConst.MAIL_NOT_FOUND);
+    }
+
+    public void guildExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(Const.GUILD.NOT_FOUND.getMsg());
+    }
+
+    public void itemExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(ItemConst.ITEM_NOT_FOUND);
+    }
+
+
+    /* USER */
     public void getUserForGuild(UserGuildDTO userGuildDTO) throws NotFound {
         if (userGuildDTO == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
@@ -100,9 +117,7 @@ public class Validator {
         if (!exist) throw new Conflict(QuestConst.QUEST_NOT_FOUND);
     }
 
-    public void questExist(boolean exist) throws Conflict {
-        if (exist) throw new Conflict(QuestConst.QUEST_ALREADY_EXISTS);
-    }
+
 
     public void userQuestFound(UserQuest userQuest) {
         if (userQuest == null) throw new NotFound(QuestConst.USER_QUEST_NOT_FOUND);
@@ -145,9 +160,6 @@ public class Validator {
     }
 
     /* NPC */
-    public void npcFound(boolean npcExist) {
-        if (!npcExist) throw new NotFound(Const.NPC.NOT_FOUND.getMsg());
-    }
 
     public void npcNotFoundZone(int npcSize) {
         if (npcSize <= 0) throw new NotFound(Const.NPC.NOT_IN_ZONE.getMsg());
@@ -173,16 +185,8 @@ public class Validator {
         if (!exists) throw new BadReq(MarketConst.ITEM_NOT_FOUND);
     }
 
-    public void checkUserExists(boolean exists) {
-        if (!exists) throw new BadReq(MarketConst.USER_NOT_FOUND);
-    }
-
     public void checkSellerExists(boolean exists) {
         if (!exists) throw new BadReq(MarketConst.SELLER_NOT_FOUND);
-    }
-
-    public void checkInventoryFull(int inventorySize) {
-        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new BadReq(MarketConst.INVENTORY_FULL);
     }
 
     public void checkMaxItemsPublished(int itemsPublished) {
@@ -214,10 +218,6 @@ public class Validator {
     }
 
     /* MAIL */
-    public void userExist(boolean exist) throws Conflict {
-        if (!exist) throw new Conflict(MailConst.USER_NOT_FOUND);
-    }
-
     public void receiverNotEmpty(String receiver) throws Conflict {
         if (receiver.isEmpty()) throw new Conflict(MailConst.RECEIVER_EMPTY);
     }
@@ -230,9 +230,7 @@ public class Validator {
         if (message.isEmpty()) throw new Conflict(MailConst.MESSAGE_EMPTY);
     }
 
-    public void mailExist(boolean exist) throws Conflict {
-        if (!exist) throw new Conflict(MailConst.MAIL_NOT_FOUND);
-    }
+
 
     public void userNotEqual(String username, String receiver) throws Conflict {
         if (username.equals(receiver)) throw new Conflict(MailConst.USER_NOT_EQUAL);
@@ -243,10 +241,6 @@ public class Validator {
     }
 
     /* ITEM */
-    public void userFound(boolean userExist) throws NotFound {
-        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
-    }
-
     public void itemFound(boolean itemExist) throws NotFound {
         if (!itemExist) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
     }
@@ -329,9 +323,6 @@ public class Validator {
     }
 
     /* GUILD */
-    public void userFound(boolean userExist) throws NotFound {
-        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
-    }
 
     public void userFoundByObject(User user) throws NotFound {
         if (user == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
