@@ -68,7 +68,7 @@ public class QuestService {
          * @return none
          */
         validator.questAlreadyExist(questR.existsByName(quest.getName()));
-        validator.checkDtoSaveQuest(quest);
+        validator.dtoSaveQuest(quest);
         questR.save(
                 new Quest(
                         quest.getName(), quest.getDescription(), quest.getLevelRequired(),
@@ -102,7 +102,7 @@ public class QuestService {
         validator.questExist(questR.existsByName(nameQuest));
 
         List<UserQuest> userQuests = userQuestR.findByUserUsername(username);
-        validator.checkUserMaxQuests(userQuests.size());
+        validator.maxActiveQuest(userQuests.size());
         validator.checkQuestAccepted(userQuests, nameQuest);
 
         User user = userR.findByUsername(username);

@@ -32,7 +32,7 @@ public class QuestServiceValidator {
         if (userQuest == null) throw new NotFound(Const.QUEST.USER_QUEST_NOT_FOUND.getMsg());
     }
 
-    public void checkDtoSaveQuest(QuestDTO quest) throws Conflict {
+    public void dtoSaveQuest(QuestDTO quest) throws Conflict {
         if (quest.getName().isEmpty()) throw new Conflict(Const.QUEST.NAME_EMPTY.getMsg());
         if (quest.getNameNpcKill().isEmpty()) throw new Conflict(Const.QUEST.NAME_NPC_EMPTY.getMsg());
         if (quest.getNpcAmountNeed() < 0) throw new Conflict(Const.QUEST.NPC_AMOUNT_LT0.getMsg());
@@ -42,8 +42,9 @@ public class QuestServiceValidator {
         if (quest.getGiveDiamonds() < 0) throw new Conflict(Const.QUEST.GIVE_DIAMOND_LT0.getMsg());
     }
 
-    public void checkUserMaxQuests(int amountQuests) throws Conflict {
-        if (amountQuests >= SvConfig.MAX_ACTIVE_QUESTS) throw new Conflict(Const.QUEST.MAX_ACTIVE.getMsg());
+    public void maxActiveQuest(int amountQuests) throws Conflict {
+        int MAX_QUESTS = SvConfig.MAX_ACTIVE_QUESTS;
+        if (amountQuests >= MAX_QUESTS) throw new Conflict(String.format(Const.QUEST.MAX_ACTIVE.getMsg(), MAX_QUESTS));
     }
 
     public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
