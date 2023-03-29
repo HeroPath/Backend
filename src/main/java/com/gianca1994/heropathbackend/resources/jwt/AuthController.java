@@ -7,7 +7,7 @@ import com.gianca1994.heropathbackend.resources.jwt.dto.request.JwtRequestDTO;
 import com.gianca1994.heropathbackend.resources.jwt.dto.response.JwtResponseDTO;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
-import com.gianca1994.heropathbackend.utils.Constants;
+import com.gianca1994.heropathbackend.utils.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,7 +43,7 @@ public class AuthController {
         String username = authenticationRequest.getUsername().toLowerCase();
         String password = authenticationRequest.getPassword();
 
-        if (!userR.existsByUsername(username)) throw new NotFound(Constants.JWT.USER_NOT_FOUND.getMsg());
+        if (!userR.existsByUsername(username)) throw new NotFound(Const.JWT.USER_NOT_FOUND.getMsg());
         authS.authenticate(username, password);
 
         final UserDetails userDetails = authS.loadUserByUsername(username);

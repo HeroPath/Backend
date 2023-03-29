@@ -2,7 +2,7 @@ package com.gianca1994.heropathbackend.resources.user.utilities;
 
 import com.gianca1994.heropathbackend.combatSystem.GenericFunctions;
 import com.gianca1994.heropathbackend.config.SvConfig;
-import com.gianca1994.heropathbackend.exception.BadRequest;
+import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.equipment.Equipment;
@@ -115,7 +115,7 @@ public class UserServiceValidator {
          * @param User user
          * @return void
          */
-        if (genericFunctions.checkLifeStartCombat(user)) throw new BadRequest(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
+        if (genericFunctions.checkLifeStartCombat(user)) throw new BadReq(UserConst.IMPOSSIBLE_ATTACK_LESS_HP);
 
     }
 

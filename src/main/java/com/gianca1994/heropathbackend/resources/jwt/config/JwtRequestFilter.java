@@ -3,7 +3,7 @@ package com.gianca1994.heropathbackend.resources.jwt.config;
 import java.io.IOException;
 
 import com.gianca1994.heropathbackend.resources.jwt.AuthService;
-import com.gianca1994.heropathbackend.utils.Constants;
+import com.gianca1994.heropathbackend.utils.Const;
 import io.jsonwebtoken.ExpiredJwtException;
 
 import javax.servlet.FilterChain;
@@ -46,19 +46,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
          * @param FilterChain chain
          * @return void
          */
-        final String requestTokenHeader = request.getHeader(Constants.JWT.HEADER_STRING.getMsg());
+        final String requestTokenHeader = request.getHeader(Const.JWT.HEADER_STRING.getMsg());
         String username = null, jwtToken = null;
 
-        if (requestTokenHeader != null && requestTokenHeader.startsWith(Constants.JWT.TOKEN_PREFIX.getMsg())) {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith(Const.JWT.TOKEN_PREFIX.getMsg())) {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwt.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                throw new ServletException(Constants.JWT.UNABLE_GET_TOKEN.getMsg());
+                throw new ServletException(Const.JWT.UNABLE_GET_TOKEN.getMsg());
             } catch (ExpiredJwtException e) {
-                throw new ServletException(Constants.JWT.TOKEN_EXPIRED.getMsg());
+                throw new ServletException(Const.JWT.TOKEN_EXPIRED.getMsg());
             } catch (MalformedJwtException e) {
-                throw new ServletException(Constants.JWT.TOKEN_ADULTERATED.getMsg());
+                throw new ServletException(Const.JWT.TOKEN_ADULTERATED.getMsg());
             }
         }
 

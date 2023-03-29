@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.item.utilities;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
-import com.gianca1994.heropathbackend.exception.BadRequest;
+import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.item.Item;
@@ -46,21 +46,21 @@ public class ItemServiceValidator {
         if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
     }
 
-    public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
+    public void checkDtoToSaveItem(ItemDTO newItem) throws BadReq {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of checking if the data sent to save an item is correct.
          * @param ItemDTO newItem
          * @return void
          */
-        if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
-        if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
-        if (newItem.getLvlMin() < 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
-        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
+        if (newItem.getName().isEmpty()) throw new BadReq(ItemConst.NAME_NOT_EMPTY);
+        if (newItem.getType().isEmpty()) throw new BadReq(ItemConst.TYPE_NOT_EMPTY);
+        if (newItem.getLvlMin() < 0) throw new BadReq(ItemConst.LVL_NOT_LESS_0);
+        if (newItem.getPrice() < 0) throw new BadReq(ItemConst.PRICE_NOT_LESS_0);
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
-            throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
+            throw new BadReq(ItemConst.STATS_NOT_LESS_0);
         if (!ItemConst.ENABLED_ITEM_TYPE_SAVE.contains(newItem.getType()))
-            throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
+            throw new BadReq(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
     }
 
     public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
@@ -171,7 +171,7 @@ public class ItemServiceValidator {
         if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
     }
 
-    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
+    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadReq {
         /**
          * @Author: Gianca1994
          * @Explanation: This method check if the user have enough items to upgrade the item.
@@ -179,17 +179,17 @@ public class ItemServiceValidator {
          * @param int requirementAmount
          * @return void
          */
-        if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
+        if (upgradeAmount < requirementAmount) throw new BadReq(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
     }
 
-    public void checkItemLevelMax(int itemLevel) throws BadRequest {
+    public void checkItemLevelMax(int itemLevel) throws BadReq {
         /**
          * @Author: Gianca1994
          * @Explanation: This method check if the item is already at the max level.
          * @param int itemLevel
          * @return void
          */
-        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadRequest(ItemConst.ITEM_ALREADY_MAX_LVL);
+        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadReq(ItemConst.ITEM_ALREADY_MAX_LVL);
     }
 
     public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {

@@ -5,12 +5,12 @@ package com.gianca1994.heropathbackend.exception;
  * @Explanation: This class is used to throw a bad request exception.
  */
 
-public class BadRequest extends RuntimeException {
-    public BadRequest(String message) {
+public class BadReq extends RuntimeException {
+    public BadReq(String message) {
         super(message);
     }
 
-    public BadRequest(String message, Throwable cause) {
+    public BadReq(String message, Throwable cause) {
         super(message, cause);
     }
 }

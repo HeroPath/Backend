@@ -4,7 +4,7 @@ import com.gianca1994.heropathbackend.config.SvConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-public class Constants {
+public class Const {
     @Getter
     @AllArgsConstructor
     public enum NPC {
