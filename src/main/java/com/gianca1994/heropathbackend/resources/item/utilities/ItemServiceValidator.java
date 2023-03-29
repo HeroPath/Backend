@@ -52,53 +52,51 @@ public class ItemServiceValidator {
         if (!userInv.contains(item)) throw new Conflict(Const.ITEM.NOT_IN_INVENTORY.getMsg());
     }
 
-    public void checkItemClassEquip(String userClass, String itemClass) throws Conflict {
-        if (!userClass.equals(itemClass) && !"none".equals(itemClass)) throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
+    public void itemClassEquip(String userClass, String itemClass) throws Conflict {
+        if (!userClass.equals(itemClass) && !"none".equals(itemClass))
+            throw new Conflict(Const.ITEM.ITEM_NOT_FOR_CLASS.getMsg());
     }
 
-    public void checkItemLevelEquip(int userLevel, int itemLevel) throws Conflict {
-        if (userLevel < itemLevel) throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemLevel);
+    public void itemLevelEquip(int userLevel, int itemLevel) throws Conflict {
+        if (userLevel < itemLevel) throw new Conflict(Const.ITEM.ITEM_LEVEL_REQ.getMsg() + itemLevel);
     }
 
-    public void checkItemEquipIfPermitted(String itemType) throws Conflict {
-        if (!ItemConst.ENABLED_EQUIP.contains(itemType)) throw new Conflict(ItemConst.ITEM_EQUIP_NOT_PERMITTED);
+    public void itemEquipIfPermitted(String itemType) throws Conflict {
+        if (!Const.ITEM.ENABLED_EQUIP.getList().contains(itemType))
+            throw new Conflict(Const.ITEM.EQUIP_NOT_PERMITTED.getMsg());
     }
 
-    public void checkEquipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
+    public void equipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
         for (Item item : equipment) {
-            if (item.getType().equals(itemType)) throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM);
+            if (item.getType().equals(itemType)) throw new Conflict(Const.ITEM.CANT_EQUIP_MORE_ITEM.getMsg());
         }
     }
 
-    public void checkItemInEquipment(Set<Item> equipment, Item item) {
-        if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
+    public void itemInEquipment(Set<Item> equipment, Item item) {
+        if (!equipment.contains(item)) throw new NotFound(Const.ITEM.NOT_IN_EQUIPMENT.getMsg());
     }
 
-    public void checkItemFromTrader(boolean itemFromTrader) throws Conflict {
-        if (!itemFromTrader) throw new Conflict(ItemConst.ITEM_NOT_FROM_TRADER);
+    public void itemFromTrader(boolean fromTrader) throws Conflict {
+        if (!fromTrader) throw new Conflict(Const.ITEM.NOT_FROM_TRADER.getMsg());
     }
 
-    public void checkItemNotInPossession(boolean itemNotPossession) throws Conflict {
-        if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
+    public void itemInPossession(boolean itemNotPossession) throws Conflict {
+        if (itemNotPossession) throw new Conflict(Const.ITEM.NOT_IN_POSSESSION.getMsg());
     }
 
-    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadReq {
-        if (upgradeAmount < requirementAmount) throw new BadReq(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
+    public void itemLevelMax(int lvl) throws BadReq {
+        if (lvl >= SvConfig.MAX_ITEM_LEVEL) throw new BadReq(Const.ITEM.ALREADY_MAX_LVL.getMsg());
     }
 
-    public void checkItemLevelMax(int itemLevel) throws BadReq {
-        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadReq(ItemConst.ITEM_ALREADY_MAX_LVL);
+    public void itemUpgradeInPossession(boolean haveItem) throws Conflict {
+        if (!haveItem) throw new Conflict(Const.ITEM.NOT_HAVE_ITEM.getMsg());
     }
 
-    public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {
-        if (!userHaveItem) throw new Conflict(ItemConst.USER_NOT_HAVE_ITEM);
+    public void hasEnoughGems(int userGems, int needed) throws Conflict {
+        if (userGems < needed) throw new Conflict(String.format(Const.ITEM.NOT_ENOUGH_GEMS.getMsg(), needed));
     }
 
-    public void checkUserHaveAmountGem(int userGems, int gemsNeeded) throws Conflict {
-        if (userGems < gemsNeeded) throw new Conflict(String.format(ItemConst.NOT_ENOUGH_GEMS, gemsNeeded));
-    }
-
-    public void checkItemIsUpgradeable(boolean isUpgradeable) throws Conflict {
-        if (!isUpgradeable) throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
+    public void itemIsUpgradeable(boolean isUpgradeable) throws Conflict {
+        if (!isUpgradeable) throw new Conflict(Const.ITEM.NOT_UPGRADEABLE.getMsg());
     }
 }

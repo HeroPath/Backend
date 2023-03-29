@@ -5,10 +5,10 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.EquipOrUnequipDTO;
-import com.gianca1994.heropathbackend.resources.item.utilities.ItemConst;
 import com.gianca1994.heropathbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
+import com.gianca1994.heropathbackend.utils.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +68,7 @@ public class ItemService {
          * @return BuySellDTO
          */
         checkUserAndItemExist(userId, itemId);
-        validator.checkItemFromTrader(itemR.isUserIdNull(itemId));
+        validator.itemFromTrader(itemR.isUserIdNull(itemId));
         User user = userR.findById(userId).get();
         Item itemBuy = itemR.findById(itemId).get();
 
@@ -96,7 +96,7 @@ public class ItemService {
          * @return BuySellDTO
          */
         checkUserAndItemExist(userId, itemId);
-        validator.checkItemNotInPossession(itemR.isUserIdNull(itemId));
+        validator.itemInPossession(itemR.isUserIdNull(itemId));
 
         User user = userR.findById(userId).get();
         Item itemSell = itemR.findById(itemId).get();
@@ -121,14 +121,14 @@ public class ItemService {
         User user = userR.findById(userId).get();
         Item itemEquip = itemR.findById(itemId).get();
 
-        validator.checkItemEquipIfPermitted(itemEquip.getType());
-        validator.checkEquipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
+        validator.itemEquipIfPermitted(itemEquip.getType());
+        validator.equipOnlyOneType(user.getEquipment().getItems(), itemEquip.getType());
         validator.inventoryContainsItem(user.getInventory().getItems(), itemEquip);
-        validator.checkItemClassEquip(user.getAClass(), itemEquip.getClassRequired());
-        validator.checkItemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
+        validator.itemClassEquip(user.getAClass(), itemEquip.getClassRequired());
+        validator.itemLevelEquip(user.getLevel(), itemEquip.getLvlMin());
 
         user.getInventory().getItems().remove(itemEquip);
-        boolean isPotion = itemEquip.getType().equals(ItemConst.POTION_TYPE);
+        boolean isPotion = itemEquip.getType().equals(Const.ITEM.POTION_TYPE.getMsg());
 
         if (!isPotion) {
             user.getEquipment().getItems().add(itemEquip);
@@ -152,7 +152,7 @@ public class ItemService {
         Item itemUnequip = itemR.findById(itemId).get();
 
         validator.inventoryFull(user.getInventory().getItems().size());
-        validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
+        validator.itemInEquipment(user.getEquipment().getItems(), itemUnequip);
 
         user.getEquipment().getItems().remove(itemUnequip);
         user.getInventory().getItems().add(itemUnequip);
@@ -172,15 +172,15 @@ public class ItemService {
          * @return Inventory
          */
         checkUserAndItemExist(userId, itemId);
-        validator.checkItemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
-        validator.checkItemIsUpgradeable(itemR.isItemUpgradeable(itemId, ItemConst.ENABLED_EQUIP, ItemConst.POTION_TYPE));
+        validator.itemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
+        validator.itemIsUpgradeable(itemR.isItemUpgradeable(itemId, Const.ITEM.ENABLED_EQUIP.getList(), Const.ITEM.POTION_TYPE.getMsg()));
 
         int itemLevel = itemR.findItemLevelById(itemId);
-        validator.checkItemLevelMax(itemLevel);
+        validator.itemLevelMax(itemLevel);
 
-        List<Item> gemItems = itemR.findGemByUserId(userId, ItemConst.GEM_ITEM_LVL_NAME);
+        List<Item> gemItems = itemR.findGemByUserId(userId, Const.ITEM.GEM_PROGRESS_NAME.getMsg());
         int gemsNeeded = itemLevel + 1;
-        validator.checkUserHaveAmountGem(gemItems.size(), gemsNeeded);
+        validator.hasEnoughGems(gemItems.size(), gemsNeeded);
 
         User user = userR.findById(userId).get();
         Item itemUpgrade = itemR.findById(itemId).get();
