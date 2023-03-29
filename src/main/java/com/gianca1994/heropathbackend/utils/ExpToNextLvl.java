@@ -58,7 +58,7 @@ public class ExpToNextLvl {
     };
 
 
-    public static long getExpInitial() {
+    public static long getInitialExp() {
         return LEVELS[ModifConfig.START_LVL - 1];
     }
 

@@ -146,7 +146,7 @@ public class User {
         this.aClass = userJwt.getAClass().getName();
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ExpToNextLvl.getExpInitial();
+        this.experienceToNextLevel = ExpToNextLvl.getInitialExp();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
