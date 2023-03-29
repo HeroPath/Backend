@@ -136,15 +136,15 @@ public class UserService {
         validator.userExist(userR.existsByUsername(nameDefender));
 
         User attacker = userR.findByUsername(username);
-        validator.checkLifeStartCombat(attacker);
-        validator.checkPvpPtsEnough(attacker);
+        validator.lifeStartCombat(attacker);
+        validator.pvpPtsEnough(attacker);
 
         User defender = userR.findByUsername(nameDefender);
-        validator.checkDefenderNotAdmin(defender);
-        validator.checkLifeStartCombat(defender);
-        validator.checkAutoAttack(attacker, defender);
-        validator.checkDifferenceLevelPVP(attacker.getLevel(), defender.getLevel());
-        validator.checkAttackerAndDefenderInSameGuild(attacker, defender);
+        validator.defenderNotAdmin(defender);
+        validator.lifeStartCombat(defender);
+        validator.autoAttack(attacker, defender);
+        validator.differenceLevelPVP(attacker.getLevel(), defender.getLevel());
+        validator.attackerAndDefenderInSameGuild(attacker, defender);
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
         pvpSystem.getAttacker().setPvpPts(pvpSystem.getAttacker().getPvpPts() - 1);
@@ -167,13 +167,13 @@ public class UserService {
         validator.npcExist(npcR.existsByName(npcName));
 
         User user = userR.findByUsername(username);
-        validator.checkLifeStartCombat(user);
-        validator.checkPvePtsEnough(user);
+        validator.lifeStartCombat(user);
+        validator.pvePtsEnough(user);
 
         Npc npc = npcR.findByName(npcName);
-        validator.checkUserItemReqZoneSea(user.getEquipment(), npc.getZone());
-        validator.checkUserItemReqZoneHell(user.getEquipment(), npc.getZone());
-        validator.checkDifferenceLevelPVE(user.getLevel(), npc.getLevel());
+        validator.userItemReqZoneSea(user.getEquipment(), npc.getZone());
+        validator.userItemReqZoneHell(user.getEquipment(), npc.getZone());
+        validator.differenceLevelPVE(user.getLevel(), npc.getLevel());
 
         CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));
         pveSystem.getAttacker().setPvePts(pveSystem.getAttacker().getPvePts() - 1);

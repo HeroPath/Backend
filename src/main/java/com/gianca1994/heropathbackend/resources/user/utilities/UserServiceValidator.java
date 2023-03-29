@@ -60,11 +60,11 @@ public class UserServiceValidator {
          */
         if (uAttr == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
         if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(Const.USER.DONT_HAVE_SKILLPTS.getMsg());
-        if (!Const.USER.SKILLS_ENABLED.getSkills().contains(skillName.toLowerCase()))
-            throw new Conflict(Const.USER.ALLOWED_SKILLPTS.getMsg() + Const.USER.SKILLS_ENABLED.getSkills());
+        if (!Const.USER.SKILLS_ENABLED.getMsg().contains(skillName.toLowerCase()))
+            throw new Conflict(Const.USER.ALLOWED_SKILLPTS.getMsg() + Const.USER.SKILLS_ENABLED.getMsg());
     }
 
-    public void checkAutoAttack(User attacker, User defender) throws Conflict {
+    public void autoAttack(User attacker, User defender) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the auto attack.
@@ -75,7 +75,7 @@ public class UserServiceValidator {
         if (attacker == defender) throw new Conflict(Const.USER.CANT_ATTACK_YOURSELF.getMsg());
     }
 
-    public void checkDifferenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
+    public void differenceLevelPVP(short attackerLvl, short defenderLvl) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the difference level pvp.
@@ -87,7 +87,7 @@ public class UserServiceValidator {
             throw new Conflict(Const.USER.CANT_ATTACK_LVL_LOWER_5.getMsg());
     }
 
-    public void checkDifferenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
+    public void differenceLevelPVE(short userLvl, short npcLvl) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the difference level pve.
@@ -99,7 +99,7 @@ public class UserServiceValidator {
             throw new Conflict(Const.USER.CANT_ATTACK_NPC_LVL_HIGHER_5.getMsg());
     }
 
-    public void checkDefenderNotAdmin(User defender) throws Conflict {
+    public void defenderNotAdmin(User defender) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the defender not admin.
@@ -109,7 +109,7 @@ public class UserServiceValidator {
         if (defender.getRole().equals(SvConfig.ADMIN_ROLE)) throw new Conflict(Const.USER.CANT_ATTACK_ADMIN.getMsg());
     }
 
-    public void checkLifeStartCombat(User user) {
+    public void lifeStartCombat(User user) {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the life start combat.
@@ -121,7 +121,7 @@ public class UserServiceValidator {
 
     }
 
-    public void checkUserItemReqZoneSea(Equipment userEquip, String npcZone) throws Conflict {
+    public void userItemReqZoneSea(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the user item req zone sea.
@@ -132,7 +132,7 @@ public class UserServiceValidator {
             throw new Conflict(Const.USER.CANT_ATTACK_NPC_SEA.getMsg());
     }
 
-    public void checkUserItemReqZoneHell(Equipment userEquip, String npcZone) throws Conflict {
+    public void userItemReqZoneHell(Equipment userEquip, String npcZone) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the user item req zone hell.
@@ -143,7 +143,7 @@ public class UserServiceValidator {
             throw new Conflict(Const.USER.CANT_ATTACK_NPC_HELL.getMsg());
     }
 
-    public void checkPvePtsEnough(User user) throws Conflict {
+    public void pvePtsEnough(User user) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the pve pts enough.
@@ -153,7 +153,7 @@ public class UserServiceValidator {
         if (user.getPvePts() <= 0) throw new Conflict(Const.USER.DONT_HAVE_PVE_PTS.getMsg());
     }
 
-    public void checkPvpPtsEnough(User user) throws Conflict {
+    public void pvpPtsEnough(User user) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the pvp pts enough.
@@ -163,7 +163,7 @@ public class UserServiceValidator {
         if (user.getPvpPts() <= 0) throw new Conflict(Const.USER.DONT_HAVE_PVP_PTS.getMsg());
     }
 
-    public void checkAttackerAndDefenderInSameGuild(User attacker, User defender) throws Conflict {
+    public void attackerAndDefenderInSameGuild(User attacker, User defender) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of validating the attacker and defender in same guild.
