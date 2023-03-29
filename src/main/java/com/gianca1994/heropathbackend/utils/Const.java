@@ -113,4 +113,20 @@ public class Const {
 
         private final String msg;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum MARKET {
+        MAX_ITEMS_PUBLISHED("Maximum items published"),
+        MAX_GOLD_PRICE("Maximum gold price"),
+        MAX_DIAMOND_PRICE("Maximum diamond price"),
+        ITEM_ALREADY_IN_MARKET("Item already in market"),
+        ITEM_NOT_OWNED("You don't own this item"),
+        INVENTORY_FULL("Inventory full"),
+        SELLER_NOT_FOUND("Seller not found"),
+        NOT_ENOUGH_GOLD("You don't have enough gold"),
+        NOT_ENOUGH_DIAMOND("You don't have enough diamond");
+
+        private final String msg;
+    }
 }
