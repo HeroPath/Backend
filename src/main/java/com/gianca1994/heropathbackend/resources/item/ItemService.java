@@ -59,7 +59,7 @@ public class ItemService {
         ));
     }
 
-    public BuySellDTO buyItem(Long userId, Long itemBuyId) throws Conflict {
+    public BuySellDTO buyItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of buying an item.
@@ -67,11 +67,10 @@ public class ItemService {
          * @param long itemBuyId
          * @return BuySellDTO
          */
-        validator.userFound(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemBuyId));
-        validator.checkItemFromTrader(itemR.isUserIdNull(itemBuyId));
+        checkUserAndItemExist(userId, itemId);
+        validator.checkItemFromTrader(itemR.isUserIdNull(itemId));
         User user = userR.findById(userId).get();
-        Item itemBuy = itemR.findById(itemBuyId).get();
+        Item itemBuy = itemR.findById(itemId).get();
 
         validator.checkInventoryFull(user.getInventory().getItems().size());
         validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
@@ -88,7 +87,7 @@ public class ItemService {
         return new BuySellDTO(user.getGold(), user.getInventory());
     }
 
-    public BuySellDTO sellItem(Long userId, Long itemSellId) throws Conflict {
+    public BuySellDTO sellItem(Long userId, Long itemId) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of selling an item.
@@ -96,12 +95,11 @@ public class ItemService {
          * @param long itemSellId
          * @return BuySellDTO
          */
-        validator.userFound(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemSellId));
-        validator.checkItemNotInPossession(itemR.isUserIdNull(itemSellId));
+        checkUserAndItemExist(userId, itemId);
+        validator.checkItemNotInPossession(itemR.isUserIdNull(itemId));
 
         User user = userR.findById(userId).get();
-        Item itemSell = itemR.findById(itemSellId).get();
+        Item itemSell = itemR.findById(itemId).get();
         validator.inventoryContainsItem(user.getInventory().getItems(), itemSell);
 
         user.setGold(user.getGold() + (itemSell.getPrice()));
@@ -119,8 +117,7 @@ public class ItemService {
          * @param long itemId
          * @return EquipOrUnequipDTO
          */
-        validator.userFound(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemId));
+        checkUserAndItemExist(userId, itemId);
         User user = userR.findById(userId).get();
         Item itemEquip = itemR.findById(itemId).get();
 
@@ -150,8 +147,7 @@ public class ItemService {
          * @param long itemId
          * @return EquipOrUnequipDTO
          */
-        validator.userFound(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemId));
+        checkUserAndItemExist(userId, itemId);
         User user = userR.findById(userId).get();
         Item itemUnequip = itemR.findById(itemId).get();
 
@@ -175,8 +171,7 @@ public class ItemService {
          * @param long itemId
          * @return Inventory
          */
-        validator.userFound(userR.existsById(userId));
-        validator.itemFound(itemR.existsById(itemId));
+        checkUserAndItemExist(userId, itemId);
         validator.checkItemUpgradeInPossession(itemR.existsByIdAndUserId(itemId, userId));
         validator.checkItemIsUpgradeable(itemR.isItemUpgradeable(itemId, ItemConst.ENABLED_EQUIP, ItemConst.POTION_TYPE));
 
@@ -198,5 +193,10 @@ public class ItemService {
         itemR.save(itemUpgrade);
         userR.save(user);
         return user.getInventory();
+    }
+
+    private void checkUserAndItemExist(Long userId, Long itemId) throws Conflict {
+        validator.userExist(userR.existsById(userId));
+        validator.itemFound(itemR.existsById(itemId));
     }
 }

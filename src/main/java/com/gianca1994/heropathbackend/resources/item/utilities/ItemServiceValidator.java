@@ -6,6 +6,7 @@ import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
+import com.gianca1994.heropathbackend.utils.Const;
 
 import java.util.Set;
 
@@ -16,8 +17,8 @@ import java.util.Set;
 
 public class ItemServiceValidator {
 
-    public void userFound(boolean userExist) throws NotFound {
-        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
+    public void userExist(boolean exist) throws NotFound {
+        if (!exist) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
 
     public void itemFound(boolean itemExist) throws NotFound {
