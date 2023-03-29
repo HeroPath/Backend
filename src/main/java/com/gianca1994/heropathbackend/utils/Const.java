@@ -129,4 +129,47 @@ public class Const {
 
         private final String msg;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum ITEM {
+        POTION_TYPE("potion"),
+        GEM_ITEM_LVL_NAME("progress gem"),
+        ITEM_NOT_LEVEL_AND_QUALITY(Arrays.asList("potion", "gem")),
+        ITEM_NOT_FOUND("Item not found"),
+        USER_NOT_FOUND("User not found"),
+        ALREADY_EXISTS("Item already exists"),
+        NAME_NOT_EMPTY("Name cannot be empty"),
+        TYPE_NOT_EMPTY("Type cannot be empty"),
+        LVL_NOT_LESS_0("LvlMin cannot be less than 0"),
+        PRICE_NOT_LESS_0("Price cannot be less than 0"),
+        STATS_NOT_LESS_0("Stats cannot be less than 0"),
+        ENABLED_ITEM_TYPE_SAVE(Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion", "gem")),
+        ENABLED_EQUIP(Arrays.asList("weapon", "shield", "helmet", "armor", "pants", "gloves", "boots", "ship", "wings", "potion")),
+        ITEM_EQUIP_NOT_PERMITTED("You can't equip this item"),
+        CANT_EQUIP_MORE_ITEM("You can't equip two items of the same type"),
+        NOT_ENOUGH_GOLD("You don't have enough gold"),
+        INVENTORY_FULL("Inventory is full"),
+        ITEM_NOT_INVENTORY("Item not found in inventory"),
+        ITEM_NOT_EQUIPMENT("Item not found in equipment"),
+        ITEM_NOT_FOR_CLASS("The item does not correspond to your class"),
+        ITEM_LEVEL_REQ("You can't equip an item that requires level "),
+        ITEM_NOT_FROM_TRADER("You can only buy items that come from the trader."),
+        ITEM_NOT_IN_POSSESSION("You can't sell an item you don't have in your possession."),
+        NOT_ENOUGH_ITEMS_TO_UPGRADE("You don't have enough items to upgrade"),
+        ITEM_ALREADY_MAX_LVL("Item already at max level"),
+        USER_NOT_HAVE_ITEM("You don't have this item"),
+        NOT_ENOUGH_GEMS("You don't have enough gems, you need: %d gems to upgrade the item"),
+        ITEM_NOT_UPGRADEABLE("You can't upgrade this item");
+
+        private final Object value;
+
+        ITEM(Object value) {
+            this.value = value;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+    }
 }
