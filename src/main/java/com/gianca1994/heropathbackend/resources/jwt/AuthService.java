@@ -10,7 +10,6 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.heropathbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.heropathbackend.resources.jwt.utilities.AuthServiceValidator;
-import com.gianca1994.heropathbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
