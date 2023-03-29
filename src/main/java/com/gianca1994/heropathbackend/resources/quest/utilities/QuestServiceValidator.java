@@ -47,21 +47,21 @@ public class QuestServiceValidator {
         if (amountQuests >= MAX_QUESTS) throw new Conflict(String.format(Const.QUEST.MAX_ACTIVE.getMsg(), MAX_QUESTS));
     }
 
-    public void checkQuestAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
+    public void questAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
         if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
             throw new Conflict(Const.QUEST.ALREADY_ACCEPTED.getMsg());
         }
     }
 
-    public void checkQuestCompleted(int amountKill, int amountNeeded) throws Conflict {
+    public void questCompleted(int amountKill, int amountNeeded) throws Conflict {
         if (amountKill < amountNeeded) throw new Conflict(Const.QUEST.AMOUNT_CHECK.getMsg());
     }
 
-    public void questAlreadyCompleted(long userQuestId) throws Conflict {
+    public void alreadyCompleted(long userQuestId) throws Conflict {
         if (userQuestId == 0) throw new Conflict(Const.QUEST.ALREADY_COMPLETED.getMsg());
     }
 
-    public void checkUserHaveLvlRequired(int userLvl, int questLvl) throws Conflict {
+    public void questLvlMin(int userLvl, int questLvl) throws Conflict {
         if (userLvl < questLvl) throw new Conflict(Const.QUEST.LVL_NOT_ENOUGH.getMsg());
     }
 }

@@ -98,17 +98,16 @@ public class QuestService {
          * @param String nameQuest
          * @return none
          */
-        validator.userExist(userR.existsByUsername(username));
-        validator.questExist(questR.existsByName(nameQuest));
+        checkUserAndQuestExist(username, nameQuest);
 
         List<UserQuest> userQuests = userQuestR.findByUserUsername(username);
         validator.maxActiveQuest(userQuests.size());
-        validator.checkQuestAccepted(userQuests, nameQuest);
+        validator.questAccepted(userQuests, nameQuest);
 
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
 
-        validator.checkUserHaveLvlRequired(user.getLevel(), quest.getLevelRequired());
+        validator.questLvlMin(user.getLevel(), quest.getLevelRequired());
 
         UserQuest userQuest = new UserQuest();
         userQuest.setUser(user);
@@ -126,22 +125,21 @@ public class QuestService {
          * @param String nameQuest
          * @return Quest
          */
-        validator.userExist(userR.existsByUsername(username));
-        validator.questExist(questR.existsByName(nameQuest));
+        checkUserAndQuestExist(username, nameQuest);
 
         User user = userR.findByUsername(username);
         Quest quest = questR.findByName(nameQuest);
         UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
         validator.userQuestExist(userQuest);
-        validator.checkQuestCompleted(userQuest.getNpcAmountNeed(), quest.getNpcAmountNeed());
-        validator.checkQuestCompleted(userQuest.getUserAmountNeed(), quest.getUserAmountNeed());
+        validator.questCompleted(userQuest.getNpcAmountNeed(), quest.getNpcAmountNeed());
+        validator.questCompleted(userQuest.getUserAmountNeed(), quest.getUserAmountNeed());
 
         user.setExperience(user.getExperience() + quest.getGiveExp());
         user.setGold(user.getGold() + quest.getGiveGold());
         user.setDiamond(user.getDiamond() + quest.getGiveDiamonds());
         user.userLevelUp();
 
-        validator.questAlreadyCompleted(userQuest.getId());
+        validator.alreadyCompleted(userQuest.getId());
         userQuestR.delete(userQuest);
         user.getUserQuests().remove(userQuest);
         userR.save(user);
@@ -156,11 +154,15 @@ public class QuestService {
          * @param String nameQuest
          * @return none
          */
-        validator.userExist(userR.existsByUsername(username));
-        validator.questExist(questR.existsByName(nameQuest));
+        checkUserAndQuestExist(username, nameQuest);
 
         UserQuest userQuest = userQuestR.findByUserUsernameAndQuestName(username, nameQuest);
         validator.userQuestExist(userQuest);
         userQuestR.delete(userQuest);
+    }
+
+    private void checkUserAndQuestExist(String username, String nameQuest) throws Conflict {
+        validator.userExist(userR.existsByUsername(username));
+        validator.questExist(questR.existsByName(nameQuest));
     }
 }
