@@ -14,7 +14,6 @@ public class ItemConst {
     public static final List<String> ITEM_NOT_LEVEL_AND_QUALITY = Arrays.asList(
             "potion", "gem"
     );
-
     public static final String ITEM_NOT_FOUND = "Item not found";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String ALREADY_EXISTS = "Item already exists";

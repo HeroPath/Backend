@@ -25,5 +25,4 @@ public class JWTConst {
     public static final String USERNAME_LENGTH = "Username must be between 3 and 20 characters";
     public static final String PASSWORD_LENGTH = "Password must be between 3 and 20 characters";
     public static final String CLASS_NOT_FOUND = "Class not found";
-
 }
