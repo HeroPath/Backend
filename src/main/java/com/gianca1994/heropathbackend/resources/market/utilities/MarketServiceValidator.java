@@ -24,7 +24,7 @@ public class MarketServiceValidator {
     }
 
     public void checkInventoryFull(int inventorySize) {
-        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new BadReq(Const.MARKET.INVENTORY_FULL.getMsg());
+        if (inventorySize >= SvConfig.SLOTS_INVENTORY) throw new BadReq(Const.MARKET.INVENTORY_FULL.getMsg());
     }
 
     public void checkMaxItemsPublished(int itemsPublished) {

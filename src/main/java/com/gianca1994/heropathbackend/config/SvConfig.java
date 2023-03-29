@@ -34,7 +34,7 @@ public class SvConfig {
     /////////////////////////// PVP ///////////////////////////
 
     /////////////////////////// ITEM ///////////////////////////
-    public static final int MAX_ITEMS_INVENTORY = 24;
+    public static final int SLOTS_INVENTORY = 24;
     public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 

@@ -72,8 +72,8 @@ public class ItemService {
         User user = userR.findById(userId).get();
         Item itemBuy = itemR.findById(itemId).get();
 
-        validator.checkInventoryFull(user.getInventory().getItems().size());
-        validator.checkGoldEnough(user.getGold(), itemBuy.getPrice());
+        validator.inventoryFull(user.getInventory().getItems().size());
+        validator.goldEnough(user.getGold(), itemBuy.getPrice());
         user.setGold(user.getGold() - itemBuy.getPrice());
 
         Item newItemBuy = new Item(
@@ -151,7 +151,7 @@ public class ItemService {
         User user = userR.findById(userId).get();
         Item itemUnequip = itemR.findById(itemId).get();
 
-        validator.checkInventoryFull(user.getInventory().getItems().size());
+        validator.inventoryFull(user.getInventory().getItems().size());
         validator.checkItemInEquipment(user.getEquipment().getItems(), itemUnequip);
 
         user.getEquipment().getItems().remove(itemUnequip);

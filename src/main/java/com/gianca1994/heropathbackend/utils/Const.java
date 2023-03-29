@@ -149,7 +149,7 @@ public class Const {
         CANT_EQUIP_MORE_ITEM("You can't equip two items of the same type"),
         NOT_ENOUGH_GOLD("You don't have enough gold"),
         INVENTORY_FULL("Inventory is full"),
-        ITEM_NOT_INVENTORY("Item not found in inventory"),
+        NOT_IN_INVENTORY("Item not found in inventory"),
         ITEM_NOT_EQUIPMENT("Item not found in equipment"),
         ITEM_NOT_FOR_CLASS("The item does not correspond to your class"),
         ITEM_LEVEL_REQ("You can't equip an item that requires level "),

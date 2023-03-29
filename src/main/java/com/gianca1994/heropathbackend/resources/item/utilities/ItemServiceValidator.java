@@ -40,16 +40,16 @@ public class ItemServiceValidator {
             throw new BadReq(Const.ITEM.CANT_EQUIP_MORE_ITEM.getMsg() + newItem.getType());
     }
 
-    public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
-        if (goldUser < itemPrice) throw new Conflict(ItemConst.NOT_ENOUGH_GOLD);
+    public void goldEnough(long gold, int price) throws Conflict {
+        if (gold < price) throw new Conflict(Const.ITEM.NOT_ENOUGH_GOLD.getMsg());
     }
 
-    public void checkInventoryFull(int inventorySize) throws Conflict {
-        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
+    public void inventoryFull(int size) throws Conflict {
+        if (size >= SvConfig.SLOTS_INVENTORY) throw new Conflict(Const.ITEM.INVENTORY_FULL.getMsg());
     }
 
-    public void inventoryContainsItem(Set<Item> userInventory, Item item) throws Conflict {
-        if (!userInventory.contains(item)) throw new Conflict(ItemConst.ITEM_NOT_INVENTORY);
+    public void inventoryContainsItem(Set<Item> userInv, Item item) throws Conflict {
+        if (!userInv.contains(item)) throw new Conflict(Const.ITEM.NOT_IN_INVENTORY.getMsg());
     }
 
     public void checkItemClassEquip(String userClass, String itemClass) throws Conflict {
