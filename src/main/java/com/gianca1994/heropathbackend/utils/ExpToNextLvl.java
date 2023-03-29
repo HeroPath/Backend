@@ -7,7 +7,7 @@ import com.gianca1994.heropathbackend.config.ModifConfig;
  * @Explanation: This class contains the experience needed to level up.
  */
 
-public class ExpLvlConfig {
+public class ExpToNextLvl {
     public static final long[] LEVELS = new long[]{
             400L, 900L, 1400L, 1800L, 2200L, 2890L, 3580L, 4405L, 5355L, 6435L, 7515L, 8925L, 10335L,
             11975L, 13715L, 15730L, 17745L, 20250L, 22755L, 25620L, 28660L, 32060L, 35460L, 39535L,

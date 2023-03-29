@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.heropathbackend.utils.ExpLvlConfig;
+import com.gianca1994.heropathbackend.utils.ExpToNextLvl;
 import com.gianca1994.heropathbackend.config.ModifConfig;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.resources.classes.Class;
@@ -146,7 +146,7 @@ public class User {
         this.aClass = userJwt.getAClass().getName();
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ExpLvlConfig.getExpInitial();
+        this.experienceToNextLevel = ExpToNextLvl.getExpInitial();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
@@ -257,7 +257,7 @@ public class User {
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
                 this.experience -= this.experienceToNextLevel;
-                this.experienceToNextLevel = ExpLvlConfig.getExpNextLevel(this.level);
+                this.experienceToNextLevel = ExpToNextLvl.getExpNextLevel(this.level);
                 this.level++;
             } else levelUp = false;
         } while (levelUp);
