@@ -5,6 +5,7 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
+import com.gianca1994.heropathbackend.resources.market.dto.response.MarketAllDTO;
 import com.gianca1994.heropathbackend.resources.market.utilities.MarketServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,12 @@ public class MarketService {
     @Autowired
     private UserRepository userR;
 
-    public List<Market> getAllMarkets(Long userId) {
-        return marketR.findAllExceptUserId(userId);
+    public MarketAllDTO getAllMarkets(Long userId) {
+        return new MarketAllDTO(
+                userR.findGoldByUserId(userId),
+                userR.findDiamondByUserId(userId),
+                marketR.findAllExceptUserId(userId)
+        );
     }
 
     public List<Market> getMyMarkets(Long userId) {
@@ -68,21 +73,15 @@ public class MarketService {
     }
 
     public void removeItemMarket(Long userId, Long marketId) {
-        validator.checkUserExists(userR.existsById(userId));
-        validator.checkItemExists(marketR.existsById(marketId));
+        checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
-        Inventory userInventory = userR.findInventoryById(userId);
-
-        validator.checkInventoryFull(userInventory.getItems().size());
-        userInventory.getItems().add(market.getItem());
+        saveItemAndInventory(userId, market);
         marketR.delete(market);
     }
 
     @Transactional
     public void buyItem(Long userId, Long marketId) {
-        validator.checkUserExists(userR.existsById(userId));
-        validator.checkItemExists(marketR.existsById(marketId));
-
+        checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
         validator.checkSellerExists(userR.existsById(market.getUserId()));
 
@@ -94,6 +93,11 @@ public class MarketService {
     }
 
     /////////////////////////// PRIVATE METHODS ///////////////////////////
+    private void checkUserAndItemExists(Long userId, Long marketId) {
+        validator.checkUserExists(userR.existsById(userId));
+        validator.checkItemExists(marketR.existsById(marketId));
+    }
+
     private void buyItemWithGold(Long userId, Market market) {
         Long userBuyerGold = userR.findGoldByUserId(userId);
         Long itemGoldPrice = market.getGoldPrice();
@@ -112,22 +116,24 @@ public class MarketService {
         Long userSellerId = market.getUserId();
 
         Long itemGoldPrice = market.getGoldPrice();
-        Long userSellerGold = (long) (userR.findGoldByUserId(userSellerId) + (itemGoldPrice * SvConfig.GOLD_FEES_PERCENTAGE));
+        Long userSellerGold = (long) (userR.findGoldByUserId(userSellerId) + (itemGoldPrice * (1 - SvConfig.GOLD_FEES_PERCENTAGE)));
         userR.updateGoldByUserId(userSellerId, userSellerGold);
 
         int itemDiamondPrice = market.getDiamondPrice();
-        int userSellerDiamond = (int) (userR.findDiamondByUserId(userSellerId) + (itemDiamondPrice * SvConfig.DIAMOND_FEES_PERCENTAGE));
+        int userSellerDiamond = (int) (userR.findDiamondByUserId(userSellerId) + (itemDiamondPrice * (1 - SvConfig.DIAMOND_FEES_PERCENTAGE)));
         userR.updateUserDiamond(userSellerId, userSellerDiamond);
     }
 
     private void saveItemAndInventory(Long userId, Market market) {
+        Inventory userInventory = userR.findInventoryById(userId);
+        validator.checkInventoryFull(userInventory.getItems().size());
+
         Item item = market.getItem();
         item.setUser(userR.findById(userId).get());
         item.setInMarket(false);
         itemR.save(item);
 
-        Inventory userBuyerInventory = userR.findInventoryById(userId);
-        userBuyerInventory.getItems().add(market.getItem());
-        userR.updateInventoryById(userId, userBuyerInventory);
+        userInventory.getItems().add(market.getItem());
+        userR.updateInventoryById(userId, userInventory);
     }
 }

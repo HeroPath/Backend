@@ -82,7 +82,7 @@ public class PveFunctions {
          * @Explanation: This function is in charge of calculating the amount of diamonds that will be dropped.
          * @return int
          */
-        int diamondsDrop = (int) (Math.random() * SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP) + 1;
+        int diamondsDrop = (int) (Math.random() * SvConfig.MAX_DIAMOND_DROP) + 1;
         user.setDiamond(user.getDiamond() + diamondsDrop);
         return diamondsDrop;
     }
@@ -118,5 +118,4 @@ public class PveFunctions {
         user.setGold(user.getGold() + goldGain);
         user.setNpcKills(user.getNpcKills() + 1);
     }
-
 }

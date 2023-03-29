@@ -55,6 +55,6 @@ class PveFunctionsTest {
 
     @Test
     void givenNpc_whenAmountOfDiamondsDrop_thenReturnAmountOfDiamondsDrop() {
-        assertThat(pveFunctionsTest.amountDiamondsDrop(userTest)).isBetween(1, SvConfig.MAXIMUM_AMOUNT_DIAMONDS_DROP);
+        assertThat(pveFunctionsTest.amountDiamondsDrop(userTest)).isBetween(1, SvConfig.MAX_DIAMOND_DROP);
     }
 }

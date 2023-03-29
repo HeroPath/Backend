@@ -20,8 +20,8 @@ public class ApiExceptionHandler {
     private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND; // 404
     private final HttpStatus CONFLICT = HttpStatus.CONFLICT; // 409
 
-    @ExceptionHandler(value = {BadRequest.class})
-    public ResponseEntity<Object> handleBadRequestException(BadRequest e) {
+    @ExceptionHandler(value = {BadReq.class})
+    public ResponseEntity<Object> handleBadRequestException(BadReq e) {
         return new ResponseEntity<>(new ExceptionModel(
                 e.getMessage(),
                 BAD_REQUEST,

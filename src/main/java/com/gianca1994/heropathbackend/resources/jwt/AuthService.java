@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.jwt;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
-import com.gianca1994.heropathbackend.exception.BadRequest;
+import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.equipment.Equipment;
@@ -10,10 +10,10 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.heropathbackend.resources.jwt.dto.UserRegisterJwtDTO;
 import com.gianca1994.heropathbackend.resources.jwt.utilities.AuthServiceValidator;
-import com.gianca1994.heropathbackend.resources.jwt.utilities.JWTConst;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
+import com.gianca1994.heropathbackend.utils.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -85,9 +85,9 @@ public class AuthService implements UserDetailsService {
                     new UsernamePasswordAuthenticationToken(username, password)
             );
         } catch (BadCredentialsException e) {
-            throw new NotFound(JWTConst.PASSWORD_INCORRECT, e);
+            throw new NotFound(Const.JWT.PASS_INCORRECT.getMsg(), e);
         } catch (DisabledException e) {
-            throw new Exception(JWTConst.USER_DISABLED, e);
+            throw new Exception(Const.JWT.USER_DISABLED.getMsg(), e);
         }
     }
 
@@ -98,7 +98,7 @@ public class AuthService implements UserDetailsService {
          * @param UserRegisterDTO user
          * @return User
          */
-        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadRequest(JWTConst.EMAIL_NOT_VALID);
+        if (!validateEmail(user.getEmail().toLowerCase())) throw new BadReq(Const.JWT.EMAIL_NOT_VALID.getMsg());
 
         UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
         validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
@@ -115,11 +115,6 @@ public class AuthService implements UserDetailsService {
                 newUser.setPassword(encryptPassword(newUser.getPassword()));
                 inventoryR.save(newUser.getInventory());
                 equipmentR.save(newUser.getEquipment());
-                try {
-                    newUser.generatePrivateAndPublicKey();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 userR.save(newUser);
             });
         });
@@ -134,7 +129,7 @@ public class AuthService implements UserDetailsService {
          * @param String email
          * @return boolean
          */
-        Pattern pattern = Pattern.compile(JWTConst.EMAIL_PATTERN);
+        Pattern pattern = Pattern.compile(Const.JWT.EMAIL_PATTERN.getMsg());
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }

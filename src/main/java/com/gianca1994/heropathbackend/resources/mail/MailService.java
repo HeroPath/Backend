@@ -2,7 +2,6 @@ package com.gianca1994.heropathbackend.resources.mail;
 
 import com.gianca1994.heropathbackend.resources.mail.utilities.AES;
 import com.gianca1994.heropathbackend.resources.mail.utilities.MailServiceValidator;
-import com.gianca1994.heropathbackend.resources.mail.utilities.RSA;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMail;
@@ -22,7 +21,6 @@ import java.util.List;
 public class MailService {
 
     MailServiceValidator validator = new MailServiceValidator();
-    private final RSA rsa = new RSA();
     private final AES aes = new AES();
 
     @Autowired
@@ -41,10 +39,9 @@ public class MailService {
          * @param String username
          * @return List<Mail>
          */
-        rsa.setKeys(userR.findRsaPublicK(username), aes.decryptMsg(userR.findRsaPrivateK(username)));
         List<Mail> mails = mailR.findAllByReceiver(username);
         for (Mail mail : mails) {
-            mail.setMessage(rsa.decryptMsg(mail.getMessage()));
+            mail.setMessage(aes.decryptMsg(mail.getMessage()));
         }
         return mails;
     }
@@ -67,9 +64,8 @@ public class MailService {
         validator.userNotEqual(username, receiver);
 
         User userRec = userR.findByUsername(receiver);
-        rsa.setKeys(userRec.getRsaPublicKey(), userRec.getRsaPrivateKey());
 
-        Mail newMail = new Mail(username, receiver, subject, rsa.encryptMsg(msg));
+        Mail newMail = new Mail(username, receiver, subject, aes.encryptMsg(msg));
         UserMail newUserMail = new UserMail(userRec, newMail);
         mailR.save(newMail);
         userMailR.save(newUserMail);

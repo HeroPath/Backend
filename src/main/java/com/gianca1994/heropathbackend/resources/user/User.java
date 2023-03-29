@@ -1,7 +1,7 @@
 package com.gianca1994.heropathbackend.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gianca1994.heropathbackend.config.ExpLvlConfig;
+import com.gianca1994.heropathbackend.utils.ExpToNextLvl;
 import com.gianca1994.heropathbackend.config.ModifConfig;
 import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.resources.classes.Class;
@@ -9,7 +9,6 @@ import com.gianca1994.heropathbackend.resources.equipment.Equipment;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.jwt.dto.UserRegisterJwtDTO;
-import com.gianca1994.heropathbackend.resources.mail.utilities.AES;
 import com.gianca1994.heropathbackend.resources.title.Title;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMail;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
@@ -17,17 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.bouncycastle.util.io.pem.PemWriter;
 
 import javax.persistence.*;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -141,15 +131,6 @@ public class User {
     private int titleLevelToUnlock;
     @Column
     private String guildName;
-
-    @Column(columnDefinition = "text")
-    @JsonIgnore
-    private String rsaPublicKey;
-
-    @Column(columnDefinition = "text")
-    @JsonIgnore
-    private String rsaPrivateKey;
-
     @Column
     private int pvePts;
     @Column
@@ -165,7 +146,7 @@ public class User {
         this.aClass = userJwt.getAClass().getName();
         this.level = ModifConfig.START_LVL;
         this.experience = ModifConfig.START_EXP;
-        this.experienceToNextLevel = ExpLvlConfig.getExpInitial();
+        this.experienceToNextLevel = ExpToNextLvl.getInitialExp();
         this.gold = ModifConfig.START_GOLD;
         this.diamond = ModifConfig.START_DIAMOND;
         this.maxDmg = 0;
@@ -189,51 +170,6 @@ public class User {
         this.pvePts = SvConfig.PVE_PTS_MAX;
         this.pvpPts = SvConfig.PVP_PTS_MAX;
     }
-
-    public void generatePrivateAndPublicKey() throws InterruptedException {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method generates a private and public key for the user in PEM format.
-         * @return none
-         */
-        AES aes = new AES();
-        Thread keyGeneratorThread = new Thread(() -> {
-            try {
-                KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-                keyPairGenerator.initialize(2048);
-                KeyPair keyPair = keyPairGenerator.generateKeyPair();
-                RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-                RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-
-                StringWriter stringWriter = new StringWriter();
-                PemWriter pemWriter = new PemWriter(stringWriter);
-
-                PemObject pemObject = new PemObject("PUBLIC KEY", publicKey.getEncoded());
-                pemWriter.writeObject(pemObject);
-                pemWriter.flush();
-                String publicKeyString = stringWriter.toString();
-
-                pemObject = new PemObject("PRIVATE KEY", privateKey.getEncoded());
-                stringWriter = new StringWriter();
-                pemWriter = new PemWriter(stringWriter);
-                pemWriter.writeObject(pemObject);
-                pemWriter.flush();
-                String privateKeyString = stringWriter.toString();
-
-                this.rsaPublicKey = publicKeyString;
-                this.rsaPrivateKey = aes.encryptMsg(privateKeyString);
-
-                pemWriter.close();
-            } catch (NoSuchAlgorithmException | IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-        keyGeneratorThread.start();
-        keyGeneratorThread.join();
-    }
-
 
     //********** START SWAP ITEM METHODS **********//
     public void swapItemToEquipmentOrInventory(Item item, boolean toEquip) {
@@ -321,7 +257,7 @@ public class User {
                 userLevelUp = true;
                 this.freeSkillPoints += ModifConfig.FREE_SKILL_POINTS_PER_LEVEL;
                 this.experience -= this.experienceToNextLevel;
-                this.experienceToNextLevel = ExpLvlConfig.getExpNextLevel(this.level);
+                this.experienceToNextLevel = ExpToNextLvl.getExpNextLevel(this.level);
                 this.level++;
             } else levelUp = false;
         } while (levelUp);

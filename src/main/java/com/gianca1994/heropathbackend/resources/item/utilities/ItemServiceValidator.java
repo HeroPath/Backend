@@ -1,11 +1,12 @@
 package com.gianca1994.heropathbackend.resources.item.utilities;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
-import com.gianca1994.heropathbackend.exception.BadRequest;
+import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
+import com.gianca1994.heropathbackend.utils.Const;
 
 import java.util.Set;
 
@@ -16,210 +17,86 @@ import java.util.Set;
 
 public class ItemServiceValidator {
 
-    public void userFound(boolean userExist) throws NotFound {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of checking if a user exists.
-         * @param boolean userExist
-         * @return void
-         */
-        if (!userExist) throw new NotFound(ItemConst.USER_NOT_FOUND);
+    public void userExist(boolean exist) throws NotFound {
+        if (!exist) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
     }
 
-    public void itemFound(boolean itemExist) throws NotFound {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of checking if an item exists.
-         * @param boolean itemExist
-         * @return void
-         */
-        if (!itemExist) throw new NotFound(ItemConst.ITEM_NOT_FOUND);
+    public void itemExist(boolean exist) throws NotFound {
+        if (!exist) throw new NotFound(Const.ITEM.NOT_FOUND.getMsg());
     }
 
-    public void itemExists(boolean itemExist) throws NotFound {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of checking if an item already exists.
-         * @param boolean itemExist
-         * @return void
-         */
-        if (itemExist) throw new NotFound(ItemConst.ALREADY_EXISTS);
+    public void itemAlreadyExist(boolean itemExist) throws NotFound {
+        if (itemExist) throw new NotFound(Const.ITEM.ALREADY_EXIST.getMsg());
     }
 
-    public void checkDtoToSaveItem(ItemDTO newItem) throws BadRequest {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of checking if the data sent to save an item is correct.
-         * @param ItemDTO newItem
-         * @return void
-         */
-        if (newItem.getName().isEmpty()) throw new BadRequest(ItemConst.NAME_NOT_EMPTY);
-        if (newItem.getType().isEmpty()) throw new BadRequest(ItemConst.TYPE_NOT_EMPTY);
-        if (newItem.getLvlMin() < 0) throw new BadRequest(ItemConst.LVL_NOT_LESS_0);
-        if (newItem.getPrice() < 0) throw new BadRequest(ItemConst.PRICE_NOT_LESS_0);
+    public void dtoSaveItem(ItemDTO newItem) throws BadReq {
+        if (newItem.getName().isEmpty()) throw new BadReq(Const.ITEM.NAME_EMPTY.getMsg());
+        if (newItem.getType().isEmpty()) throw new BadReq(Const.ITEM.TYPE_EMPTY.getMsg());
+        if (newItem.getLvlMin() < 0) throw new BadReq(Const.ITEM.LVL_LESS_0.getMsg());
+        if (newItem.getPrice() < 0) throw new BadReq(Const.ITEM.PRICE_LESS_0.getMsg());
         if (newItem.getStrength() < 0 || newItem.getDexterity() < 0 || newItem.getIntelligence() < 0 || newItem.getVitality() < 0 || newItem.getLuck() < 0)
-            throw new BadRequest(ItemConst.STATS_NOT_LESS_0);
-        if (!ItemConst.ENABLED_ITEM_TYPE_SAVE.contains(newItem.getType()))
-            throw new BadRequest(ItemConst.CANT_EQUIP_MORE_ITEM + newItem.getType());
+            throw new BadReq(Const.ITEM.STATS_LESS_0.getMsg());
+        if (!Const.ITEM.ENABLED_ITEM_TYPE_SAVE.getList().contains(newItem.getType()))
+            throw new BadReq(Const.ITEM.CANT_EQUIP_MORE_ITEM.getMsg() + newItem.getType());
     }
 
-    public void checkGoldEnough(long goldUser, int itemPrice) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user have enough gold to buy the item.
-         * @param long goldUser
-         * @param int itemPrice
-         * @return void
-         */
-        if (goldUser < itemPrice) throw new Conflict(ItemConst.NOT_ENOUGH_GOLD);
+    public void goldEnough(long gold, int price) throws Conflict {
+        if (gold < price) throw new Conflict(Const.ITEM.NOT_ENOUGH_GOLD.getMsg());
     }
 
-    public void checkInventoryFull(int inventorySize) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user inventory is full.
-         * @param int inventorySize
-         * @return void
-         */
-        if (inventorySize >= SvConfig.MAX_ITEMS_INVENTORY) throw new Conflict(ItemConst.INVENTORY_FULL);
+    public void inventoryFull(int size) throws Conflict {
+        if (size >= SvConfig.SLOTS_INVENTORY) throw new Conflict(Const.ITEM.INVENTORY_FULL.getMsg());
     }
 
-    public void inventoryContainsItem(Set<Item> userInventory, Item item) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user inventory contains the item.
-         * @param List<Item> userInventory
-         * @param Item item
-         * @return void
-         */
-        if (!userInventory.contains(item)) throw new Conflict(ItemConst.ITEM_NOT_INVENTORY);
+    public void inventoryContainsItem(Set<Item> userInv, Item item) throws Conflict {
+        if (!userInv.contains(item)) throw new Conflict(Const.ITEM.NOT_IN_INVENTORY.getMsg());
     }
 
-    public void checkItemClassEquip(String userClass, String itemClass) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user class is the same of the item class.
-         * @param String userClass
-         * @param String itemClass
-         * @return void
-         */
-        if (!userClass.equals(itemClass) && !"none".equals(itemClass)) throw new Conflict(ItemConst.ITEM_NOT_FOR_CLASS);
+    public void itemClassEquip(String userClass, String itemClass) throws Conflict {
+        if (!userClass.equals(itemClass) && !"none".equals(itemClass))
+            throw new Conflict(Const.ITEM.ITEM_NOT_FOR_CLASS.getMsg());
     }
 
-    public void checkItemLevelEquip(int userLevel, int itemLevel) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user level is enough to equip the item.
-         * @param int userLevel
-         * @param int itemLevel
-         * @return void
-         */
-        if (userLevel < itemLevel) throw new Conflict(ItemConst.ITEM_LEVEL_REQ + itemLevel);
+    public void itemLevelEquip(int userLevel, int itemLevel) throws Conflict {
+        if (userLevel < itemLevel) throw new Conflict(Const.ITEM.ITEM_LEVEL_REQ.getMsg() + itemLevel);
     }
 
-    public void checkItemEquipIfPermitted(String itemType) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item can be equipped.
-         * @param String itemType
-         * @return void
-         */
-        if (!ItemConst.ENABLED_EQUIP.contains(itemType)) throw new Conflict(ItemConst.ITEM_EQUIP_NOT_PERMITTED);
+    public void itemEquipIfPermitted(String itemType) throws Conflict {
+        if (!Const.ITEM.ENABLED_EQUIP.getList().contains(itemType))
+            throw new Conflict(Const.ITEM.EQUIP_NOT_PERMITTED.getMsg());
     }
 
-    public void checkEquipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user can equip more items of the same type.
-         * @param Set<Item> equipment
-         * @param String itemType
-         * @return void
-         */
+    public void equipOnlyOneType(Set<Item> equipment, String itemType) throws Conflict {
         for (Item item : equipment) {
-            if (item.getType().equals(itemType)) throw new Conflict(ItemConst.CANT_EQUIP_MORE_ITEM);
+            if (item.getType().equals(itemType)) throw new Conflict(Const.ITEM.CANT_EQUIP_MORE_ITEM.getMsg());
         }
     }
 
-    public void checkItemInEquipment(Set<Item> equipment, Item item) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item is in the equipment of the user.
-         * @param Set<Item> equipment
-         * @param Item item
-         * @return void
-         */
-        if (!equipment.contains(item)) throw new NotFound(ItemConst.ITEM_NOT_EQUIPMENT);
+    public void itemInEquipment(Set<Item> equipment, Item item) {
+        if (!equipment.contains(item)) throw new NotFound(Const.ITEM.NOT_IN_EQUIPMENT.getMsg());
     }
 
-    public void checkItemFromTrader(boolean itemFromTrader) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item is from the trader.
-         * @param boolean itemFromTrader
-         * @return void
-         */
-        if (!itemFromTrader) throw new Conflict(ItemConst.ITEM_NOT_FROM_TRADER);
+    public void itemFromTrader(boolean fromTrader) throws Conflict {
+        if (!fromTrader) throw new Conflict(Const.ITEM.NOT_FROM_TRADER.getMsg());
     }
 
-    public void checkItemNotInPossession(boolean itemNotPossession) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item is not in the possession of the user.
-         * @param boolean itemNotPossession
-         * @return void
-         */
-        if (itemNotPossession) throw new Conflict(ItemConst.ITEM_NOT_IN_POSSESSION);
+    public void itemInPossession(boolean itemNotPossession) throws Conflict {
+        if (itemNotPossession) throw new Conflict(Const.ITEM.NOT_IN_POSSESSION.getMsg());
     }
 
-    public void checkItemUpgradeAmount(int upgradeAmount, int requirementAmount) throws BadRequest {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user have enough items to upgrade the item.
-         * @param int upgradeAmount
-         * @param int requirementAmount
-         * @return void
-         */
-        if (upgradeAmount < requirementAmount) throw new BadRequest(ItemConst.NOT_ENOUGH_ITEMS_TO_UPGRADE);
+    public void itemLevelMax(int lvl) throws BadReq {
+        if (lvl >= SvConfig.MAX_ITEM_LEVEL) throw new BadReq(Const.ITEM.ALREADY_MAX_LVL.getMsg());
     }
 
-    public void checkItemLevelMax(int itemLevel) throws BadRequest {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item is already at the max level.
-         * @param int itemLevel
-         * @return void
-         */
-        if (itemLevel >= SvConfig.MAX_ITEM_LEVEL) throw new BadRequest(ItemConst.ITEM_ALREADY_MAX_LVL);
+    public void itemUpgradeInPossession(boolean haveItem) throws Conflict {
+        if (!haveItem) throw new Conflict(Const.ITEM.NOT_HAVE_ITEM.getMsg());
     }
 
-    public void checkItemUpgradeInPossession(boolean userHaveItem) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user have the item to upgrade.
-         * @param boolean userHaveItem
-         * @return void
-         */
-        if (!userHaveItem) throw new Conflict(ItemConst.USER_NOT_HAVE_ITEM);
+    public void hasEnoughGems(int userGems, int needed) throws Conflict {
+        if (userGems < needed) throw new Conflict(String.format(Const.ITEM.NOT_ENOUGH_GEMS.getMsg(), needed));
     }
 
-    public void checkUserHaveAmountGem(int userGems, int gemsNeeded) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the user have enough gems to upgrade the item.
-         * @param int userGems
-         * @param int gemsNeeded
-         * @return void
-         */
-        if (userGems < gemsNeeded) throw new Conflict(String.format(ItemConst.NOT_ENOUGH_GEMS, gemsNeeded));
-    }
-
-    public void checkItemIsUpgradeable(boolean isUpgradeable) throws Conflict {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This method check if the item is upgradeable.
-         * @param String itemType
-         * @return void
-         */
-        if (!isUpgradeable) throw new Conflict(ItemConst.ITEM_NOT_UPGRADEABLE);
+    public void itemIsUpgradeable(boolean isUpgradeable) throws Conflict {
+        if (!isUpgradeable) throw new Conflict(Const.ITEM.NOT_UPGRADEABLE.getMsg());
     }
 }

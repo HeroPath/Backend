@@ -20,27 +20,21 @@ public class SvConfig {
 
     /////////////////////////// DIAMONDS ///////////////////////////
     public static final int DIAMOND_DROP_CHANCE_PERCENTAGE = 5;
-    public static final int MAXIMUM_AMOUNT_DIAMONDS_DROP = 10;
+    public static final int MAX_DIAMOND_DROP = 10;
     /////////////////////////// DIAMONDS ///////////////////////////
 
-    /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
+    /////////////////////////// PVP ///////////////////////////
     public static final float PVP_GOLD_WIN_RATE = 0.25f;
     public static final float PVP_GOLD_LOSS_RATE = 0.1f;
-    /////////////////////////// PVP WIN OR LOSS RATE ///////////////////////////
-
-    /////////////////////////// TITLE POINTS ///////////////////////////
-    public static final int PVP_MIN_RATE_POINT_TITLE = 20;
-    public static final int PVP_MAX_RATE_POINT_TITLE = 40;
-    /////////////////////////// TITLE POINTS ///////////////////////////
-
-    /////////////////////////// PVP ///////////////////////////
     public static final float MIN_PERCENTAGE_LIFE_ATTACK_OR_ATTACKED = 0.15f;
     public static final int CRITICAL_DAMAGE_MULTIPLIER = 2;
     public static final int MAX_LEVEL_DIFFERENCE = 5;
+    public static final int PVP_MIN_RATE_POINT_TITLE = 20;
+    public static final int PVP_MAX_RATE_POINT_TITLE = 40;
     /////////////////////////// PVP ///////////////////////////
 
     /////////////////////////// ITEM ///////////////////////////
-    public static final int MAX_ITEMS_INVENTORY = 24;
+    public static final int SLOTS_INVENTORY = 24;
     public static final int MAX_ITEM_LEVEL = 5;
     /////////////////////////// ITEM ///////////////////////////
 
@@ -85,11 +79,11 @@ public class SvConfig {
     /////////////////////////// EVENT ///////////////////////////
 
     /////////////////////////// MARKET ///////////////////////////
-    public static final int MAXIMUM_ITEMS_PUBLISHED = 5;
+    public static final int MAX_ITEM_PUBLISHED = 5;
     public static final float GOLD_FEES_PERCENTAGE = 0.1F;
     public static final float DIAMOND_FEES_PERCENTAGE = 0.1F;
-    public static final int MAXIMUM_GOLD_PRICE = 1000000000;
-    public static final int MAXIMUM_DIAMOND_PRICE = 100000000;
+    public static final int MAX_GOLD_PRICE = 1000000000;
+    public static final int MAX_DIAMOND_PRICE = 100000000;
     /////////////////////////// MARKET ///////////////////////////
 
 }
