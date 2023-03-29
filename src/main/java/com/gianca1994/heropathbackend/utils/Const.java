@@ -135,7 +135,7 @@ public class Const {
     public enum ITEM {
         POTION_TYPE("potion"),
         GEM_PROGRESS_NAME("progress gem"),
-        ITEM_NOT_LEVEL_AND_QUALITY(Arrays.asList("potion", "gem")),
+        NOT_EQUIPPABLE_ITEMS(Arrays.asList("potion", "gem")),
         NOT_FOUND("Item not found"),
         ALREADY_EXIST("Item already exists"),
         NAME_EMPTY("Name cannot be empty"),
