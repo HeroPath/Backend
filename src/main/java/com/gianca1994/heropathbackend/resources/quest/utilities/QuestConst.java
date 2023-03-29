@@ -22,5 +22,4 @@ public class QuestConst {
     public static final String QUEST_AMOUNT_CHECK = "You have not killed enough NPCs or users";
     public static final String QUEST_ALREADY_COMPLETED = "You already completed this quest";
     public static final String USER_LVL_NOT_ENOUGH = "You don't have the required level to accept this quest";
-
 }
