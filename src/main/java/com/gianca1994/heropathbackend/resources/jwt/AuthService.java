@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 @Service
 public class AuthService implements UserDetailsService {
 
-    Validator validator = new Validator();
+    Validator validate = new Validator();
 
     @Autowired
     private UserRepository userR;
@@ -101,7 +101,7 @@ public class AuthService implements UserDetailsService {
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadReq(Const.JWT.EMAIL_NOT_VALID.getMsg());
 
         UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
-        validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
+        validate.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
 
         userJwt.setInventory(new Inventory());
         userJwt.setEquipment(new Equipment());

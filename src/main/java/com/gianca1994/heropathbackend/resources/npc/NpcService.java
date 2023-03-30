@@ -16,7 +16,7 @@ import java.util.*;
 @Service
 public class NpcService {
 
-    Validator validator = new Validator();
+    Validator validate = new Validator();
 
     @Autowired
     private NpcRepository npcR;
@@ -38,7 +38,7 @@ public class NpcService {
          * @param String name
          * @return Npc
          */
-        validator.npcExist(npcR.existsByName(name.toLowerCase()));
+        validate.npcExist(npcR.existsByName(name.toLowerCase()));
         return npcR.findByName(name.toLowerCase());
     }
 
@@ -50,7 +50,7 @@ public class NpcService {
          * @return Set<Npc>
          */
         ArrayList<Npc> npcs = npcR.findByZoneAndOrderByLevel(zone.toLowerCase());
-        validator.npcNotFoundZone(npcs.size());
+        validate.npcNotFoundZone(npcs.size());
         return npcs;
     }
 
@@ -61,7 +61,7 @@ public class NpcService {
          * @param NpcDTO npc
          * @return Npc
          */
-        validator.saveNpc(npc);
+        validate.saveNpc(npc);
         String nameNpc = npc.getName().toLowerCase();
         Npc checkNpcSave = npcR.findByName(nameNpc);
 
