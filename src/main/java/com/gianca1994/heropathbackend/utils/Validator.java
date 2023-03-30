@@ -302,4 +302,7 @@ public class Validator {
     public void itemIsUpgradeable(boolean isUpgradeable) throws Conflict {
         if (!isUpgradeable) throw new Conflict(Const.ITEM.NOT_UPGRADEABLE.getMsg());
     }
+
+    /* GUILD */
+
 }
