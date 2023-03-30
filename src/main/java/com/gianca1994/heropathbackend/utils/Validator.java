@@ -190,4 +190,29 @@ public class Validator {
     public void enoughDiamond(long userDiamond, int diamondPrice) {
         if (userDiamond < diamondPrice) throw new BadReq(Const.MARKET.NOT_ENOUGH_DIAMOND.getMsg());
     }
+
+    /* MAIL */
+    public void mailExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(Const.MAIL.NOT_FOUND.getMsg());
+    }
+
+    public void receiverNotEmpty(String receiver) throws Conflict {
+        if (receiver.isEmpty()) throw new Conflict(Const.MAIL.RECEIVER_EMPTY.getMsg());
+    }
+
+    public void subjectNotEmpty(String subject) throws Conflict {
+        if (subject.isEmpty()) throw new Conflict(Const.MAIL.SUBJECT_EMPTY.getMsg());
+    }
+
+    public void messageNotEmpty(String message) throws Conflict {
+        if (message.isEmpty()) throw new Conflict(Const.MAIL.MSG_EMPTY.getMsg());
+    }
+
+    public void userNotEqual(String username, String receiver) throws Conflict {
+        if (username.equals(receiver)) throw new Conflict(Const.MAIL.USER_NOT_EQUAL.getMsg());
+    }
+
+    public void userHaveMails(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(Const.MAIL.USER_NOT_HAVE_MAILS.getMsg());
+    }
 }

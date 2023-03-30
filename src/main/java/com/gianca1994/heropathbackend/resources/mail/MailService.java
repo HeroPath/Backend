@@ -1,11 +1,11 @@
 package com.gianca1994.heropathbackend.resources.mail;
 
-import com.gianca1994.heropathbackend.resources.mail.utilities.AES;
-import com.gianca1994.heropathbackend.resources.mail.utilities.MailServiceValidator;
+import com.gianca1994.heropathbackend.resources.mail.encryption.AES;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMail;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMailRepository;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class MailService {
 
-    MailServiceValidator validator = new MailServiceValidator();
+    Validator validator = new Validator();
     private final AES aes = new AES();
 
     @Autowired
