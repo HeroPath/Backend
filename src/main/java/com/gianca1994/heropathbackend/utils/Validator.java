@@ -155,39 +155,39 @@ public class Validator {
         if (!exists) throw new BadReq(Const.ITEM.NOT_FOUND.getMsg());
     }
 
-    public void checkSellerExists(boolean exists) {
+    public void sellerExist(boolean exists) {
         if (!exists) throw new BadReq(Const.MARKET.SELLER_NOT_FOUND.getMsg());
     }
 
-    public void checkInventoryFull(int inventorySize) {
+    public void inventoryFull(int inventorySize) {
         if (inventorySize >= SvConfig.SLOTS_INVENTORY) throw new BadReq(Const.MARKET.INVENTORY_FULL.getMsg());
     }
 
-    public void checkMaxItemsPublished(int itemsPublished) {
+    public void maxItemsPublished(int itemsPublished) {
         if (itemsPublished >= SvConfig.MAX_ITEM_PUBLISHED) throw new BadReq(Const.MARKET.MAX_ITEMS_PUBLISHED.getMsg());
     }
 
-    public void checkMaxGoldPrice(long goldPrice) {
+    public void maxGoldPrice(long goldPrice) {
         if (goldPrice >= SvConfig.MAX_GOLD_PRICE) throw new BadReq(Const.MARKET.MAX_GOLD_PRICE.getMsg());
     }
 
-    public void checkMaxDiamondPrice(int diamondPrice) {
+    public void maxDiamondPrice(int diamondPrice) {
         if (diamondPrice >= SvConfig.MAX_DIAMOND_PRICE) throw new BadReq(Const.MARKET.MAX_DIAMOND_PRICE.getMsg());
     }
 
-    public void checkItemAlreadyInMarket(boolean inMarket) {
+    public void itemAlreadyMarket(boolean inMarket) {
         if (inMarket) throw new BadReq(Const.MARKET.ITEM_ALREADY_IN_MARKET.getMsg());
     }
 
-    public void checkItemOwned(long itemUserId, long userId) {
+    public void itemOwned(long itemUserId, long userId) {
         if (itemUserId != userId) throw new BadReq(Const.MARKET.ITEM_NOT_OWNED.getMsg());
     }
 
-    public void checkEnoughGold(long userGold, long goldPrice) {
+    public void enoughGold(long userGold, long goldPrice) {
         if (userGold < goldPrice) throw new BadReq(Const.MARKET.NOT_ENOUGH_GOLD.getMsg());
     }
 
-    public void checkEnoughDiamond(long userDiamond, int diamondPrice) {
+    public void enoughDiamond(long userDiamond, int diamondPrice) {
         if (userDiamond < diamondPrice) throw new BadReq(Const.MARKET.NOT_ENOUGH_DIAMOND.getMsg());
     }
 }
