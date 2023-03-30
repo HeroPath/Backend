@@ -2,7 +2,6 @@ package com.gianca1994.heropathbackend.resources.npc;
 
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.npc.dto.request.NpcDTO;
-import com.gianca1994.heropathbackend.resources.npc.utilities.NpcServiceValidator;
 import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
