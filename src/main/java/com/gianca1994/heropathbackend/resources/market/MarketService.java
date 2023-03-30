@@ -1,13 +1,14 @@
 package com.gianca1994.heropathbackend.resources.market;
 
 import com.gianca1994.heropathbackend.config.SvConfig;
+import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.ItemRepository;
 import com.gianca1994.heropathbackend.resources.market.dto.request.MarketRegisterDTO;
 import com.gianca1994.heropathbackend.resources.market.dto.response.MarketAllDTO;
-import com.gianca1994.heropathbackend.resources.market.utilities.MarketServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ import java.util.List;
 @Service
 public class MarketService {
 
-    MarketServiceValidator validator = new MarketServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     private MarketRepository marketR;
@@ -46,7 +47,7 @@ public class MarketService {
     }
 
     public void registerItem(Long userId, String usernameSeller, MarketRegisterDTO marketRegisterDTO) {
-        validator.checkItemExists(itemR.existsById(marketRegisterDTO.getItemId()));
+        validator.itemExist(itemR.existsById(marketRegisterDTO.getItemId()));
         validator.checkMaxItemsPublished(marketR.countItemsPublishedByUserId(userId));
         validator.checkMaxGoldPrice(marketRegisterDTO.getGoldPrice());
         validator.checkMaxDiamondPrice(marketRegisterDTO.getDiamondPrice());
@@ -72,7 +73,7 @@ public class MarketService {
         ));
     }
 
-    public void removeItemMarket(Long userId, Long marketId) {
+    public void removeItemMarket(Long userId, Long marketId) throws Conflict {
         checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
         saveItemAndInventory(userId, market);
@@ -80,7 +81,7 @@ public class MarketService {
     }
 
     @Transactional
-    public void buyItem(Long userId, Long marketId) {
+    public void buyItem(Long userId, Long marketId) throws Conflict {
         checkUserAndItemExists(userId, marketId);
         Market market = marketR.findById(marketId).get();
         validator.checkSellerExists(userR.existsById(market.getUserId()));
@@ -93,9 +94,9 @@ public class MarketService {
     }
 
     /////////////////////////// PRIVATE METHODS ///////////////////////////
-    private void checkUserAndItemExists(Long userId, Long marketId) {
-        validator.checkUserExists(userR.existsById(userId));
-        validator.checkItemExists(marketR.existsById(marketId));
+    private void checkUserAndItemExists(Long userId, Long marketId) throws Conflict {
+        validator.userExist(userR.existsById(userId));
+        validator.itemExist(marketR.existsById(marketId));
     }
 
     private void buyItemWithGold(Long userId, Market market) {
