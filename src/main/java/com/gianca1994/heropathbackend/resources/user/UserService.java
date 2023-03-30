@@ -15,7 +15,7 @@ import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttribute
 import com.gianca1994.heropathbackend.resources.user.dto.response.RankingResponseDTO;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserRankingDTO;
-import com.gianca1994.heropathbackend.resources.user.utilities.UserServiceValidator;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    UserServiceValidator validator = new UserServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     UserRepository userR;

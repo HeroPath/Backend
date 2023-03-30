@@ -1,4 +1,4 @@
-package com.gianca1994.heropathbackend.resources.user.utilities;
+package com.gianca1994.heropathbackend.utils;
 
 import com.gianca1994.heropathbackend.combatSystem.GenericFunctions;
 import com.gianca1994.heropathbackend.config.SvConfig;
@@ -9,14 +9,8 @@ import com.gianca1994.heropathbackend.resources.equipment.Equipment;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
-import com.gianca1994.heropathbackend.utils.Const;
 
-/**
- * @Author: Gianca1994
- * @Explanation: This class is in charge of validating the user service.
- */
-
-public class UserServiceValidator {
+public class Validator {
 
     GenericFunctions genericFunc = new GenericFunctions();
 
