@@ -5,10 +5,12 @@ import com.gianca1994.heropathbackend.config.SvConfig;
 import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
+import com.gianca1994.heropathbackend.resources.classes.Class;
 import com.gianca1994.heropathbackend.resources.equipment.Equipment;
 import com.gianca1994.heropathbackend.resources.npc.dto.request.NpcDTO;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.user.User;
+import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
@@ -214,5 +216,15 @@ public class Validator {
 
     public void userHaveMails(boolean exist) throws Conflict {
         if (!exist) throw new Conflict(Const.MAIL.USER_NOT_HAVE_MAILS.getMsg());
+    }
+
+    /* JWT */
+    public void saveUser(String username, String password, String email, Class aClass, UserRepository userR) throws Conflict {
+        if (!username.matches(Const.JWT.USER_PATTERN.getMsg())) throw new BadReq(Const.JWT.USER_NOT_VALID.getMsg());
+        if (userR.existsByUsername(username)) throw new Conflict(Const.JWT.USER_EXISTS.getMsg());
+        if (userR.existsByEmail(email)) throw new Conflict(Const.JWT.EMAIL_EXISTS.getMsg());
+        if (username.length() < 3 || username.length() > 20) throw new BadReq(Const.JWT.USER_LENGTH.getMsg());
+        if (password.length() < 3 || password.length() > 20) throw new BadReq(Const.JWT.PASS_LENGTH.getMsg());
+        if (aClass == null) throw new BadReq(Const.JWT.CLASS_NOT_FOUND.getMsg());
     }
 }

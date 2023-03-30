@@ -9,11 +9,11 @@ import com.gianca1994.heropathbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.heropathbackend.resources.jwt.dto.UserRegisterJwtDTO;
-import com.gianca1994.heropathbackend.resources.jwt.utilities.AuthServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
 import com.gianca1994.heropathbackend.utils.Const;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 @Service
 public class AuthService implements UserDetailsService {
 
-    AuthServiceValidator validator = new AuthServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     private UserRepository userR;
