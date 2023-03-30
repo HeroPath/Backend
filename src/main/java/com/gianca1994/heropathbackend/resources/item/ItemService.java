@@ -5,10 +5,10 @@ import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.BuySellDTO;
 import com.gianca1994.heropathbackend.resources.item.dto.response.EquipOrUnequipDTO;
-import com.gianca1994.heropathbackend.resources.item.utilities.ItemServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.utils.Const;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    ItemServiceValidator validator = new ItemServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     private ItemRepository itemR;

@@ -125,7 +125,7 @@ public class MarketService {
         userR.updateUserDiamond(userSellerId, userSellerDiamond);
     }
 
-    private void saveItemAndInventory(Long userId, Market market) {
+    private void saveItemAndInventory(Long userId, Market market) throws Conflict {
         Inventory userInventory = userR.findInventoryById(userId);
         validator.inventoryFull(userInventory.getItems().size());
 
