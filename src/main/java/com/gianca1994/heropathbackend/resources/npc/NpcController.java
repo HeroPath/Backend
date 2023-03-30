@@ -39,7 +39,7 @@ public class NpcController {
 
     @GetMapping("/{name}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public Npc getNpcByName(@PathVariable String name) {
+    public Npc getNpcByName(@PathVariable String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting the npc by name.

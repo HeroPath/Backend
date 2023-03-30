@@ -3,6 +3,7 @@ package com.gianca1994.heropathbackend.resources.npc;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.npc.dto.request.NpcDTO;
 import com.gianca1994.heropathbackend.resources.npc.utilities.NpcServiceValidator;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.*;
 @Service
 public class NpcService {
 
-    NpcServiceValidator validator = new NpcServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     private NpcRepository npcR;
@@ -31,14 +32,14 @@ public class NpcService {
         return (ArrayList<Npc>) npcR.findAll();
     }
 
-    public Npc getNpcByName(String name) {
+    public Npc getNpcByName(String name) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This function is in charge of getting the npc by name.
          * @param String name
          * @return Npc
          */
-        validator.npcFound(npcR.existsByName(name.toLowerCase()));
+        validator.npcExist(npcR.existsByName(name.toLowerCase()));
         return npcR.findByName(name.toLowerCase());
     }
 
