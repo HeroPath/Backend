@@ -7,6 +7,8 @@ import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.classes.Class;
 import com.gianca1994.heropathbackend.resources.equipment.Equipment;
+import com.gianca1994.heropathbackend.resources.guild.Guild;
+import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.heropathbackend.resources.item.Item;
 import com.gianca1994.heropathbackend.resources.item.dto.request.ItemDTO;
 import com.gianca1994.heropathbackend.resources.npc.dto.request.NpcDTO;
@@ -18,6 +20,7 @@ import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class Validator {
@@ -304,5 +307,88 @@ public class Validator {
     }
 
     /* GUILD */
+    public void userExistByObject(User user) throws NotFound {
+        if (user == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
+    }
 
+    public void guildExist(boolean exist) throws NotFound {
+        if (!exist) throw new NotFound(Const.GUILD.NOT_FOUND.getMsg());
+    }
+
+    public void guildExistByObject(Guild guild) throws NotFound {
+        if (guild == null) throw new NotFound(Const.GUILD.NOT_FOUND.getMsg());
+    }
+
+    public void userInGuild(String guildName) throws Conflict {
+        if (!Objects.equals(guildName, "")) throw new Conflict(Const.GUILD.ALREADY_IN_GUILD.getMsg());
+    }
+
+    public void userNotInGuild(String guildName) throws Conflict {
+        if (Objects.equals(guildName, "")) throw new Conflict(Const.GUILD.NOT_INSIDE.getMsg());
+    }
+
+    public void guildNameExist(boolean guildExist) throws Conflict {
+        if (guildExist) throw new Conflict(Const.GUILD.NAME_ALREADY_EXIST.getMsg());
+    }
+
+    public void guildTagExist(boolean tagExist) throws Conflict {
+        if (tagExist) throw new Conflict(Const.GUILD.TAG_ALREADY_EXIST.getMsg());
+    }
+
+    public void guildDtoReqToSaveGuild(GuildDTO guildDTO) throws Conflict {
+        if (guildDTO.getName() == null) throw new Conflict(Const.GUILD.NAME_REQUIRED.getMsg());
+        if (guildDTO.getDescription() == null) throw new Conflict(Const.GUILD.DESCRIPTION_REQUIRED.getMsg());
+        if (guildDTO.getTag() == null) throw new Conflict(Const.GUILD.TAG_REQUIRED.getMsg());
+    }
+
+    public void guildReqToCreate(int level, long gold, int diamond) throws Conflict {
+        if (level < SvConfig.LEVEL_TO_CREATE_GUILD) throw new Conflict(Const.GUILD.LVL_REQ.getMsg());
+        if (gold < SvConfig.GOLD_TO_CREATE_GUILD) throw new Conflict(Const.GUILD.GOLD_REQ.getMsg());
+        if (diamond < SvConfig.DIAMOND_TO_CREATE_GUILD) throw new Conflict(Const.GUILD.DIAMOND_REQ.getMsg());
+    }
+
+    public void reqLvlToReqGuild(int level) throws Conflict {
+        if (level < SvConfig.LEVEL_TO_JOIN_GUILD) throw new Conflict(Const.GUILD.LVL_REQ.getMsg());
+    }
+
+    public void guildIsFull(int membersSize, int maxMembers) throws Conflict {
+        if (membersSize >= maxMembers) throw new Conflict(Const.GUILD.FULL.getMsg());
+    }
+
+    public void guildLeaderOrSubLeader(boolean isLeaderOrSubLeader) throws Conflict {
+        if (!isLeaderOrSubLeader) throw new Conflict(Const.GUILD.NOT_LEADER_OR_SUBLEADER.getMsg());
+    }
+
+    public void otherUserInGuild(String guildName) throws Conflict {
+        if (!Objects.equals(guildName, "")) throw new Conflict(Const.GUILD.USER_IN_GUILD.getMsg());
+    }
+
+    public void userInReqGuild(boolean userInRequest) throws Conflict {
+        if (!userInRequest) throw new Conflict(Const.GUILD.USER_NOT_REQUEST.getMsg());
+    }
+
+    public void userIsLeader(String username, String leader) throws Conflict {
+        if (Objects.equals(username, leader)) throw new Conflict(Const.GUILD.USER_ALREADY_LEADER.getMsg());
+    }
+
+    public void userRemoveLeader(String nameRemove, String leader) throws Conflict {
+        if (Objects.equals(nameRemove, leader)) throw new Conflict(Const.GUILD.CANNOT_REMOVE_LEADER.getMsg());
+    }
+
+    public void removeLeaderNotSubLeader(String nameRemove, String leader, String subLeader, int memberSize) throws Conflict {
+        if (nameRemove.equals(leader) && subLeader.equals("") && memberSize > 1)
+            throw new Conflict(Const.GUILD.NO_SUBLEADER.getMsg());
+    }
+
+    public void userDiamondsDonate(int userDiamonds, int diamonds) throws Conflict {
+        if (userDiamonds < diamonds) throw new Conflict(Const.GUILD.YOU_NOT_ENOUGH_DIAMONDS.getMsg());
+    }
+
+    public void guildLvlMax(int guildLevel) throws Conflict {
+        if (guildLevel >= SvConfig.GUILD_LVL_MAX) throw new Conflict(Const.GUILD.LVL_MAX.getMsg());
+    }
+
+    public void guildDiamondsUpgrade(int diamonds, int lvl) throws Conflict {
+        if (diamonds < GuildUpgrade.getDiamondCost(lvl)) throw new Conflict(Const.GUILD.NOT_ENOUGH_DIAMONDS.getMsg());
+    }
 }

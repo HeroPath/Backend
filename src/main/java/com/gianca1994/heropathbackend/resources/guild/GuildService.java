@@ -7,10 +7,10 @@ import com.gianca1994.heropathbackend.resources.guild.dto.request.GuildDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.RankingDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.UpgradeDonateDTO;
 import com.gianca1994.heropathbackend.resources.guild.dto.response.UserDTO;
-import com.gianca1994.heropathbackend.resources.guild.utilities.GuildServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.UserService;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class GuildService {
 
-    GuildServiceValidator validator = new GuildServiceValidator();
+    Validator validator = new Validator();
     private final RankingDTO rankingDTO = new RankingDTO();
 
     @Autowired
@@ -50,7 +50,7 @@ public class GuildService {
                 .collect(Collectors.toList());
     }
 
-    public UserDTO getUser(long userId, String username) {
+    public UserDTO getUser(long userId, String username) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This method returns a userDTO
@@ -89,7 +89,7 @@ public class GuildService {
         validator.userExist(userR.existsById(userId));
 
         User user = userR.findByUsername(username);
-        validator.checkUserInGuild(user.getGuildName());
+        validator.userInGuild(user.getGuildName());
 
         String guildDtoName = guildDTO.getName().toLowerCase();
         validator.guildNameExist(guildR.existsGuildByName(guildDtoName));
@@ -117,12 +117,12 @@ public class GuildService {
         validator.userExist(userR.existsById(userId));
 
         User user = userR.findByUsername(username);
-        validator.checkUserInGuild(user.getGuildName());
+        validator.userInGuild(user.getGuildName());
         validator.reqLvlToReqGuild(user.getLevel());
 
         Guild guild = guildR.findByName(guildName);
         validator.guildExistByObject(guild);
-        validator.checkGuildIsFull(guild.getMembers().size(), guild.getMaxMembers());
+        validator.guildIsFull(guild.getMembers().size(), guild.getMaxMembers());
 
         guild.getRequests().add(user);
         guildR.save(guild);
@@ -138,15 +138,15 @@ public class GuildService {
          * @return void
          */
         String guildName = getGuildName(userId);
-        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+        validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
         Guild guild = guildR.findByName(guildName);
-        validator.checkGuildIsFull(guild.getMembers().size(), guild.getMaxMembers());
+        validator.guildIsFull(guild.getMembers().size(), guild.getMaxMembers());
 
         User userAccept = userR.findByUsername(nameAccept);
         validator.userExistByObject(userAccept);
-        validator.checkOtherUserInGuild(userAccept.getGuildName());
-        validator.checkUserInReqGuild(guild.getRequests().contains(userAccept));
+        validator.otherUserInGuild(userAccept.getGuildName());
+        validator.userInReqGuild(guild.getRequests().contains(userAccept));
 
         guild.userAddGuild(userAccept);
         userAccept.setGuildName(guild.getName());
@@ -166,8 +166,8 @@ public class GuildService {
         String guildName = getGuildName(userId);
         Guild guild = guildR.findByName(guildName);
 
-        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
-        validator.checkUserInReqGuild(guild.getRequests().contains(userR.findByUsername(nameReject)));
+        validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+        validator.userInReqGuild(guild.getRequests().contains(userR.findByUsername(nameReject)));
 
         guild.getRequests().removeIf(u -> u.getUsername().equals(nameReject));
         guildR.save(guild);
@@ -183,12 +183,12 @@ public class GuildService {
          * @return void
          */
         String guildName = getGuildName(userId);
-        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+        validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
         Guild guild = guildR.findByName(guildName);
         User userSubLeader = userR.findByUsername(nameNewSubLeader);
         validator.userExistByObject(userSubLeader);
-        validator.checkUserIsLeader(userSubLeader.getUsername(), guild.getLeader());
+        validator.userIsLeader(userSubLeader.getUsername(), guild.getLeader());
 
         if (Objects.equals(userSubLeader.getUsername(), guild.getSubLeader())) guild.setSubLeader("");
         else guild.setSubLeader(userSubLeader.getUsername());
@@ -207,20 +207,20 @@ public class GuildService {
         validator.userExist(userR.existsById(userId));
 
         User user = userR.findByUsername(username);
-        validator.checkUserNotInGuild(user.getGuildName());
+        validator.userNotInGuild(user.getGuildName());
 
         Guild guild = guildR.findByName(user.getGuildName());
         validator.guildExistByObject(guild);
-        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
+        validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
 
         User userRemove = userR.findByUsername(nameRemove);
         validator.userExistByObject(userRemove);
 
         if (!Objects.equals(nameRemove, user.getUsername())) {
-            validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
-            validator.checkUserRemoveLeader(userRemove.getUsername(), guild.getLeader());
+            validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guild.getName()));
+            validator.userRemoveLeader(userRemove.getUsername(), guild.getLeader());
         }
-        validator.checkRemoveLeaderNotSubLeader(userRemove.getUsername(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size());
+        validator.removeLeaderNotSubLeader(userRemove.getUsername(), guild.getLeader(), guild.getSubLeader(), guild.getMembers().size());
 
         guild.userRemoveGuild(userRemove);
         userRemove.setGuildName("");
@@ -242,7 +242,7 @@ public class GuildService {
         String guildName = getGuildName(userId);
         int guildLevel = guildR.findLevelByName(guildName);
         int userDiamonds = userR.findDiamondByUserId(userId);
-        validator.checkUserDiamondsForDonate(userDiamonds, diamonds);
+        validator.userDiamondsDonate(userDiamonds, diamonds);
 
         userDiamonds -= diamonds;
         int guildDiamonds = guildR.findDiamondsByName(guildName);
@@ -263,12 +263,12 @@ public class GuildService {
          * @return UpgradeDonateDTO
          */
         String guildName = getGuildName(userId);
-        validator.checkGuildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
+        validator.guildLeaderOrSubLeader(guildR.isLeaderOrSubLeader(username, guildName));
 
         int guildLevel = guildR.findLevelByName(guildName);
-        validator.checkGuildLvlMax(guildLevel);
+        validator.guildLvlMax(guildLevel);
         int guildDiamonds = guildR.findDiamondsByName(guildName);
-        validator.checkGuildDiamondsForUpgrade(guildDiamonds, guildLevel);
+        validator.guildDiamondsUpgrade(guildDiamonds, guildLevel);
         int guildMaxMembers = guildR.findMaxMembersByName(guildName);
 
         guildDiamonds -= GuildUpgrade.getDiamondCost(guildLevel);
@@ -285,7 +285,7 @@ public class GuildService {
         validator.userExist(userR.existsById(userId));
 
         String guildName = userR.findGuildNameByUserId(userId);
-        validator.checkUserNotInGuild(guildName);
+        validator.userNotInGuild(guildName);
         validator.guildExist(guildR.existsGuildByName(guildName));
 
         return guildName;

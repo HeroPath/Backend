@@ -64,7 +64,7 @@ public class GuildController {
 
     @GetMapping("/in-guild")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('STANDARD')")
-    public UserDTO getUserGuild(@RequestHeader("Authorization") String token) {
+    public UserDTO getUserGuild(@RequestHeader("Authorization") String token) throws Conflict {
         /**
          * @Author: Gianca1994
          * @Explanation: This method returns the guild of the user
