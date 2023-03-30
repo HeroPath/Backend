@@ -6,9 +6,13 @@ import com.gianca1994.heropathbackend.exception.BadReq;
 import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.exception.NotFound;
 import com.gianca1994.heropathbackend.resources.equipment.Equipment;
+import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttributes;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
+import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
+
+import java.util.List;
 
 public class Validator {
 
@@ -77,5 +81,51 @@ public class Validator {
     public void attackerAndDefenderInSameGuild(User attacker, User defender) throws Conflict {
         if (attacker.getGuildName().equals(defender.getGuildName()))
             throw new Conflict(Const.USER.CANT_ATTACK_GUILD_MEMBER.getMsg());
+    }
+
+    /* QUEST */
+    public void questExist(boolean exist) throws Conflict {
+        if (!exist) throw new Conflict(Const.QUEST.NOT_FOUND.getMsg());
+    }
+
+    public void questAlreadyExist(boolean alreadyExist) throws Conflict {
+        if (alreadyExist) throw new Conflict(Const.QUEST.ALREADY_EXIST.getMsg());
+    }
+
+    public void userQuestExist(UserQuest userQuest) {
+        if (userQuest == null) throw new NotFound(Const.QUEST.USER_QUEST_NOT_FOUND.getMsg());
+    }
+
+    public void dtoSaveQuest(QuestDTO quest) throws Conflict {
+        if (quest.getName().isEmpty()) throw new Conflict(Const.QUEST.NAME_EMPTY.getMsg());
+        if (quest.getNameNpcKill().isEmpty()) throw new Conflict(Const.QUEST.NAME_NPC_EMPTY.getMsg());
+        if (quest.getNpcAmountNeed() < 0) throw new Conflict(Const.QUEST.NPC_AMOUNT_LT0.getMsg());
+        if (quest.getUserAmountNeed() < 0) throw new Conflict(Const.QUEST.USER_AMOUNT_LT0.getMsg());
+        if (quest.getGiveExp() < 0) throw new Conflict(Const.QUEST.GIVE_EXP_LT0.getMsg());
+        if (quest.getGiveGold() < 0) throw new Conflict(Const.QUEST.GIVE_GOLD_LT0.getMsg());
+        if (quest.getGiveDiamonds() < 0) throw new Conflict(Const.QUEST.GIVE_DIAMOND_LT0.getMsg());
+    }
+
+    public void maxActiveQuest(int amountQuests) throws Conflict {
+        int MAX_QUESTS = SvConfig.MAX_ACTIVE_QUESTS;
+        if (amountQuests >= MAX_QUESTS) throw new Conflict(String.format(Const.QUEST.MAX_ACTIVE.getMsg(), MAX_QUESTS));
+    }
+
+    public void questAccepted(List<UserQuest> userQuests, String questName) throws Conflict {
+        if (userQuests.stream().anyMatch(userQuest -> userQuest.getQuest().getName().equals(questName))) {
+            throw new Conflict(Const.QUEST.ALREADY_ACCEPTED.getMsg());
+        }
+    }
+
+    public void questCompleted(int amountKill, int amountNeeded) throws Conflict {
+        if (amountKill < amountNeeded) throw new Conflict(Const.QUEST.AMOUNT_CHECK.getMsg());
+    }
+
+    public void alreadyCompleted(long userQuestId) throws Conflict {
+        if (userQuestId == 0) throw new Conflict(Const.QUEST.ALREADY_COMPLETED.getMsg());
+    }
+
+    public void questLvlMin(int userLvl, int questLvl) throws Conflict {
+        if (userLvl < questLvl) throw new Conflict(Const.QUEST.LVL_NOT_ENOUGH.getMsg());
     }
 }

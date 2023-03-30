@@ -4,10 +4,10 @@ import com.gianca1994.heropathbackend.exception.Conflict;
 import com.gianca1994.heropathbackend.resources.quest.dto.request.QuestDTO;
 import com.gianca1994.heropathbackend.resources.quest.dto.response.QuestListDTO;
 import com.gianca1994.heropathbackend.resources.quest.utilities.FilterQuest;
-import com.gianca1994.heropathbackend.resources.quest.utilities.QuestServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.*;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuest;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userQuest.UserQuestRepository;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class QuestService {
 
-    QuestServiceValidator validator = new QuestServiceValidator();
+    Validator validator = new Validator();
 
     @Autowired
     private QuestRepository questR;
