@@ -1,11 +1,11 @@
 package com.gianca1994.heropathbackend.resources.mail;
 
-import com.gianca1994.heropathbackend.resources.mail.utilities.AES;
-import com.gianca1994.heropathbackend.resources.mail.utilities.MailServiceValidator;
+import com.gianca1994.heropathbackend.resources.mail.encryption.AES;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMail;
 import com.gianca1994.heropathbackend.resources.user.userRelations.userMail.UserMailRepository;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class MailService {
 
-    MailServiceValidator validator = new MailServiceValidator();
+    Validator validate = new Validator();
     private final AES aes = new AES();
 
     @Autowired
@@ -56,12 +56,12 @@ public class MailService {
          * @param String msg
          * @return void
          */
-        validator.receiverNotEmpty(receiver);
-        validator.subjectNotEmpty(subject);
-        validator.messageNotEmpty(msg);
-        validator.userExist(userR.existsByUsername(username));
-        validator.userExist(userR.existsByUsername(receiver));
-        validator.userNotEqual(username, receiver);
+        validate.receiverNotEmpty(receiver);
+        validate.subjectNotEmpty(subject);
+        validate.messageNotEmpty(msg);
+        validate.userExist(userR.existsByUsername(username));
+        validate.userExist(userR.existsByUsername(receiver));
+        validate.userNotEqual(username, receiver);
 
         User userRec = userR.findByUsername(receiver);
 
@@ -80,8 +80,8 @@ public class MailService {
          * @param String username
          * @return void
          */
-        validator.userExist(userR.existsById(userId));
-        validator.userHaveMails(userMailR.existsByUserId(userId));
+        validate.userExist(userR.existsById(userId));
+        validate.userHaveMails(userMailR.existsByUserId(userId));
         userMailR.deleteByUserId(userId);
         mailR.deleteAllByReceiver(username);
     }
@@ -94,8 +94,8 @@ public class MailService {
          * @param Long userId
          * @return void
          */
-        validator.userExist(userR.existsById(userId));
-        validator.mailExist(mailR.existsById(mailId));
+        validate.userExist(userR.existsById(userId));
+        validate.mailExist(mailR.existsById(mailId));
         userMailR.deleteByUserIdAndMailId(userId, mailId);
         mailR.delete(mailR.findById(mailId).get());
     }

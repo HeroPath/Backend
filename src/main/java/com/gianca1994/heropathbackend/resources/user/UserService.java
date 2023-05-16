@@ -15,7 +15,7 @@ import com.gianca1994.heropathbackend.resources.user.dto.queyModel.UserAttribute
 import com.gianca1994.heropathbackend.resources.user.dto.response.RankingResponseDTO;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserGuildDTO;
 import com.gianca1994.heropathbackend.resources.user.dto.response.UserRankingDTO;
-import com.gianca1994.heropathbackend.resources.user.utilities.UserServiceValidator;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    UserServiceValidator validator = new UserServiceValidator();
+    Validator validate = new Validator();
 
     @Autowired
     UserRepository userR;
@@ -61,7 +61,7 @@ public class UserService {
          * @param String username
          * @return User
          */
-        validator.userExist(userR.existsByUsername(username));
+        validate.userExist(userR.existsByUsername(username));
         return userR.findByUsername(username);
     }
 
@@ -73,7 +73,7 @@ public class UserService {
          * @return UserGuildDTO
          */
         UserGuildDTO userGuildDTO = userR.getUserForGuild(userId);
-        validator.getUserForGuild(userGuildDTO);
+        validate.getUserForGuild(userGuildDTO);
         return userGuildDTO;
     }
 
@@ -107,9 +107,9 @@ public class UserService {
          * @param String skillName
          * @return UserAttributes
          */
-        validator.userExist(userR.existsById(userId));
+        validate.userExist(userR.existsById(userId));
         UserAttributes uAttr = userR.findAttributesByUserId(userId);
-        validator.setFreeSkillPoint(uAttr, skillName);
+        validate.setFreeSkillPoint(uAttr, skillName);
 
         uAttr.addStat(skillName);
         userR.updateUserStats(
@@ -132,19 +132,19 @@ public class UserService {
          * @param String nameDefender
          * @return ArrayList<ObjectNode>
          */
-        validator.userExist(userR.existsByUsername(username));
-        validator.userExist(userR.existsByUsername(nameDefender));
+        validate.userExist(userR.existsByUsername(username));
+        validate.userExist(userR.existsByUsername(nameDefender));
 
         User attacker = userR.findByUsername(username);
-        validator.lifeStartCombat(attacker);
-        validator.pvpPtsEnough(attacker);
+        validate.lifeStartCombat(attacker);
+        validate.pvpPtsEnough(attacker);
 
         User defender = userR.findByUsername(nameDefender);
-        validator.defenderNotAdmin(defender);
-        validator.lifeStartCombat(defender);
-        validator.autoAttack(attacker, defender);
-        validator.differenceLevelPVP(attacker.getLevel(), defender.getLevel());
-        validator.attackerAndDefenderInSameGuild(attacker, defender);
+        validate.defenderNotAdmin(defender);
+        validate.lifeStartCombat(defender);
+        validate.autoAttack(attacker, defender);
+        validate.differenceLevelPVP(attacker.getLevel(), defender.getLevel());
+        validate.attackerAndDefenderInSameGuild(attacker, defender);
 
         CombatModel pvpSystem = PvpSystem.PvpUserVsUser(attacker, defender, guildR);
         pvpSystem.getAttacker().setPvpPts(pvpSystem.getAttacker().getPvpPts() - 1);
@@ -163,17 +163,17 @@ public class UserService {
          * @param String npcName
          * @return ArrayList<ObjectNode>
          */
-        validator.userExist(userR.existsByUsername(username));
-        validator.npcExist(npcR.existsByName(npcName));
+        validate.userExist(userR.existsByUsername(username));
+        validate.npcExist(npcR.existsByName(npcName));
 
         User user = userR.findByUsername(username);
-        validator.lifeStartCombat(user);
-        validator.pvePtsEnough(user);
+        validate.lifeStartCombat(user);
+        validate.pvePtsEnough(user);
 
         Npc npc = npcR.findByName(npcName);
-        validator.userItemReqZoneSea(user.getEquipment(), npc.getZone());
-        validator.userItemReqZoneHell(user.getEquipment(), npc.getZone());
-        validator.differenceLevelPVE(user.getLevel(), npc.getLevel());
+        validate.userItemReqZoneSea(user.getEquipment(), npc.getZone());
+        validate.userItemReqZoneHell(user.getEquipment(), npc.getZone());
+        validate.differenceLevelPVE(user.getLevel(), npc.getLevel());
 
         CombatModel pveSystem = PveSystem.PveUserVsNpc(user, npc, calculateBonusGuild(user.getGuildName()));
         pveSystem.getAttacker().setPvePts(pveSystem.getAttacker().getPvePts() - 1);

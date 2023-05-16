@@ -1,4 +1,4 @@
-package com.gianca1994.heropathbackend.resources.mail.utilities;
+package com.gianca1994.heropathbackend.resources.mail.encryption;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -15,69 +15,29 @@ import java.util.*;
 
 public class PvpFunctions {
     public long getUserGoldThief(long userGold) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of calculating the gold theft.
-         * @param User user
-         * @return long
-         */
         return (long) (userGold * SvConfig.PVP_GOLD_WIN_RATE);
     }
 
     public long getUserGoldAmountLose(User user) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of calculating the gold that the attacker.
-         * @param User user
-         * @return long
-         */
         return user.getGold() - getUserGoldThief(user.getGold());
     }
 
     public long getUserGoldLoseForLoseCombat(User user) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of calculating the gold that the attacker.
-         * @param User user
-         * @return long
-         */
         return (long) (user.getGold() * SvConfig.PVP_GOLD_LOSS_RATE);
     }
 
     public boolean checkBothUsersAlive(User attacker, User defender) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of verifying if both fighters are alive.
-         * @param User user
-         * @param User defender
-         * @return boolean
-         */
         return attacker.getHp() > 0 && defender.getHp() > 0;
     }
 
     public int calculatePointsTitleWinOrLose(User user) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of calculating the points that the attacker.
-         * @param none
-         * @return int
-         */
         int pointsWinOrLose = (int) Math.floor(Math.random() * (SvConfig.PVP_MAX_RATE_POINT_TITLE - SvConfig.PVP_MIN_RATE_POINT_TITLE + 1) + SvConfig.PVP_MIN_RATE_POINT_TITLE);
         if (user.getTitlePoints() >= pointsWinOrLose) return pointsWinOrLose;
         else if (user.getTitlePoints() > 0) return user.getTitlePoints();
         else return pointsWinOrLose / 2;
     }
 
-    public void updateGuilds(User attacker, User defender,
-                             GuildRepository guildRepository, int mmrWinAndLose) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of updating the guilds.
-         * @param User attacker
-         * @param User defender
-         * @param GuildRepository guildRepository
-         * @return void
-         */
+    public void updateGuilds(User attacker, User defender, GuildRepository guildRepository, int mmrWinAndLose) {
         String attackGuildName = attacker.getGuildName();
         String defGuildName = defender.getGuildName();
         Map<String, Guild> guilds = new HashMap<>();
@@ -99,12 +59,6 @@ public class PvpFunctions {
     }
 
     public void updateQuests(User user) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of updating the quests.
-         * @param User user
-         * @return void
-         */
         Set<UserQuest> userQuests = user.getUserQuests();
         for (UserQuest quest : userQuests) {
             if (quest.getQuest().getNameNpcKill().equalsIgnoreCase("player")
@@ -115,17 +69,7 @@ public class PvpFunctions {
         }
     }
 
-    public void updateStatsUserWin(User user, User attacked, long goldAmountWin,
-                                   int mmrWinAndLose) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of updating the stats of the winner.
-         * @param User user
-         * @param User attacked
-         * @param long goldAmountWin
-         * @param int mmrWinAndLose
-         * @return void
-         */
+    public void updateStatsUserWin(User user, User attacked, long goldAmountWin, int mmrWinAndLose) {
         attacked.setHp(0);
         user.setGold(user.getGold() + goldAmountWin);
         attacked.setGold(attacked.getGold() - goldAmountWin);
@@ -135,17 +79,7 @@ public class PvpFunctions {
         attacked.removeTitlePoints(mmrWinAndLose);
     }
 
-    public void updateStatsUserLose(User user, User attacked, long goldLoseForLoseCombat,
-                                    int mmrWinAndLose) {
-        /**
-         * @Author: Gianca1994
-         * @Explanation: This function is in charge of updating the stats of the loser.
-         * @param User user
-         * @param User attacked
-         * @param long goldLoseForLoseCombat
-         * @param int mmrWinAndLose
-         * @return void
-         */
+    public void updateStatsUserLose(User user, User attacked, long goldLoseForLoseCombat, int mmrWinAndLose) {
         user.setHp(0);
         user.setGold(user.getGold() - goldLoseForLoseCombat);
         user.removeTitlePoints(mmrWinAndLose);

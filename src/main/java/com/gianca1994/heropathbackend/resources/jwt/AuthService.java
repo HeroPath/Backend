@@ -9,11 +9,11 @@ import com.gianca1994.heropathbackend.resources.equipment.EquipmentRepository;
 import com.gianca1994.heropathbackend.resources.inventory.Inventory;
 import com.gianca1994.heropathbackend.resources.inventory.InventoryRepository;
 import com.gianca1994.heropathbackend.resources.jwt.dto.UserRegisterJwtDTO;
-import com.gianca1994.heropathbackend.resources.jwt.utilities.AuthServiceValidator;
 import com.gianca1994.heropathbackend.resources.user.User;
 import com.gianca1994.heropathbackend.resources.user.UserRepository;
 import com.gianca1994.heropathbackend.resources.user.dto.request.UserRegisterDTO;
 import com.gianca1994.heropathbackend.utils.Const;
+import com.gianca1994.heropathbackend.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 @Service
 public class AuthService implements UserDetailsService {
 
-    AuthServiceValidator validator = new AuthServiceValidator();
+    Validator validate = new Validator();
 
     @Autowired
     private UserRepository userR;
@@ -101,7 +101,7 @@ public class AuthService implements UserDetailsService {
         if (!validateEmail(user.getEmail().toLowerCase())) throw new BadReq(Const.JWT.EMAIL_NOT_VALID.getMsg());
 
         UserRegisterJwtDTO userJwt = new UserRegisterJwtDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getClassName());
-        validator.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
+        validate.saveUser(userJwt.getUsername(), userJwt.getPassword(), userJwt.getEmail(), userJwt.getAClass(), userR);
 
         userJwt.setInventory(new Inventory());
         userJwt.setEquipment(new Equipment());
