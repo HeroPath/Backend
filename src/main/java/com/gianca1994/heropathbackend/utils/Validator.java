@@ -42,7 +42,7 @@ public class Validator {
     public void setFreeSkillPoint(UserAttributes uAttr, String skillName) throws Conflict {
         if (uAttr == null) throw new NotFound(Const.USER.NOT_FOUND.getMsg());
         if (uAttr.getFreeSkillPoints() <= 0) throw new Conflict(Const.USER.DONT_HAVE_SKILLPTS.getMsg());
-        if (!Const.USER.SKILLS_ENABLED.getMsg().contains(skillName.toLowerCase()))
+        if (!Const.USER.SKILLS_ENABLED.getList().contains(skillName.toLowerCase()))
             throw new Conflict(Const.USER.ALLOWED_SKILLPTS.getMsg() + Const.USER.SKILLS_ENABLED.getMsg());
     }
 
