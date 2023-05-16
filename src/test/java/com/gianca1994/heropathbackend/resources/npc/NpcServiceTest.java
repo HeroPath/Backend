@@ -45,7 +45,7 @@ class NpcServiceTest {
     }
 
     @Test
-    void givenNameNpc_whenGetNpc_thenReturnNpc() {
+    void givenNameNpc_whenGetNpc_thenReturnNpc() throws Conflict {
         assertEquals("test", npcService.getNpcByName("test").getName());
     }
 

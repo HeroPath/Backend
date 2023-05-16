@@ -33,7 +33,7 @@ class ItemTest {
 
     @Test
     public void constructorAllArgsTest() {
-        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null, false);
+        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null, false, false);
         assertThat(item).isNotNull();
     }
 
@@ -100,7 +100,7 @@ class ItemTest {
 
     @Test
     public void givenItem_whenEquals_thenReturnFalse() {
-        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null, true);
+        Item item = new Item(1L, "Test", "Test", 1, 1, "Test", "test", 1, 1, 1, 1, 1, 1, null, true, false);
         assertThat(itemTest.equals(item)).isFalse();
     }
 }

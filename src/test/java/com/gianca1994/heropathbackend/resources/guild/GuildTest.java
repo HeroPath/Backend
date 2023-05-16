@@ -46,6 +46,7 @@ class GuildTest {
                 (short) 1,
                 1,
                 1,
+                5,
                 new ArrayList<>(),
                 new HashSet<>()
         );
